@@ -1,6 +1,8 @@
 package sky.epaperscreenupdater;
 
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.gson.JsonSyntaxException;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
@@ -8,14 +10,16 @@ import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import sky.ecocompteur.Common;
-import sky.ecocompteur.InstantaneousConsumption;
-import sky.ecocompteur.Logger;
 import sky.netatmo.Measure;
 
 public class InstantaneousConsumptionPage extends AbstractNetatmoPage
@@ -229,7 +233,7 @@ public class InstantaneousConsumptionPage extends AbstractNetatmoPage
                         String month=""+(calendar.get(Calendar.MONTH)+1);
                         if(month.length()==1)
                             month="0"+month;
-                        JsonObject tomorrowObject=Common.getJsonResponse("https://particulier.edf.fr/bin/edf_rc/servlets/ejptemponew?Date_a_remonter="+calendar.get(Calendar.YEAR)+"-"+month+"-"+day+"&TypeAlerte=TEMPO");
+                        JsonObject tomorrowObject=getJsonResponse("https://particulier.edf.fr/bin/edf_rc/servlets/ejptemponew?Date_a_remonter="+calendar.get(Calendar.YEAR)+"-"+month+"-"+day+"&TypeAlerte=TEMPO");
                         String oldTomorrow=tomorrow;
                         if(tomorrowObject!=null)
                         {
@@ -406,5 +410,31 @@ public class InstantaneousConsumptionPage extends AbstractNetatmoPage
                 double factor=((double)power-180d)/20d;
                 return (int)((1d-factor)*ordinate1+factor*ordinate2)-13+1;
             }
+    }
+
+    public static JsonObject getJsonResponse(String url) throws IOException,JsonSyntaxException
+    {
+        URL urlObject=new URL(url);
+        HttpURLConnection httpConnection=null;
+        try
+        {
+            httpConnection=(HttpURLConnection)urlObject.openConnection();
+            httpConnection.setConnectTimeout(5000);
+            httpConnection.setReadTimeout(5000);
+            httpConnection.setRequestMethod("GET");
+            StringBuilder response=new StringBuilder();
+            String inputLine;
+            try(BufferedReader bufferedReader=new BufferedReader(new InputStreamReader(httpConnection.getInputStream())))
+            {
+                while((inputLine=bufferedReader.readLine())!=null)
+                    response.append(inputLine);
+            }
+            return new JsonParser().parse(response.toString()).getAsJsonObject();
+        }
+        finally
+        {
+            if(httpConnection!=null)
+                httpConnection.disconnect();
+        }
     }
 }

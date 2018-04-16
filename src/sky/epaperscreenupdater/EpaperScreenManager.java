@@ -10,7 +10,6 @@ import com.pi4j.io.spi.SpiDevice;
 import com.pi4j.io.spi.SpiFactory;
 import com.pi4j.io.spi.SpiMode;
 import java.io.IOException;
-import sky.ecocompteur.Logger;
 
 public class EpaperScreenManager
 {

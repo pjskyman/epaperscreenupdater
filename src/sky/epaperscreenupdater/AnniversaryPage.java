@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map.Entry;
 import java.util.Properties;
-import sky.ecocompteur.Logger;
 
 public class AnniversaryPage extends AbstractPage
 {

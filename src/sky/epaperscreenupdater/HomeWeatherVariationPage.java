@@ -15,8 +15,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import sky.ecocompteur.Logger;
-import sky.ecocompteur.NotAvailableDatabaseException;
 import sky.netatmo.Measure;
 import sky.netatmo.MeasurementType;
 

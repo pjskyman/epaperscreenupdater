@@ -6,7 +6,6 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import sky.ecocompteur.Logger;
 
 public class EnergyConsumptionPage extends AbstractPage
 {

@@ -12,11 +12,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import sky.ecocompteur.Database;
-import sky.ecocompteur.InstantaneousConsumption;
-import sky.ecocompteur.Logger;
-import sky.ecocompteur.NotAvailableDatabaseException;
-import sky.ecocompteur.PricingPeriod;
 
 public final class EpaperScreenUpdater
 {

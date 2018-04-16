@@ -10,8 +10,6 @@ import java.awt.image.BufferedImage;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Locale;
-import sky.ecocompteur.Common;
-import sky.ecocompteur.Logger;
 
 public class TempoCalendarPage extends AbstractPage
 {
@@ -80,7 +78,7 @@ public class TempoCalendarPage extends AbstractPage
                         g2d.drawLine(273,45,273,54);//barre supplémentaire de l'année bissextile
                         remainingBlueDayCount+=1;
                     }
-                    JsonObject historyObject=Common.getJsonResponse("https://particulier.edf.fr/services/rest/referentiel/historicTEMPOStore?dateBegin="+yearBegin+"&dateEnd="+(yearBegin+1));
+                    JsonObject historyObject=InstantaneousConsumptionPage.getJsonResponse("https://particulier.edf.fr/services/rest/referentiel/historicTEMPOStore?dateBegin="+yearBegin+"&dateEnd="+(yearBegin+1));
                     if(historyObject!=null)
                     {
                         JsonArray history=historyObject.getAsJsonArray("dates");

@@ -7,7 +7,6 @@ import java.awt.geom.Line2D;
 import java.awt.image.BufferedImage;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import sky.ecocompteur.Logger;
 
 public class AnalogClockPage extends AbstractPage
 {

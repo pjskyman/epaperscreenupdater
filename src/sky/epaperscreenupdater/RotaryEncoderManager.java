@@ -8,7 +8,6 @@ import com.pi4j.io.gpio.event.GpioPinDigitalStateChangeEvent;
 import com.pi4j.io.gpio.event.GpioPinListenerDigital;
 import java.util.ArrayList;
 import java.util.List;
-import sky.ecocompteur.Logger;
 
 public class RotaryEncoderManager
 {

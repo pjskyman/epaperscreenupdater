@@ -18,7 +18,6 @@ import java.util.List;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
-import sky.ecocompteur.Logger;
 
 public class RERCPage extends AbstractPage
 {

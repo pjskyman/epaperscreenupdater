@@ -10,7 +10,6 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import sky.ecocompteur.Logger;
 import sky.netatmo.Device;
 import sky.netatmo.Measure;
 import sky.netatmo.MeasurementScale;

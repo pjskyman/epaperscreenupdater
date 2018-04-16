@@ -8,11 +8,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
-import sky.ecocompteur.Database;
-import sky.ecocompteur.InstantaneousConsumption;
-import sky.ecocompteur.Logger;
-import sky.ecocompteur.NotAvailableDatabaseException;
-import sky.ecocompteur.PricingPeriod;
 
 public class EnergyConsumptionProvider
 {

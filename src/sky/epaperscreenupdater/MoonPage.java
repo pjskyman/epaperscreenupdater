@@ -24,7 +24,6 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 import javax.imageio.ImageIO;
-import sky.ecocompteur.Logger;
 
 public class MoonPage extends AbstractPage
 {

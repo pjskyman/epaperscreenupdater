@@ -23,7 +23,6 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
-import sky.ecocompteur.Logger;
 
 public class DailyWeatherForecast1Page extends AbstractPage
 {

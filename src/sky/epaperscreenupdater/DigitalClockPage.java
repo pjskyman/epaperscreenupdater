@@ -6,7 +6,6 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import sky.ecocompteur.Logger;
 
 public class DigitalClockPage extends AbstractPage
 {

@@ -3,7 +3,6 @@ package sky.epaperscreenupdater;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
-import sky.ecocompteur.Logger;
 
 public class RotaryEventQueue
 {
