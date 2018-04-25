@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import sky.netatmo.Measure;
 import sky.netatmo.MeasurementType;
+import sky.program.Duration;
 
 public class HomeWeatherVariationPage extends AbstractNetatmoPage
 {
@@ -40,7 +41,7 @@ public class HomeWeatherVariationPage extends AbstractNetatmoPage
     public synchronized Page potentiallyUpdate()
     {
         long now=System.currentTimeMillis();
-        if(now-lastRefreshTime>Time.get(1).minute())
+        if(now-lastRefreshTime>Duration.of(1).minute())
         {
             lastRefreshTime=now;
             Map<String,Measure[]> lastMeasures=getLastMeasures();
@@ -95,7 +96,7 @@ public class HomeWeatherVariationPage extends AbstractNetatmoPage
             else
                 anemometreMaxGustAngle=Double.NaN;
             Measure[] lastToiletsTemperature=loadTemperatures(730).stream()//730 car 720 théoriques + 10 par sécurité
-                    .filter(temperature->now-temperature.getTime()<Time.get(1).hour())
+                    .filter(temperature->now-temperature.getTime()<Duration.of(1).hour())
                     .map(temperature->new StandAloneMeasure(new Date(temperature.getTime()),MeasurementType.TEMPERATURE,temperature.getTemperature()))
                     .toArray(size->new Measure[size]);
             double toiletsTemperatureVariation=getHourlyVariation(lastToiletsTemperature);

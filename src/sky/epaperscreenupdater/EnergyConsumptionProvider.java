@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
+import sky.program.Duration;
 
 public class EnergyConsumptionProvider
 {
@@ -51,7 +52,7 @@ public class EnergyConsumptionProvider
             endCalendar.set(Calendar.DAY_OF_MONTH,day2);
             endCalendar.set(Calendar.HOUR_OF_DAY,6);
             endCalendar.set(Calendar.MINUTE,2);
-            endCalendar.setTimeInMillis(endCalendar.getTimeInMillis()+Time.get(1).day());
+            endCalendar.setTimeInMillis(endCalendar.getTimeInMillis()+Duration.of(1).day());
             int endYear=endCalendar.get(Calendar.YEAR);
             int endMonth=endCalendar.get(Calendar.MONTH);
             int endDay=endCalendar.get(Calendar.DAY_OF_MONTH);

@@ -24,6 +24,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 import javax.imageio.ImageIO;
+import sky.program.Duration;
 
 public class MoonPage extends AbstractPage
 {
@@ -47,7 +48,7 @@ public class MoonPage extends AbstractPage
     public synchronized Page potentiallyUpdate()
     {
         long now=System.currentTimeMillis();
-        if(now-lastRefreshTime>Time.get(1).hour())
+        if(now-lastRefreshTime>Duration.of(1).hour())
         {
             lastRefreshTime=now;
             try

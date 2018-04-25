@@ -6,6 +6,7 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import sky.program.Duration;
 
 public class EnergyConsumptionPage extends AbstractPage
 {
@@ -29,7 +30,7 @@ public class EnergyConsumptionPage extends AbstractPage
     public synchronized Page potentiallyUpdate()
     {
         long now=System.currentTimeMillis();
-        if(now-lastRefreshTime>Time.get(10).minute())
+        if(now-lastRefreshTime>Duration.of(10).minute())
         {
             lastRefreshTime=now;
             try
@@ -45,11 +46,11 @@ public class EnergyConsumptionPage extends AbstractPage
                 int nowHour=calendar.get(Calendar.HOUR_OF_DAY);
                 int nowMinute=calendar.get(Calendar.MINUTE);
                 if(nowHour<6||nowHour==6&&nowMinute<2)
-                    calendar.setTimeInMillis(calendar.getTimeInMillis()-Time.get(1).day());
+                    calendar.setTimeInMillis(calendar.getTimeInMillis()-Duration.of(1).day());
                 int todayYear=calendar.get(Calendar.YEAR);
                 int todayMonth=calendar.get(Calendar.MONTH)+1;
                 int todayDay=calendar.get(Calendar.DAY_OF_MONTH);
-                calendar.setTimeInMillis(calendar.getTimeInMillis()-Time.get(1).day());
+                calendar.setTimeInMillis(calendar.getTimeInMillis()-Duration.of(1).day());
                 int yesterdayYear=calendar.get(Calendar.YEAR);
                 int yesterdayMonth=calendar.get(Calendar.MONTH)+1;
                 int yesterdayDay=calendar.get(Calendar.DAY_OF_MONTH);

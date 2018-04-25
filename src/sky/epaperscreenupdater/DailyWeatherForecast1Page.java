@@ -23,6 +23,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
+import sky.program.Duration;
 
 public class DailyWeatherForecast1Page extends AbstractPage
 {
@@ -46,7 +47,7 @@ public class DailyWeatherForecast1Page extends AbstractPage
     public synchronized Page potentiallyUpdate()
     {
         long now=System.currentTimeMillis();
-        if(now-lastRefreshTime>Time.get(15).minute())
+        if(now-lastRefreshTime>Duration.of(15).minute())
         {
             lastRefreshTime=now;
             try

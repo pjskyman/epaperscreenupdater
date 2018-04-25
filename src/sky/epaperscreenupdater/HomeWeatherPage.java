@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import sky.netatmo.Measure;
 import sky.netatmo.MeasurementType;
+import sky.program.Duration;
 
 public class HomeWeatherPage extends AbstractNetatmoPage
 {
@@ -40,7 +41,7 @@ public class HomeWeatherPage extends AbstractNetatmoPage
     public synchronized Page potentiallyUpdate()
     {
         long now=System.currentTimeMillis();
-        if(now-lastRefreshTime>Time.get(5).second())
+        if(now-lastRefreshTime>Duration.of(5).second())
         {
             lastRefreshTime=now;
             Map<String,Measure[]> lastMeasures=getLastMeasures();

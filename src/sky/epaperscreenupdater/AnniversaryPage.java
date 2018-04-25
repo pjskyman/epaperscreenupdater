@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map.Entry;
 import java.util.Properties;
+import sky.program.Duration;
 
 public class AnniversaryPage extends AbstractPage
 {
@@ -40,7 +41,7 @@ public class AnniversaryPage extends AbstractPage
     public synchronized Page potentiallyUpdate()
     {
         long now=System.currentTimeMillis();
-        if(now-lastRefreshTime>Time.get(1).hour())
+        if(now-lastRefreshTime>Duration.of(1).hour())
         {
             lastRefreshTime=now;
             try

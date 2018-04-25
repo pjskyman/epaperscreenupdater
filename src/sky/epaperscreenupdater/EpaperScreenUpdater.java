@@ -12,6 +12,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import sky.program.Duration;
 
 public final class EpaperScreenUpdater
 {
@@ -83,7 +84,7 @@ public final class EpaperScreenUpdater
                 {
                     try
                     {
-                        Thread.sleep(Time.get(1).second());
+                        Thread.sleep(Duration.of(1).second());
                         while(true)
                         {
                             try
@@ -94,7 +95,7 @@ public final class EpaperScreenUpdater
                             {
                                 Logger.LOGGER.error("Unmanaged throwable during refresh ("+t.toString()+")");
                             }
-                            Thread.sleep(Time.get(100).millisecond());
+                            Thread.sleep(Duration.of(100).millisecond());
                         }
                     }
                     catch(InterruptedException e)
@@ -114,7 +115,7 @@ public final class EpaperScreenUpdater
                     {
                         long now=System.currentTimeMillis();
                         boolean partialRefresh=true;
-                        if(currentlySelectedPageCopy==-1&&now-lastCompleteRefresh>Time.get(5).minute())
+                        if(currentlySelectedPageCopy==-1&&now-lastCompleteRefresh>Duration.of(5).minute())
                         {
                             partialRefresh=false;
                             lastCompleteRefresh=now;
@@ -126,7 +127,7 @@ public final class EpaperScreenUpdater
                         currentPixels=newPixels;
                         lastDrawnIncrust=currentlySelectedPageCopy;
                     }
-                    Thread.sleep(Time.get(50).millisecond());
+                    Thread.sleep(Duration.of(50).millisecond());
                 }
             }
             catch(InterruptedException e)

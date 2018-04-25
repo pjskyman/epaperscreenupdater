@@ -10,6 +10,7 @@ import com.pi4j.io.spi.SpiDevice;
 import com.pi4j.io.spi.SpiFactory;
 import com.pi4j.io.spi.SpiMode;
 import java.io.IOException;
+import sky.program.Duration;
 
 public class EpaperScreenManager
 {
@@ -77,9 +78,9 @@ public class EpaperScreenManager
         try
         {
             RESET.low();
-            Thread.sleep(Time.get(150).millisecond());
+            Thread.sleep(Duration.of(150).millisecond());
             RESET.high();
-            Thread.sleep(Time.get(150).millisecond());
+            Thread.sleep(Duration.of(150).millisecond());
             DC.low();
             DEVICE.write((byte)0x01);//DRIVER_OUTPUT_CONTROL
             DC.high();
@@ -125,7 +126,7 @@ public class EpaperScreenManager
             DC.high();
             DEVICE.write((byte)0x00,(byte)0x00);
             while(BUSY.isHigh())
-                Thread.sleep(Time.get(10).millisecond());
+                Thread.sleep(Duration.of(10).millisecond());
             DC.low();
             DEVICE.write((byte)0x24);//WRITE_RAM
             DC.high();
@@ -149,7 +150,7 @@ public class EpaperScreenManager
             DEVICE.write((byte)0x20);//MASTER_ACTIVATION
             DEVICE.write((byte)0xFF);//TERMINATE_FRAME_READ_WRITE
             while(BUSY.isHigh())
-                Thread.sleep(Time.get(10).millisecond());
+                Thread.sleep(Duration.of(10).millisecond());
         }
         catch(InterruptedException e)
         {

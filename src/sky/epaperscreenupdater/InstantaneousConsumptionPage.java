@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import sky.netatmo.Measure;
+import sky.program.Duration;
 
 public class InstantaneousConsumptionPage extends AbstractNetatmoPage
 {
@@ -218,7 +219,7 @@ public class InstantaneousConsumptionPage extends AbstractNetatmoPage
                             g2d.drawRect(x,y,0,0);
 //                Logger.LOGGER.info("Current pricing period: "+instantaneousConsumption.getPricingPeriod().name());
                 long now=System.currentTimeMillis();
-                if(now-lastTomorrowVerificationTime>Time.get(5).minute())
+                if(now-lastTomorrowVerificationTime>Duration.of(5).minute())
                     try
                     {
                         GregorianCalendar calendar=new GregorianCalendar(Locale.FRANCE);
@@ -226,7 +227,7 @@ public class InstantaneousConsumptionPage extends AbstractNetatmoPage
                         int hour=calendar.get(Calendar.HOUR_OF_DAY);
                         int minute=calendar.get(Calendar.MINUTE);
                         if(hour>=7||hour==6&&minute>=2)//on est en journée, après la bascule de jour du matin à 6h02 et avant minuit
-                            calendar.setTimeInMillis(now+Time.get(1).day());//pour avoir demain
+                            calendar.setTimeInMillis(now+Duration.of(1).day());//pour avoir demain
                         String day=""+calendar.get(Calendar.DAY_OF_MONTH);
                         if(day.length()==1)
                             day="0"+day;

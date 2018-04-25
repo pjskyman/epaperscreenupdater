@@ -10,6 +10,7 @@ import java.awt.image.BufferedImage;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Locale;
+import sky.program.Duration;
 
 public class TempoCalendarPage extends AbstractPage
 {
@@ -33,7 +34,7 @@ public class TempoCalendarPage extends AbstractPage
     public synchronized Page potentiallyUpdate()
     {
         long now=System.currentTimeMillis();
-        if(now-lastRefreshTime>Time.get(10).minute())
+        if(now-lastRefreshTime>Duration.of(10).minute())
         {
             lastRefreshTime=now;
             try

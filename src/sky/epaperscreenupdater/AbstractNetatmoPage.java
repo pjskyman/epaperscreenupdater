@@ -17,6 +17,7 @@ import sky.netatmo.MeasurementType;
 import sky.netatmo.Module;
 import sky.netatmo.NetatmoException;
 import sky.netatmo.Token;
+import sky.program.Duration;
 
 public abstract class AbstractNetatmoPage extends AbstractPage
 {
@@ -76,7 +77,7 @@ public abstract class AbstractNetatmoPage extends AbstractPage
     protected static synchronized Map<String,Measure[]> getLastMeasures()
     {
         long now=System.currentTimeMillis();
-        if(NETATMO_ENABLED&&now-lastNetatmoVerificationTime>Time.get(10).minute())
+        if(NETATMO_ENABLED&&now-lastNetatmoVerificationTime>Duration.of(10).minute())
         {
             lastNetatmoVerificationTime=now;
             boolean ok=false;
@@ -129,14 +130,14 @@ public abstract class AbstractNetatmoPage extends AbstractPage
                     Module pluviometre=homeModules[5];//05:00:00:04:15:2c
                     JsonObject pluviometreDashboardDataObject=pluviometre.getAttributes().get("dashboard_data").getAsJsonObject();
                     pluviometreTotalRain=new Measure[]{new StandAloneMeasure(new Date(now),MeasurementType.RAIN,pluviometreDashboardDataObject.get("sum_rain_24").getAsDouble())};
-                    Measure[] salonMeasures=salon.getMeasures(MeasurementScale.MAX,new Date(now-Time.get(1).hour()),new Date(now+Time.get(5).minute()),MeasurementType.TEMPERATURE,MeasurementType.HUMIDITY,MeasurementType.CO2,MeasurementType.NOISE);
-                    Measure[] salonPressureMeasures=salon.getMeasures(MeasurementScale.MAX,new Date(now-Time.get(2).hour()),new Date(now+Time.get(5).minute()),MeasurementType.PRESSURE);
-                    Measure[] jardinMeasures=jardin.getMeasures(MeasurementScale.MAX,new Date(now-Time.get(1).hour()),new Date(now+Time.get(5).minute()),MeasurementType.TEMPERATURE,MeasurementType.HUMIDITY);
-                    Measure[] chambreMeasures=chambre.getMeasures(MeasurementScale.MAX,new Date(now-Time.get(1).hour()),new Date(now+Time.get(5).minute()),MeasurementType.TEMPERATURE,MeasurementType.HUMIDITY,MeasurementType.CO2);
-                    Measure[] salleDeBainMeasures=salleDeBain.getMeasures(MeasurementScale.MAX,new Date(now-Time.get(1).hour()),new Date(now+Time.get(5).minute()),MeasurementType.TEMPERATURE,MeasurementType.HUMIDITY,MeasurementType.CO2);
-                    Measure[] anemometreMeasures=anemometre.getMeasures(MeasurementScale.MAX,new Date(now-Time.get(1).hour()),new Date(now+Time.get(5).minute()),MeasurementType.WIND_STRENGTH,MeasurementType.WIND_ANGLE,MeasurementType.GUST_STRENGTH,MeasurementType.GUST_ANGLE);
-                    Measure[] sousSolMeasures=sousSol.getMeasures(MeasurementScale.MAX,new Date(now-Time.get(1).hour()),new Date(now+Time.get(5).minute()),MeasurementType.TEMPERATURE,MeasurementType.HUMIDITY,MeasurementType.CO2);
-                    Measure[] pluviometreMeasures=pluviometre.getMeasures(MeasurementScale.MAX,new Date(now-Time.get(1).hour()),new Date(now+Time.get(5).minute()),MeasurementType.RAIN);
+                    Measure[] salonMeasures=salon.getMeasures(MeasurementScale.MAX,new Date(now-Duration.of(1).hour()),new Date(now+Duration.of(5).minute()),MeasurementType.TEMPERATURE,MeasurementType.HUMIDITY,MeasurementType.CO2,MeasurementType.NOISE);
+                    Measure[] salonPressureMeasures=salon.getMeasures(MeasurementScale.MAX,new Date(now-Duration.of(2).hour()),new Date(now+Duration.of(5).minute()),MeasurementType.PRESSURE);
+                    Measure[] jardinMeasures=jardin.getMeasures(MeasurementScale.MAX,new Date(now-Duration.of(1).hour()),new Date(now+Duration.of(5).minute()),MeasurementType.TEMPERATURE,MeasurementType.HUMIDITY);
+                    Measure[] chambreMeasures=chambre.getMeasures(MeasurementScale.MAX,new Date(now-Duration.of(1).hour()),new Date(now+Duration.of(5).minute()),MeasurementType.TEMPERATURE,MeasurementType.HUMIDITY,MeasurementType.CO2);
+                    Measure[] salleDeBainMeasures=salleDeBain.getMeasures(MeasurementScale.MAX,new Date(now-Duration.of(1).hour()),new Date(now+Duration.of(5).minute()),MeasurementType.TEMPERATURE,MeasurementType.HUMIDITY,MeasurementType.CO2);
+                    Measure[] anemometreMeasures=anemometre.getMeasures(MeasurementScale.MAX,new Date(now-Duration.of(1).hour()),new Date(now+Duration.of(5).minute()),MeasurementType.WIND_STRENGTH,MeasurementType.WIND_ANGLE,MeasurementType.GUST_STRENGTH,MeasurementType.GUST_ANGLE);
+                    Measure[] sousSolMeasures=sousSol.getMeasures(MeasurementScale.MAX,new Date(now-Duration.of(1).hour()),new Date(now+Duration.of(5).minute()),MeasurementType.TEMPERATURE,MeasurementType.HUMIDITY,MeasurementType.CO2);
+                    Measure[] pluviometreMeasures=pluviometre.getMeasures(MeasurementScale.MAX,new Date(now-Duration.of(1).hour()),new Date(now+Duration.of(5).minute()),MeasurementType.RAIN);
                     lastSalonTemperatures=compileMeasures(salonMeasures,MeasurementType.TEMPERATURE);
                     lastSalonHumidities=compileMeasures(salonMeasures,MeasurementType.HUMIDITY);
                     lastSalonPressures=compileMeasures(salonPressureMeasures,MeasurementType.PRESSURE);
@@ -196,27 +197,27 @@ public abstract class AbstractNetatmoPage extends AbstractPage
         else
             if(!NETATMO_ENABLED)
             {
-                lastSalonTemperatures=new Measure[]{new StandAloneMeasure(new Date(now-Time.get(1).hour()),MeasurementType.TEMPERATURE,23.1d),new StandAloneMeasure(new Date(now),MeasurementType.TEMPERATURE,19.4d)};
-                lastSalonHumidities=new Measure[]{new StandAloneMeasure(new Date(now-Time.get(1).hour()),MeasurementType.HUMIDITY,65d),new StandAloneMeasure(new Date(now),MeasurementType.HUMIDITY,60d)};
-                lastSalonPressures=new Measure[]{new StandAloneMeasure(new Date(now-Time.get(2).hour()),MeasurementType.PRESSURE,1032.7d),new StandAloneMeasure(new Date(now),MeasurementType.PRESSURE,1030.2d)};
-                lastSalonCarbonDioxydes=new Measure[]{new StandAloneMeasure(new Date(now-Time.get(1).hour()),MeasurementType.CO2,4687d),new StandAloneMeasure(new Date(now),MeasurementType.CO2,4235d)};
-                lastSalonNoises=new Measure[]{new StandAloneMeasure(new Date(now-Time.get(1).hour()),MeasurementType.NOISE,60d),new StandAloneMeasure(new Date(now),MeasurementType.NOISE,57d)};
-                lastChambreTemperatures=new Measure[]{new StandAloneMeasure(new Date(now-Time.get(1).hour()),MeasurementType.TEMPERATURE,23.4d),new StandAloneMeasure(new Date(now),MeasurementType.TEMPERATURE,22.5d)};
-                lastChambreHumidities=new Measure[]{new StandAloneMeasure(new Date(now-Time.get(1).hour()),MeasurementType.HUMIDITY,68d),new StandAloneMeasure(new Date(now),MeasurementType.HUMIDITY,62d)};
-                lastChambreCarbonDioxydes=new Measure[]{new StandAloneMeasure(new Date(now-Time.get(1).hour()),MeasurementType.CO2,3232d),new StandAloneMeasure(new Date(now),MeasurementType.CO2,3125d)};
-                lastSalleDeBainTemperatures=new Measure[]{new StandAloneMeasure(new Date(now-Time.get(1).hour()),MeasurementType.TEMPERATURE,23.4d),new StandAloneMeasure(new Date(now),MeasurementType.TEMPERATURE,22.3d)};
-                lastSalleDeBainHumidities=new Measure[]{new StandAloneMeasure(new Date(now-Time.get(1).hour()),MeasurementType.HUMIDITY,43d),new StandAloneMeasure(new Date(now),MeasurementType.HUMIDITY,40d)};
-                lastSalleDeBainCarbonDioxydes=new Measure[]{new StandAloneMeasure(new Date(now-Time.get(1).hour()),MeasurementType.CO2,3232d),new StandAloneMeasure(new Date(now),MeasurementType.CO2,3148d)};
-                lastSousSolTemperatures=new Measure[]{new StandAloneMeasure(new Date(now-Time.get(1).hour()),MeasurementType.TEMPERATURE,23.4d),new StandAloneMeasure(new Date(now),MeasurementType.TEMPERATURE,23.3d)};
-                lastSousSolHumidities=new Measure[]{new StandAloneMeasure(new Date(now-Time.get(1).hour()),MeasurementType.HUMIDITY,67d),new StandAloneMeasure(new Date(now),MeasurementType.HUMIDITY,61d)};
-                lastSousSolCarbonDioxydes=new Measure[]{new StandAloneMeasure(new Date(now-Time.get(1).hour()),MeasurementType.CO2,1725d),new StandAloneMeasure(new Date(now),MeasurementType.CO2,1526d)};
-                lastJardinTemperatures=new Measure[]{new StandAloneMeasure(new Date(now-Time.get(1).hour()),MeasurementType.TEMPERATURE,10.2d),new StandAloneMeasure(new Date(now),MeasurementType.TEMPERATURE,8.1d)};
-                lastJardinHumidities=new Measure[]{new StandAloneMeasure(new Date(now-Time.get(1).hour()),MeasurementType.HUMIDITY,69d),new StandAloneMeasure(new Date(now),MeasurementType.HUMIDITY,66d)};
-                lastPluviometreRains=new Measure[]{new StandAloneMeasure(new Date(now-Time.get(1).hour()),MeasurementType.RAIN,0d),new StandAloneMeasure(new Date(now),MeasurementType.RAIN,0d)};
-                lastAnemometreWindStrengths=new Measure[]{new StandAloneMeasure(new Date(now-Time.get(1).hour()),MeasurementType.WIND_STRENGTH,34d),new StandAloneMeasure(new Date(now),MeasurementType.WIND_STRENGTH,34d)};
-                lastAnemometreWindAngles=new Measure[]{new StandAloneMeasure(new Date(now-Time.get(1).hour()),MeasurementType.WIND_ANGLE,220d),new StandAloneMeasure(new Date(now),MeasurementType.WIND_ANGLE,220d)};
-                lastAnemometreGustStrengths=new Measure[]{new StandAloneMeasure(new Date(now-Time.get(1).hour()),MeasurementType.GUST_STRENGTH,43d),new StandAloneMeasure(new Date(now),MeasurementType.GUST_STRENGTH,43d)};
-                lastAnemometreGustAngles=new Measure[]{new StandAloneMeasure(new Date(now-Time.get(1).hour()),MeasurementType.GUST_ANGLE,200d),new StandAloneMeasure(new Date(now),MeasurementType.GUST_ANGLE,200d)};
+                lastSalonTemperatures=new Measure[]{new StandAloneMeasure(new Date(now-Duration.of(1).hour()),MeasurementType.TEMPERATURE,23.1d),new StandAloneMeasure(new Date(now),MeasurementType.TEMPERATURE,19.4d)};
+                lastSalonHumidities=new Measure[]{new StandAloneMeasure(new Date(now-Duration.of(1).hour()),MeasurementType.HUMIDITY,65d),new StandAloneMeasure(new Date(now),MeasurementType.HUMIDITY,60d)};
+                lastSalonPressures=new Measure[]{new StandAloneMeasure(new Date(now-Duration.of(2).hour()),MeasurementType.PRESSURE,1032.7d),new StandAloneMeasure(new Date(now),MeasurementType.PRESSURE,1030.2d)};
+                lastSalonCarbonDioxydes=new Measure[]{new StandAloneMeasure(new Date(now-Duration.of(1).hour()),MeasurementType.CO2,4687d),new StandAloneMeasure(new Date(now),MeasurementType.CO2,4235d)};
+                lastSalonNoises=new Measure[]{new StandAloneMeasure(new Date(now-Duration.of(1).hour()),MeasurementType.NOISE,60d),new StandAloneMeasure(new Date(now),MeasurementType.NOISE,57d)};
+                lastChambreTemperatures=new Measure[]{new StandAloneMeasure(new Date(now-Duration.of(1).hour()),MeasurementType.TEMPERATURE,23.4d),new StandAloneMeasure(new Date(now),MeasurementType.TEMPERATURE,22.5d)};
+                lastChambreHumidities=new Measure[]{new StandAloneMeasure(new Date(now-Duration.of(1).hour()),MeasurementType.HUMIDITY,68d),new StandAloneMeasure(new Date(now),MeasurementType.HUMIDITY,62d)};
+                lastChambreCarbonDioxydes=new Measure[]{new StandAloneMeasure(new Date(now-Duration.of(1).hour()),MeasurementType.CO2,3232d),new StandAloneMeasure(new Date(now),MeasurementType.CO2,3125d)};
+                lastSalleDeBainTemperatures=new Measure[]{new StandAloneMeasure(new Date(now-Duration.of(1).hour()),MeasurementType.TEMPERATURE,23.4d),new StandAloneMeasure(new Date(now),MeasurementType.TEMPERATURE,22.3d)};
+                lastSalleDeBainHumidities=new Measure[]{new StandAloneMeasure(new Date(now-Duration.of(1).hour()),MeasurementType.HUMIDITY,43d),new StandAloneMeasure(new Date(now),MeasurementType.HUMIDITY,40d)};
+                lastSalleDeBainCarbonDioxydes=new Measure[]{new StandAloneMeasure(new Date(now-Duration.of(1).hour()),MeasurementType.CO2,3232d),new StandAloneMeasure(new Date(now),MeasurementType.CO2,3148d)};
+                lastSousSolTemperatures=new Measure[]{new StandAloneMeasure(new Date(now-Duration.of(1).hour()),MeasurementType.TEMPERATURE,23.4d),new StandAloneMeasure(new Date(now),MeasurementType.TEMPERATURE,23.3d)};
+                lastSousSolHumidities=new Measure[]{new StandAloneMeasure(new Date(now-Duration.of(1).hour()),MeasurementType.HUMIDITY,67d),new StandAloneMeasure(new Date(now),MeasurementType.HUMIDITY,61d)};
+                lastSousSolCarbonDioxydes=new Measure[]{new StandAloneMeasure(new Date(now-Duration.of(1).hour()),MeasurementType.CO2,1725d),new StandAloneMeasure(new Date(now),MeasurementType.CO2,1526d)};
+                lastJardinTemperatures=new Measure[]{new StandAloneMeasure(new Date(now-Duration.of(1).hour()),MeasurementType.TEMPERATURE,10.2d),new StandAloneMeasure(new Date(now),MeasurementType.TEMPERATURE,8.1d)};
+                lastJardinHumidities=new Measure[]{new StandAloneMeasure(new Date(now-Duration.of(1).hour()),MeasurementType.HUMIDITY,69d),new StandAloneMeasure(new Date(now),MeasurementType.HUMIDITY,66d)};
+                lastPluviometreRains=new Measure[]{new StandAloneMeasure(new Date(now-Duration.of(1).hour()),MeasurementType.RAIN,0d),new StandAloneMeasure(new Date(now),MeasurementType.RAIN,0d)};
+                lastAnemometreWindStrengths=new Measure[]{new StandAloneMeasure(new Date(now-Duration.of(1).hour()),MeasurementType.WIND_STRENGTH,34d),new StandAloneMeasure(new Date(now),MeasurementType.WIND_STRENGTH,34d)};
+                lastAnemometreWindAngles=new Measure[]{new StandAloneMeasure(new Date(now-Duration.of(1).hour()),MeasurementType.WIND_ANGLE,220d),new StandAloneMeasure(new Date(now),MeasurementType.WIND_ANGLE,220d)};
+                lastAnemometreGustStrengths=new Measure[]{new StandAloneMeasure(new Date(now-Duration.of(1).hour()),MeasurementType.GUST_STRENGTH,43d),new StandAloneMeasure(new Date(now),MeasurementType.GUST_STRENGTH,43d)};
+                lastAnemometreGustAngles=new Measure[]{new StandAloneMeasure(new Date(now-Duration.of(1).hour()),MeasurementType.GUST_ANGLE,200d),new StandAloneMeasure(new Date(now),MeasurementType.GUST_ANGLE,200d)};
                 pluviometreTotalRain=new Measure[]{new StandAloneMeasure(new Date(now),MeasurementType.RAIN,12.4d)};
                 anemometreMaxGustStrength=new Measure[]{new StandAloneMeasure(new Date(now),MeasurementType.GUST_STRENGTH,42d)};
                 anemometreMaxGustAngle=new Measure[]{new StandAloneMeasure(new Date(now),MeasurementType.GUST_ANGLE,238d)};

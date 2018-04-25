@@ -7,6 +7,7 @@ import java.awt.geom.Line2D;
 import java.awt.image.BufferedImage;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import sky.program.Duration;
 
 public class AnalogClockPage extends AbstractPage
 {
@@ -30,7 +31,7 @@ public class AnalogClockPage extends AbstractPage
     public synchronized Page potentiallyUpdate()
     {
         long now=System.currentTimeMillis();
-        if(now-lastRefreshTime>Time.get(1).second())
+        if(now-lastRefreshTime>Duration.of(1).second())
         {
             lastRefreshTime=now;
             try

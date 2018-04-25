@@ -6,6 +6,7 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import sky.program.Duration;
 
 public class DigitalClockPage extends AbstractPage
 {
@@ -29,7 +30,7 @@ public class DigitalClockPage extends AbstractPage
     public synchronized Page potentiallyUpdate()
     {
         long now=System.currentTimeMillis();
-        if(now-lastRefreshTime>Time.get(1).second())
+        if(now-lastRefreshTime>Duration.of(1).second())
         {
             lastRefreshTime=now;
             try
