@@ -62,11 +62,6 @@ public class DigitalClockPage extends AbstractPage
         return this;
     }
 
-    public Pixels getPixels()
-    {
-        return pixels;
-    }
-
     public boolean hasHighFrequency()
     {
         return true;

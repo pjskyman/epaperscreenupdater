@@ -17,4 +17,9 @@ public abstract class AbstractPage implements Page
     {
         pixels=new Pixels();
     }
+
+    public Pixels getPixels()
+    {
+        return pixels;
+    }
 }

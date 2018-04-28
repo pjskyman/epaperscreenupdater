@@ -217,11 +217,6 @@ public class HourlyWeatherForecast2Page extends AbstractPage
         return this;
     }
 
-    public Pixels getPixels()
-    {
-        return pixels;
-    }
-
     public boolean hasHighFrequency()
     {
         return false;

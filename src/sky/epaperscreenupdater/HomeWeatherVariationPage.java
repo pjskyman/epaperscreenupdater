@@ -318,11 +318,6 @@ public class HomeWeatherVariationPage extends AbstractNetatmoPage
         return this;
     }
 
-    public Pixels getPixels()
-    {
-        return pixels;
-    }
-
     public boolean hasHighFrequency()
     {
         return false;
