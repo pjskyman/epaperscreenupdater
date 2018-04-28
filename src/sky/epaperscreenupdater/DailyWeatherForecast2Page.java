@@ -46,7 +46,7 @@ public class DailyWeatherForecast2Page extends AbstractPage
     public synchronized Page potentiallyUpdate()
     {
         long now=System.currentTimeMillis();
-        if(now-lastRefreshTime>Duration.of(15).minute())
+        if(now-lastRefreshTime>Duration.of(15).minutePlus(13).second())
         {
             lastRefreshTime=now;
             try
@@ -151,34 +151,34 @@ public class DailyWeatherForecast2Page extends AbstractPage
                     g2d.drawLine(0,y,295,y);
                 Font baseFont=EpaperScreenUpdater.FREDOKA_ONE_FONT.deriveFont(12f);
                 g2d.setFont(baseFont);
-                String string="DATE";
+                String string="Date";
                 int stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
                 g2d.drawString(string,26-stringWidth/2,14);
-                string="ICÔNE";
+                string="Icône";
                 stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
                 g2d.drawString(string,26-stringWidth/2,31);
-                string="HPA";
+                string="hSol“";
                 stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
                 g2d.drawString(string,26-stringWidth/2,43);
-                string="SOL ^";
+                string="hSol„";
                 stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
                 g2d.drawString(string,26-stringWidth/2,55);
-                string="SOL -";
+                string="£hSol";
                 stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
                 g2d.drawString(string,26-stringWidth/2,67);
-                string="H SOL";
+                string="UVi";
                 stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
                 g2d.drawString(string,26-stringWidth/2,79);
-                string="UV";
+                string="PhLune";
                 stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
                 g2d.drawString(string,26-stringWidth/2,91);
-                string="LUNE";
+                string="kmVisib";
                 stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
                 g2d.drawString(string,26-stringWidth/2,103);
-                string="VISIB";
+                string="Ozone";
                 stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
                 g2d.drawString(string,26-stringWidth/2,115);
-                string="OZONE";
+                string="";
                 stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
                 g2d.drawString(string,26-stringWidth/2,127);
                 for(int i=0;i<dailies.size();i++)
@@ -187,35 +187,36 @@ public class DailyWeatherForecast2Page extends AbstractPage
                     Daily daily=dailies.get(i);
                     GregorianCalendar calendar=new GregorianCalendar();
                     calendar.setTimeInMillis(daily.getTime());
-                    string=calendar.getDisplayName(Calendar.DAY_OF_WEEK,Calendar.SHORT,Locale.FRANCE).toUpperCase();
+                    string=calendar.getDisplayName(Calendar.DAY_OF_WEEK,Calendar.SHORT,Locale.FRANCE);
+                    string=string.substring(0,1).toUpperCase()+string.substring(1);
                     stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
                     g2d.drawString(string,baseX+18-stringWidth/2,9);
                     string=SimpleDateFormat.getDateInstance(DateFormat.SHORT).format(new Date(daily.getTime())).substring(0,2);
                     stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
                     g2d.drawString(string,baseX+18-stringWidth/2,19);
                     g2d.drawImage(Icons.getIcon(daily.getIcon()),baseX+1,21,null);
-                    string=WIND_FORMAT.format(daily.getPressure());
-                    stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
-                    g2d.drawString(string,baseX+18-stringWidth/2,43);
                     string=TIME_FORMAT.format(new Date(daily.getSunriseTime()));
                     stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
-                    g2d.drawString(string,baseX+18-stringWidth/2,55);
+                    g2d.drawString(string,baseX+18-stringWidth/2,43);
                     string=TIME_FORMAT.format(new Date(daily.getSunsetTime()));
                     stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
-                    g2d.drawString(string,baseX+18-stringWidth/2,67);
+                    g2d.drawString(string,baseX+18-stringWidth/2,55);
                     string=TEMPERATURE_FORMAT.format((double)(daily.getSunsetTime()-daily.getSunriseTime())/3.6e6d*(1d-daily.getCloudCover()));
                     stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
-                    g2d.drawString(string,baseX+18-stringWidth/2,79);
+                    g2d.drawString(string,baseX+18-stringWidth/2,67);
                     string=WIND_FORMAT.format(daily.getUvIndex());
                     stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
-                    g2d.drawString(string,baseX+18-stringWidth/2,91);
+                    g2d.drawString(string,baseX+18-stringWidth/2,79);
                     string=""+daily.getMoonPhase();
                     stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
-                    g2d.drawString(string,baseX+18-stringWidth/2,103);
+                    g2d.drawString(string,baseX+18-stringWidth/2,91);
                     string=TEMPERATURE_FORMAT.format(daily.getVisibility());
                     stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
-                    g2d.drawString(string,baseX+18-stringWidth/2,115);
+                    g2d.drawString(string,baseX+18-stringWidth/2,103);
                     string=WIND_FORMAT.format(daily.getOzone());
+                    stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
+                    g2d.drawString(string,baseX+18-stringWidth/2,115);
+                    string="";
                     stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
                     g2d.drawString(string,baseX+18-stringWidth/2,127);
                 }

@@ -34,7 +34,7 @@ public class TempoCalendarPage extends AbstractPage
     public synchronized Page potentiallyUpdate()
     {
         long now=System.currentTimeMillis();
-        if(now-lastRefreshTime>Duration.of(10).minute())
+        if(now-lastRefreshTime>Duration.of(11).minutePlus(15).second())
         {
             lastRefreshTime=now;
             try

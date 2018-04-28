@@ -30,7 +30,7 @@ public class TodayPricePage extends AbstractPage
     public synchronized Page potentiallyUpdate()
     {
         long now=System.currentTimeMillis();
-        if(now-lastRefreshTime>Duration.of(5).minute())
+        if(now-lastRefreshTime>Duration.of(5).minutePlus(42).second())
         {
             lastRefreshTime=now;
             try

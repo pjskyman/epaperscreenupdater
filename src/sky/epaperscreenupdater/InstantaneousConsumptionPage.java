@@ -219,7 +219,7 @@ public class InstantaneousConsumptionPage extends AbstractNetatmoPage
                             g2d.drawRect(x,y,0,0);
 //                Logger.LOGGER.info("Current pricing period: "+instantaneousConsumption.getPricingPeriod().name());
                 long now=System.currentTimeMillis();
-                if(now-lastTomorrowVerificationTime>Duration.of(5).minute())
+                if(now-lastTomorrowVerificationTime>Duration.of(5).minutePlus(3).second())
                     try
                     {
                         GregorianCalendar calendar=new GregorianCalendar(Locale.FRANCE);

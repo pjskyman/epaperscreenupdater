@@ -41,7 +41,7 @@ public class AnniversaryPage extends AbstractPage
     public synchronized Page potentiallyUpdate()
     {
         long now=System.currentTimeMillis();
-        if(now-lastRefreshTime>Duration.of(1).hour())
+        if(now-lastRefreshTime>Duration.of(1).hourPlus(1).minutePlus(20).second())
         {
             lastRefreshTime=now;
             try

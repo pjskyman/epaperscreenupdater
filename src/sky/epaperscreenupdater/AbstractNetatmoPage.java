@@ -77,7 +77,7 @@ public abstract class AbstractNetatmoPage extends AbstractPage
     protected static synchronized Map<String,Measure[]> getLastMeasures()
     {
         long now=System.currentTimeMillis();
-        if(NETATMO_ENABLED&&now-lastNetatmoVerificationTime>Duration.of(10).minute())
+        if(NETATMO_ENABLED&&now-lastNetatmoVerificationTime>Duration.of(10).minuteMinus(3).secondMinus(300).millisecond())
         {
             lastNetatmoVerificationTime=now;
             boolean ok=false;

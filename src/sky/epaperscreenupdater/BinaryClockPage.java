@@ -29,7 +29,7 @@ public class BinaryClockPage extends AbstractPage
     public synchronized Page potentiallyUpdate()
     {
         long now=System.currentTimeMillis();
-        if(now-lastRefreshTime>Duration.of(1).second())
+        if(now-lastRefreshTime>Duration.of(1).secondMinus(100).millisecond())
         {
             lastRefreshTime=now;
             try

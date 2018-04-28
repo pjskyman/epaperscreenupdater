@@ -41,7 +41,7 @@ public class HomeWeatherPage extends AbstractNetatmoPage
     public synchronized Page potentiallyUpdate()
     {
         long now=System.currentTimeMillis();
-        if(now-lastRefreshTime>Duration.of(5).second())
+        if(now-lastRefreshTime>Duration.of(6).secondPlus(300).millisecond())
         {
             lastRefreshTime=now;
             Map<String,Measure[]> lastMeasures=getLastMeasures();

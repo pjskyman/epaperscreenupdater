@@ -31,7 +31,7 @@ public class AnalogClockPage extends AbstractPage
     public synchronized Page potentiallyUpdate()
     {
         long now=System.currentTimeMillis();
-        if(now-lastRefreshTime>Duration.of(1).second())
+        if(now-lastRefreshTime>Duration.of(1).secondMinus(50).millisecond())
         {
             lastRefreshTime=now;
             try

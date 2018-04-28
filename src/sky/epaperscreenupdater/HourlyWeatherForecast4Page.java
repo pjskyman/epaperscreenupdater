@@ -46,7 +46,7 @@ public class HourlyWeatherForecast4Page extends AbstractPage
     public synchronized Page potentiallyUpdate()
     {
         long now=System.currentTimeMillis();
-        if(now-lastRefreshTime>Duration.of(15).minute())
+        if(now-lastRefreshTime>Duration.of(15).minutePlus(25).second())
         {
             lastRefreshTime=now;
             try
@@ -131,34 +131,34 @@ public class HourlyWeatherForecast4Page extends AbstractPage
                 Font baseFont=EpaperScreenUpdater.FREDOKA_ONE_FONT.deriveFont(12f);
                 Font alternativeBaseFont=baseFont.deriveFont(AffineTransform.getScaleInstance(.75d,1d));
                 g2d.setFont(baseFont);
-                String string="HEURE";
+                String string="Heure";
                 int stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
                 g2d.drawString(string,26-stringWidth/2,14);
-                string="ICÔNE";
+                string="Icône";
                 stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
                 g2d.drawString(string,26-stringWidth/2,31);
                 string="°C";
                 stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
                 g2d.drawString(string,26-stringWidth/2,43);
-                string="%HUMI";
+                string="%Hum";
                 stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
                 g2d.drawString(string,26-stringWidth/2,55);
-                string="ROSÉE";
+                string="°CRosée";
                 stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
                 g2d.drawString(string,26-stringWidth/2,67);
-                string="VENT";
+                string="Vent";
                 stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
                 g2d.drawString(string,26-stringWidth/2,79);
-                string="PLUIE";
+                string="mmPluie";
                 stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
                 g2d.drawString(string,26-stringWidth/2,91);
-                string="%PLUIE";
+                string="%Pluie";
                 stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
                 g2d.drawString(string,26-stringWidth/2,103);
-                string="HPA";
+                string="hPa";
                 stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
                 g2d.drawString(string,26-stringWidth/2,115);
-                string="%NUAG";
+                string="%Nuage";
                 stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
                 g2d.drawString(string,26-stringWidth/2,127);
                 for(int i=21;i<Math.min(hourlies.size(),28);i++)
@@ -170,7 +170,8 @@ public class HourlyWeatherForecast4Page extends AbstractPage
                     string=new SimpleDateFormat("HH:mm").format(new Date(hourly.getTime()));
                     stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
                     g2d.drawString(string,baseX+18-stringWidth/2,9);
-                    string=calendar.getDisplayName(Calendar.DAY_OF_WEEK,Calendar.SHORT,Locale.FRANCE).toUpperCase();
+                    string=calendar.getDisplayName(Calendar.DAY_OF_WEEK,Calendar.SHORT,Locale.FRANCE);
+                    string=string.substring(0,1).toUpperCase()+string.substring(1);
                     stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
                     g2d.drawString(string,baseX+18-stringWidth/2,19);
                     g2d.drawImage(Icons.getIcon(hourly.getIcon()),baseX+1,21,null);

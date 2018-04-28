@@ -116,7 +116,7 @@ public final class EpaperScreenUpdater
                     {
                         long now=System.currentTimeMillis();
                         boolean partialRefresh=true;
-                        if(currentlySelectedPageCopy==-1&&now-lastCompleteRefresh>Duration.of(5).minute())
+                        if(currentlySelectedPageCopy==-1&&now-lastCompleteRefresh>Duration.of(10).minute())
                         {
                             partialRefresh=false;
                             lastCompleteRefresh=now;

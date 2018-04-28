@@ -30,7 +30,7 @@ public class EnergyConsumptionPage extends AbstractPage
     public synchronized Page potentiallyUpdate()
     {
         long now=System.currentTimeMillis();
-        if(now-lastRefreshTime>Duration.of(10).minute())
+        if(now-lastRefreshTime>Duration.of(10).minutePlus(37).second())
         {
             lastRefreshTime=now;
             try

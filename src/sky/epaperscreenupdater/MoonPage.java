@@ -48,7 +48,7 @@ public class MoonPage extends AbstractPage
     public synchronized Page potentiallyUpdate()
     {
         long now=System.currentTimeMillis();
-        if(now-lastRefreshTime>Duration.of(1).hour())
+        if(now-lastRefreshTime>Duration.of(1).hourMinus(2).minutePlus(5).second())
         {
             lastRefreshTime=now;
             try

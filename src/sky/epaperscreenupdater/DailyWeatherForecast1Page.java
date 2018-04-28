@@ -47,7 +47,7 @@ public class DailyWeatherForecast1Page extends AbstractPage
     public synchronized Page potentiallyUpdate()
     {
         long now=System.currentTimeMillis();
-        if(now-lastRefreshTime>Duration.of(15).minute())
+        if(now-lastRefreshTime>Duration.of(15).minutePlus(9).second())
         {
             lastRefreshTime=now;
             try
@@ -153,34 +153,34 @@ public class DailyWeatherForecast1Page extends AbstractPage
                 Font baseFont=EpaperScreenUpdater.FREDOKA_ONE_FONT.deriveFont(12f);
                 Font alternativeBaseFont=baseFont.deriveFont(AffineTransform.getScaleInstance(.75d,1d));
                 g2d.setFont(baseFont);
-                String string="DATE";
+                String string="Date";
                 int stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
                 g2d.drawString(string,26-stringWidth/2,14);
-                string="ICÔNE";
+                string="Icône";
                 stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
                 g2d.drawString(string,26-stringWidth/2,31);
-                string="°C MIN";
+                string="°CMin";
                 stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
                 g2d.drawString(string,26-stringWidth/2,43);
-                string="°C MAX";
+                string="°CMax";
                 stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
                 g2d.drawString(string,26-stringWidth/2,55);
-                string="%HUMI";
+                string="%Hum";
                 stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
                 g2d.drawString(string,26-stringWidth/2,67);
-                string="ROSÉE";
+                string="°CRosée";
                 stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
                 g2d.drawString(string,26-stringWidth/2,79);
-                string="VENT";
+                string="Vent";
                 stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
                 g2d.drawString(string,26-stringWidth/2,91);
-                string="PLUIE";
+                string="mmPluie";
                 stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
                 g2d.drawString(string,26-stringWidth/2,103);
-                string="%PLUIE";
+                string="%Pluie";
                 stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
                 g2d.drawString(string,26-stringWidth/2,115);
-                string="";
+                string="hPa";
                 stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
                 g2d.drawString(string,26-stringWidth/2,127);
                 for(int i=0;i<dailies.size();i++)
@@ -189,7 +189,8 @@ public class DailyWeatherForecast1Page extends AbstractPage
                     Daily daily=dailies.get(i);
                     GregorianCalendar calendar=new GregorianCalendar();
                     calendar.setTimeInMillis(daily.getTime());
-                    string=calendar.getDisplayName(Calendar.DAY_OF_WEEK,Calendar.SHORT,Locale.FRANCE).toUpperCase();
+                    string=calendar.getDisplayName(Calendar.DAY_OF_WEEK,Calendar.SHORT,Locale.FRANCE);
+                    string=string.substring(0,1).toUpperCase()+string.substring(1);
                     stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
                     g2d.drawString(string,baseX+18-stringWidth/2,9);
                     string=SimpleDateFormat.getDateInstance(DateFormat.SHORT).format(new Date(daily.getTime())).substring(0,2);
@@ -219,7 +220,7 @@ public class DailyWeatherForecast1Page extends AbstractPage
                     string=WIND_FORMAT.format(daily.getPrecipProbability()*100d);
                     stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
                     g2d.drawString(string,baseX+18-stringWidth/2,115);
-                    string="";
+                    string=WIND_FORMAT.format(daily.getPressure());
                     stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
                     g2d.drawString(string,baseX+18-stringWidth/2,127);
                 }
