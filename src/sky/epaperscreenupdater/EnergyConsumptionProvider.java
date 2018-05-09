@@ -231,7 +231,9 @@ public class EnergyConsumptionProvider
     public static void main(String[] args)
     {
         long startTime=System.currentTimeMillis();
-        Logger.LOGGER.info(calculateEnergyConsumption(2018).toString());
-        Logger.LOGGER.info("Total "+(System.currentTimeMillis()-startTime)+" ms");
+        EnergyConsumption energyConsumption=calculateEnergyConsumption(8,5,2018);
+        System.out.println(AbstractPage.ENERGY_FORMAT.format(energyConsumption.getTotalOfConsumptions())+" kWh");
+        System.out.println(AbstractPage.PRICE_FORMAT.format(energyConsumption.getTotalOfPrices())+" €");
+        System.out.println("Total "+(System.currentTimeMillis()-startTime)+" ms");
     }
 }
