@@ -64,6 +64,7 @@ public final class EpaperScreenUpdater
             pages.add(new MoonPage().potentiallyUpdate());
             pages.add(new AnniversaryPage().potentiallyUpdate());
             pages.add(new WasherSupervisionPage().potentiallyUpdate());
+            pages.add(new AboutPage().potentiallyUpdate());
             pages.sort((o1,o2)->Integer.compare(o1.getSerial(),o2.getSerial()));//au cas où...
             Pixels currentPixels=pages.get(0).potentiallyUpdate().getPixels();
             long lastCompleteRefresh=System.currentTimeMillis();
