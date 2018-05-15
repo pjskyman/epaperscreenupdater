@@ -85,7 +85,7 @@ public abstract class AbstractMenuPage extends AbstractPage
                 }
                 cachedPagePixels=tempPagePixels;
                 pixels=cachedPagePixels.incrustTransparentImage(cachedSelectionIncrustPixels);
-                Logger.LOGGER.info("Menu "+getName()+" updated successfully");
+                Logger.LOGGER.info("Menu \""+getName()+"\" updated successfully");
             }
             catch(Exception e)
             {
