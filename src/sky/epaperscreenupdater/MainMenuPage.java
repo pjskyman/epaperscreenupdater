@@ -21,7 +21,7 @@ public class MainMenuPage extends AbstractMenuPage
     }
 
     @Override
-    public boolean clicked(boolean initial)
+    public void clicked(boolean initial)
     {
         if(currentlySelectedPageRank==-1)
             subpages.get(currentPageRank-1).clicked(false);
@@ -31,7 +31,6 @@ public class MainMenuPage extends AbstractMenuPage
             currentlySelectedPageRank=-1;
             subpages.get(currentPageRank-1).clicked(true);
         }
-        return false;//pour commencer
     }
 
     @Override

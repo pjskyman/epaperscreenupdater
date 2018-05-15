@@ -22,9 +22,8 @@ public abstract class AbstractSinglePage extends AbstractPage
         return pixels;
     }
 
-    public boolean clicked(boolean initial)
+    public void clicked(boolean initial)
     {
-        return false;
     }
 
     public boolean rotated(RotationDirection rotationDirection)

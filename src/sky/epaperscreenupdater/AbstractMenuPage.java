@@ -91,7 +91,7 @@ public abstract class AbstractMenuPage extends AbstractPage
         return pixels;
     }
 
-    public boolean clicked(boolean initial)
+    public void clicked(boolean initial)
     {
         if(currentPageRank==-1)
         {
@@ -113,7 +113,6 @@ public abstract class AbstractMenuPage extends AbstractPage
                     currentlySelectedPageRank=-1;
                     subpages.get(currentPageRank-1).clicked(true);
                 }
-        return false;//pour commencer
     }
 
     public boolean rotated(RotationDirection rotationDirection)
