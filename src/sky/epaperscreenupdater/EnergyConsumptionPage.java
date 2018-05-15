@@ -53,26 +53,26 @@ public class EnergyConsumptionPage extends AbstractSinglePage
                 EnergyConsumption todayEnergyConsumption=EnergyConsumptionProvider.calculateEnergyConsumption(todayDay,todayMonth,todayYear);
                 EnergyConsumption yesterdayEnergyConsumption=EnergyConsumptionProvider.calculateEnergyConsumption(yesterdayDay,yesterdayMonth,yesterdayYear);
                 for(int i=0;i<12;i++)
-                    g2d.drawLine(0,i*11+10,295,i*11+10);
+                    g2d.drawLine(0,i*11+10+(i==11?1:0),295,i*11+10+(i==11?1:0));
                 for(int rank=1;rank<=10;rank++)
                     g2d.drawString(todayEnergyConsumption.getConsumerName(rank),1,rank*11-2);
-                g2d.drawString("Total",1,11*11-2);
-                g2d.drawLine(94,0,94,120);
+                g2d.drawString("Total",1,11*11-2+1);
+                g2d.drawLine(94,0,94,121);
                 for(int rank=1;rank<=10;rank++)
                     g2d.drawString(DECIMAL_000_FORMAT.format(todayEnergyConsumption.getConsumerConsumption(rank))+" kWh",96,rank*11-2);
-                g2d.drawString(DECIMAL_000_FORMAT.format(todayEnergyConsumption.getTotalOfConsumptions())+" kWh",96,11*11-2);
-                g2d.drawLine(156,0,156,120);
+                g2d.drawString(DECIMAL_000_FORMAT.format(todayEnergyConsumption.getTotalOfConsumptions())+" kWh",96,11*11-2+1);
+                g2d.drawLine(156,0,156,121);
                 for(int rank=1;rank<=10;rank++)
                     g2d.drawString(DECIMAL_00_FORMAT.format(todayEnergyConsumption.getConsumerPrice(rank))+" €",158,rank*11-2);
-                g2d.drawString(DECIMAL_00_FORMAT.format(todayEnergyConsumption.getTotalOfPrices())+" €",158,11*11-2);
-                g2d.drawLine(193,0,193,120);
+                g2d.drawString(DECIMAL_00_FORMAT.format(todayEnergyConsumption.getTotalOfPrices())+" €",158,11*11-2+1);
+                g2d.drawLine(193,0,193,121);
                 for(int rank=1;rank<=10;rank++)
                     g2d.drawString(DECIMAL_000_FORMAT.format(yesterdayEnergyConsumption.getConsumerConsumption(rank))+" kWh",195,rank*11-2);
-                g2d.drawString(DECIMAL_000_FORMAT.format(yesterdayEnergyConsumption.getTotalOfConsumptions())+" kWh",195,11*11-2);
-                g2d.drawLine(255,0,255,120);
+                g2d.drawString(DECIMAL_000_FORMAT.format(yesterdayEnergyConsumption.getTotalOfConsumptions())+" kWh",195,11*11-2+1);
+                g2d.drawLine(255,0,255,121);
                 for(int rank=1;rank<=10;rank++)
                     g2d.drawString(DECIMAL_00_FORMAT.format(yesterdayEnergyConsumption.getConsumerPrice(rank))+" €",257,rank*11-2);
-                g2d.drawString(DECIMAL_00_FORMAT.format(yesterdayEnergyConsumption.getTotalOfPrices())+" €",257,11*11-2);
+                g2d.drawString(DECIMAL_00_FORMAT.format(yesterdayEnergyConsumption.getTotalOfPrices())+" €",257,11*11-2+1);
                 g2d.dispose();
 //                try(OutputStream outputStream=new FileOutputStream(new File("energy.png")))
 //                {
