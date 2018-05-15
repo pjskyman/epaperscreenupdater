@@ -47,7 +47,7 @@ public final class EpaperScreenUpdater
             Pixels currentPixels=mainMenuPage.potentiallyUpdate().getPixels();
             long lastCompleteRefresh=System.currentTimeMillis();
             EpaperScreenManager.displayPage(currentPixels,RefreshType.TOTAL_REFRESH);
-            Logger.LOGGER.info("Display content successfully updated from page \""+mainMenuPage.getActivePageName()+"\" (total refresh)");
+            Logger.LOGGER.info("Display content successfully updated from page \""+mainMenuPage.getActivePageName()+"\" ("+RefreshType.TOTAL_REFRESH.toString()+")");
             RotaryEncoderManager.addRotationListener(rotationDirection->mainMenuPage.rotated(rotationDirection));
             RotaryEncoderManager.addSwitchListener(()->mainMenuPage.clicked(false));
             Logger.LOGGER.info(EpaperScreenUpdater.class.getSimpleName()+" is ready!");
@@ -92,7 +92,7 @@ public final class EpaperScreenUpdater
                             lastCompleteRefresh=now;
                         }
                         EpaperScreenManager.displayPage(newPixels,realRefreshType);
-                        Logger.LOGGER.info("Display content successfully updated from page \""+mainMenuPage.getActivePageName()+"\" ("+(realRefreshType.isTotalRefresh()?"total":"partial")+" refresh)");
+                        Logger.LOGGER.info("Display content successfully updated from page \""+mainMenuPage.getActivePageName()+"\" ("+realRefreshType.toString()+")");
                         currentPixels=newPixels;
                     }
                     Thread.sleep(Duration.of(50).millisecond());

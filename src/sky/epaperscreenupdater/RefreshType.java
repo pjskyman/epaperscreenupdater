@@ -16,6 +16,12 @@ public enum RefreshType
                         return PARTIAL_REFRESH_IN_FAST_MODE;
             return PARTIAL_REFRESH;
         }
+
+        @Override
+        public String toString()
+        {
+            return "partial refresh";
+        }
     },
     TOTAL_REFRESH
     {
@@ -31,6 +37,12 @@ public enum RefreshType
                         return TOTAL_REFRESH;
             return TOTAL_REFRESH;
         }
+
+        @Override
+        public String toString()
+        {
+            return "total refresh";
+        }
     },
     PARTIAL_REFRESH_IN_FAST_MODE
     {
@@ -45,6 +57,12 @@ public enum RefreshType
                     if(refreshType==PARTIAL_REFRESH_IN_FAST_MODE)
                         return PARTIAL_REFRESH_IN_FAST_MODE;
             return PARTIAL_REFRESH_IN_FAST_MODE;
+        }
+
+        @Override
+        public String toString()
+        {
+            return "partial refresh with fast mode";
         }
     },
     ;
