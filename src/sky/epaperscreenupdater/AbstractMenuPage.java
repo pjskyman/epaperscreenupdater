@@ -132,6 +132,8 @@ public abstract class AbstractMenuPage extends AbstractPage
 
     public boolean rotated(RotationDirection rotationDirection)
     {
+        if(currentPageRank==-1)
+            return false;
         if(currentPageRank!=-1&&subpages.get(currentPageRank-1).rotated(rotationDirection))
             return true;
         currentlySelectedPageRank=((currentlySelectedPageRank==-1?currentPageRank:currentlySelectedPageRank)+(rotationDirection==RotationDirection.CLOCKWISE?1:-1)+subpages.size()+1)%(subpages.size()+1);
