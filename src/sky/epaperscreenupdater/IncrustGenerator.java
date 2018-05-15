@@ -73,7 +73,7 @@ public class IncrustGenerator
 //            {
 //                ImageIO.write(sourceImage,"png",outputStream);
 //            }
-            return new Pixels(RefreshType.PARTIAL_REFRESH_IN_FAST_MODE).writeImage(sourceImage);
+            return new Pixels(empty?RefreshType.PARTIAL_REFRESH:RefreshType.PARTIAL_REFRESH_IN_FAST_MODE).writeImage(sourceImage);
         }
         catch(Exception e)
         {
