@@ -12,6 +12,7 @@ public class MainMenuPage extends AbstractMenuPage
         subpages.add(new RERCPage(this).potentiallyUpdate());
         subpages.add(new MoonPage(this).potentiallyUpdate());
         subpages.add(new AnniversaryPage(this).potentiallyUpdate());
+        subpages.add(new AboutPage(this).potentiallyUpdate());
         currentPageRank=1;
     }
 
