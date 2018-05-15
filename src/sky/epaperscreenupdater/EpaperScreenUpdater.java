@@ -69,7 +69,7 @@ public final class EpaperScreenUpdater
                             {
                                 Logger.LOGGER.error("Unmanaged error during refresh ("+t.toString()+")");
                             }
-                            Thread.sleep(Duration.of(100).millisecond());
+                            Thread.sleep(Duration.of(107).millisecond());
                         }
                     }
                     catch(InterruptedException e)
@@ -95,7 +95,7 @@ public final class EpaperScreenUpdater
                         Logger.LOGGER.info("Display content successfully updated from page \""+mainMenuPage.getActivePageName()+"\" ("+realRefreshType.toString()+")");
                         currentPixels=newPixels;
                     }
-                    Thread.sleep(Duration.of(50).millisecond());
+                    Thread.sleep(Duration.of(48).millisecond());
                 }
             }
             catch(InterruptedException e)
