@@ -1,22 +1,11 @@
 package sky.epaperscreenupdater;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -24,7 +13,7 @@ import java.util.List;
 import java.util.Locale;
 import sky.program.Duration;
 
-public class DailyWeatherForecast2Page extends AbstractSinglePage
+public class DailyWeatherForecast2Page extends AbstractWeatherForecastPage
 {
     private long lastRefreshTime;
 
@@ -42,100 +31,12 @@ public class DailyWeatherForecast2Page extends AbstractSinglePage
     public synchronized Page potentiallyUpdate()
     {
         long now=System.currentTimeMillis();
-        if(now-lastRefreshTime>Duration.of(15).minutePlus(13).second())
+        if(now-lastRefreshTime>Duration.of(4).minutePlus(13).second())
         {
             lastRefreshTime=now;
+            List<Daily> dailies=getLastDailies();
             try
             {
-                StringBuilder stringBuilder=new StringBuilder();
-                HttpURLConnection connection=null;
-                try
-                {
-                    String apiKey="";
-                    String latitude="";
-                    String longitude="";
-                    try(BufferedReader reader=new BufferedReader(new FileReader(new File("darksky.ini"))))
-                    {
-                        apiKey=reader.readLine();
-                        latitude=reader.readLine();
-                        longitude=reader.readLine();
-                    }
-                    catch(IOException e)
-                    {
-                        Logger.LOGGER.error("Unable to read Darksky access informations from the config file ("+e.toString()+")");
-                    }
-                    connection=(HttpURLConnection)new URL("https://api.darksky.net/forecast/"+apiKey+"/"+latitude+","+longitude+"?exclude=currently,minutely&lang=fr&units=ca").openConnection();
-                    connection.setConnectTimeout(5000);
-                    connection.setReadTimeout(5000);
-                    connection.setRequestMethod("GET");
-                    connection.setAllowUserInteraction(false);
-                    connection.setDoOutput(true);
-                    BufferedReader bufferedReader=new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                    String line;
-                    while((line=bufferedReader.readLine())!=null)
-                    {
-                        stringBuilder.append(line);
-                        stringBuilder.append("\n");
-                    }
-                    connection.disconnect();
-                }
-                catch(IOException e)
-                {
-                    e.printStackTrace();
-                }
-                finally
-                {
-                    if(connection!=null)
-                        connection.disconnect();
-                }
-                JsonObject response=new JsonParser().parse(stringBuilder.toString()).getAsJsonObject();
-                JsonObject dailyObject=response.get("daily").getAsJsonObject();
-                JsonArray dataArray=dailyObject.get("data").getAsJsonArray();
-                List<Daily> dailies=new ArrayList<>();
-                for(int i=0;i<dataArray.size();i++)
-                {
-                    JsonObject object=dataArray.get(i).getAsJsonObject();
-                    dailies.add(new Daily(object.has("time")?object.get("time").getAsLong()*1000L:0L,
-                            object.has("summary")?object.get("summary").getAsString():"",
-                            object.has("icon")?object.get("icon").getAsString():"",
-                            object.has("sunriseTime")?object.get("sunriseTime").getAsLong()*1000L:0L,
-                            object.has("sunsetTime")?object.get("sunsetTime").getAsLong()*1000L:0L,
-                            object.has("moonPhase")?object.get("moonPhase").getAsDouble():0d,
-                            object.has("precipIntensity")?object.get("precipIntensity").getAsDouble():0d,
-                            object.has("precipIntensityMax")?object.get("precipIntensityMax").getAsDouble():0d,
-                            object.has("precipIntensityMaxTime")?object.get("precipIntensityMaxTime").getAsLong()*1000L:0L,
-                            object.has("precipProbability")?object.get("precipProbability").getAsDouble():0d,
-                            object.has("precipType")?object.get("precipType").getAsString():"",
-                            object.has("temperatureHigh")?object.get("temperatureHigh").getAsDouble():0d,
-                            object.has("temperatureHighTime")?object.get("temperatureHighTime").getAsLong()*1000L:0L,
-                            object.has("temperatureLow")?object.get("temperatureLow").getAsDouble():0d,
-                            object.has("temperatureLowTime")?object.get("temperatureLowTime").getAsLong()*1000L:0L,
-                            object.has("apparentTemperatureHigh")?object.get("apparentTemperatureHigh").getAsDouble():0d,
-                            object.has("apparentTemperatureHighTime")?object.get("apparentTemperatureHighTime").getAsLong()*1000L:0L,
-                            object.has("apparentTemperatureLow")?object.get("apparentTemperatureLow").getAsDouble():0d,
-                            object.has("apparentTemperatureLowTime")?object.get("apparentTemperatureLowTime").getAsLong()*1000L:0L,
-                            object.has("dewPoint")?object.get("dewPoint").getAsDouble():0d,
-                            object.has("humidity")?object.get("humidity").getAsDouble():0d,
-                            object.has("pressure")?object.get("pressure").getAsDouble():0d,
-                            object.has("windSpeed")?object.get("windSpeed").getAsDouble():0d,
-                            object.has("windGust")?object.get("windGust").getAsDouble():0d,
-                            object.has("windGustTime")?object.get("windGustTime").getAsLong()*1000L:0L,
-                            object.has("windBearing")?object.get("windBearing").getAsInt():0,
-                            object.has("cloudCover")?object.get("cloudCover").getAsDouble():0d,
-                            object.has("uvIndex")?object.get("uvIndex").getAsInt():0,
-                            object.has("uvIndexTime")?object.get("uvIndexTime").getAsLong()*1000L:0L,
-                            object.has("visibility")?object.get("visibility").getAsDouble():0d,
-                            object.has("ozone")?object.get("ozone").getAsDouble():0d,
-                            object.has("temperatureMin")?object.get("temperatureMin").getAsDouble():0d,
-                            object.has("temperatureMinTime")?object.get("temperatureMinTime").getAsLong()*1000L:0L,
-                            object.has("temperatureMax")?object.get("temperatureMax").getAsDouble():0d,
-                            object.has("temperatureMaxTime")?object.get("temperatureMaxTime").getAsLong()*1000L:0L,
-                            object.has("apparentTemperatureMin")?object.get("apparentTemperatureMin").getAsDouble():0d,
-                            object.has("apparentTemperatureMinTime")?object.get("apparentTemperatureMinTime").getAsLong()*1000L:0L,
-                            object.has("apparentTemperatureMax")?object.get("apparentTemperatureMax").getAsDouble():0d,
-                            object.has("apparentTemperatureMaxTime")?object.get("apparentTemperatureMaxTime").getAsLong()*1000L:0L));
-                }
-
                 BufferedImage sourceImage=new BufferedImage(296,128,BufferedImage.TYPE_INT_ARGB_PRE);
                 Graphics2D g2d=sourceImage.createGraphics();
                 g2d.setColor(Color.WHITE);

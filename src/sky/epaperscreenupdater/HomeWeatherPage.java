@@ -244,7 +244,7 @@ public class HomeWeatherPage extends AbstractNetatmoPage
                 int sousSolStringWidth=(int)Math.ceil(measureFont.getStringBounds(sousSolString,g2d.getFontRenderContext()).getWidth());
                 g2d.drawString(sousSolString,259+maxSousSolStringWidth/2+1-sousSolStringWidth,95);
 
-                String pluviometreString1=(lastPluviometreRain!=null?DECIMAL_0_FORMAT.format(lastPluviometreRain.getValue()*12d).replace(",","."):"?")+" mm/h";
+                String pluviometreString1=(lastPluviometreRain!=null?DECIMAL_0_FORMAT.format(lastPluviometreRain.getValue()).replace(",","."):"?")+" mm/h";
                 int pluviometreString1Width=(int)Math.ceil(measureFont.getStringBounds(pluviometreString1,g2d.getFontRenderContext()).getWidth());
                 g2d.drawString(pluviometreString1,180f-(float)pluviometreString1Width/2f,30f);
 
