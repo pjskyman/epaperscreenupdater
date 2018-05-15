@@ -46,11 +46,13 @@ public class IncrustGenerator
                 Page parentPage=page.getParentPage();
                 String string1;
                 if(outMessage)
-                    string1="Sortir du menu";//on suppose que outMessage n'est à true qu'en cas de menu
+                    string1="Sortir de";//on suppose que outMessage n'est à true qu'en cas de menu
                 else
+                {
                     string1=page.pageCount()==-1?"Page":"Menu";
-                if(parentPage!=null)
-                    string1+=" "+parentPage.rankOf(page);
+                    if(parentPage!=null)
+                        string1="["+parentPage.rankOf(page)+"] "+string1;
+                }
                 int string1Width=(int)Math.ceil(baseFont.getStringBounds(string1,g2d.getFontRenderContext()).getWidth());
                 int string1Height=(int)Math.ceil(baseFont.getStringBounds(string1,g2d.getFontRenderContext()).getHeight());
                 g2d.setFont(descriptionFont);
