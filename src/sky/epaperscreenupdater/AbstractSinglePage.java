@@ -7,6 +7,11 @@ public abstract class AbstractSinglePage extends AbstractPage
         super(parentPage);
     }
 
+    public String getActivePageName()
+    {
+        return getName();
+    }
+
     public int rankOf(Page subpage)
     {
         return -1;

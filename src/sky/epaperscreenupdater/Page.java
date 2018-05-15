@@ -26,6 +26,13 @@ public interface Page
     public String getName();
 
     /**
+     * Retourne le nom d'usage de la page active. Si cette page est une page
+     * simple, alors retourne {@link #getName() getName()}, sinon retourne le
+     * nom de la sous-page actuellement active.
+     */
+    public String getActivePageName();
+
+    /**
      * Retourne la page parente de cette page, ou {@code null} si la page n'a
      * pas de page parente.
      */

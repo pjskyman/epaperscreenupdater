@@ -48,6 +48,14 @@ public abstract class AbstractMenuPage extends AbstractPage
         cachedSelectionIncrustPixels=new IncrustGenerator(null).generateEmptyIncrust();
     }
 
+    public String getActivePageName()
+    {
+        if(currentPageRank==-1)
+            return getName();
+        else
+            return subpages.get(currentPageRank-1).getActivePageName();
+    }
+
     public int rankOf(Page subpage)
     {
         if(subpages.contains(subpage))
