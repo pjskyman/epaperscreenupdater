@@ -75,8 +75,12 @@ public interface Page
      * @param initial Indique s'il s'agit du tout premier clic d'arrivée sur la
      * page où s'il s'agit d'un clic ultérieur pouvant alors revêtir un rôle
      * différent.
+     * @return Un booléen indiquant au contexte appelant si l'événement a
+     * conduit à une sortie de la page ({@code true}) ou non ({@code false}),
+     * dans le cas des pages qui sont des menus. Les pages simples retournent
+     * toujours {@code false}.
      */
-    public void clicked(boolean initial);
+    public boolean clicked(boolean initial);
 
     /**
      * Indique à cette page qu'une rotation a été effectuée.

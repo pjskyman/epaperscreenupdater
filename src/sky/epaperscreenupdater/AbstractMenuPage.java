@@ -99,27 +99,34 @@ public abstract class AbstractMenuPage extends AbstractPage
         return pixels;
     }
 
-    public void clicked(boolean initial)
+    public boolean clicked(boolean initial)
     {
         if(currentPageRank==-1)
         {
             currentPageRank=1;
             currentlySelectedPageRank=1;
+            return false;
         }
         else
             if(currentlySelectedPageRank==-1)
-                subpages.get(currentPageRank-1).clicked(false);
+            {
+                if(subpages.get(currentPageRank-1).clicked(false))
+                    currentlySelectedPageRank=currentPageRank;
+                return false;
+            }
             else
                 if(currentlySelectedPageRank==0)
                 {
                     currentPageRank=-1;
                     currentlySelectedPageRank=-1;
+                    return true;
                 }
                 else
                 {
                     currentPageRank=currentlySelectedPageRank;
                     currentlySelectedPageRank=-1;
                     subpages.get(currentPageRank-1).clicked(true);
+                    return false;
                 }
     }
 
