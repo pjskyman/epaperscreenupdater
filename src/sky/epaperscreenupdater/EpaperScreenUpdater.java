@@ -50,7 +50,7 @@ public final class EpaperScreenUpdater
             Logger.LOGGER.info("Display content successfully updated from page \""+mainMenuPage.getActivePageName()+"\" ("+RefreshType.TOTAL_REFRESH.toString()+")");
             RotaryEncoderManager.addRotationListener(rotationDirection->mainMenuPage.rotated(rotationDirection));
             RotaryEncoderManager.addSwitchListener(()->mainMenuPage.clicked(false));
-            Logger.LOGGER.info(EpaperScreenUpdater.class.getSimpleName()+" is ready!");
+            Logger.LOGGER.info(EpaperScreenUpdater.class.getSimpleName()+" is now ready!");
             new Thread("pageUpdater")
             {
                 @Override
