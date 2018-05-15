@@ -24,23 +24,19 @@ import java.util.List;
 import java.util.Locale;
 import sky.program.Duration;
 
-public class DailyWeatherForecast2Page extends AbstractPage
+public class DailyWeatherForecast2Page extends AbstractSinglePage
 {
     private long lastRefreshTime;
 
-    public DailyWeatherForecast2Page()
+    public DailyWeatherForecast2Page(Page parentPage)
     {
+        super(parentPage);
         lastRefreshTime=0L;
-    }
-
-    public int getSerial()
-    {
-        return 10;
     }
 
     public String getName()
     {
-        return "Prévisions météo 2";
+        return "Prévisions météo 2/2";
     }
 
     public synchronized Page potentiallyUpdate()
@@ -195,25 +191,25 @@ public class DailyWeatherForecast2Page extends AbstractPage
                     stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
                     g2d.drawString(string,baseX+18-stringWidth/2,19);
                     g2d.drawImage(Icons.getIcon(daily.getIcon()),baseX+1,21,null);
-                    string=TIME_FORMAT.format(new Date(daily.getSunriseTime()));
+                    string=SHORT_TIME_FORMAT.format(new Date(daily.getSunriseTime()));
                     stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
                     g2d.drawString(string,baseX+18-stringWidth/2,43);
-                    string=TIME_FORMAT.format(new Date(daily.getSunsetTime()));
+                    string=SHORT_TIME_FORMAT.format(new Date(daily.getSunsetTime()));
                     stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
                     g2d.drawString(string,baseX+18-stringWidth/2,55);
-                    string=TEMPERATURE_FORMAT.format((double)(daily.getSunsetTime()-daily.getSunriseTime())/3.6e6d*(1d-daily.getCloudCover()));
+                    string=DECIMAL_0_FORMAT.format((double)(daily.getSunsetTime()-daily.getSunriseTime())/3.6e6d*(1d-daily.getCloudCover()));
                     stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
                     g2d.drawString(string,baseX+18-stringWidth/2,67);
-                    string=WIND_FORMAT.format(daily.getUvIndex());
+                    string=INTEGER_FORMAT.format(daily.getUvIndex());
                     stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
                     g2d.drawString(string,baseX+18-stringWidth/2,79);
                     string=""+daily.getMoonPhase();
                     stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
                     g2d.drawString(string,baseX+18-stringWidth/2,91);
-                    string=TEMPERATURE_FORMAT.format(daily.getVisibility());
+                    string=DECIMAL_0_FORMAT.format(daily.getVisibility());
                     stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
                     g2d.drawString(string,baseX+18-stringWidth/2,103);
-                    string=WIND_FORMAT.format(daily.getOzone());
+                    string=INTEGER_FORMAT.format(daily.getOzone());
                     stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
                     g2d.drawString(string,baseX+18-stringWidth/2,115);
                     string="";
@@ -225,8 +221,8 @@ public class DailyWeatherForecast2Page extends AbstractPage
 //                {
 //                    ImageIO.write(sourceImage,"png",outputStream);
 //                }
-                pixels=new Pixels().writeImage(sourceImage);
-                Logger.LOGGER.info("Page "+getSerial()+" updated successfully");
+                pixels=new Pixels(RefreshType.PARTIAL_REFRESH).writeImage(sourceImage);
+                Logger.LOGGER.info("Page \""+getName()+"\" updated successfully");
             }
             catch(Exception e)
             {
@@ -236,13 +232,8 @@ public class DailyWeatherForecast2Page extends AbstractPage
         return this;
     }
 
-    public boolean hasHighFrequency()
-    {
-        return false;
-    }
-
     public static void main(String[] args)
     {
-        new DailyWeatherForecast2Page().potentiallyUpdate();
+        new DailyWeatherForecast2Page(null).potentiallyUpdate();
     }
 }

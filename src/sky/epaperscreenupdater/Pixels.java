@@ -6,13 +6,15 @@ import java.awt.image.WritableRaster;
 public class Pixels
 {
     private final Pixel[][] pixels;
+    private final RefreshType refreshType;
 
-    public Pixels()
+    public Pixels(RefreshType refreshType)
     {
         pixels=new Pixel[EpaperScreenManager.getEpaperScreenSize().getLittleWidth()][EpaperScreenManager.getEpaperScreenSize().getBigHeight()];
         for(int j=0;j<EpaperScreenManager.getEpaperScreenSize().getLittleWidth();j++)
             for(int i=0;i<EpaperScreenManager.getEpaperScreenSize().getBigHeight();i++)
                 pixels[j][i]=Pixel.WHITE;
+        this.refreshType=refreshType;
     }
 
     public Pixels writeImage(BufferedImage image)
@@ -27,7 +29,7 @@ public class Pixels
 
     public Pixels incrustTransparentImage(Pixels image)
     {
-        Pixels newPixels=new Pixels();
+        Pixels newPixels=new Pixels(refreshType.combine(image.refreshType));
         for(int j=0;j<EpaperScreenManager.getEpaperScreenSize().getLittleWidth();j++)
             for(int i=0;i<EpaperScreenManager.getEpaperScreenSize().getBigHeight();i++)
                 if(image.pixels[j][i]!=Pixel.TRANSPARENT)
@@ -40,6 +42,11 @@ public class Pixels
     public Pixel getPixel(int i,int j)
     {
         return pixels[i][j];
+    }
+
+    public RefreshType getRefreshType()
+    {
+        return refreshType;
     }
 
     public boolean isIOk(int i)

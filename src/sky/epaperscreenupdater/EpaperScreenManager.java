@@ -73,7 +73,7 @@ public class EpaperScreenManager
         EpaperScreenManager.epaperScreenSize=epaperScreenSize;
     }
 
-    public static synchronized void displayPage(Pixels pixels,boolean partialMode,boolean fastMode)
+    public static synchronized void displayPage(Pixels pixels,RefreshType refreshType)
     {
         try
         {
@@ -108,7 +108,7 @@ public class EpaperScreenManager
             DC.low();
             DEVICE.write((byte)0x32);//WRITE_LUT_REGISTER
             DC.high();
-            DEVICE.write(partialMode?epaperScreenSize.getPartialRefreshLookUpTable():epaperScreenSize.getTotalRefreshLookUpTable());
+            DEVICE.write(refreshType.isPartialRefresh()?epaperScreenSize.getPartialRefreshLookUpTable():epaperScreenSize.getTotalRefreshLookUpTable());
             DC.low();
             DEVICE.write((byte)0x44);//SET_RAM_X_ADDRESS_START_END_POSITION
             DC.high();

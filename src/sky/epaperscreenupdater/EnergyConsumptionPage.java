@@ -8,18 +8,14 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import sky.program.Duration;
 
-public class EnergyConsumptionPage extends AbstractPage
+public class EnergyConsumptionPage extends AbstractSinglePage
 {
     private long lastRefreshTime;
 
-    public EnergyConsumptionPage()
+    public EnergyConsumptionPage(Page parentPage)
     {
+        super(parentPage);
         lastRefreshTime=0L;
-    }
-
-    public int getSerial()
-    {
-        return 15;
     }
 
     public String getName()
@@ -63,27 +59,27 @@ public class EnergyConsumptionPage extends AbstractPage
                 g2d.drawString("Total",1,11*11-2);
                 g2d.drawLine(94,0,94,120);
                 for(int rank=1;rank<=10;rank++)
-                    g2d.drawString(ENERGY_FORMAT.format(todayEnergyConsumption.getConsumerConsumption(rank))+" kWh",96,rank*11-2);
-                g2d.drawString(ENERGY_FORMAT.format(todayEnergyConsumption.getTotalOfConsumptions())+" kWh",96,11*11-2);
+                    g2d.drawString(DECIMAL_000_FORMAT.format(todayEnergyConsumption.getConsumerConsumption(rank))+" kWh",96,rank*11-2);
+                g2d.drawString(DECIMAL_000_FORMAT.format(todayEnergyConsumption.getTotalOfConsumptions())+" kWh",96,11*11-2);
                 g2d.drawLine(156,0,156,120);
                 for(int rank=1;rank<=10;rank++)
-                    g2d.drawString(PRICE_FORMAT.format(todayEnergyConsumption.getConsumerPrice(rank))+" €",158,rank*11-2);
-                g2d.drawString(PRICE_FORMAT.format(todayEnergyConsumption.getTotalOfPrices())+" €",158,11*11-2);
+                    g2d.drawString(DECIMAL_00_FORMAT.format(todayEnergyConsumption.getConsumerPrice(rank))+" €",158,rank*11-2);
+                g2d.drawString(DECIMAL_00_FORMAT.format(todayEnergyConsumption.getTotalOfPrices())+" €",158,11*11-2);
                 g2d.drawLine(193,0,193,120);
                 for(int rank=1;rank<=10;rank++)
-                    g2d.drawString(ENERGY_FORMAT.format(yesterdayEnergyConsumption.getConsumerConsumption(rank))+" kWh",195,rank*11-2);
-                g2d.drawString(ENERGY_FORMAT.format(yesterdayEnergyConsumption.getTotalOfConsumptions())+" kWh",195,11*11-2);
+                    g2d.drawString(DECIMAL_000_FORMAT.format(yesterdayEnergyConsumption.getConsumerConsumption(rank))+" kWh",195,rank*11-2);
+                g2d.drawString(DECIMAL_000_FORMAT.format(yesterdayEnergyConsumption.getTotalOfConsumptions())+" kWh",195,11*11-2);
                 g2d.drawLine(255,0,255,120);
                 for(int rank=1;rank<=10;rank++)
-                    g2d.drawString(PRICE_FORMAT.format(yesterdayEnergyConsumption.getConsumerPrice(rank))+" €",257,rank*11-2);
-                g2d.drawString(PRICE_FORMAT.format(yesterdayEnergyConsumption.getTotalOfPrices())+" €",257,11*11-2);
+                    g2d.drawString(DECIMAL_00_FORMAT.format(yesterdayEnergyConsumption.getConsumerPrice(rank))+" €",257,rank*11-2);
+                g2d.drawString(DECIMAL_00_FORMAT.format(yesterdayEnergyConsumption.getTotalOfPrices())+" €",257,11*11-2);
                 g2d.dispose();
 //                try(OutputStream outputStream=new FileOutputStream(new File("energy.png")))
 //                {
 //                    ImageIO.write(sourceImage,"png",outputStream);
 //                }
-                pixels=new Pixels().writeImage(sourceImage);
-                Logger.LOGGER.info("Page "+getSerial()+" updated successfully");
+                pixels=new Pixels(RefreshType.PARTIAL_REFRESH).writeImage(sourceImage);
+                Logger.LOGGER.info("Page \""+getName()+"\" updated successfully");
             }
             catch(Exception e)
             {
@@ -93,13 +89,8 @@ public class EnergyConsumptionPage extends AbstractPage
         return this;
     }
 
-    public boolean hasHighFrequency()
-    {
-        return false;
-    }
-
     public static void main(String[] args)
     {
-        new EnergyConsumptionPage().potentiallyUpdate();
+        new EnergyConsumptionPage(null).potentiallyUpdate();
     }
 }

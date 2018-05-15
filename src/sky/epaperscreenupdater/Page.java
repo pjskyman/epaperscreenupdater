@@ -1,5 +1,9 @@
 package sky.epaperscreenupdater;
 
+import java.text.DateFormat;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+
 /**
  * Page affichable sur l'écran e-paper. Cette page peut être une page autonome
  * d'informations ou bien une page de menu contenant à son tour des sous-pages.
@@ -8,6 +12,12 @@ package sky.epaperscreenupdater;
  */
 public interface Page
 {
+    public static final DecimalFormat INTEGER_FORMAT=new DecimalFormat("###0");
+    public static final DecimalFormat DECIMAL_0_FORMAT=new DecimalFormat("###0.0");
+    public static final DecimalFormat DECIMAL_00_FORMAT=new DecimalFormat("###0.00");
+    public static final DecimalFormat DECIMAL_000_FORMAT=new DecimalFormat("###0.000");
+    public static final DateFormat SHORT_TIME_FORMAT=new SimpleDateFormat("HH:mm");
+
     /**
      * Retourne le nom d'usage de cette page, c'est-à-dire son identifiant. Ce
      * nom est affiché dans le bandeau incrusté présentant la page lorsqu'on
@@ -37,9 +47,7 @@ public interface Page
     /**
      * Lance la procédure de remise à jour potentielle de cette page et de ses
      * éventuelles sous-pages. Chaque page est en mesure de décider si elle se
-     * remet effectivement à jour ou pas. Elle peut aussi retourner directement
-     * son contenu à la volée lors d'appels à la méthode {@link #getPixels()
-     * getPixels()}.
+     * remet effectivement à jour ou pas.
      * @return La page elle-même pour créer des appels chaînés.
      * @see #getPixels() getPixels()
      */
@@ -47,39 +55,29 @@ public interface Page
 
     /**
      * Retourne un objet {@link Pixels} représentant le contenu de cette page.
-     * Le contenu de la page peut être généré à la volée lors de l'appel à cette
-     * méthode, ou bien peut être généré à l'avance (et régulièrement) par la
-     * méthode {@link #potentiallyUpdate() potentiallyUpdate()} ; cette méthode
-     * ne fait alors rien de spécial à part retourner l'instance interne de
-     * {@link Pixels} mise en cache.
+     * Le contenu de la page doit être généré à l'avance (et régulièrement) par
+     * la méthode {@link #potentiallyUpdate() potentiallyUpdate()} ; cette
+     * méthode ne fait alors rien de spécial à part retourner l'instance
+     * interne de {@link Pixels} mise en cache.
      * @see #potentiallyUpdate() potentiallyUpdate()
      */
     public Pixels getPixels();
 
     /**
-     * Indique si cette page nécessite une disposition spécifique pour garantir
-     * sa remise à jour fluide à l'écran. une page a besoin d'une telle
-     * disposition si son taux de rafraîchissement réel est de l'ordre de la
-     * seconde. Nota : Toutes les implémentations de gestionnaire d'écran
-     * e-paper ne seront pas forcément en mesure d'exploiter cette
-     * caractéristique.
+     * Indique à cette page qu'un clic a été effectué.
+     * @param initial Indique s'il s'agit du tout premier clic d'arrivée sur la
+     * page où s'il s'agit d'un clic ultérieur pouvant alors revêtir un rôle
+     * différent.
+     * @return Un booléen indiquant au contexte appelant si l'événement a été
+     * consumé par cette page ({@code true}) ou non ({@code false}).
      */
-    public boolean hasHighFrequency();
+    public boolean clicked(boolean initial);
 
     /**
-     * Indique à cette page qu'un clic a été effectué, puis retourne à la page
-     * parente ou à l'application hôte (s'il n'y a pas de page parente) la
-     * nouvelle page parente, par retour de paramètre.
-     * @return {@code this} si cette page doit devenir la nouvelle page parente
-     * ou {@link #getParentPage() getParentPage()} si la page parente doit
-     * rester la même.
+     * Indique à cette page qu'une rotation a été effectuée.
+     * @param rotationDirection Indique le sens de rotation.
+     * @return Un booléen indiquant au contexte appelant si l'événement a été
+     * consumé par cette page ({@code true}) ou non ({@code false}).
      */
-    public Page clicked();
-
-    /**
-     * Indique à cette page qu'une rotation a été effectuée. Le paramètre
-     * {@code rotaryEvent} permet d'avoir des informations sur la rotation, et
-     * notamment sa direction.
-     */
-    public void rotated(RotaryEvent rotaryEvent);
+    public boolean rotated(RotationDirection rotationDirection);
 }

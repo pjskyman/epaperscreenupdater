@@ -8,18 +8,14 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import sky.program.Duration;
 
-public class DigitalClockPage extends AbstractPage
+public class DigitalClockPage extends AbstractSinglePage
 {
     private long lastRefreshTime;
 
-    public DigitalClockPage()
+    public DigitalClockPage(Page parentPage)
     {
+        super(parentPage);
         lastRefreshTime=0L;
-    }
-
-    public int getSerial()
-    {
-        return 5;
     }
 
     public String getName()
@@ -51,8 +47,8 @@ public class DigitalClockPage extends AbstractPage
 //                {
 //                    ImageIO.write(sourceImage,"png",outputStream);
 //                }
-                pixels=new Pixels().writeImage(sourceImage);
-                Logger.LOGGER.info("Page "+getSerial()+" updated successfully");
+                pixels=new Pixels(RefreshType.PARTIAL_REFRESH_IN_FAST_MODE).writeImage(sourceImage);
+                Logger.LOGGER.info("Page \""+getName()+"\" updated successfully");
             }
             catch(Exception e)
             {
@@ -62,13 +58,8 @@ public class DigitalClockPage extends AbstractPage
         return this;
     }
 
-    public boolean hasHighFrequency()
-    {
-        return true;
-    }
-
     public static void main(String[] args)
     {
-        new DigitalClockPage().potentiallyUpdate();
+        new DigitalClockPage(null).potentiallyUpdate();
     }
 }

@@ -45,30 +45,11 @@ public final class EpaperScreenUpdater
         try
         {
             List<Page> pages=new ArrayList<>();
-            pages.add(new InstantaneousConsumptionPage().potentiallyUpdate());
-            pages.add(new HomeWeatherPage().potentiallyUpdate());
-            pages.add(new HomeWeatherVariationPage().potentiallyUpdate());
-            pages.add(new TempoCalendarPage().potentiallyUpdate());
-            pages.add(new DigitalClockPage().potentiallyUpdate());
-            pages.add(new AnalogClockPage().potentiallyUpdate());
-            pages.add(new BinaryClockPage().potentiallyUpdate());
-            pages.add(new RERCPage().potentiallyUpdate());
-            pages.add(new DailyWeatherForecast1Page().potentiallyUpdate());
-            pages.add(new DailyWeatherForecast2Page().potentiallyUpdate());
-            pages.add(new HourlyWeatherForecast1Page().potentiallyUpdate());
-            pages.add(new HourlyWeatherForecast2Page().potentiallyUpdate());
-            pages.add(new HourlyWeatherForecast3Page().potentiallyUpdate());
-            pages.add(new HourlyWeatherForecast4Page().potentiallyUpdate());
-            pages.add(new EnergyConsumptionPage().potentiallyUpdate());
-            pages.add(new TodayPricePage().potentiallyUpdate());
-            pages.add(new MoonPage().potentiallyUpdate());
-            pages.add(new AnniversaryPage().potentiallyUpdate());
-            pages.add(new WasherSupervisionPage().potentiallyUpdate());
-            pages.sort((o1,o2)->Integer.compare(o1.getSerial(),o2.getSerial()));//au cas où...
+            pages.add(new MainMenuPage().potentiallyUpdate());
             Pixels currentPixels=pages.get(0).potentiallyUpdate().getPixels();
             long lastCompleteRefresh=System.currentTimeMillis();
-            EpaperScreenManager.displayPage(currentPixels,false,false);
-            Logger.LOGGER.info("Display content successfully updated from page "+pages.get(0).getSerial()+" (total refresh)");
+            EpaperScreenManager.displayPage(currentPixels,RefreshType.TOTAL_REFRESH);
+            Logger.LOGGER.info("Display content successfully updated from page \""+pages.get(0).getName()+"\" (total refresh)");
             RotaryEncoderManager.addRotationListener(rotationDirection->currentlySelectedPage=((currentlySelectedPage==-1?currentPage:currentlySelectedPage)+(rotationDirection==RotationDirection.CLOCKWISE?1:-1)+pages.size())%pages.size());
             RotaryEncoderManager.addSwitchListener(()->
             {
@@ -115,16 +96,15 @@ public final class EpaperScreenUpdater
                     if(newPixels!=currentPixels||currentlySelectedPageCopy!=lastDrawnIncrust)
                     {
                         long now=System.currentTimeMillis();
-                        boolean partialRefresh=true;
+                        boolean totalRefresh=false;
                         if(currentlySelectedPageCopy==-1&&now-lastCompleteRefresh>Duration.of(10).minute())
                         {
-                            partialRefresh=false;
+                            totalRefresh=true;
                             lastCompleteRefresh=now;
                         }
-                        Pixels pixels=currentlySelectedPageCopy==-1?newPixels:newPixels.incrustTransparentImage(new IncrustGenerator(pages.get(currentlySelectedPageCopy)).generateIncrust());
-                        boolean fastMode=false;
-                        EpaperScreenManager.displayPage(pixels,partialRefresh,fastMode);
-                        Logger.LOGGER.info("Display content successfully updated from page "+pages.get(currentPageCopy).getSerial()+" ("+(partialRefresh?"partial":"total")+" refresh)");
+                        Pixels pixels=currentlySelectedPageCopy==-1?newPixels:newPixels.incrustTransparentImage(new IncrustGenerator(pages.get(currentlySelectedPageCopy)).generateStandardIncrust());
+                        EpaperScreenManager.displayPage(pixels,pixels.getRefreshType().combine(totalRefresh?RefreshType.TOTAL_REFRESH:RefreshType.PARTIAL_REFRESH));
+                        Logger.LOGGER.info("Display content successfully updated from page \""+pages.get(currentPageCopy).getName()+"\" ("+(totalRefresh?"total":"partial")+" refresh)");
                         currentPixels=newPixels;
                         lastDrawnIncrust=currentlySelectedPageCopy;
                     }

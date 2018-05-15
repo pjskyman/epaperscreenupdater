@@ -1,25 +1,18 @@
 package sky.epaperscreenupdater;
 
-import java.text.DateFormat;
-import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
-
 public abstract class AbstractPage implements Page
 {
     protected Pixels pixels;
-    protected static final DecimalFormat TEMPERATURE_FORMAT=new DecimalFormat("###0.0");
-    protected static final DecimalFormat WIND_FORMAT=new DecimalFormat("###0");
-    protected static final DecimalFormat ENERGY_FORMAT=new DecimalFormat("###0.000");
-    protected static final DecimalFormat PRICE_FORMAT=new DecimalFormat("###0.00");
-    protected static final DateFormat TIME_FORMAT=new SimpleDateFormat("HH:mm");
+    protected final Page parentPage;
 
-    protected AbstractPage()
+    protected AbstractPage(Page parentPage)
     {
-        pixels=new Pixels();
+        pixels=new Pixels(RefreshType.PARTIAL_REFRESH);
+        this.parentPage=parentPage;
     }
 
-    public Pixels getPixels()
+    public Page getParentPage()
     {
-        return pixels;
+        return parentPage;
     }
 }

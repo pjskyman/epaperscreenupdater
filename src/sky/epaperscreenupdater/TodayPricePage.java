@@ -8,18 +8,14 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import sky.program.Duration;
 
-public class TodayPricePage extends AbstractPage
+public class TodayPricePage extends AbstractSinglePage
 {
     private long lastRefreshTime;
 
-    public TodayPricePage()
+    public TodayPricePage(Page parentPage)
     {
+        super(parentPage);
         lastRefreshTime=0L;
-    }
-
-    public int getSerial()
-    {
-        return 16;
     }
 
     public String getName()
@@ -51,7 +47,7 @@ public class TodayPricePage extends AbstractPage
                 int todayMonth=calendar.get(Calendar.MONTH)+1;
                 int todayDay=calendar.get(Calendar.DAY_OF_MONTH);
                 EnergyConsumption todayEnergyConsumption=EnergyConsumptionProvider.calculateEnergyConsumption(todayDay,todayMonth,todayYear);
-                String todayPriceString=PRICE_FORMAT.format(todayEnergyConsumption.getTotalOfPrices())+" €";
+                String todayPriceString=DECIMAL_00_FORMAT.format(todayEnergyConsumption.getTotalOfPrices())+" €";
                 int todayPriceStringWidth=(int)Math.ceil(baseFont.getStringBounds(todayPriceString,g2d.getFontRenderContext()).getWidth());
                 int todayPriceStringHeight=(int)Math.ceil(baseFont.getStringBounds(todayPriceString,g2d.getFontRenderContext()).getHeight());
                 g2d.drawString(todayPriceString,148-todayPriceStringWidth/2,45+todayPriceStringHeight/2);
@@ -60,8 +56,8 @@ public class TodayPricePage extends AbstractPage
 //                {
 //                    ImageIO.write(sourceImage,"png",outputStream);
 //                }
-                pixels=new Pixels().writeImage(sourceImage);
-                Logger.LOGGER.info("Page "+getSerial()+" updated successfully");
+                pixels=new Pixels(RefreshType.PARTIAL_REFRESH).writeImage(sourceImage);
+                Logger.LOGGER.info("Page \""+getName()+"\" updated successfully");
             }
             catch(Exception e)
             {
@@ -71,13 +67,8 @@ public class TodayPricePage extends AbstractPage
         return this;
     }
 
-    public boolean hasHighFrequency()
-    {
-        return false;
-    }
-
     public static void main(String[] args)
     {
-        new TodayPricePage().potentiallyUpdate();
+        new TodayPricePage(null).potentiallyUpdate();
     }
 }
