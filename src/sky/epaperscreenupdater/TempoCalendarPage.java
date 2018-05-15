@@ -12,18 +12,14 @@ import java.util.GregorianCalendar;
 import java.util.Locale;
 import sky.program.Duration;
 
-public class TempoCalendarPage extends AbstractPage
+public class TempoCalendarPage extends AbstractSinglePage
 {
     private long lastRefreshTime;
 
-    public TempoCalendarPage()
+    public TempoCalendarPage(Page parentPage)
     {
+        super(parentPage);
         lastRefreshTime=0L;
-    }
-
-    public int getSerial()
-    {
-        return 4;
     }
 
     public String getName()
@@ -206,8 +202,8 @@ public class TempoCalendarPage extends AbstractPage
     //            {
     //                ImageIO.write(sourceImage,"png",outputStream);
     //            }
-                pixels=new Pixels().writeImage(sourceImage);
-                Logger.LOGGER.info("Page "+getSerial()+" updated successfully");
+                pixels=new Pixels(RefreshType.PARTIAL_REFRESH).writeImage(sourceImage);
+                Logger.LOGGER.info("Page \""+getName()+"\" updated successfully");
             }
             catch(Exception e)
             {
@@ -215,10 +211,5 @@ public class TempoCalendarPage extends AbstractPage
             }
         }
         return this;
-    }
-
-    public boolean hasHighFrequency()
-    {
-        return false;
     }
 }

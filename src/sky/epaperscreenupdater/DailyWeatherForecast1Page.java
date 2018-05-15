@@ -18,19 +18,15 @@ public class DailyWeatherForecast1Page extends AbstractWeatherForecastPage
 {
     private long lastRefreshTime;
 
-    public DailyWeatherForecast1Page()
+    public DailyWeatherForecast1Page(Page parentPage)
     {
+        super(parentPage);
         lastRefreshTime=0L;
-    }
-
-    public int getSerial()
-    {
-        return 9;
     }
 
     public String getName()
     {
-        return "Prévisions météo 1";
+        return "Prévisions météo 1/2";
     }
 
     public synchronized Page potentiallyUpdate()
@@ -98,30 +94,30 @@ public class DailyWeatherForecast1Page extends AbstractWeatherForecastPage
                     stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
                     g2d.drawString(string,baseX+18-stringWidth/2,19);
                     g2d.drawImage(Icons.getIcon(daily.getIcon()),baseX+1,21,null);
-                    string=TEMPERATURE_FORMAT.format(daily.getTemperatureLow());
+                    string=DECIMAL_0_FORMAT.format(daily.getTemperatureLow());
                     stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
                     g2d.drawString(string,baseX+18-stringWidth/2,43);
-                    string=TEMPERATURE_FORMAT.format(daily.getTemperatureHigh());
+                    string=DECIMAL_0_FORMAT.format(daily.getTemperatureHigh());
                     stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
                     g2d.drawString(string,baseX+18-stringWidth/2,55);
-                    string=WIND_FORMAT.format(daily.getHumidity()*100d);
+                    string=INTEGER_FORMAT.format(daily.getHumidity()*100d);
                     stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
                     g2d.drawString(string,baseX+18-stringWidth/2,67);
-                    string=TEMPERATURE_FORMAT.format(daily.getDewPoint());
+                    string=DECIMAL_0_FORMAT.format(daily.getDewPoint());
                     stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
                     g2d.drawString(string,baseX+18-stringWidth/2,79);
                     g2d.setFont(alternativeBaseFont);
-                    string=WIND_FORMAT.format(daily.getWindGust())+"/"+HomeWeatherPage.convertWindAngle(daily.getWindBearing());
+                    string=INTEGER_FORMAT.format(daily.getWindGust())+"/"+HomeWeatherPage.convertWindAngle(daily.getWindBearing());
                     stringWidth=(int)Math.ceil(alternativeBaseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
                     g2d.drawString(string,baseX+18-stringWidth/2,91);
                     g2d.setFont(baseFont);
-                    string=TEMPERATURE_FORMAT.format(daily.getPrecipIntensity()*24d);
+                    string=DECIMAL_0_FORMAT.format(daily.getPrecipIntensity()*24d);
                     stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
                     g2d.drawString(string,baseX+18-stringWidth/2,103);
-                    string=WIND_FORMAT.format(daily.getPrecipProbability()*100d);
+                    string=INTEGER_FORMAT.format(daily.getPrecipProbability()*100d);
                     stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
                     g2d.drawString(string,baseX+18-stringWidth/2,115);
-                    string=WIND_FORMAT.format(daily.getPressure());
+                    string=INTEGER_FORMAT.format(daily.getPressure());
                     stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
                     g2d.drawString(string,baseX+18-stringWidth/2,127);
                 }
@@ -130,8 +126,8 @@ public class DailyWeatherForecast1Page extends AbstractWeatherForecastPage
 //                {
 //                    ImageIO.write(sourceImage,"png",outputStream);
 //                }
-                pixels=new Pixels().writeImage(sourceImage);
-                Logger.LOGGER.info("Page "+getSerial()+" updated successfully");
+                pixels=new Pixels(RefreshType.PARTIAL_REFRESH).writeImage(sourceImage);
+                Logger.LOGGER.info("Page \""+getName()+"\" updated successfully");
             }
             catch(Exception e)
             {
@@ -141,13 +137,8 @@ public class DailyWeatherForecast1Page extends AbstractWeatherForecastPage
         return this;
     }
 
-    public boolean hasHighFrequency()
-    {
-        return false;
-    }
-
     public static void main(String[] args)
     {
-        new DailyWeatherForecast1Page().potentiallyUpdate();
+        new DailyWeatherForecast1Page(null).potentiallyUpdate();
     }
 }

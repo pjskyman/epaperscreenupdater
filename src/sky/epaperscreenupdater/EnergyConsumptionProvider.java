@@ -232,8 +232,8 @@ public class EnergyConsumptionProvider
     {
         long startTime=System.currentTimeMillis();
         EnergyConsumption energyConsumption=calculateEnergyConsumption(8,5,2018);
-        System.out.println(AbstractPage.ENERGY_FORMAT.format(energyConsumption.getTotalOfConsumptions())+" kWh");
-        System.out.println(AbstractPage.PRICE_FORMAT.format(energyConsumption.getTotalOfPrices())+" €");
+        System.out.println(AbstractPage.DECIMAL_000_FORMAT.format(energyConsumption.getTotalOfConsumptions())+" kWh");
+        System.out.println(AbstractPage.DECIMAL_00_FORMAT.format(energyConsumption.getTotalOfPrices())+" €");
         System.out.println("Total "+(System.currentTimeMillis()-startTime)+" ms");
     }
 }

@@ -9,18 +9,14 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import sky.program.Duration;
 
-public class AnalogClockPage extends AbstractPage
+public class AnalogClockPage extends AbstractSinglePage
 {
     private long lastRefreshTime;
 
-    public AnalogClockPage()
+    public AnalogClockPage(Page parentPage)
     {
+        super(parentPage);
         lastRefreshTime=0L;
-    }
-
-    public int getSerial()
-    {
-        return 6;
     }
 
     public String getName()
@@ -60,8 +56,8 @@ public class AnalogClockPage extends AbstractPage
 //                {
 //                    ImageIO.write(sourceImage,"png",outputStream);
 //                }
-                pixels=new Pixels().writeImage(sourceImage);
-                Logger.LOGGER.info("Page "+getSerial()+" updated successfully");
+                pixels=new Pixels(RefreshType.PARTIAL_REFRESH_IN_FAST_MODE).writeImage(sourceImage);
+                Logger.LOGGER.info("Page \""+getName()+"\" updated successfully");
             }
             catch(Exception e)
             {
@@ -71,13 +67,8 @@ public class AnalogClockPage extends AbstractPage
         return this;
     }
 
-    public boolean hasHighFrequency()
-    {
-        return true;
-    }
-
     public static void main(String[] args)
     {
-        new AnalogClockPage().potentiallyUpdate();
+        new AnalogClockPage(null).potentiallyUpdate();
     }
 }

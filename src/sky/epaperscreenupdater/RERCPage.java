@@ -20,18 +20,14 @@ import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 import sky.program.Duration;
 
-public class RERCPage extends AbstractPage
+public class RERCPage extends AbstractSinglePage
 {
     private long lastRefreshTime;
 
-    public RERCPage()
+    public RERCPage(Page parentPage)
     {
+        super(parentPage);
         lastRefreshTime=0L;
-    }
-
-    public int getSerial()
-    {
-        return 8;
     }
 
     public String getName()
@@ -137,8 +133,8 @@ public class RERCPage extends AbstractPage
 //                {
 //                    ImageIO.write(sourceImage,"png",outputStream);
 //                }
-                pixels=new Pixels().writeImage(sourceImage);
-                Logger.LOGGER.info("Page "+getSerial()+" updated successfully");
+                pixels=new Pixels(RefreshType.PARTIAL_REFRESH).writeImage(sourceImage);
+                Logger.LOGGER.info("Page \""+getName()+"\" updated successfully");
             }
             catch(Exception e)
             {
@@ -148,13 +144,8 @@ public class RERCPage extends AbstractPage
         return this;
     }
 
-    public boolean hasHighFrequency()
-    {
-        return false;
-    }
-
     public static void main(String[] args)
     {
-        new RERCPage().potentiallyUpdate();
+        new RERCPage(null).potentiallyUpdate();
     }
 }

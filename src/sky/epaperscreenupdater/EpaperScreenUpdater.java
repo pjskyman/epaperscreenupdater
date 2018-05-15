@@ -16,8 +16,6 @@ import sky.program.Duration;
 
 public final class EpaperScreenUpdater
 {
-    private static int currentPage=0;
-    private static int currentlySelectedPage=-1;
     public static final Font FREDOKA_ONE_FONT;
 
     static
@@ -44,41 +42,15 @@ public final class EpaperScreenUpdater
         Logger.LOGGER.info("Starting "+EpaperScreenUpdater.class.getSimpleName()+"...");
         try
         {
-            List<Page> pages=new ArrayList<>();
-            pages.add(new InstantaneousConsumptionPage().potentiallyUpdate());
-            pages.add(new HomeWeatherPage().potentiallyUpdate());
-            pages.add(new HomeWeatherVariationPage().potentiallyUpdate());
-            pages.add(new TempoCalendarPage().potentiallyUpdate());
-            pages.add(new DigitalClockPage().potentiallyUpdate());
-            pages.add(new AnalogClockPage().potentiallyUpdate());
-            pages.add(new BinaryClockPage().potentiallyUpdate());
-            pages.add(new RERCPage().potentiallyUpdate());
-            pages.add(new DailyWeatherForecast1Page().potentiallyUpdate());
-            pages.add(new DailyWeatherForecast2Page().potentiallyUpdate());
-            pages.add(new HourlyWeatherForecast1Page().potentiallyUpdate());
-            pages.add(new HourlyWeatherForecast2Page().potentiallyUpdate());
-            pages.add(new HourlyWeatherForecast3Page().potentiallyUpdate());
-            pages.add(new HourlyWeatherForecast4Page().potentiallyUpdate());
-            pages.add(new EnergyConsumptionPage().potentiallyUpdate());
-            pages.add(new TodayPricePage().potentiallyUpdate());
-            pages.add(new MoonPage().potentiallyUpdate());
-            pages.add(new AnniversaryPage().potentiallyUpdate());
-            pages.add(new WasherSupervisionPage().potentiallyUpdate());
-            pages.add(new AboutPage().potentiallyUpdate());
-            pages.sort((o1,o2)->Integer.compare(o1.getSerial(),o2.getSerial()));//au cas où...
-            Pixels currentPixels=pages.get(0).potentiallyUpdate().getPixels();
+            MainMenuPage mainMenuPage=new MainMenuPage();
+            mainMenuPage.potentiallyUpdate();
+            Pixels currentPixels=mainMenuPage.potentiallyUpdate().getPixels();
             long lastCompleteRefresh=System.currentTimeMillis();
-            EpaperScreenManager.displayPage(currentPixels,false,false);
-            Logger.LOGGER.info("Display content successfully updated from page "+pages.get(0).getSerial()+" (total refresh)");
-            RotaryEncoderManager.addRotationListener(rotationDirection->currentlySelectedPage=((currentlySelectedPage==-1?currentPage:currentlySelectedPage)+(rotationDirection==RotationDirection.CLOCKWISE?1:-1)+pages.size())%pages.size());
-            RotaryEncoderManager.addSwitchListener(()->
-            {
-                if(currentlySelectedPage==-1)
-                    return;//TODO peut-être forcer un total refresh
-                currentPage=currentlySelectedPage;
-                currentlySelectedPage=-1;
-            });
-            Logger.LOGGER.info(EpaperScreenUpdater.class.getSimpleName()+" is ready!");
+            EpaperScreenManager.displayPage(currentPixels,RefreshType.TOTAL_REFRESH);
+            Logger.LOGGER.info("Display content successfully updated from page \""+mainMenuPage.getActivePageName()+"\" ("+RefreshType.TOTAL_REFRESH.toString()+")");
+            RotaryEncoderManager.addRotationListener(rotationDirection->mainMenuPage.rotated(rotationDirection));
+            RotaryEncoderManager.addSwitchListener(()->mainMenuPage.clicked(false));
+            Logger.LOGGER.info(EpaperScreenUpdater.class.getSimpleName()+" is now ready!");
             new Thread("pageUpdater")
             {
                 @Override
@@ -91,13 +63,13 @@ public final class EpaperScreenUpdater
                         {
                             try
                             {
-                                pages.forEach(page->page.potentiallyUpdate());
+                                mainMenuPage.potentiallyUpdate();
                             }
                             catch(Throwable t)
                             {
-                                Logger.LOGGER.error("Unmanaged throwable during refresh ("+t.toString()+")");
+                                Logger.LOGGER.error("Unmanaged error during refresh ("+t.toString()+")");
                             }
-                            Thread.sleep(Duration.of(100).millisecond());
+                            Thread.sleep(Duration.of(107).millisecond());
                         }
                     }
                     catch(InterruptedException e)
@@ -107,29 +79,23 @@ public final class EpaperScreenUpdater
             }.start();
             try
             {
-                int lastDrawnIncrust=currentlySelectedPage;
                 while(true)
                 {
-                    int currentPageCopy=currentPage;
-                    int currentlySelectedPageCopy=currentlySelectedPage;
-                    Pixels newPixels=pages.get(currentPageCopy).getPixels();
-                    if(newPixels!=currentPixels||currentlySelectedPageCopy!=lastDrawnIncrust)
+                    Pixels newPixels=mainMenuPage.getPixels();
+                    if(newPixels!=currentPixels)
                     {
                         long now=System.currentTimeMillis();
-                        boolean partialRefresh=true;
-                        if(currentlySelectedPageCopy==-1&&now-lastCompleteRefresh>Duration.of(10).minute())
+                        RefreshType realRefreshType=newPixels.getRefreshType();
+                        if(now-lastCompleteRefresh>Duration.of(10).minute())
                         {
-                            partialRefresh=false;
+                            realRefreshType=realRefreshType.combine(RefreshType.TOTAL_REFRESH);
                             lastCompleteRefresh=now;
                         }
-                        Pixels pixels=currentlySelectedPageCopy==-1?newPixels:newPixels.incrustTransparentImage(new IncrustGenerator(pages.get(currentlySelectedPageCopy)).generateIncrust());
-                        boolean fastMode=false;
-                        EpaperScreenManager.displayPage(pixels,partialRefresh,fastMode);
-                        Logger.LOGGER.info("Display content successfully updated from page "+pages.get(currentPageCopy).getSerial()+" ("+(partialRefresh?"partial":"total")+" refresh)");
+                        EpaperScreenManager.displayPage(newPixels,realRefreshType);
+                        Logger.LOGGER.info("Display content successfully updated from page \""+mainMenuPage.getActivePageName()+"\" ("+realRefreshType.toString()+")");
                         currentPixels=newPixels;
-                        lastDrawnIncrust=currentlySelectedPageCopy;
                     }
-                    Thread.sleep(Duration.of(50).millisecond());
+                    Thread.sleep(Duration.of(48).millisecond());
                 }
             }
             catch(InterruptedException e)

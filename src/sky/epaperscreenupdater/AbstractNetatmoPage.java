@@ -19,7 +19,7 @@ import sky.netatmo.NetatmoException;
 import sky.netatmo.Token;
 import sky.program.Duration;
 
-public abstract class AbstractNetatmoPage extends AbstractPage
+public abstract class AbstractNetatmoPage extends AbstractSinglePage
 {
     private static Token token=null;
     private static long lastNetatmoVerificationTime=0L;
@@ -73,6 +73,11 @@ public abstract class AbstractNetatmoPage extends AbstractPage
     protected static final String ANEMOMETRE_MAX_GUST_ANGLE="anemometreMaxGustAngle";
     private static final Comparator<Measure> MEASURE_COMPARATOR=(o1,o2)->Long.compare(o1.getDate().getTime(),o2.getDate().getTime());
     protected static final boolean NETATMO_ENABLED=true;
+
+    protected AbstractNetatmoPage(Page parentPage)
+    {
+        super(parentPage);
+    }
 
     protected static synchronized Map<String,Measure[]> getLastMeasures()
     {

@@ -7,18 +7,14 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import sky.program.Duration;
 
-public class BinaryClockPage extends AbstractPage
+public class BinaryClockPage extends AbstractSinglePage
 {
     private long lastRefreshTime;
 
-    public BinaryClockPage()
+    public BinaryClockPage(Page parentPage)
     {
+        super(parentPage);
         lastRefreshTime=0L;
-    }
-
-    public int getSerial()
-    {
-        return 7;
     }
 
     public String getName()
@@ -66,8 +62,8 @@ public class BinaryClockPage extends AbstractPage
 //                {
 //                    ImageIO.write(sourceImage,"png",outputStream);
 //                }
-                pixels=new Pixels().writeImage(sourceImage);
-                Logger.LOGGER.info("Page "+getSerial()+" updated successfully");
+                pixels=new Pixels(RefreshType.PARTIAL_REFRESH_IN_FAST_MODE).writeImage(sourceImage);
+                Logger.LOGGER.info("Page \""+getName()+"\" updated successfully");
             }
             catch(Exception e)
             {
@@ -77,13 +73,8 @@ public class BinaryClockPage extends AbstractPage
         return this;
     }
 
-    public boolean hasHighFrequency()
-    {
-        return true;
-    }
-
     public static void main(String[] args)
     {
-        new BinaryClockPage().potentiallyUpdate();
+        new BinaryClockPage(null).potentiallyUpdate();
     }
 }

@@ -19,18 +19,14 @@ import java.util.Map.Entry;
 import java.util.Properties;
 import sky.program.Duration;
 
-public class AnniversaryPage extends AbstractPage
+public class AnniversaryPage extends AbstractSinglePage
 {
     private long lastRefreshTime;
 
-    public AnniversaryPage()
+    public AnniversaryPage(Page parentPage)
     {
+        super(parentPage);
         lastRefreshTime=0L;
-    }
-
-    public int getSerial()
-    {
-        return 18;
     }
 
     public String getName()
@@ -94,8 +90,8 @@ public class AnniversaryPage extends AbstractPage
 //                {
 //                    ImageIO.write(sourceImage,"png",outputStream);
 //                }
-                pixels=new Pixels().writeImage(sourceImage);
-                Logger.LOGGER.info("Page "+getSerial()+" updated successfully");
+                pixels=new Pixels(RefreshType.PARTIAL_REFRESH).writeImage(sourceImage);
+                Logger.LOGGER.info("Page \""+getName()+"\" updated successfully");
             }
             catch(Exception e)
             {
@@ -105,13 +101,8 @@ public class AnniversaryPage extends AbstractPage
         return this;
     }
 
-    public boolean hasHighFrequency()
-    {
-        return false;
-    }
-
     public static void main(String[] args)
     {
-        new AnniversaryPage().potentiallyUpdate();
+        new AnniversaryPage(null).potentiallyUpdate();
     }
 }

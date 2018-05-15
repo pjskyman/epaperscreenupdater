@@ -12,18 +12,14 @@ import java.io.InputStream;
 import javax.imageio.ImageIO;
 import sky.program.Duration;
 
-public class AboutPage extends AbstractPage
+public class AboutPage extends AbstractSinglePage
 {
     private long lastRefreshTime;
 
-    public AboutPage()
+    public AboutPage(Page parentPage)
     {
+        super(parentPage);
         lastRefreshTime=0L;
-    }
-
-    public int getSerial()
-    {
-        return 20;
     }
 
     public String getName()
@@ -57,7 +53,7 @@ public class AboutPage extends AbstractPage
                 try
                 {
                     SystemInfoProvider systemInfoProvider=PlatformManager.getPlatform().getSystemInfoProvider();
-                    String systemInfo="CPU@"+ENERGY_FORMAT.format((double)systemInfoProvider.getClockFrequencyArm()/1e9d)+" GHz: "+TEMPERATURE_FORMAT.format((double)systemInfoProvider.getCpuTemperature())+"°C@"+PRICE_FORMAT.format((double)systemInfoProvider.getCpuVoltage())+" V, RAM free: "+WIND_FORMAT.format((double)systemInfoProvider.getMemoryFree()/1_048_576d)+" Mo";
+                    String systemInfo="CPU@"+DECIMAL_0_FORMAT.format((double)systemInfoProvider.getClockFrequencyArm()/1e9d)+" GHz: "+DECIMAL_0_FORMAT.format((double)systemInfoProvider.getCpuTemperature())+"°C@"+DECIMAL_00_FORMAT.format((double)systemInfoProvider.getCpuVoltage())+" V, RAM free: "+INTEGER_FORMAT.format((double)systemInfoProvider.getMemoryFree()/1_048_576d)+" Mo";
                     g2d.drawString(systemInfo,12,118);
                 }
                 catch(Exception e)
@@ -70,8 +66,8 @@ public class AboutPage extends AbstractPage
 //                {
 //                    ImageIO.write(sourceImage,"png",outputStream);
 //                }
-                pixels=new Pixels().writeImage(sourceImage);
-                Logger.LOGGER.info("Page "+getSerial()+" updated successfully");
+                pixels=new Pixels(RefreshType.PARTIAL_REFRESH).writeImage(sourceImage);
+                Logger.LOGGER.info("Page \""+getName()+"\" updated successfully");
             }
             catch(Exception e)
             {
@@ -81,13 +77,8 @@ public class AboutPage extends AbstractPage
         return this;
     }
 
-    public boolean hasHighFrequency()
-    {
-        return false;
-    }
-
     public static void main(String[] args)
     {
-        new AboutPage().potentiallyUpdate();
+        new AboutPage(null).potentiallyUpdate();
     }
 }

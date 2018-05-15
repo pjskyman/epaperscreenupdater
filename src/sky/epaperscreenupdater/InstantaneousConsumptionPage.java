@@ -29,16 +29,12 @@ public class InstantaneousConsumptionPage extends AbstractNetatmoPage
     private long lastTomorrowVerificationTime;
     private String tomorrow;
 
-    public InstantaneousConsumptionPage()
+    public InstantaneousConsumptionPage(Page parentPage)
     {
+        super(parentPage);
         lastConsumptionTime=0L;
         lastTomorrowVerificationTime=0L;
         tomorrow="ND";
-    }
-
-    public int getSerial()
-    {
-        return 1;
     }
 
     public String getName()
@@ -359,8 +355,8 @@ public class InstantaneousConsumptionPage extends AbstractNetatmoPage
     //            {
     //                ImageIO.write(sourceImage,"png",outputStream);
     //            }
-                pixels=new Pixels().writeImage(sourceImage);
-                Logger.LOGGER.info("Page "+getSerial()+" updated successfully");
+                pixels=new Pixels(RefreshType.PARTIAL_REFRESH).writeImage(sourceImage);
+                Logger.LOGGER.info("Page \""+getName()+"\" updated successfully");
             }
             catch(Exception e)
             {
@@ -368,11 +364,6 @@ public class InstantaneousConsumptionPage extends AbstractNetatmoPage
             }
         }
         return this;
-    }
-
-    public boolean hasHighFrequency()
-    {
-        return false;
     }
 
     private static int calculatePowerBarHeight(int power)

@@ -17,19 +17,15 @@ public class HourlyWeatherForecast2Page extends AbstractWeatherForecastPage
 {
     private long lastRefreshTime;
 
-    public HourlyWeatherForecast2Page()
+    public HourlyWeatherForecast2Page(Page parentPage)
     {
+        super(parentPage);
         lastRefreshTime=0L;
-    }
-
-    public int getSerial()
-    {
-        return 12;
     }
 
     public String getName()
     {
-        return "Prévisions météo H/H 2";
+        return "Prévisions météo H/H +7h";
     }
 
     public synchronized Page potentiallyUpdate()
@@ -97,30 +93,30 @@ public class HourlyWeatherForecast2Page extends AbstractWeatherForecastPage
                     stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
                     g2d.drawString(string,baseX+18-stringWidth/2,19);
                     g2d.drawImage(Icons.getIcon(hourly.getIcon()),baseX+1,21,null);
-                    string=TEMPERATURE_FORMAT.format(hourly.getTemperature());
+                    string=DECIMAL_0_FORMAT.format(hourly.getTemperature());
                     stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
                     g2d.drawString(string,baseX+18-stringWidth/2,43);
-                    string=WIND_FORMAT.format(hourly.getHumidity()*100d);
+                    string=INTEGER_FORMAT.format(hourly.getHumidity()*100d);
                     stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
                     g2d.drawString(string,baseX+18-stringWidth/2,55);
-                    string=TEMPERATURE_FORMAT.format(hourly.getDewPoint());
+                    string=DECIMAL_0_FORMAT.format(hourly.getDewPoint());
                     stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
                     g2d.drawString(string,baseX+18-stringWidth/2,67);
                     g2d.setFont(alternativeBaseFont);
-                    string=WIND_FORMAT.format(hourly.getWindGust())+"/"+HomeWeatherPage.convertWindAngle(hourly.getWindBearing());
+                    string=INTEGER_FORMAT.format(hourly.getWindGust())+"/"+HomeWeatherPage.convertWindAngle(hourly.getWindBearing());
                     stringWidth=(int)Math.ceil(alternativeBaseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
                     g2d.drawString(string,baseX+18-stringWidth/2,79);
                     g2d.setFont(baseFont);
-                    string=TEMPERATURE_FORMAT.format(hourly.getPrecipIntensity());
+                    string=DECIMAL_0_FORMAT.format(hourly.getPrecipIntensity());
                     stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
                     g2d.drawString(string,baseX+18-stringWidth/2,91);
-                    string=WIND_FORMAT.format(hourly.getPrecipProbability()*100d);
+                    string=INTEGER_FORMAT.format(hourly.getPrecipProbability()*100d);
                     stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
                     g2d.drawString(string,baseX+18-stringWidth/2,103);
-                    string=WIND_FORMAT.format(hourly.getPressure());
+                    string=INTEGER_FORMAT.format(hourly.getPressure());
                     stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
                     g2d.drawString(string,baseX+18-stringWidth/2,115);
-                    string=WIND_FORMAT.format(hourly.getCloudCover()*100d);
+                    string=INTEGER_FORMAT.format(hourly.getCloudCover()*100d);
                     stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
                     g2d.drawString(string,baseX+18-stringWidth/2,127);
                 }
@@ -129,8 +125,8 @@ public class HourlyWeatherForecast2Page extends AbstractWeatherForecastPage
 //                {
 //                    ImageIO.write(sourceImage,"png",outputStream);
 //                }
-                pixels=new Pixels().writeImage(sourceImage);
-                Logger.LOGGER.info("Page "+getSerial()+" updated successfully");
+                pixels=new Pixels(RefreshType.PARTIAL_REFRESH).writeImage(sourceImage);
+                Logger.LOGGER.info("Page \""+getName()+"\" updated successfully");
             }
             catch(Exception e)
             {
@@ -140,13 +136,8 @@ public class HourlyWeatherForecast2Page extends AbstractWeatherForecastPage
         return this;
     }
 
-    public boolean hasHighFrequency()
-    {
-        return false;
-    }
-
     public static void main(String[] args)
     {
-        new HourlyWeatherForecast2Page().potentiallyUpdate();
+        new HourlyWeatherForecast2Page(null).potentiallyUpdate();
     }
 }

@@ -26,18 +26,14 @@ import java.util.List;
 import javax.imageio.ImageIO;
 import sky.program.Duration;
 
-public class MoonPage extends AbstractPage
+public class MoonPage extends AbstractSinglePage
 {
     private long lastRefreshTime;
 
-    public MoonPage()
+    public MoonPage(Page parentPage)
     {
+        super(parentPage);
         lastRefreshTime=0L;
-    }
-
-    public int getSerial()
-    {
-        return 17;
     }
 
     public String getName()
@@ -196,8 +192,8 @@ public class MoonPage extends AbstractPage
 //                {
 //                    ImageIO.write(sourceImage,"png",outputStream);
 //                }
-                pixels=new Pixels().writeImage(sourceImage);
-                Logger.LOGGER.info("Page "+getSerial()+" updated successfully");
+                pixels=new Pixels(RefreshType.PARTIAL_REFRESH).writeImage(sourceImage);
+                Logger.LOGGER.info("Page \""+getName()+"\" updated successfully");
             }
             catch(Exception e)
             {
@@ -207,13 +203,8 @@ public class MoonPage extends AbstractPage
         return this;
     }
 
-    public boolean hasHighFrequency()
-    {
-        return false;
-    }
-
     public static void main(String[] args)
     {
-        new MoonPage().potentiallyUpdate();
+        new MoonPage(null).potentiallyUpdate();
     }
 }

@@ -23,14 +23,10 @@ public class HomeWeatherPage extends AbstractNetatmoPage
 {
     private long lastRefreshTime;
 
-    public HomeWeatherPage()
+    public HomeWeatherPage(Page parentPage)
     {
+        super(parentPage);
         lastRefreshTime=0L;
-    }
-
-    public int getSerial()
-    {
-        return 2;
     }
 
     public String getName()
@@ -213,7 +209,7 @@ public class HomeWeatherPage extends AbstractNetatmoPage
                 int sdbStringWidth=(int)Math.ceil(measureFont.getStringBounds(sdbString,g2d.getFontRenderContext()).getWidth());
                 g2d.drawString(sdbString,111+maxSalleDeBainStringWidth/2+1-sdbStringWidth,45);
 
-                String toiletsString=(lastToiletsTemperature!=null?TEMPERATURE_FORMAT.format(lastToiletsTemperature.getValue()).replace(",","."):"?")+"°C";
+                String toiletsString=(lastToiletsTemperature!=null?DECIMAL_0_FORMAT.format(lastToiletsTemperature.getValue()).replace(",","."):"?")+"°C";
                 int toiletsStringWidth=(int)Math.ceil(measureFont.getStringBounds(toiletsString,g2d.getFontRenderContext()).getWidth());
                 g2d.drawString(toiletsString,2,63);
 
@@ -248,7 +244,7 @@ public class HomeWeatherPage extends AbstractNetatmoPage
                 int sousSolStringWidth=(int)Math.ceil(measureFont.getStringBounds(sousSolString,g2d.getFontRenderContext()).getWidth());
                 g2d.drawString(sousSolString,259+maxSousSolStringWidth/2+1-sousSolStringWidth,95);
 
-                String pluviometreString1=(lastPluviometreRain!=null?TEMPERATURE_FORMAT.format(lastPluviometreRain.getValue()).replace(",","."):"?")+" mm/h";
+                String pluviometreString1=(lastPluviometreRain!=null?DECIMAL_0_FORMAT.format(lastPluviometreRain.getValue()).replace(",","."):"?")+" mm/h";
                 int pluviometreString1Width=(int)Math.ceil(measureFont.getStringBounds(pluviometreString1,g2d.getFontRenderContext()).getWidth());
                 g2d.drawString(pluviometreString1,180f-(float)pluviometreString1Width/2f,30f);
 
@@ -280,8 +276,8 @@ public class HomeWeatherPage extends AbstractNetatmoPage
 //                {
 //                    ImageIO.write(sourceImage,"png",outputStream);
 //                }
-                pixels=new Pixels().writeImage(sourceImage);
-                Logger.LOGGER.info("Page "+getSerial()+" updated successfully");
+                pixels=new Pixels(RefreshType.PARTIAL_REFRESH).writeImage(sourceImage);
+                Logger.LOGGER.info("Page \""+getName()+"\" updated successfully");
             }
             catch(Exception e)
             {
@@ -289,11 +285,6 @@ public class HomeWeatherPage extends AbstractNetatmoPage
             }
         }
         return this;
-    }
-
-    public boolean hasHighFrequency()
-    {
-        return false;
     }
 
     private static Measure getLastMeasure(Map<String,Measure[]> lastMeasures,String type)
@@ -420,6 +411,6 @@ public class HomeWeatherPage extends AbstractNetatmoPage
 
     public static void main(String[] args)
     {
-        new HomeWeatherPage().potentiallyUpdate();
+        new HomeWeatherPage(null).potentiallyUpdate();
     }
 }

@@ -12,18 +12,14 @@ import java.util.ArrayList;
 import java.util.List;
 import sky.program.Duration;
 
-public class WasherSupervisionPage extends AbstractPage
+public class WasherSupervisionPage extends AbstractSinglePage
 {
     private long lastRefreshTime;
 
-    public WasherSupervisionPage()
+    public WasherSupervisionPage(Page parentPage)
     {
+        super(parentPage);
         lastRefreshTime=0L;
-    }
-
-    public int getSerial()
-    {
-        return 19;
     }
 
     public String getName()
@@ -104,8 +100,8 @@ public class WasherSupervisionPage extends AbstractPage
 //                {
 //                    ImageIO.write(sourceImage,"png",outputStream);
 //                }
-                pixels=new Pixels().writeImage(sourceImage);
-                Logger.LOGGER.info("Page "+getSerial()+" updated successfully");
+                pixels=new Pixels(RefreshType.PARTIAL_REFRESH).writeImage(sourceImage);
+                Logger.LOGGER.info("Page \""+getName()+"\" updated successfully");
             }
             catch(Exception e)
             {
@@ -115,14 +111,9 @@ public class WasherSupervisionPage extends AbstractPage
         return this;
     }
 
-    public boolean hasHighFrequency()
-    {
-        return false;
-    }
-
     public static void main(String[] args)
     {
-        new WasherSupervisionPage().potentiallyUpdate();
+        new WasherSupervisionPage(null).potentiallyUpdate();
     }
 
     public static List<WasherInstantaneousConsumption> loadWasherInstantaneousConsumptions(long startTimeRequested,long stopTimeRequested)

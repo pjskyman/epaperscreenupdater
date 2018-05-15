@@ -14,11 +14,16 @@ import java.util.ArrayList;
 import java.util.List;
 import sky.program.Duration;
 
-public abstract class AbstractWeatherForecastPage extends AbstractPage
+public abstract class AbstractWeatherForecastPage extends AbstractSinglePage
 {
     private static long lastWeatherForecastVerificationTime=0L;
     private static List<Daily> lastDailies=null;
     private static List<Hourly> lastHourlies=null;
+
+    protected AbstractWeatherForecastPage(Page parentPage)
+    {
+        super(parentPage);
+    }
 
     protected static List<Daily> getLastDailies()
     {
