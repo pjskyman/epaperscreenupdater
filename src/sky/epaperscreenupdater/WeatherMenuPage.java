@@ -14,6 +14,8 @@ public class WeatherMenuPage extends AbstractMenuPage
         subpages.add(new HourlyWeatherForecast3Page(this).potentiallyUpdate());
         subpages.add(new HourlyWeatherForecast4Page(this).potentiallyUpdate());
         subpages.add(new HourlyWeatherForecast5Page(this).potentiallyUpdate());
+        subpages.add(new HourlyWeatherForecast6Page(this).potentiallyUpdate());
+        subpages.add(new HourlyWeatherForecast7Page(this).potentiallyUpdate());
     }
 
     public String getName()
