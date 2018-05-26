@@ -197,21 +197,21 @@ public class InstantaneousConsumptionPage extends AbstractNetatmoPage
                 g2d.setFont(unitFont);
                 g2d.drawString(totalPowerUnitString,92f-(float)(totalPowerStringWidth+totalPowerUnitStringWidth)+(float)totalPowerStringWidth+1f,113f-4f);
 
-                g2d.drawLine(1,109,19,109);
-                Rectangle rectangle=new Rectangle(2,105,5,4);
+                g2d.drawLine(1,108,19,108);
+                Rectangle rectangle=new Rectangle(2,104,5,4);
                 for(int x=rectangle.x;x<rectangle.x+rectangle.width;x++)
                     for(int y=rectangle.y;y<rectangle.y+rectangle.height;y++)
-                        if((x+y)%2==1||instantaneousConsumption.getPricingPeriod().isBlueDay())
+                        if((x+y)%2==0||instantaneousConsumption.getPricingPeriod().isBlueDay())
                             g2d.drawRect(x,y,0,0);
-                rectangle=new Rectangle(8,103,5,6);
+                rectangle=new Rectangle(8,102,5,6);
                 for(int x=rectangle.x;x<rectangle.x+rectangle.width;x++)
                     for(int y=rectangle.y;y<rectangle.y+rectangle.height;y++)
-                        if((x+y)%2==1||instantaneousConsumption.getPricingPeriod().isWhiteDay())
+                        if((x+y)%2==0||instantaneousConsumption.getPricingPeriod().isWhiteDay())
                             g2d.drawRect(x,y,0,0);
-                rectangle=new Rectangle(14,99,5,10);
+                rectangle=new Rectangle(14,98,5,10);
                 for(int x=rectangle.x;x<rectangle.x+rectangle.width;x++)
                     for(int y=rectangle.y;y<rectangle.y+rectangle.height;y++)
-                        if((x+y)%2==1||instantaneousConsumption.getPricingPeriod().isRedDay())
+                        if((x+y)%2==0||instantaneousConsumption.getPricingPeriod().isRedDay())
                             g2d.drawRect(x,y,0,0);
 //                Logger.LOGGER.info("Current pricing period: "+instantaneousConsumption.getPricingPeriod().name());
                 long now=System.currentTimeMillis();
@@ -247,13 +247,25 @@ public class InstantaneousConsumptionPage extends AbstractNetatmoPage
                         Logger.LOGGER.error("Unable to get tomorrow's color ("+e.toString()+")");
                     }
                 if(tomorrow.equals("BLEU"))
-                    g2d.drawLine(2,110,6,110);
+                {
+                    g2d.drawLine(4,109,4,109);
+                    g2d.drawLine(3,110,5,110);
+                    g2d.drawLine(2,111,6,111);
+                }
                 else
                     if(tomorrow.equals("BLANC"))
-                        g2d.drawLine(8,110,12,110);
+                    {
+                        g2d.drawLine(10,109,10,109);
+                        g2d.drawLine(9,110,11,110);
+                        g2d.drawLine(8,111,12,111);
+                    }
                     else
                         if(tomorrow.equals("ROUGE"))
-                            g2d.drawLine(14,110,18,110);
+                        {
+                            g2d.drawLine(16,109,16,109);
+                            g2d.drawLine(15,110,17,110);
+                            g2d.drawLine(14,111,18,111);
+                        }
                 if(instantaneousConsumption.getPricingPeriod().isPeakHourPeriod())
                 {
                     g2d.drawLine(10,115,12,115);
@@ -351,10 +363,10 @@ public class InstantaneousConsumptionPage extends AbstractNetatmoPage
                     }
                 }
                 g2d.dispose();
-    //            try(OutputStream outputStream=new FileOutputStream(new File("powers.png")))
-    //            {
-    //                ImageIO.write(sourceImage,"png",outputStream);
-    //            }
+//                try(OutputStream outputStream=new FileOutputStream(new File("powers.png")))
+//                {
+//                    ImageIO.write(sourceImage,"png",outputStream);
+//                }
                 pixels=new Pixels(RefreshType.PARTIAL_REFRESH).writeImage(sourceImage);
                 Logger.LOGGER.info("Page \""+getName()+"\" updated successfully");
             }
@@ -423,5 +435,10 @@ public class InstantaneousConsumptionPage extends AbstractNetatmoPage
             if(httpConnection!=null)
                 httpConnection.disconnect();
         }
+    }
+
+    public static void main(String[] args)
+    {
+        new InstantaneousConsumptionPage(null).potentiallyUpdate();
     }
 }
