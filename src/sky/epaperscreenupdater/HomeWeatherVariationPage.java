@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -42,37 +43,37 @@ public class HomeWeatherVariationPage extends AbstractNetatmoPage
             lastRefreshTime=now;
             Map<String,Measure[]> lastMeasures=getLastMeasures();
             Measure[] lastSalonTemperatures=lastMeasures.get(SALON_TEMPERATURE);
-            double salonTemperatureVariation=getHourlyVariation(lastSalonTemperatures);
+            double salonTemperatureVariation=getHourlyVariation(filterTimedWindowMeasures(lastSalonTemperatures,1));
             Measure[] lastSalonHumidities=lastMeasures.get(SALON_HUMIDITY);
-            double salonHumidityVariation=getHourlyVariation(lastSalonHumidities);
+            double salonHumidityVariation=getHourlyVariation(filterTimedWindowMeasures(lastSalonHumidities,1));
             Measure[] lastSalonPressures=lastMeasures.get(SALON_PRESSURE);
-            double salonPressureVariation=getHourlyVariation(lastSalonPressures);
+            double salonPressureVariation=getHourlyVariation(filterTimedWindowMeasures(lastSalonPressures,2));
             Measure[] lastSalonCarbonDioxydes=lastMeasures.get(SALON_CARBON_DIOXYDE);
-            double salonCarbonDioxydeVariation=getHourlyVariation(lastSalonCarbonDioxydes);
+            double salonCarbonDioxydeVariation=getHourlyVariation(filterTimedWindowMeasures(lastSalonCarbonDioxydes,1));
             Measure[] lastSalonNoises=lastMeasures.get(SALON_NOISE);
-            double salonNoiseVariation=getHourlyVariation(lastSalonNoises);
+            double salonNoiseVariation=getHourlyVariation(filterTimedWindowMeasures(lastSalonNoises,1));
             Measure[] lastChambreTemperatures=lastMeasures.get(CHAMBRE_TEMPERATURE);
-            double chambreTemperatureVariation=getHourlyVariation(lastChambreTemperatures);
+            double chambreTemperatureVariation=getHourlyVariation(filterTimedWindowMeasures(lastChambreTemperatures,1));
             Measure[] lastChambreHumidities=lastMeasures.get(CHAMBRE_HUMIDITY);
-            double chambreHumidityVariation=getHourlyVariation(lastChambreHumidities);
+            double chambreHumidityVariation=getHourlyVariation(filterTimedWindowMeasures(lastChambreHumidities,1));
             Measure[] lastChambreCarbonDioxydes=lastMeasures.get(CHAMBRE_CARBON_DIOXYDE);
-            double chambreCarbonDioxydeVariation=getHourlyVariation(lastChambreCarbonDioxydes);
+            double chambreCarbonDioxydeVariation=getHourlyVariation(filterTimedWindowMeasures(lastChambreCarbonDioxydes,1));
             Measure[] lastSalleDeBainTemperatures=lastMeasures.get(SALLE_DE_BAIN_TEMPERATURE);
-            double salleDeBainTemperatureVariation=getHourlyVariation(lastSalleDeBainTemperatures);
+            double salleDeBainTemperatureVariation=getHourlyVariation(filterTimedWindowMeasures(lastSalleDeBainTemperatures,1));
             Measure[] lastSalleDeBainHumidities=lastMeasures.get(SALLE_DE_BAIN_HUMIDITY);
-            double salleDeBainHumidityVariation=getHourlyVariation(lastSalleDeBainHumidities);
+            double salleDeBainHumidityVariation=getHourlyVariation(filterTimedWindowMeasures(lastSalleDeBainHumidities,1));
             Measure[] lastSalleDeBainCarbonDioxydes=lastMeasures.get(SALLE_DE_BAIN_CARBON_DIOXYDE);
-            double salleDeBainCarbonDioxydeVariation=getHourlyVariation(lastSalleDeBainCarbonDioxydes);
+            double salleDeBainCarbonDioxydeVariation=getHourlyVariation(filterTimedWindowMeasures(lastSalleDeBainCarbonDioxydes,1));
             Measure[] lastSousSolTemperatures=lastMeasures.get(SOUS_SOL_TEMPERATURE);
-            double sousSolTemperatureVariation=getHourlyVariation(lastSousSolTemperatures);
+            double sousSolTemperatureVariation=getHourlyVariation(filterTimedWindowMeasures(lastSousSolTemperatures,1));
             Measure[] lastSousSolHumidities=lastMeasures.get(SOUS_SOL_HUMIDITY);
-            double sousSolHumidityVariation=getHourlyVariation(lastSousSolHumidities);
+            double sousSolHumidityVariation=getHourlyVariation(filterTimedWindowMeasures(lastSousSolHumidities,1));
             Measure[] lastSousSolCarbonDioxydes=lastMeasures.get(SOUS_SOL_CARBON_DIOXYDE);
-            double sousSolCarbonDioxydeVariation=getHourlyVariation(lastSousSolCarbonDioxydes);
+            double sousSolCarbonDioxydeVariation=getHourlyVariation(filterTimedWindowMeasures(lastSousSolCarbonDioxydes,1));
             Measure[] lastJardinTemperatures=lastMeasures.get(JARDIN_TEMPERATURE);
-            double jardinTemperatureVariation=getHourlyVariation(lastJardinTemperatures);
+            double jardinTemperatureVariation=getHourlyVariation(filterTimedWindowMeasures(lastJardinTemperatures,1));
             Measure[] lastJardinHumidities=lastMeasures.get(JARDIN_HUMIDITY);
-            double jardinHumidityVariation=getHourlyVariation(lastJardinHumidities);
+            double jardinHumidityVariation=getHourlyVariation(filterTimedWindowMeasures(lastJardinHumidities,1));
             Measure[] array=lastMeasures.get(PLUVIOMETRE_TOTAL_RAIN);
             double pluviometreTotalRain;
             if(array!=null&&array.length==1)
@@ -320,6 +321,15 @@ public class HomeWeatherVariationPage extends AbstractNetatmoPage
             return (lastMeasures[lastMeasures.length-1].getValue()-lastMeasures[0].getValue())/((double)(lastMeasures[lastMeasures.length-1].getDate().getTime()-lastMeasures[0].getDate().getTime())/3_600_000d);
         else
             return Double.NaN;
+    }
+
+    protected static Measure[] filterTimedWindowMeasures(Measure[] measures,int hour)//protected pour pouvoir y accéder depuis tout le package
+    {
+        if(measures==null)
+            return null;
+        return Arrays.stream(measures)
+                .filter(measure->measures[measures.length-1].getDate().getTime()-measure.getDate().getTime()<Duration.of(hour).hour())
+                .toArray(size->new Measure[size]);
     }
 
     private static List<Temperature> loadTemperatures(int number)
