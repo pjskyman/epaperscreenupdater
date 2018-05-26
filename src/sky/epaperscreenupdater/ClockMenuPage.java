@@ -8,6 +8,7 @@ public class ClockMenuPage extends AbstractMenuPage
         subpages.add(new DigitalClockPage(this).potentiallyUpdate());
         subpages.add(new AnalogClockPage(this).potentiallyUpdate());
         subpages.add(new BinaryClockPage(this).potentiallyUpdate());
+        subpages.add(new QRCodeClockPage(this).potentiallyUpdate());
     }
 
     public String getName()
