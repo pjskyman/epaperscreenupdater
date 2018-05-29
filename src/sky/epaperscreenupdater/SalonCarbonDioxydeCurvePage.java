@@ -24,6 +24,11 @@ public class SalonCarbonDioxydeCurvePage extends AbstractNetatmoCurvePage
         return SALON_CARBON_DIOXYDE;
     }
 
+    protected String getOrdinateLabelText()
+    {
+        return "CO2 salon (ppm)";
+    }
+
     protected String getVerificationFileName()
     {
         return "courbescd.png";

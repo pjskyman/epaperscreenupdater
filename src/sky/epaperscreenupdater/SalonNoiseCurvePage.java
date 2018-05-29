@@ -24,6 +24,11 @@ public class SalonNoiseCurvePage extends AbstractNetatmoCurvePage
         return SALON_NOISE;
     }
 
+    protected String getOrdinateLabelText()
+    {
+        return "Bruit salon (dB)";
+    }
+
     protected String getVerificationFileName()
     {
         return "courbesn.png";

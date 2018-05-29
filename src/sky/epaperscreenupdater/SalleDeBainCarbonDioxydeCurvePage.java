@@ -24,6 +24,11 @@ public class SalleDeBainCarbonDioxydeCurvePage extends AbstractNetatmoCurvePage
         return SALLE_DE_BAIN_CARBON_DIOXYDE;
     }
 
+    protected String getOrdinateLabelText()
+    {
+        return "CO2 SdB (ppm)";
+    }
+
     protected String getVerificationFileName()
     {
         return "courbesdbcd.png";

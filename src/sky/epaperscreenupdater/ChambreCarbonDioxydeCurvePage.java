@@ -24,6 +24,11 @@ public class ChambreCarbonDioxydeCurvePage extends AbstractNetatmoCurvePage
         return CHAMBRE_CARBON_DIOXYDE;
     }
 
+    protected String getOrdinateLabelText()
+    {
+        return "CO2 chambre (ppm)";
+    }
+
     protected String getVerificationFileName()
     {
         return "courbeccd.png";

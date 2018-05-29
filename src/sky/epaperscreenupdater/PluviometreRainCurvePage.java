@@ -24,6 +24,11 @@ public class PluviometreRainCurvePage extends AbstractNetatmoCurvePage
         return PLUVIOMETRE_RAIN;
     }
 
+    protected String getOrdinateLabelText()
+    {
+        return "Pluie jardin (mm/h)";
+    }
+
     protected String getVerificationFileName()
     {
         return "courbepr.png";

@@ -24,6 +24,11 @@ public class SalonTemperatureCurvePage extends AbstractNetatmoCurvePage
         return SALON_TEMPERATURE;
     }
 
+    protected String getOrdinateLabelText()
+    {
+        return "Temp. salon (°C)";
+    }
+
     protected String getVerificationFileName()
     {
         return "courbest.png";

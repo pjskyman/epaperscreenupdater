@@ -24,6 +24,11 @@ public class ChambreHumidityCurvePage extends AbstractNetatmoCurvePage
         return CHAMBRE_HUMIDITY;
     }
 
+    protected String getOrdinateLabelText()
+    {
+        return "Hum. chambre (%)";
+    }
+
     protected String getVerificationFileName()
     {
         return "courbech.png";

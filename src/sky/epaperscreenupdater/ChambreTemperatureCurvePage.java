@@ -24,6 +24,11 @@ public class ChambreTemperatureCurvePage extends AbstractNetatmoCurvePage
         return CHAMBRE_TEMPERATURE;
     }
 
+    protected String getOrdinateLabelText()
+    {
+        return "Temp. chambre (°C)";
+    }
+
     protected String getVerificationFileName()
     {
         return "courbect.png";

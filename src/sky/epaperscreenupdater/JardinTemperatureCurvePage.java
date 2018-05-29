@@ -24,6 +24,11 @@ public class JardinTemperatureCurvePage extends AbstractNetatmoCurvePage
         return JARDIN_TEMPERATURE;
     }
 
+    protected String getOrdinateLabelText()
+    {
+        return "Temp. jardin (°C)";
+    }
+
     protected String getVerificationFileName()
     {
         return "courbejt.png";

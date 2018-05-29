@@ -72,7 +72,7 @@ public abstract class AbstractNetatmoPage extends AbstractSinglePage
     protected static final String ANEMOMETRE_MAX_GUST_STRENGTH="anemometreMaxGustStrength";
     protected static final String ANEMOMETRE_MAX_GUST_ANGLE="anemometreMaxGustAngle";
     private static final Comparator<Measure> MEASURE_COMPARATOR=(o1,o2)->Long.compare(o1.getDate().getTime(),o2.getDate().getTime());
-    protected static final boolean NETATMO_ENABLED=false;
+    protected static final boolean NETATMO_ENABLED=true;
 
     protected AbstractNetatmoPage(Page parentPage)
     {
@@ -218,19 +218,31 @@ public abstract class AbstractNetatmoPage extends AbstractSinglePage
                 lastSousSolCarbonDioxydes=new Measure[]{new StandAloneMeasure(new Date(now-Duration.of(1).hour()),MeasurementType.CO2,1725d),new StandAloneMeasure(new Date(now),MeasurementType.CO2,1526d)};
                 lastJardinTemperatures=new Measure[]
                 {
-                    new StandAloneMeasure(new Date(now-Duration.of(2).hourMinus(5).minute()),MeasurementType.TEMPERATURE,16.9d),
-                    new StandAloneMeasure(new Date(now-Duration.of(1).hour()),MeasurementType.TEMPERATURE,19.2d),
-                    new StandAloneMeasure(new Date(now-Duration.of(54).minute()),MeasurementType.TEMPERATURE,20.7d),
-                    new StandAloneMeasure(new Date(now-Duration.of(49).minute()),MeasurementType.TEMPERATURE,22.8d),
-                    new StandAloneMeasure(new Date(now-Duration.of(44).minute()),MeasurementType.TEMPERATURE,23.2d),
-                    new StandAloneMeasure(new Date(now-Duration.of(39).minute()),MeasurementType.TEMPERATURE,23.5d),
-                    new StandAloneMeasure(new Date(now-Duration.of(34).minute()),MeasurementType.TEMPERATURE,23.7d),
-                    new StandAloneMeasure(new Date(now-Duration.of(29).minute()),MeasurementType.TEMPERATURE,24.3d),
-                    new StandAloneMeasure(new Date(now-Duration.of(24).minute()),MeasurementType.TEMPERATURE,24.7d),
-                    new StandAloneMeasure(new Date(now-Duration.of(19).minute()),MeasurementType.TEMPERATURE,26.1d),
-                    new StandAloneMeasure(new Date(now-Duration.of(14).minute()),MeasurementType.TEMPERATURE,25.2d),
-                    new StandAloneMeasure(new Date(now-Duration.of(9).minute()),MeasurementType.TEMPERATURE,27.8d),
-                    new StandAloneMeasure(new Date(now-Duration.of(4).minute()),MeasurementType.TEMPERATURE,28.1d),
+                    new StandAloneMeasure(new Date(now-Duration.of(121).minute()),MeasurementType.TEMPERATURE,26.2d),
+                    new StandAloneMeasure(new Date(now-Duration.of(116).minute()),MeasurementType.TEMPERATURE,25.2d),
+                    new StandAloneMeasure(new Date(now-Duration.of(111).minute()),MeasurementType.TEMPERATURE,20.7d),
+                    new StandAloneMeasure(new Date(now-Duration.of(106).minute()),MeasurementType.TEMPERATURE,22.8d),
+                    new StandAloneMeasure(new Date(now-Duration.of(101).minute()),MeasurementType.TEMPERATURE,23.2d),
+                    new StandAloneMeasure(new Date(now-Duration.of(96).minute()),MeasurementType.TEMPERATURE,23.5d),
+                    new StandAloneMeasure(new Date(now-Duration.of(91).minute()),MeasurementType.TEMPERATURE,23.7d),
+                    new StandAloneMeasure(new Date(now-Duration.of(86).minute()),MeasurementType.TEMPERATURE,24.3d),
+                    new StandAloneMeasure(new Date(now-Duration.of(81).minute()),MeasurementType.TEMPERATURE,24.7d),
+                    new StandAloneMeasure(new Date(now-Duration.of(76).minute()),MeasurementType.TEMPERATURE,26.1d),
+                    new StandAloneMeasure(new Date(now-Duration.of(71).minute()),MeasurementType.TEMPERATURE,25.2d),
+                    new StandAloneMeasure(new Date(now-Duration.of(66).minute()),MeasurementType.TEMPERATURE,27.8d),
+                    new StandAloneMeasure(new Date(now-Duration.of(61).minute()),MeasurementType.TEMPERATURE,19.2d),
+                    new StandAloneMeasure(new Date(now-Duration.of(56).minute()),MeasurementType.TEMPERATURE,19.2d),
+                    new StandAloneMeasure(new Date(now-Duration.of(51).minute()),MeasurementType.TEMPERATURE,20.7d),
+                    new StandAloneMeasure(new Date(now-Duration.of(46).minute()),MeasurementType.TEMPERATURE,22.8d),
+                    new StandAloneMeasure(new Date(now-Duration.of(41).minute()),MeasurementType.TEMPERATURE,23.2d),
+                    new StandAloneMeasure(new Date(now-Duration.of(36).minute()),MeasurementType.TEMPERATURE,23.5d),
+                    new StandAloneMeasure(new Date(now-Duration.of(31).minute()),MeasurementType.TEMPERATURE,23.7d),
+                    new StandAloneMeasure(new Date(now-Duration.of(26).minute()),MeasurementType.TEMPERATURE,24.3d),
+                    new StandAloneMeasure(new Date(now-Duration.of(21).minute()),MeasurementType.TEMPERATURE,24.7d),
+                    new StandAloneMeasure(new Date(now-Duration.of(16).minute()),MeasurementType.TEMPERATURE,26.1d),
+                    new StandAloneMeasure(new Date(now-Duration.of(11).minute()),MeasurementType.TEMPERATURE,25.2d),
+                    new StandAloneMeasure(new Date(now-Duration.of(6).minute()),MeasurementType.TEMPERATURE,27.8d),
+                    new StandAloneMeasure(new Date(now-Duration.of(1).minute()),MeasurementType.TEMPERATURE,24d),
                 };
                 lastJardinHumidities=new Measure[]{new StandAloneMeasure(new Date(now-Duration.of(1).hour()),MeasurementType.HUMIDITY,69d),new StandAloneMeasure(new Date(now),MeasurementType.HUMIDITY,66d)};
                 lastPluviometreRains=new Measure[]{new StandAloneMeasure(new Date(now-Duration.of(1).hour()),MeasurementType.RAIN,0d),new StandAloneMeasure(new Date(now),MeasurementType.RAIN,0d)};

@@ -24,6 +24,11 @@ public class JardinHumidityCurvePage extends AbstractNetatmoCurvePage
         return JARDIN_HUMIDITY;
     }
 
+    protected String getOrdinateLabelText()
+    {
+        return "Hum. jardin (%)";
+    }
+
     protected String getVerificationFileName()
     {
         return "courbejh.png";

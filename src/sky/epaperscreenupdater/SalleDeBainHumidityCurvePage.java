@@ -24,6 +24,11 @@ public class SalleDeBainHumidityCurvePage extends AbstractNetatmoCurvePage
         return SALLE_DE_BAIN_HUMIDITY;
     }
 
+    protected String getOrdinateLabelText()
+    {
+        return "Hum. SdB (%)";
+    }
+
     protected String getVerificationFileName()
     {
         return "courbesdbh.png";

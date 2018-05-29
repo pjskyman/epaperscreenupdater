@@ -24,6 +24,11 @@ public class SousSolTemperatureCurvePage extends AbstractNetatmoCurvePage
         return SOUS_SOL_TEMPERATURE;
     }
 
+    protected String getOrdinateLabelText()
+    {
+        return "Temp. SS (°C)";
+    }
+
     protected String getVerificationFileName()
     {
         return "courbesst.png";

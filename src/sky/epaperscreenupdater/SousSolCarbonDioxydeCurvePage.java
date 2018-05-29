@@ -24,6 +24,11 @@ public class SousSolCarbonDioxydeCurvePage extends AbstractNetatmoCurvePage
         return SOUS_SOL_CARBON_DIOXYDE;
     }
 
+    protected String getOrdinateLabelText()
+    {
+        return "CO2 SS (ppm)";
+    }
+
     protected String getVerificationFileName()
     {
         return "courbesscd.png";

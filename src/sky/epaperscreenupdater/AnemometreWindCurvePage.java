@@ -24,6 +24,11 @@ public class AnemometreWindCurvePage extends AbstractNetatmoCurvePage
         return ANEMOMETRE_GUST_STRENGTH;
     }
 
+    protected String getOrdinateLabelText()
+    {
+        return "Raf. jardin (km/h)";
+    }
+
     protected String getVerificationFileName()
     {
         return "courbeaw.png";

@@ -4,12 +4,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import javax.imageio.ImageIO;
 import sky.program.Duration;
 
 public class EnergyConsumptionPage extends AbstractSinglePage
@@ -79,10 +75,10 @@ public class EnergyConsumptionPage extends AbstractSinglePage
                     g2d.drawString(DECIMAL_00_FORMAT.format(yesterdayEnergyConsumption.getConsumerPrice(rank))+" €",257,rank*11-2);
                 g2d.drawString(DECIMAL_00_FORMAT.format(yesterdayEnergyConsumption.getTotalOfPrices())+" €",257,11*11-2+4);
                 g2d.dispose();
-                try(OutputStream outputStream=new FileOutputStream(new File("energy.png")))
-                {
-                    ImageIO.write(sourceImage,"png",outputStream);
-                }
+//                try(OutputStream outputStream=new FileOutputStream(new File("energy.png")))
+//                {
+//                    ImageIO.write(sourceImage,"png",outputStream);
+//                }
                 pixels=new Pixels(RefreshType.PARTIAL_REFRESH).writeImage(sourceImage);
                 Logger.LOGGER.info("Page \""+getName()+"\" updated successfully");
             }
