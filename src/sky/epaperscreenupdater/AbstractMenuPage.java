@@ -104,7 +104,7 @@ public abstract class AbstractMenuPage extends AbstractPage
         if(currentPageRank==-1)
         {
             currentPageRank=1;
-            currentlySelectedPageRank=-1;
+            currentlySelectedPageRank=subpages.get(0).pageCount()==-1?-1:1;
             return false;
         }
         else
