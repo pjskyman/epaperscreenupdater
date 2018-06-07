@@ -6,6 +6,8 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.font.FontRenderContext;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Path2D;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.text.DateFormat;
@@ -162,6 +164,19 @@ public abstract class AbstractNetatmoCurvePage extends AbstractNetatmoPage
                     for(PreparedTick preparedOrdinateTick:preparedOrdinateTicks)
                         if((int)Math.ceil(preparedOrdinateTick.getNameDimensions().getWidth())>maxOrdinateWidth)
                             maxOrdinateWidth=(int)Math.ceil(preparedOrdinateTick.getNameDimensions().getWidth());
+                    List<ControlPoint> measurePoints=new ArrayList<>(measures.length);
+                    for(Measure measure:measures)
+                    {
+                        long time=measure.getDate().getTime();
+                        int xLeft=ordinateLabelTextHeight+maxOrdinateWidth;
+                        int xRight=295-10;
+                        double x=(double)(xRight-xLeft)*(1d-(double)(xMax-time)/(double)xAmplitude)+(double)xLeft;
+                        double value=measure.getValue();
+                        int yTop=0;
+                        int yBottom=128-ordinateLabelTextHeight+3;
+                        double y=(double)(yBottom-yTop)*(1d-(value-yMin)/yAmplitude)+(double)yTop;
+                        measurePoints.add(new ControlPoint(x,y));
+                    }
                     g2d.drawLine(ordinateLabelTextHeight+maxOrdinateWidth,0,ordinateLabelTextHeight+maxOrdinateWidth,128-ordinateLabelTextHeight+3);
                     g2d.drawLine(ordinateLabelTextHeight+maxOrdinateWidth,128-ordinateLabelTextHeight+3,295,128-ordinateLabelTextHeight+3);
                     g2d.setFont(baseFont);
@@ -171,42 +186,91 @@ public abstract class AbstractNetatmoCurvePage extends AbstractNetatmoPage
                         double value=preparedOrdinateTick.getValue();
                         int yTop=0;
                         int yBottom=128-ordinateLabelTextHeight+3;
-                        int y=(int)((double)(yBottom-yTop)*(1d-(value-yMin)/yAmplitude))+yTop;
-                        g2d.drawString(preparedOrdinateTick.getName(),ordinateLabelTextHeight+maxOrdinateWidth-(int)Math.ceil(preparedOrdinateTick.getNameDimensions().getWidth())-2,y+(int)Math.ceil(preparedOrdinateTick.getNameDimensions().getHeight()/2d)-3);
-                        g2d.drawLine(ordinateLabelTextHeight+maxOrdinateWidth-1,y,296,y);
+                        double y=(double)(yBottom-yTop)*(1d-(value-yMin)/yAmplitude)+(double)yTop;
+                        g2d.drawString(preparedOrdinateTick.getName(),ordinateLabelTextHeight+maxOrdinateWidth-(int)Math.ceil(preparedOrdinateTick.getNameDimensions().getWidth())-2,(int)y+(int)Math.ceil(preparedOrdinateTick.getNameDimensions().getHeight()/2d)-3);
+                        g2d.drawLine(ordinateLabelTextHeight+maxOrdinateWidth-1,(int)y,296,(int)y);
                     }
                     for(int i=measures.length-1;i>=0;i-=6)
                     {
-                        long time=measures[i].getDate().getTime();
-                        int xLeft=ordinateLabelTextHeight+maxOrdinateWidth;
-                        int xRight=295-10;
-                        int x=(int)((double)(xRight-xLeft)*(1d-(double)(xMax-time)/(double)xAmplitude))+xLeft;
+                        double x=measurePoints.get(i).getX();
                         String timeString=SimpleDateFormat.getTimeInstance(DateFormat.SHORT).format(measures[i].getDate());
                         int timeStringWidth=(int)Math.ceil(baseFont.getStringBounds(timeString,g2d.getFontRenderContext()).getWidth());
-                        g2d.drawString(timeString,x-(i==measures.length-1?timeStringWidth-10:timeStringWidth/2),128);
-                        g2d.drawLine(x,128-ordinateLabelTextHeight+5,x,0);
+                        g2d.drawString(timeString,(int)x-(i==measures.length-1?timeStringWidth-10:timeStringWidth/2),128);
+                        g2d.drawLine((int)x,128-ordinateLabelTextHeight+5,(int)x,0);
                     }
                     g2d.setStroke(new BasicStroke());
-                    for(int i=1;i<measures.length;i++)
+                    for(int i=0;i<measures.length;i++)
                     {
-                        Measure measure1=measures[i-1];
-                        long time1=measure1.getDate().getTime();
-                        int xLeft=ordinateLabelTextHeight+maxOrdinateWidth;
-                        int xRight=295-10;
-                        int x1=(int)((double)(xRight-xLeft)*(1d-(double)(xMax-time1)/(double)xAmplitude))+xLeft;
-                        double value1=measure1.getValue();
-                        int yTop=0;
-                        int yBottom=128-ordinateLabelTextHeight+3;
-                        int y1=(int)((double)(yBottom-yTop)*(1d-(value1-yMin)/yAmplitude))+yTop;
-                        Measure measure2=measures[i];
-                        long time2=measure2.getDate().getTime();
-                        int x2=(int)((double)(xRight-xLeft)*(1d-(double)(xMax-time2)/(double)xAmplitude))+xLeft;
-                        double value2=measure2.getValue();
-                        int y2=(int)((double)(yBottom-yTop)*(1d-(value2-yMin)/yAmplitude))+yTop;
-                        g2d.drawLine(x1,y1,x2,y2);
-                        g2d.drawOval(x1-2,y1-2,4,4);
-                        if(i==measures.length-1)
-                            g2d.drawOval(x2-2,y2-2,4,4);
+                        double x=measurePoints.get(i).getX();
+                        double y=measurePoints.get(i).getY();
+                        g2d.drawOval((int)x-2,(int)y-2,4,4);
+                    }
+                    if(measures.length==2)
+                    {
+                        double x1=measurePoints.get(0).getX();
+                        double y1=measurePoints.get(0).getY();
+                        double x2=measurePoints.get(1).getX();
+                        double y2=measurePoints.get(1).getY();
+                        g2d.drawLine((int)x1,(int)y1,(int)x2,(int)y2);
+                    }
+                    else//construction de la spline
+                    {
+                        Path2D path=new Path2D.Double();
+                        int np=measures.length; // number of points
+                        double[] d=new double[np]; // Newton form coefficients
+                        double[] x=new double[np]; // x-coordinates of nodes
+                        double y;
+                        double t;
+                        double oldy=0d;
+                        double oldt=0d;
+
+                        double[] a=new double[np];
+                        double t1;
+                        double t2;
+                        double[] h=new double[np];
+
+                        for(int i=0;i<np;i++)
+                        {
+                            x[i]=measurePoints.get(i).getX();
+                            d[i]=measurePoints.get(i).getY();
+                        }
+
+                        for(int i=1;i<=np-1;i++)
+                            h[i]=x[i]-x[i-1];
+                        double[] sub=new double[np-1];
+                        double[] diag=new double[np-1];
+                        double[] sup=new double[np-1];
+
+                        for(int i=1;i<=np-2;i++)
+                        {
+                            diag[i]=(h[i]+h[i+1])/3d;
+                            sup[i]=h[i+1]/6d;
+                            sub[i]=h[i]/6d;
+                            a[i]=(d[i+1]-d[i])/h[i+1]-(d[i]-d[i-1])/h[i];
+                        }
+                        solveTridiag(sub,diag,sup,a,np-2);
+
+                        // note that a[0]=a[np-1]=0
+                        // draw
+                        oldt=x[0];
+                        oldy=d[0];
+                        int precision=5;
+                        path.moveTo((int)oldt,(int)oldy);
+                        for(int i=1;i<=np-1;i++)
+                        {
+                            // loop over intervals between nodes
+                            for(int j=1;j<=precision;j++)
+                            {
+                                t1=(h[i]*j)/precision;
+                                t2=h[i]-t1;
+                                y=((-a[i-1]/6d*(t2+h[i])*t1+d[i-1])*t2+(-a[i]/6d*(t1+h[i])*t2+d[i])*t1)/h[i];
+                                t=x[i-1]+t1;
+                                path.lineTo((int)t,(int)y);
+                                oldt=t;
+                                oldy=y;
+                            }
+                        }
+                        g2d.draw(path);
                     }
                 }
 
@@ -224,6 +288,29 @@ public abstract class AbstractNetatmoCurvePage extends AbstractNetatmoPage
             }
         }
         return this;
+    }
+
+    private static void solveTridiag(double[] sub,double[] diag,double[] sup,double[] b,int n)
+    {
+/*      solve linear system with tridiagonal n by n matrix a
+        using Gaussian elimination *without* pivoting
+        where   a(i,i-1) = sub[i]  for 2<=i<=n
+        a(i,i)   = diag[i] for 1<=i<=n
+        a(i,i+1) = sup[i]  for 1<=i<=n-1
+        (the values sub[1], sup[n] are ignored)
+        right hand side vector b[1:n] is overwritten with solution
+        NOTE: 1...n is used in all arrays, 0 is unused */
+        int i;
+/*                  factorization and forward substitution */
+        for(i=2;i<=n;i++)
+        {
+            sub[i]=sub[i]/diag[i-1];
+            diag[i]=diag[i]-sub[i]*sup[i-1];
+            b[i]=b[i]-sub[i]*b[i-1];
+        }
+        b[n]=b[n]/diag[n];
+        for(i=n-1;i>=1;i--)
+            b[i]=(b[i]-sup[i]*b[i+1])/diag[i];
     }
 
     protected abstract long getRefreshDelay();
@@ -265,6 +352,18 @@ public abstract class AbstractNetatmoCurvePage extends AbstractNetatmoPage
         private Rectangle2D getNameDimensions()
         {
             return nameDimensions;
+        }
+    }
+
+    private static class ControlPoint extends Point2D.Double
+    {
+        public ControlPoint()
+        {
+        }
+
+        public ControlPoint(double x,double y)
+        {
+            super(x,y);
         }
     }
 
