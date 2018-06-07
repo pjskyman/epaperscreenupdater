@@ -16,7 +16,7 @@ public class JardinHumidityCurvePage extends AbstractNetatmoCurvePage
 
     protected long getRefreshDelay()
     {
-        return Duration.of(9).minutePlus(5).second();
+        return Duration.of(1).minutePlus(5).second();
     }
 
     protected String getMeasureMapKey()

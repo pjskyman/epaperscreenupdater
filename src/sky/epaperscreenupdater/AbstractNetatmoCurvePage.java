@@ -100,7 +100,7 @@ public abstract class AbstractNetatmoCurvePage extends AbstractNetatmoPage
             lastRefreshTime=now;
             Map<String,Measure[]> measureMap=getLastMeasures();
             Measure[] rawMeasures=measureMap.get(getMeasureMapKey());
-            Measure[] measures=HomeWeatherVariationPage.filterTimedWindowMeasures(rawMeasures,2);
+            Measure[] measures=HomeWeatherVariationPage.filterTimedWindowMeasures(rawMeasures,3);
             try
             {
                 BufferedImage sourceImage=new BufferedImage(296,128,BufferedImage.TYPE_INT_ARGB_PRE);
@@ -137,11 +137,17 @@ public abstract class AbstractNetatmoCurvePage extends AbstractNetatmoPage
                         yAmplitude=1d;
                         yMax=yMin+1d;
                     }
+                    yMin-=yAmplitude/20d;
+                    yMax+=yAmplitude/20d;
+                    yAmplitude=yMax-yMin;
+                    long xMin=measures[0].getDate().getTime();
+                    long xMax=measures[measures.length-1].getDate().getTime();
+                    long xAmplitude=xMax-xMin;
                     double choosenTickOffset=0d;
                     for(int index=0;index<TICK_OFFSETS.length;index++)
                     {
                         choosenTickOffset=TICK_OFFSETS[index];
-                        if((128d-(double)ordinateLabelTextHeight+3d)*choosenTickOffset/yAmplitude>=20d)//ordinateLabelTextHeight représente aussi la hauteur des futurs libellés en abscisse, donc on peut l'utiliser
+                        if((128d-(double)ordinateLabelTextHeight+3d)*choosenTickOffset/yAmplitude>=20d)
                             break;
                     }
                     int unitMin=(int)Math.ceil(yMin/choosenTickOffset);
@@ -156,24 +162,28 @@ public abstract class AbstractNetatmoCurvePage extends AbstractNetatmoPage
                     for(PreparedTick preparedOrdinateTick:preparedOrdinateTicks)
                         if((int)Math.ceil(preparedOrdinateTick.getNameDimensions().getWidth())>maxOrdinateWidth)
                             maxOrdinateWidth=(int)Math.ceil(preparedOrdinateTick.getNameDimensions().getWidth());
-                    g2d.drawLine(ordinateLabelTextHeight+maxOrdinateWidth,0,ordinateLabelTextHeight+maxOrdinateWidth,128-ordinateLabelTextHeight+3);//ordinateLabelTextHeight représente aussi la hauteur des futurs libellés en abscisse, donc on peut l'utiliser
-                    g2d.drawLine(ordinateLabelTextHeight+maxOrdinateWidth,128-ordinateLabelTextHeight+3,296,128-ordinateLabelTextHeight+3);
+                    g2d.drawLine(ordinateLabelTextHeight+maxOrdinateWidth,0,ordinateLabelTextHeight+maxOrdinateWidth,128-ordinateLabelTextHeight+3);
+                    g2d.drawLine(ordinateLabelTextHeight+maxOrdinateWidth,128-ordinateLabelTextHeight+3,295,128-ordinateLabelTextHeight+3);
                     g2d.setFont(baseFont);
                     g2d.setStroke(new BasicStroke(1f,BasicStroke.CAP_BUTT,BasicStroke.JOIN_ROUND,1f,new float[]{1f,4f},0f));
                     for(PreparedTick preparedOrdinateTick:preparedOrdinateTicks)
                     {
                         double value=preparedOrdinateTick.getValue();
-                        int y=(int)((128d-(double)ordinateLabelTextHeight+2d)*(1d-(value-yMin)/yAmplitude))+1;
+                        int yTop=0;
+                        int yBottom=128-ordinateLabelTextHeight+3;
+                        int y=(int)((double)(yBottom-yTop)*(1d-(value-yMin)/yAmplitude))+yTop;
                         g2d.drawString(preparedOrdinateTick.getName(),ordinateLabelTextHeight+maxOrdinateWidth-(int)Math.ceil(preparedOrdinateTick.getNameDimensions().getWidth())-2,y+(int)Math.ceil(preparedOrdinateTick.getNameDimensions().getHeight()/2d)-3);
                         g2d.drawLine(ordinateLabelTextHeight+maxOrdinateWidth-1,y,296,y);
                     }
-                    for(int i=measures.length-1;i>=0;i-=5)
+                    for(int i=measures.length-1;i>=0;i-=6)
                     {
                         long time=measures[i].getDate().getTime();
-                        int x=(int)((296d-(double)ordinateLabelTextHeight-(double)maxOrdinateWidth+9d)*(1d-(double)((measures[measures.length-1].getDate().getTime()-time)/1000L)/7200d)+(double)ordinateLabelTextHeight+(double)maxOrdinateWidth-11d);
+                        int xLeft=ordinateLabelTextHeight+maxOrdinateWidth;
+                        int xRight=295-10;
+                        int x=(int)((double)(xRight-xLeft)*(1d-(double)(xMax-time)/(double)xAmplitude))+xLeft;
                         String timeString=SimpleDateFormat.getTimeInstance(DateFormat.SHORT).format(measures[i].getDate());
                         int timeStringWidth=(int)Math.ceil(baseFont.getStringBounds(timeString,g2d.getFontRenderContext()).getWidth());
-                        g2d.drawString(timeString,x-(i==measures.length-1?timeStringWidth-2:timeStringWidth/2),128);
+                        g2d.drawString(timeString,x-(i==measures.length-1?timeStringWidth-10:timeStringWidth/2),128);
                         g2d.drawLine(x,128-ordinateLabelTextHeight+5,x,0);
                     }
                     g2d.setStroke(new BasicStroke());
@@ -181,14 +191,18 @@ public abstract class AbstractNetatmoCurvePage extends AbstractNetatmoPage
                     {
                         Measure measure1=measures[i-1];
                         long time1=measure1.getDate().getTime();
-                        int x1=(int)((296d-(double)ordinateLabelTextHeight-(double)maxOrdinateWidth+9d)*(1d-(double)((measures[measures.length-1].getDate().getTime()-time1)/1000L)/7200d)+(double)ordinateLabelTextHeight+(double)maxOrdinateWidth-11d);
+                        int xLeft=ordinateLabelTextHeight+maxOrdinateWidth;
+                        int xRight=295-10;
+                        int x1=(int)((double)(xRight-xLeft)*(1d-(double)(xMax-time1)/(double)xAmplitude))+xLeft;
                         double value1=measure1.getValue();
-                        int y1=(int)((128d-(double)ordinateLabelTextHeight+2d)*(1d-(value1-yMin)/yAmplitude))+1;
+                        int yTop=0;
+                        int yBottom=128-ordinateLabelTextHeight+3;
+                        int y1=(int)((double)(yBottom-yTop)*(1d-(value1-yMin)/yAmplitude))+yTop;
                         Measure measure2=measures[i];
                         long time2=measure2.getDate().getTime();
-                        int x2=(int)((296d-(double)ordinateLabelTextHeight-(double)maxOrdinateWidth+9d)*(1d-(double)((measures[measures.length-1].getDate().getTime()-time2)/1000L)/7200d)+(double)ordinateLabelTextHeight+(double)maxOrdinateWidth-11d);
+                        int x2=(int)((double)(xRight-xLeft)*(1d-(double)(xMax-time2)/(double)xAmplitude))+xLeft;
                         double value2=measure2.getValue();
-                        int y2=(int)((128d-(double)ordinateLabelTextHeight+2d)*(1d-(value2-yMin)/yAmplitude))+1;
+                        int y2=(int)((double)(yBottom-yTop)*(1d-(value2-yMin)/yAmplitude))+yTop;
                         g2d.drawLine(x1,y1,x2,y2);
                         g2d.drawOval(x1-2,y1-2,4,4);
                         if(i==measures.length-1)

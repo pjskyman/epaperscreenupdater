@@ -16,7 +16,7 @@ public class SalleDeBainCarbonDioxydeCurvePage extends AbstractNetatmoCurvePage
 
     protected long getRefreshDelay()
     {
-        return Duration.of(9).minutePlus(32).second();
+        return Duration.of(1).minutePlus(32).second();
     }
 
     protected String getMeasureMapKey()

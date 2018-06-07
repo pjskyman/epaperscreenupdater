@@ -16,7 +16,7 @@ public class SousSolHumidityCurvePage extends AbstractNetatmoCurvePage
 
     protected long getRefreshDelay()
     {
-        return Duration.of(9).minutePlus(35).second();
+        return Duration.of(1).minutePlus(35).second();
     }
 
     protected String getMeasureMapKey()

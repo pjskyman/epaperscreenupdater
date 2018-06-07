@@ -16,7 +16,7 @@ public class ChambreHumidityCurvePage extends AbstractNetatmoCurvePage
 
     protected long getRefreshDelay()
     {
-        return Duration.of(9).minutePlus(20).second();
+        return Duration.of(1).minutePlus(20).second();
     }
 
     protected String getMeasureMapKey()

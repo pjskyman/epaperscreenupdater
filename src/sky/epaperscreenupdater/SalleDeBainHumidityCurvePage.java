@@ -16,7 +16,7 @@ public class SalleDeBainHumidityCurvePage extends AbstractNetatmoCurvePage
 
     protected long getRefreshDelay()
     {
-        return Duration.of(9).minutePlus(30).second();
+        return Duration.of(1).minutePlus(30).second();
     }
 
     protected String getMeasureMapKey()

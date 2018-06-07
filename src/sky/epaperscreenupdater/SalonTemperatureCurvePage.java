@@ -16,7 +16,7 @@ public class SalonTemperatureCurvePage extends AbstractNetatmoCurvePage
 
     protected long getRefreshDelay()
     {
-        return Duration.of(9).minutePlus(8).second();
+        return Duration.of(1).minutePlus(8).second();
     }
 
     protected String getMeasureMapKey()

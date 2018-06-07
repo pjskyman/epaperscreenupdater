@@ -16,7 +16,7 @@ public class ChambreTemperatureCurvePage extends AbstractNetatmoCurvePage
 
     protected long getRefreshDelay()
     {
-        return Duration.of(9).minutePlus(18).second();
+        return Duration.of(1).minutePlus(18).second();
     }
 
     protected String getMeasureMapKey()

@@ -82,7 +82,7 @@ public class InstantaneousConsumptionPage extends AbstractNetatmoPage
                 Map<String,Measure[]> lastMeasures=getLastMeasures();
                 Measure[] array=lastMeasures.get(JARDIN_TEMPERATURE);
                 Measure temperature=array!=null&&array.length>=1?array[array.length-1]:null;
-                array=lastMeasures.get(SALON_PRESSURE);
+                array=HomeWeatherVariationPage.filterTimedWindowMeasures(lastMeasures.get(SALON_PRESSURE),2);
                 Measure pressure=array!=null&&array.length>=1?array[array.length-1]:null;
                 PressureTendancy pressureTendancy=PressureTendancy.UNKNOWN;
                 if(array!=null&&array.length>=3)

@@ -16,7 +16,7 @@ public class PluviometreRainCurvePage extends AbstractNetatmoCurvePage
 
     protected long getRefreshDelay()
     {
-        return Duration.of(9).minutePlus(41).second();
+        return Duration.of(1).minutePlus(41).second();
     }
 
     protected String getMeasureMapKey()
