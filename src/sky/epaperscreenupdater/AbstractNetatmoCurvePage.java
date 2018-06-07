@@ -164,7 +164,7 @@ public abstract class AbstractNetatmoCurvePage extends AbstractNetatmoPage
                     for(PreparedTick preparedOrdinateTick:preparedOrdinateTicks)
                         if((int)Math.ceil(preparedOrdinateTick.getNameDimensions().getWidth())>maxOrdinateWidth)
                             maxOrdinateWidth=(int)Math.ceil(preparedOrdinateTick.getNameDimensions().getWidth());
-                    List<ControlPoint> measurePoints=new ArrayList<>(measures.length);
+                    List<Point2D> measurePoints=new ArrayList<>(measures.length);
                     for(Measure measure:measures)
                     {
                         long time=measure.getDate().getTime();
@@ -175,7 +175,7 @@ public abstract class AbstractNetatmoCurvePage extends AbstractNetatmoPage
                         int yTop=0;
                         int yBottom=128-ordinateLabelTextHeight+3;
                         double y=(double)(yBottom-yTop)*(1d-(value-yMin)/yAmplitude)+(double)yTop;
-                        measurePoints.add(new ControlPoint(x,y));
+                        measurePoints.add(new Point2D.Double(x,y));
                     }
                     g2d.drawLine(ordinateLabelTextHeight+maxOrdinateWidth,0,ordinateLabelTextHeight+maxOrdinateWidth,128-ordinateLabelTextHeight+3);
                     g2d.drawLine(ordinateLabelTextHeight+maxOrdinateWidth,128-ordinateLabelTextHeight+3,295,128-ordinateLabelTextHeight+3);
@@ -352,18 +352,6 @@ public abstract class AbstractNetatmoCurvePage extends AbstractNetatmoPage
         private Rectangle2D getNameDimensions()
         {
             return nameDimensions;
-        }
-    }
-
-    private static class ControlPoint extends Point2D.Double
-    {
-        public ControlPoint()
-        {
-        }
-
-        public ControlPoint(double x,double y)
-        {
-            super(x,y);
         }
     }
 
