@@ -17,6 +17,7 @@ public class WeatherMenuPage extends AbstractMenuPage
         subpages.add(new HourlyWeatherForecast5Page(this).potentiallyUpdate());
         subpages.add(new HourlyWeatherForecast6Page(this).potentiallyUpdate());
         subpages.add(new HourlyWeatherForecast7Page(this).potentiallyUpdate());
+        subpages.add(new CO2WeightPage(this).potentiallyUpdate());
     }
 
     public String getName()

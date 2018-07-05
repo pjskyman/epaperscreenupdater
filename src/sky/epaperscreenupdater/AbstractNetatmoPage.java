@@ -261,7 +261,41 @@ public abstract class AbstractNetatmoPage extends AbstractSinglePage
                 new StandAloneMeasure(new Date(now-Duration.of(1).minute()),MeasurementType.TEMPERATURE,24d),
             };
             lastJardinHumidities=new Measure[]{new StandAloneMeasure(new Date(now-Duration.of(1).hour()),MeasurementType.HUMIDITY,69d),new StandAloneMeasure(new Date(now),MeasurementType.HUMIDITY,66d)};
-            lastPluviometreRains=new Measure[]{new StandAloneMeasure(new Date(now-Duration.of(1).hour()),MeasurementType.RAIN,0d),new StandAloneMeasure(new Date(now),MeasurementType.RAIN,0d)};
+            lastPluviometreRains=new Measure[]
+            {
+                new StandAloneMeasure(new Date(now-Duration.of(181).minute()),MeasurementType.RAIN,.2d),
+                new StandAloneMeasure(new Date(now-Duration.of(179).minute()),MeasurementType.RAIN,.1d),
+                new StandAloneMeasure(new Date(now-Duration.of(169).minute()),MeasurementType.RAIN,.1d),
+                new StandAloneMeasure(new Date(now-Duration.of(158).minute()),MeasurementType.RAIN,.3d),
+                new StandAloneMeasure(new Date(now-Duration.of(148).minute()),MeasurementType.RAIN,.2d),
+                new StandAloneMeasure(new Date(now-Duration.of(137).minute()),MeasurementType.RAIN,.3d),
+                new StandAloneMeasure(new Date(now-Duration.of(127).minute()),MeasurementType.RAIN,.2d),
+                new StandAloneMeasure(new Date(now-Duration.of(121).minute()),MeasurementType.RAIN,.1d),
+                new StandAloneMeasure(new Date(now-Duration.of(116).minute()),MeasurementType.RAIN,.3d),
+                new StandAloneMeasure(new Date(now-Duration.of(111).minute()),MeasurementType.RAIN,.2d),
+                new StandAloneMeasure(new Date(now-Duration.of(106).minute()),MeasurementType.RAIN,0d),
+                new StandAloneMeasure(new Date(now-Duration.of(101).minute()),MeasurementType.RAIN,0d),
+                new StandAloneMeasure(new Date(now-Duration.of(96).minute()),MeasurementType.RAIN,.1d),
+                new StandAloneMeasure(new Date(now-Duration.of(91).minute()),MeasurementType.RAIN,.2d),
+                new StandAloneMeasure(new Date(now-Duration.of(86).minute()),MeasurementType.RAIN,.7d),
+                new StandAloneMeasure(new Date(now-Duration.of(81).minute()),MeasurementType.RAIN,.6d),
+                new StandAloneMeasure(new Date(now-Duration.of(76).minute()),MeasurementType.RAIN,.5d),
+                new StandAloneMeasure(new Date(now-Duration.of(71).minute()),MeasurementType.RAIN,.3d),
+                new StandAloneMeasure(new Date(now-Duration.of(66).minute()),MeasurementType.RAIN,.7d),
+                new StandAloneMeasure(new Date(now-Duration.of(61).minute()),MeasurementType.RAIN,.4d),
+                new StandAloneMeasure(new Date(now-Duration.of(56).minute()),MeasurementType.RAIN,.5d),
+                new StandAloneMeasure(new Date(now-Duration.of(51).minute()),MeasurementType.RAIN,.6d),
+                new StandAloneMeasure(new Date(now-Duration.of(46).minute()),MeasurementType.RAIN,.7d),
+                new StandAloneMeasure(new Date(now-Duration.of(41).minute()),MeasurementType.RAIN,1.1d),
+                new StandAloneMeasure(new Date(now-Duration.of(36).minute()),MeasurementType.RAIN,.7d),
+                new StandAloneMeasure(new Date(now-Duration.of(31).minute()),MeasurementType.RAIN,.7d),
+                new StandAloneMeasure(new Date(now-Duration.of(26).minute()),MeasurementType.RAIN,.3d),
+                new StandAloneMeasure(new Date(now-Duration.of(21).minute()),MeasurementType.RAIN,.2d),
+                new StandAloneMeasure(new Date(now-Duration.of(16).minute()),MeasurementType.RAIN,.4d),
+                new StandAloneMeasure(new Date(now-Duration.of(11).minute()),MeasurementType.RAIN,.7d),
+                new StandAloneMeasure(new Date(now-Duration.of(6).minute()),MeasurementType.RAIN,.5d),
+                new StandAloneMeasure(new Date(now-Duration.of(1).minute()),MeasurementType.RAIN,.1d),
+            };
             lastAnemometreWindStrengths=new Measure[]{new StandAloneMeasure(new Date(now-Duration.of(1).hour()),MeasurementType.WIND_STRENGTH,34d),new StandAloneMeasure(new Date(now),MeasurementType.WIND_STRENGTH,34d)};
             lastAnemometreWindAngles=new Measure[]{new StandAloneMeasure(new Date(now-Duration.of(1).hour()),MeasurementType.WIND_ANGLE,220d),new StandAloneMeasure(new Date(now),MeasurementType.WIND_ANGLE,220d)};
             lastAnemometreGustStrengths=new Measure[]{new StandAloneMeasure(new Date(now-Duration.of(1).hour()),MeasurementType.GUST_STRENGTH,43d),new StandAloneMeasure(new Date(now),MeasurementType.GUST_STRENGTH,43d)};

@@ -26,7 +26,7 @@ public class AnemometreWindCurvePage extends AbstractNetatmoCurvePage
 
     protected String getOrdinateLabelText()
     {
-        return "Raf. jardin (km/h)";
+        return "Vent jardin (km/h)";
     }
 
     protected String getVerificationFileName()

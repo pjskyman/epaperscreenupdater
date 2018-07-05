@@ -287,7 +287,7 @@ public class HomeWeatherPage extends AbstractNetatmoPage
         return this;
     }
 
-    private static Measure getLastMeasure(Map<String,Measure[]> lastMeasures,String type)
+    protected static Measure getLastMeasure(Map<String,Measure[]> lastMeasures,String type)
     {
         Measure[] array=lastMeasures.get(type);
         return array!=null&&array.length>=1?array[array.length-1]:null;

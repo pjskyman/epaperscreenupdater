@@ -101,8 +101,6 @@ public abstract class AbstractNetatmoCurvePage extends AbstractNetatmoPage
         {
             lastRefreshTime=now;
             Map<String,Measure[]> measureMap=getLastMeasures();
-            Measure[] rawMeasures=measureMap.get(getMeasureMapKey());
-            Measure[] measures=HomeWeatherVariationPage.filterTimedWindowMeasures(rawMeasures,3);
             try
             {
                 BufferedImage sourceImage=new BufferedImage(296,128,BufferedImage.TYPE_INT_ARGB_PRE);
@@ -115,164 +113,7 @@ public abstract class AbstractNetatmoCurvePage extends AbstractNetatmoPage
                 g2d.setFont(baseFont);
                 Font verticalBaseFont=baseFont.deriveFont(AffineTransform.getQuadrantRotateInstance(-1));
 
-                if(measures!=null)
-                {
-                    String ordinateLabelText=getOrdinateLabelText();
-                    int ordinateLabelTextWidth=(int)Math.ceil(baseFont.getStringBounds(ordinateLabelText,g2d.getFontRenderContext()).getWidth());
-                    int ordinateLabelTextHeight=(int)Math.ceil(baseFont.getStringBounds(ordinateLabelText,g2d.getFontRenderContext()).getHeight());
-                    g2d.setFont(verticalBaseFont);
-                    g2d.drawString(ordinateLabelText,ordinateLabelTextHeight-5,(128-ordinateLabelTextHeight+3)/2+ordinateLabelTextWidth/2);
-                    double yMin=1e10d;
-                    double yMax=-1e10d;
-                    for(Measure measure:measures)
-                    {
-                        if(measure.getValue()<yMin)
-                            yMin=measure.getValue();
-                        if(measure.getValue()>yMax)
-                            yMax=measure.getValue();
-                    }
-                    double yAmplitude=yMax-yMin;
-                    if(yAmplitude<=0d)
-                    {
-                        if(yMin==1e10d)
-                            yMin=0d;
-                        yAmplitude=1d;
-                        yMax=yMin+1d;
-                    }
-                    yMin-=yAmplitude/20d;
-                    yMax+=yAmplitude/20d;
-                    yAmplitude=yMax-yMin;
-                    long xMin=measures[0].getDate().getTime();
-                    long xMax=measures[measures.length-1].getDate().getTime();
-                    long xAmplitude=xMax-xMin;
-                    double choosenTickOffset=0d;
-                    for(int index=0;index<TICK_OFFSETS.length;index++)
-                    {
-                        choosenTickOffset=TICK_OFFSETS[index];
-                        if((128d-(double)ordinateLabelTextHeight+3d)*choosenTickOffset/yAmplitude>=20d)
-                            break;
-                    }
-                    int unitMin=(int)Math.ceil(yMin/choosenTickOffset);
-                    int unitMax=(int)Math.floor(yMax/choosenTickOffset);
-                    double[] ticks=new double[(unitMax-unitMin)+1];
-                    for(int i=unitMin;i<=unitMax;i++)
-                        ticks[i-unitMin]=choosenTickOffset*(double)i;
-                    List<PreparedTick> preparedOrdinateTicks=new ArrayList<>();
-                    for(double tick:ticks)
-                        preparedOrdinateTicks.add(new PreparedTick(tick,g2d.getFont(),g2d.getFontRenderContext()));
-                    int maxOrdinateWidth=0;
-                    for(PreparedTick preparedOrdinateTick:preparedOrdinateTicks)
-                        if((int)Math.ceil(preparedOrdinateTick.getNameDimensions().getWidth())>maxOrdinateWidth)
-                            maxOrdinateWidth=(int)Math.ceil(preparedOrdinateTick.getNameDimensions().getWidth());
-                    List<Point2D> measurePoints=new ArrayList<>(measures.length);
-                    for(Measure measure:measures)
-                    {
-                        long time=measure.getDate().getTime();
-                        int xLeft=ordinateLabelTextHeight+maxOrdinateWidth;
-                        int xRight=295-10;
-                        double x=(double)(xRight-xLeft)*(1d-(double)(xMax-time)/(double)xAmplitude)+(double)xLeft;
-                        double value=measure.getValue();
-                        int yTop=0;
-                        int yBottom=128-ordinateLabelTextHeight+3;
-                        double y=(double)(yBottom-yTop)*(1d-(value-yMin)/yAmplitude)+(double)yTop;
-                        measurePoints.add(new Point2D.Double(x,y));
-                    }
-                    g2d.drawLine(ordinateLabelTextHeight+maxOrdinateWidth,0,ordinateLabelTextHeight+maxOrdinateWidth,128-ordinateLabelTextHeight+3);
-                    g2d.drawLine(ordinateLabelTextHeight+maxOrdinateWidth,128-ordinateLabelTextHeight+3,295,128-ordinateLabelTextHeight+3);
-                    g2d.setFont(baseFont);
-                    g2d.setStroke(new BasicStroke(1f,BasicStroke.CAP_BUTT,BasicStroke.JOIN_ROUND,1f,new float[]{1f,4f},0f));
-                    for(PreparedTick preparedOrdinateTick:preparedOrdinateTicks)
-                    {
-                        double value=preparedOrdinateTick.getValue();
-                        int yTop=0;
-                        int yBottom=128-ordinateLabelTextHeight+3;
-                        double y=(double)(yBottom-yTop)*(1d-(value-yMin)/yAmplitude)+(double)yTop;
-                        g2d.drawString(preparedOrdinateTick.getName(),ordinateLabelTextHeight+maxOrdinateWidth-(int)Math.ceil(preparedOrdinateTick.getNameDimensions().getWidth())-2,(int)y+(int)Math.ceil(preparedOrdinateTick.getNameDimensions().getHeight()/2d)-3);
-                        g2d.drawLine(ordinateLabelTextHeight+maxOrdinateWidth-1,(int)y,296,(int)y);
-                    }
-                    for(int i=measures.length-1;i>=0;i-=6)
-                    {
-                        double x=measurePoints.get(i).getX();
-                        String timeString=SimpleDateFormat.getTimeInstance(DateFormat.SHORT).format(measures[i].getDate());
-                        int timeStringWidth=(int)Math.ceil(baseFont.getStringBounds(timeString,g2d.getFontRenderContext()).getWidth());
-                        g2d.drawString(timeString,(int)x-(i==measures.length-1?timeStringWidth-10:timeStringWidth/2),128);
-                        g2d.drawLine((int)x,128-ordinateLabelTextHeight+5,(int)x,0);
-                    }
-                    g2d.setStroke(new BasicStroke());
-                    for(int i=0;i<measures.length;i++)
-                    {
-                        double x=measurePoints.get(i).getX();
-                        double y=measurePoints.get(i).getY();
-                        g2d.drawOval((int)x-2,(int)y-2,4,4);
-                    }
-                    if(measures.length==2)
-                    {
-                        double x1=measurePoints.get(0).getX();
-                        double y1=measurePoints.get(0).getY();
-                        double x2=measurePoints.get(1).getX();
-                        double y2=measurePoints.get(1).getY();
-                        g2d.drawLine((int)x1,(int)y1,(int)x2,(int)y2);
-                    }
-                    else//construction de la spline
-                    {
-                        Path2D path=new Path2D.Double();
-                        int np=measures.length; // number of points
-                        double[] d=new double[np]; // Newton form coefficients
-                        double[] x=new double[np]; // x-coordinates of nodes
-                        double y;
-                        double t;
-                        double oldy=0d;
-                        double oldt=0d;
-
-                        double[] a=new double[np];
-                        double t1;
-                        double t2;
-                        double[] h=new double[np];
-
-                        for(int i=0;i<np;i++)
-                        {
-                            x[i]=measurePoints.get(i).getX();
-                            d[i]=measurePoints.get(i).getY();
-                        }
-
-                        for(int i=1;i<=np-1;i++)
-                            h[i]=x[i]-x[i-1];
-                        double[] sub=new double[np-1];
-                        double[] diag=new double[np-1];
-                        double[] sup=new double[np-1];
-
-                        for(int i=1;i<=np-2;i++)
-                        {
-                            diag[i]=(h[i]+h[i+1])/3d;
-                            sup[i]=h[i+1]/6d;
-                            sub[i]=h[i]/6d;
-                            a[i]=(d[i+1]-d[i])/h[i+1]-(d[i]-d[i-1])/h[i];
-                        }
-                        solveTridiag(sub,diag,sup,a,np-2);
-
-                        // note that a[0]=a[np-1]=0
-                        // draw
-                        oldt=x[0];
-                        oldy=d[0];
-                        int precision=5;
-                        path.moveTo((int)oldt,(int)oldy);
-                        for(int i=1;i<=np-1;i++)
-                        {
-                            // loop over intervals between nodes
-                            for(int j=1;j<=precision;j++)
-                            {
-                                t1=(h[i]*j)/precision;
-                                t2=h[i]-t1;
-                                y=((-a[i-1]/6d*(t2+h[i])*t1+d[i-1])*t2+(-a[i]/6d*(t1+h[i])*t2+d[i])*t1)/h[i];
-                                t=x[i-1]+t1;
-                                path.lineTo((int)t,(int)y);
-                                oldt=t;
-                                oldy=y;
-                            }
-                        }
-                        g2d.draw(path);
-                    }
-                }
+                drawChart(measureMap,baseFont,verticalBaseFont,g2d);
 
                 g2d.dispose();
 //                try(OutputStream outputStream=new FileOutputStream(new File(getVerificationFileName())))
@@ -288,6 +129,185 @@ public abstract class AbstractNetatmoCurvePage extends AbstractNetatmoPage
             }
         }
         return this;
+    }
+
+    protected void drawChart(Map<String,Measure[]> measureMap,Font baseFont,Font verticalBaseFont,Graphics2D g2d)
+    {
+        Measure[] rawMeasures=measureMap.get(getMeasureMapKey());
+        Measure[] measures=HomeWeatherVariationPage.filterTimedWindowMeasures(rawMeasures,3);
+        if(measures!=null)
+        {
+            String ordinateLabelText=getOrdinateLabelText();
+            int ordinateLabelTextWidth=(int)Math.ceil(baseFont.getStringBounds(ordinateLabelText,g2d.getFontRenderContext()).getWidth());
+            int ordinateLabelTextHeight=(int)Math.ceil(baseFont.getStringBounds(ordinateLabelText,g2d.getFontRenderContext()).getHeight());
+            g2d.setFont(verticalBaseFont);
+            g2d.drawString(ordinateLabelText,ordinateLabelTextHeight-5,(128-ordinateLabelTextHeight+3)/2+ordinateLabelTextWidth/2);
+            XRange xRange=computeXRange(measures);
+            YRange yRange=computeYRange(measures);
+            double choosenTickOffset=0d;
+            for(int index=0;index<TICK_OFFSETS.length;index++)
+            {
+                choosenTickOffset=TICK_OFFSETS[index];
+                if((128d-(double)ordinateLabelTextHeight+3d)*choosenTickOffset/yRange.getAmplitude()>=14d)
+                    break;
+            }
+            int unitMin=(int)Math.ceil(yRange.getMin()/choosenTickOffset);
+            int unitMax=(int)Math.floor(yRange.getMax()/choosenTickOffset);
+            double[] ticks=new double[(unitMax-unitMin)+1];
+            for(int i=unitMin;i<=unitMax;i++)
+                ticks[i-unitMin]=choosenTickOffset*(double)i;
+            List<PreparedTick> preparedOrdinateTicks=new ArrayList<>();
+            for(double tick:ticks)
+                preparedOrdinateTicks.add(new PreparedTick(tick,g2d.getFont(),g2d.getFontRenderContext()));
+            int maxOrdinateWidth=0;
+            for(PreparedTick preparedOrdinateTick:preparedOrdinateTicks)
+                if((int)Math.ceil(preparedOrdinateTick.getNameDimensions().getWidth())>maxOrdinateWidth)
+                    maxOrdinateWidth=(int)Math.ceil(preparedOrdinateTick.getNameDimensions().getWidth());
+            List<Point2D> measurePoints=new ArrayList<>(measures.length);
+            for(Measure measure:measures)
+            {
+                long time=measure.getDate().getTime();
+                int xLeft=ordinateLabelTextHeight+maxOrdinateWidth;
+                int xRight=295-10;
+                double x=(double)(xRight-xLeft)*(1d-(double)(xRange.getMax()-time)/(double)xRange.getAmplitude())+(double)xLeft;
+                double value=measure.getValue();
+                int yTop=0;
+                int yBottom=128-ordinateLabelTextHeight+3;
+                double y=(double)(yBottom-yTop)*(1d-(value-yRange.getMin())/yRange.getAmplitude())+(double)yTop;
+                measurePoints.add(new Point2D.Double(x,y));
+            }
+            g2d.drawLine(ordinateLabelTextHeight+maxOrdinateWidth,0,ordinateLabelTextHeight+maxOrdinateWidth,128-ordinateLabelTextHeight+3);
+            g2d.drawLine(ordinateLabelTextHeight+maxOrdinateWidth,128-ordinateLabelTextHeight+3,295,128-ordinateLabelTextHeight+3);
+            g2d.setFont(baseFont);
+            g2d.setStroke(new BasicStroke(1f,BasicStroke.CAP_BUTT,BasicStroke.JOIN_ROUND,1f,new float[]{1f,4f},0f));
+            for(PreparedTick preparedOrdinateTick:preparedOrdinateTicks)
+            {
+                double value=preparedOrdinateTick.getValue();
+                int yTop=0;
+                int yBottom=128-ordinateLabelTextHeight+3;
+                double y=(double)(yBottom-yTop)*(1d-(value-yRange.getMin())/yRange.getAmplitude())+(double)yTop;
+                g2d.drawString(preparedOrdinateTick.getName(),ordinateLabelTextHeight+maxOrdinateWidth-(int)Math.ceil(preparedOrdinateTick.getNameDimensions().getWidth())-2,(int)y+(int)Math.ceil(preparedOrdinateTick.getNameDimensions().getHeight()/2d)-3);
+                g2d.drawLine(ordinateLabelTextHeight+maxOrdinateWidth-1,(int)y,296,(int)y);
+            }
+            for(int i=measures.length-1;i>=0;i-=6)
+            {
+                double x=measurePoints.get(i).getX();
+                String timeString=SimpleDateFormat.getTimeInstance(DateFormat.SHORT).format(measures[i].getDate());
+                int timeStringWidth=(int)Math.ceil(baseFont.getStringBounds(timeString,g2d.getFontRenderContext()).getWidth());
+                g2d.drawString(timeString,(int)x-(i==measures.length-1?timeStringWidth-10:timeStringWidth/2),128);
+                g2d.drawLine((int)x,128-ordinateLabelTextHeight+5,(int)x,0);
+            }
+            g2d.setStroke(new BasicStroke());
+            drawData(g2d,measures,measurePoints,ordinateLabelTextHeight);
+        }
+    }
+
+    protected XRange computeXRange(Measure[] measures)
+    {
+        long xMin=measures[0].getDate().getTime();
+        long xMax=measures[measures.length-1].getDate().getTime();
+        return new XRange(xMin,xMax);
+    }
+
+    protected YRange computeYRange(Measure[] measures)
+    {
+        double yMin=1e10d;
+        double yMax=-1e10d;
+        for(Measure measure:measures)
+        {
+            if(measure.getValue()<yMin)
+                yMin=measure.getValue();
+            if(measure.getValue()>yMax)
+                yMax=measure.getValue();
+        }
+        double yAmplitude=yMax-yMin;
+        if(yAmplitude<=0d)
+        {
+            if(yMin==1e10d)
+                yMin=0d;
+            yAmplitude=1d;
+            yMax=yMin+1d;
+        }
+        yMin-=yAmplitude/20d;
+        yMax+=yAmplitude/20d;
+        return new YRange(yMin,yMax);
+    }
+
+    protected void drawData(Graphics2D g2d,Measure[] measures,List<Point2D> measurePoints,int ordinateLabelTextHeight)
+    {
+        for(int i=0;i<measures.length;i++)
+        {
+            double x=measurePoints.get(i).getX();
+            double y=measurePoints.get(i).getY();
+            g2d.drawOval((int)x-2,(int)y-2,4,4);
+        }
+        if(measures.length==2)
+        {
+            double x1=measurePoints.get(0).getX();
+            double y1=measurePoints.get(0).getY();
+            double x2=measurePoints.get(1).getX();
+            double y2=measurePoints.get(1).getY();
+            g2d.drawLine((int)x1,(int)y1,(int)x2,(int)y2);
+        }
+        else//construction de la spline
+        {
+            Path2D path=new Path2D.Double();
+            int np=measures.length; // number of points
+            double[] d=new double[np]; // Newton form coefficients
+            double[] x=new double[np]; // x-coordinates of nodes
+            double y;
+            double t;
+            double oldy=0d;
+            double oldt=0d;
+
+            double[] a=new double[np];
+            double t1;
+            double t2;
+            double[] h=new double[np];
+
+            for(int i=0;i<np;i++)
+            {
+                x[i]=measurePoints.get(i).getX();
+                d[i]=measurePoints.get(i).getY();
+            }
+
+            for(int i=1;i<=np-1;i++)
+                h[i]=x[i]-x[i-1];
+            double[] sub=new double[np-1];
+            double[] diag=new double[np-1];
+            double[] sup=new double[np-1];
+
+            for(int i=1;i<=np-2;i++)
+            {
+                diag[i]=(h[i]+h[i+1])/3d;
+                sup[i]=h[i+1]/6d;
+                sub[i]=h[i]/6d;
+                a[i]=(d[i+1]-d[i])/h[i+1]-(d[i]-d[i-1])/h[i];
+            }
+            solveTridiag(sub,diag,sup,a,np-2);
+
+            // note that a[0]=a[np-1]=0
+            // draw
+            oldt=x[0];
+            oldy=d[0];
+            int precision=5;
+            path.moveTo((int)oldt,(int)oldy);
+            for(int i=1;i<=np-1;i++)
+            {
+                // loop over intervals between nodes
+                for(int j=1;j<=precision;j++)
+                {
+                    t1=(h[i]*j)/precision;
+                    t2=h[i]-t1;
+                    y=((-a[i-1]/6d*(t2+h[i])*t1+d[i-1])*t2+(-a[i]/6d*(t1+h[i])*t2+d[i])*t1)/h[i];
+                    t=x[i-1]+t1;
+                    path.lineTo((int)t,(int)y);
+                    oldt=t;
+                    oldy=y;
+                }
+            }
+            g2d.draw(path);
+        }
     }
 
     private static void solveTridiag(double[] sub,double[] diag,double[] sup,double[] b,int n)
@@ -357,6 +377,6 @@ public abstract class AbstractNetatmoCurvePage extends AbstractNetatmoPage
 
     public static void main(String[] args)
     {
-        JardinTemperatureCurvePage.main(args);
+        PluviometreRainCurvePage.main(args);
     }
 }
