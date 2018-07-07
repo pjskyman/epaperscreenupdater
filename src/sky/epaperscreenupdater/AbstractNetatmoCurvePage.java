@@ -232,10 +232,18 @@ public abstract class AbstractNetatmoCurvePage extends AbstractNetatmoPage
             yAmplitude=1d;
             yMax=yMin+1d;
         }
-        yMin-=yAmplitude/20d;
-        yMax+=yAmplitude/20d;
+        else
+            if(yAmplitude<getMinimalYRange())
+            {
+                yMin-=(getMinimalYRange()-yAmplitude)/2d;
+                yMax+=(getMinimalYRange()-yAmplitude)/2d;
+            }
+        yMin-=yAmplitude/15d;
+        yMax+=yAmplitude/15d;
         return new YRange(yMin,yMax);
     }
+
+    protected abstract double getMinimalYRange();
 
     protected void drawData(Graphics2D g2d,Measure[] measures,List<Point2D> measurePoints,int ordinateLabelTextHeight)
     {

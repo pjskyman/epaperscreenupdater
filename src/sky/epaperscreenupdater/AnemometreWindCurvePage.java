@@ -44,9 +44,9 @@ public class AnemometreWindCurvePage extends AbstractNetatmoCurvePage
         return "courbeaw.png";
     }
 
-    public static void main(String[] args)
+    protected double getMinimalYRange()
     {
-        new AnemometreWindCurvePage(null).potentiallyUpdate();
+        return 10d;
     }
 
     @Override
@@ -141,5 +141,10 @@ public class AnemometreWindCurvePage extends AbstractNetatmoCurvePage
             drawData(g2d,measures1,measurePoints1,ordinateLabelTextHeight);
             drawData(g2d,measures2,measurePoints2,ordinateLabelTextHeight);
         }
+    }
+
+    public static void main(String[] args)
+    {
+        new AnemometreWindCurvePage(null).potentiallyUpdate();
     }
 }
