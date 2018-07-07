@@ -73,7 +73,7 @@ public abstract class AbstractNetatmoPage extends AbstractSinglePage
     protected static final String ANEMOMETRE_MAX_GUST_STRENGTH="anemometreMaxGustStrength";
     protected static final String ANEMOMETRE_MAX_GUST_ANGLE="anemometreMaxGustAngle";
     private static final Comparator<Measure> MEASURE_COMPARATOR=(o1,o2)->Long.compare(o1.getDate().getTime(),o2.getDate().getTime());
-    protected static final boolean NETATMO_ENABLED=false;
+    protected static final boolean NETATMO_ENABLED=true;
 
     protected AbstractNetatmoPage(Page parentPage)
     {

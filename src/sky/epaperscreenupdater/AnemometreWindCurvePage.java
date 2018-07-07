@@ -3,10 +3,13 @@ package sky.epaperscreenupdater;
 import java.awt.BasicStroke;
 import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.AbstractList;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import sky.netatmo.Measure;
@@ -50,6 +53,37 @@ public class AnemometreWindCurvePage extends AbstractNetatmoCurvePage
     }
 
     @Override
+    protected YRange computeYRange(Measure[] measures)
+    {
+        double yMin=1e10d;
+        double yMax=-1e10d;
+        for(Measure measure:measures)
+        {
+            if(measure.getValue()<yMin)
+                yMin=measure.getValue();
+            if(measure.getValue()>yMax)
+                yMax=measure.getValue();
+        }
+        double yAmplitude=yMax-yMin;
+        if(yAmplitude<=0d)
+        {
+            if(yMin==1e10d)
+                yMin=0d;
+            yAmplitude=1d;
+            yMax=yMin+1d;
+        }
+        else
+            if(yAmplitude<getMinimalYRange())
+            {
+                yMin-=(getMinimalYRange()-yAmplitude)/2d;
+                yMax+=(getMinimalYRange()-yAmplitude)/2d;
+            }
+        yMin-=yAmplitude/15d;
+        yMax+=yAmplitude/2.5d;
+        return new YRange(yMin,yMax);
+    }
+
+    @Override
     protected void drawChart(Map<String,Measure[]> measureMap,Font baseFont,Font verticalBaseFont,Graphics2D g2d)
     {
         Measure[] rawMeasures1=measureMap.get(ANEMOMETRE_WIND_STRENGTH);
@@ -90,31 +124,27 @@ public class AnemometreWindCurvePage extends AbstractNetatmoCurvePage
             for(PreparedTick preparedOrdinateTick:preparedOrdinateTicks)
                 if((int)Math.ceil(preparedOrdinateTick.getNameDimensions().getWidth())>maxOrdinateWidth)
                     maxOrdinateWidth=(int)Math.ceil(preparedOrdinateTick.getNameDimensions().getWidth());
-            List<Point2D> measurePoints1=new ArrayList<>(measures1.length);
-            for(Measure measure:measures1)
+            Wind[] winds=new Wind[measures1.length];
+            for(int i=0;i<winds.length;i++)
             {
-                long time=measure.getDate().getTime();
+                long time=measures1[i].getDate().getTime();
                 int xLeft=ordinateLabelTextHeight+maxOrdinateWidth;
                 int xRight=295-10;
                 double x=(double)(xRight-xLeft)*(1d-(double)(xRange.getMax()-time)/(double)xRange.getAmplitude())+(double)xLeft;
-                double value=measure.getValue();
+                double value=measures1[i].getValue();
                 int yTop=0;
                 int yBottom=128-ordinateLabelTextHeight+3;
-                double y=(double)(yBottom-yTop)*(1d-(value-yRange.getMin())/yRange.getAmplitude())+(double)yTop;
-                measurePoints1.add(new Point2D.Double(x,y));
-            }
-            List<Point2D> measurePoints2=new ArrayList<>(measures1.length);
-            for(Measure measure:measures2)
-            {
-                long time=measure.getDate().getTime();
-                int xLeft=ordinateLabelTextHeight+maxOrdinateWidth;
-                int xRight=295-10;
-                double x=(double)(xRight-xLeft)*(1d-(double)(xRange.getMax()-time)/(double)xRange.getAmplitude())+(double)xLeft;
-                double value=measure.getValue();
-                int yTop=0;
-                int yBottom=128-ordinateLabelTextHeight+3;
-                double y=(double)(yBottom-yTop)*(1d-(value-yRange.getMin())/yRange.getAmplitude())+(double)yTop;
-                measurePoints2.add(new Point2D.Double(x,y));
+                double y1=(double)(yBottom-yTop)*(1d-(value-yRange.getMin())/yRange.getAmplitude())+(double)yTop;
+                value=measures2[i].getValue();
+                double y2=(double)(yBottom-yTop)*(1d-(value-yRange.getMin())/yRange.getAmplitude())+(double)yTop;
+                winds[i]=new Wind(measures1[i].getDate(),
+                        measures1[i].getValue(),
+                        angleMeasures1[i].getValue(),
+                        measures2[i].getValue(),
+                        angleMeasures2[i].getValue(),
+                        x,
+                        y1,
+                        y2);
             }
             g2d.drawLine(ordinateLabelTextHeight+maxOrdinateWidth,0,ordinateLabelTextHeight+maxOrdinateWidth,128-ordinateLabelTextHeight+3);
             g2d.drawLine(ordinateLabelTextHeight+maxOrdinateWidth,128-ordinateLabelTextHeight+3,295,128-ordinateLabelTextHeight+3);
@@ -129,22 +159,162 @@ public class AnemometreWindCurvePage extends AbstractNetatmoCurvePage
                 g2d.drawString(preparedOrdinateTick.getName(),ordinateLabelTextHeight+maxOrdinateWidth-(int)Math.ceil(preparedOrdinateTick.getNameDimensions().getWidth())-2,(int)y+(int)Math.ceil(preparedOrdinateTick.getNameDimensions().getHeight()/2d)-3);
                 g2d.drawLine(ordinateLabelTextHeight+maxOrdinateWidth-1,(int)y,296,(int)y);
             }
-            for(int i=measures1.length-1;i>=0;i-=6)
+            for(int i=winds.length-1;i>=0;i-=6)
             {
-                double x=measurePoints1.get(i).getX();
-                String timeString=SimpleDateFormat.getTimeInstance(DateFormat.SHORT).format(measures1[i].getDate());
+                double x=winds[i].getX();
+                String timeString=SimpleDateFormat.getTimeInstance(DateFormat.SHORT).format(winds[i].getTime());
                 int timeStringWidth=(int)Math.ceil(baseFont.getStringBounds(timeString,g2d.getFontRenderContext()).getWidth());
-                g2d.drawString(timeString,(int)x-(i==measures1.length-1?timeStringWidth-10:timeStringWidth/2),128);
+                g2d.drawString(timeString,(int)x-(i==winds.length-1?timeStringWidth-10:timeStringWidth/2),128);
                 g2d.drawLine((int)x,128-ordinateLabelTextHeight+5,(int)x,0);
             }
             g2d.setStroke(new BasicStroke());
-            drawData(g2d,measures1,measurePoints1,ordinateLabelTextHeight);
-            drawData(g2d,measures2,measurePoints2,ordinateLabelTextHeight);
+            drawData(g2d,measures1,new SpecialWindList(winds,false),ordinateLabelTextHeight);
+            drawData(g2d,measures2,new SpecialWindList(winds,true),ordinateLabelTextHeight);
+            for(int i=winds.length-1;i>=0;i-=4)
+            {
+                int j=Math.max(0,i-3);
+                Wind[] selectedWinds=new Wind[i-j+1];
+                for(int k=0;k<selectedWinds.length;k++)
+                    selectedWinds[k]=winds[i-k];
+                double meanWind=0d;
+                for(Wind selectedWind:selectedWinds)
+                    meanWind+=selectedWind.getWind();
+                meanWind/=(double)selectedWinds.length;
+                if(meanWind<2d)
+                    continue;
+                double meanX=0d;
+                for(Wind selectedWind:selectedWinds)
+                    meanX+=selectedWind.getX();
+                meanX/=(double)selectedWinds.length;
+                if(meanX<38)
+                    continue;
+                double meanWindAngleX=0d;
+                double meanWindAngleY=0d;
+                for(Wind selectedWind:selectedWinds)
+                {
+                    meanWindAngleX+=Math.sin(selectedWind.getWindAngle()*Math.PI/180d);
+                    meanWindAngleY+=Math.cos(selectedWind.getWindAngle()*Math.PI/180d);
+                }
+                double meanWindAngle=90d-Math.atan2(meanWindAngleY,meanWindAngleX)*180d/Math.PI;
+                double y=10d;
+                g2d.setStroke(new BasicStroke(2.5f));
+                g2d.drawLine(
+                        (int)(meanX+Math.sin(meanWindAngle*Math.PI/180d)*8d),(int)(y-Math.cos(meanWindAngle*Math.PI/180d)*8d),
+                        (int)(meanX-Math.sin(meanWindAngle*Math.PI/180d)*6d),(int)(y+Math.cos(meanWindAngle*Math.PI/180d)*6d)
+                );
+                Path2D path=new Path2D.Double();
+                path.moveTo(meanX-Math.sin(meanWindAngle*Math.PI/180d)*10d,y+Math.cos((double)meanWindAngle*Math.PI/180d)*10d);
+                path.lineTo(meanX-Math.sin((meanWindAngle+90d)*Math.PI/180d)*5d,y+Math.cos((meanWindAngle+90d)*Math.PI/180d)*5d);
+                path.lineTo(meanX-Math.sin((meanWindAngle-90d)*Math.PI/180d)*5d,y+Math.cos((meanWindAngle-90d)*Math.PI/180d)*5d);
+                path.closePath();
+                g2d.fill(path);
+            }
         }
     }
 
     public static void main(String[] args)
     {
         new AnemometreWindCurvePage(null).potentiallyUpdate();
+    }
+
+    private static class Wind
+    {
+        private final Date time;
+        private final double wind;
+        private final double windAngle;
+        private final double gust;
+        private final double gustAngle;
+        private final double x;
+        private final double windY;
+        private final double gustY;
+
+        private Wind(Date time,double wind,double windAngle,double gust,double gustAngle,double x,double windY,double gustY)
+        {
+            this.time=time;
+            this.wind=wind;
+            this.windAngle=windAngle;
+            this.gust=gust;
+            this.gustAngle=gustAngle;
+            this.x=x;
+            this.windY=windY;
+            this.gustY=gustY;
+        }
+
+        private Date getTime()
+        {
+            return time;
+        }
+
+        private double getWind()
+        {
+            return wind;
+        }
+
+        private double getWindAngle()
+        {
+            return windAngle;
+        }
+
+        private double getGust()
+        {
+            return gust;
+        }
+
+        private double getGustAngle()
+        {
+            return gustAngle;
+        }
+
+        private double getX()
+        {
+            return x;
+        }
+
+        private double getWindY()
+        {
+            return windY;
+        }
+
+        private double getGustY()
+        {
+            return gustY;
+        }
+    }
+
+    public class SpecialWindList extends AbstractList<Point2D>
+    {
+        private final Wind[] winds;
+        private final boolean gust;
+
+        private SpecialWindList(Wind[] winds,boolean gust)
+        {
+            this.winds=winds;
+            this.gust=gust;
+        }
+
+        public Point2D get(int index)
+        {
+            return new Point2D()
+            {
+                public double getX()
+                {
+                    return winds[index].getX();
+                }
+
+                public double getY()
+                {
+                    return gust?winds[index].getGustY():winds[index].getWindY();
+                }
+
+                public void setLocation(double x,double y)
+                {
+                }
+            };
+        }
+
+        public int size()
+        {
+            return winds.length;
+        }
     }
 }
