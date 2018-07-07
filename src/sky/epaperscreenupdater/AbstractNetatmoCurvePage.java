@@ -10,18 +10,22 @@ import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import javax.imageio.ImageIO;
 import sky.netatmo.Measure;
 
 public abstract class AbstractNetatmoCurvePage extends AbstractNetatmoPage
 {
     private long lastRefreshTime;
-    private static final double[] TICK_OFFSETS=
+    protected static final double[] TICK_OFFSETS=
     {
         1e-10d,
         2e-10d,
@@ -116,10 +120,10 @@ public abstract class AbstractNetatmoCurvePage extends AbstractNetatmoPage
                 drawChart(measureMap,baseFont,verticalBaseFont,g2d);
 
                 g2d.dispose();
-//                try(OutputStream outputStream=new FileOutputStream(new File(getVerificationFileName())))
-//                {
-//                    ImageIO.write(sourceImage,"png",outputStream);
-//                }
+                try(OutputStream outputStream=new FileOutputStream(new File(getVerificationFileName())))
+                {
+                    ImageIO.write(sourceImage,"png",outputStream);
+                }
                 pixels=new Pixels(RefreshType.PARTIAL_REFRESH).writeImage(sourceImage);
                 Logger.LOGGER.info("Page \""+getName()+"\" updated successfully");
             }
@@ -341,14 +345,14 @@ public abstract class AbstractNetatmoCurvePage extends AbstractNetatmoPage
 
     protected abstract String getVerificationFileName();
 
-    private static class PreparedTick
+    protected static class PreparedTick
     {
         private final double value;
         private final String name;
         private final Rectangle2D nameDimensions;
         private static final DecimalFormat DECIMAL_FORMAT=new DecimalFormat("0.########E00");
 
-        private PreparedTick(double value,Font font,FontRenderContext fontRenderContext)
+        protected PreparedTick(double value,Font font,FontRenderContext fontRenderContext)
         {
             value=Double.parseDouble(DECIMAL_FORMAT.format(value).replace(",","."));
             this.value=value;
@@ -359,17 +363,17 @@ public abstract class AbstractNetatmoCurvePage extends AbstractNetatmoPage
             this.nameDimensions=font.getStringBounds(name,fontRenderContext);
         }
 
-        private double getValue()
+        protected double getValue()
         {
             return value;
         }
 
-        private String getName()
+        protected String getName()
         {
             return name;
         }
 
-        private Rectangle2D getNameDimensions()
+        protected Rectangle2D getNameDimensions()
         {
             return nameDimensions;
         }
@@ -377,6 +381,6 @@ public abstract class AbstractNetatmoCurvePage extends AbstractNetatmoPage
 
     public static void main(String[] args)
     {
-        PluviometreRainCurvePage.main(args);
+        AnemometreWindCurvePage.main(args);
     }
 }
