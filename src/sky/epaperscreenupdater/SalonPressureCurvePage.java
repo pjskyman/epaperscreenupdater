@@ -29,6 +29,11 @@ public class SalonPressureCurvePage extends AbstractNetatmoCurvePage
         return "Press. salon (hPa)";
     }
 
+    protected double getMinimalYRange()
+    {
+        return 2d;
+    }
+
     protected String getVerificationFileName()
     {
         return "courbesp.png";

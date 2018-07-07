@@ -29,6 +29,11 @@ public class SousSolHumidityCurvePage extends AbstractNetatmoCurvePage
         return "Hum. SS (%)";
     }
 
+    protected double getMinimalYRange()
+    {
+        return 10d;
+    }
+
     protected String getVerificationFileName()
     {
         return "courbessh.png";

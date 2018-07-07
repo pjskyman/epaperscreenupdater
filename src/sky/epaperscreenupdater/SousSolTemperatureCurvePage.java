@@ -29,6 +29,11 @@ public class SousSolTemperatureCurvePage extends AbstractNetatmoCurvePage
         return "Temp. SS (°C)";
     }
 
+    protected double getMinimalYRange()
+    {
+        return 5d;
+    }
+
     protected String getVerificationFileName()
     {
         return "courbesst.png";

@@ -29,6 +29,11 @@ public class SousSolCarbonDioxydeCurvePage extends AbstractNetatmoCurvePage
         return "CO2 SS (ppm)";
     }
 
+    protected double getMinimalYRange()
+    {
+        return 500d;
+    }
+
     protected String getVerificationFileName()
     {
         return "courbesscd.png";

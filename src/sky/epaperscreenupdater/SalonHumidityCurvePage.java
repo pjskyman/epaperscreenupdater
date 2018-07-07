@@ -29,6 +29,11 @@ public class SalonHumidityCurvePage extends AbstractNetatmoCurvePage
         return "Hum. salon (%)";
     }
 
+    protected double getMinimalYRange()
+    {
+        return 10d;
+    }
+
     protected String getVerificationFileName()
     {
         return "courbesh.png";
