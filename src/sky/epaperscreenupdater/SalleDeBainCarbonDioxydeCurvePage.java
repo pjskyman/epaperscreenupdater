@@ -29,6 +29,11 @@ public class SalleDeBainCarbonDioxydeCurvePage extends AbstractNetatmoCurvePage
         return "CO2 SdB (ppm)";
     }
 
+    protected double getMinimalYRange()
+    {
+        return 500d;
+    }
+
     protected String getVerificationFileName()
     {
         return "courbesdbcd.png";

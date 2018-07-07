@@ -18,6 +18,21 @@ public class PluviometreRainCurvePage extends AbstractNetatmoCurvePage
         return "Courbe pluie";
     }
 
+    protected long getRefreshDelay()
+    {
+        return Duration.of(1).minutePlus(41).second();
+    }
+
+    protected String getMeasureMapKey()
+    {
+        return PLUVIOMETRE_RAIN;
+    }
+
+    protected String getOrdinateLabelText()
+    {
+        return "Pluie jardin (mm)";
+    }
+
     @Override
     protected YRange computeYRange(Measure[] measures)
     {
@@ -38,9 +53,13 @@ public class PluviometreRainCurvePage extends AbstractNetatmoCurvePage
             yAmplitude=1d;
             yMax=yMin+1d;
         }
-//        yMin-=yAmplitude/20d;
-        yMax+=yAmplitude/20d;
+        yMax+=yAmplitude/15d;
         return new YRange(yMin,yMax);
+    }
+
+    protected double getMinimalYRange()//n'est pas utilisée avec le pluviomètre
+    {
+        return 0d;
     }
 
     @Override
@@ -62,21 +81,6 @@ public class PluviometreRainCurvePage extends AbstractNetatmoCurvePage
                 maxX=(int)((measurePoints.get(i+1).getX()+x)/2d)-1;
             g2d.fillRect(minX,(int)y,maxX-minX+1,128-ordinateLabelTextHeight+3-(int)y);
         }
-    }
-
-    protected long getRefreshDelay()
-    {
-        return Duration.of(1).minutePlus(41).second();
-    }
-
-    protected String getMeasureMapKey()
-    {
-        return PLUVIOMETRE_RAIN;
-    }
-
-    protected String getOrdinateLabelText()
-    {
-        return "Pluie jardin (mm)";
     }
 
     protected String getVerificationFileName()

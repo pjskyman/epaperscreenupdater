@@ -29,6 +29,11 @@ public class SalleDeBainTemperatureCurvePage extends AbstractNetatmoCurvePage
         return "Temp. SdB (°C)";
     }
 
+    protected double getMinimalYRange()
+    {
+        return 5d;
+    }
+
     protected String getVerificationFileName()
     {
         return "courbesdbt.png";

@@ -29,6 +29,11 @@ public class JardinHumidityCurvePage extends AbstractNetatmoCurvePage
         return "Hum. jardin (%)";
     }
 
+    protected double getMinimalYRange()
+    {
+        return 10d;
+    }
+
     protected String getVerificationFileName()
     {
         return "courbejh.png";
