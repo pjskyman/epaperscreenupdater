@@ -34,6 +34,11 @@ public class SalonNoiseCurvePage extends AbstractNetatmoCurvePage
         return 25d;
     }
 
+    protected double getMinimalY()
+    {
+        return 0d;
+    }
+
     protected String getVerificationFileName()
     {
         return "courbesn.png";

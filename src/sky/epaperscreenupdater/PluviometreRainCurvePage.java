@@ -36,22 +36,16 @@ public class PluviometreRainCurvePage extends AbstractNetatmoCurvePage
     @Override
     protected YRange computeYRange(Measure[] measures)
     {
-        double yMin=1e10d;
+        double yMin=0d;
         double yMax=-1e10d;
         for(Measure measure:measures)
-        {
-            if(measure.getValue()<yMin)
-                yMin=measure.getValue();
             if(measure.getValue()>yMax)
                 yMax=measure.getValue();
-        }
         double yAmplitude=yMax-yMin;
         if(yAmplitude<=0d)
         {
-            if(yMin==1e10d)
-                yMin=0d;
+            yMax=1d;
             yAmplitude=1d;
-            yMax=yMin+1d;
         }
         yMax+=yAmplitude/15d;
         return new YRange(yMin,yMax);
@@ -62,10 +56,15 @@ public class PluviometreRainCurvePage extends AbstractNetatmoCurvePage
         return 0d;
     }
 
-    @Override
-    protected void drawData(Graphics2D g2d,Measure[] measures,List<Point2D> measurePoints,int ordinateLabelTextHeight)
+    protected double getMinimalY()//n'est pas utilisée avec le pluviomètre
     {
-        for(int i=0;i<measures.length;i++)
+        return 0d;
+    }
+
+    @Override
+    protected void drawData(Graphics2D g2d,List<Point2D> measurePoints,int ordinateLabelTextHeight)
+    {
+        for(int i=0;i<measurePoints.size();i++)
         {
             double x=measurePoints.get(i).getX();
             double y=measurePoints.get(i).getY();
@@ -75,7 +74,7 @@ public class PluviometreRainCurvePage extends AbstractNetatmoCurvePage
             else
                 minX=(int)((measurePoints.get(i-1).getX()+x)/2d)+1;
             int maxX;
-            if(i==measures.length-1)
+            if(i==measurePoints.size()-1)
                 maxX=2*(int)x-minX;
             else
                 maxX=(int)((measurePoints.get(i+1).getX()+x)/2d)-1;

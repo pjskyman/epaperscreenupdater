@@ -34,6 +34,11 @@ public class SalleDeBainHumidityCurvePage extends AbstractNetatmoCurvePage
         return 10d;
     }
 
+    protected double getMinimalY()
+    {
+        return 0d;
+    }
+
     protected String getVerificationFileName()
     {
         return "courbesdbh.png";

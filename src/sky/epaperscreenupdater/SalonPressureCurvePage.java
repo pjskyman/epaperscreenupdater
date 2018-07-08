@@ -34,6 +34,11 @@ public class SalonPressureCurvePage extends AbstractNetatmoCurvePage
         return 2d;
     }
 
+    protected double getMinimalY()
+    {
+        return 0d;
+    }
+
     protected String getVerificationFileName()
     {
         return "courbesp.png";

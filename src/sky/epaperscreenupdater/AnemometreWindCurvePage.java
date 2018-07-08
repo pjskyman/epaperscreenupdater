@@ -17,6 +17,8 @@ import sky.program.Duration;
 
 public class AnemometreWindCurvePage extends AbstractNetatmoCurvePage
 {
+    private static final double LOW_HEIGHT_RATIO=1.373d;//coefficient corrigeant les valeurs en fonction de la hauteur annoncée de l'anémomètre
+
     public AnemometreWindCurvePage(Page parentPage)
     {
         super(parentPage);
@@ -52,6 +54,11 @@ public class AnemometreWindCurvePage extends AbstractNetatmoCurvePage
         return 10d;
     }
 
+    protected double getMinimalY()
+    {
+        return 0d;
+    }
+
     @Override
     protected YRange computeYRange(Measure[] measures)
     {
@@ -65,19 +72,26 @@ public class AnemometreWindCurvePage extends AbstractNetatmoCurvePage
                 yMax=measure.getValue();
         }
         double yAmplitude=yMax-yMin;
-        if(yAmplitude<=0d)
+        if(yAmplitude<0d)
         {
-            if(yMin==1e10d)
-                yMin=0d;
+            yMin=0d;
+            yMax=1d;
             yAmplitude=1d;
-            yMax=yMin+1d;
         }
         else
             if(yAmplitude<getMinimalYRange())
             {
-                yMin-=(getMinimalYRange()-yAmplitude)/2d;
-                yMax+=(getMinimalYRange()-yAmplitude)/2d;
+                double offset=(getMinimalYRange()-yAmplitude)/2d;
+                yMin-=offset;
+                yMax+=offset;
+                yAmplitude=yMax-yMin;
             }
+        if(yMin<getMinimalY())
+        {
+            double offset=getMinimalY()-yMin;
+            yMin+=offset;
+            yMax+=offset;
+        }
         yMin-=yAmplitude/15d;
         yMax+=yAmplitude/2.5d;
         return new YRange(yMin,yMax);
@@ -131,16 +145,16 @@ public class AnemometreWindCurvePage extends AbstractNetatmoCurvePage
                 int xLeft=ordinateLabelTextHeight+maxOrdinateWidth;
                 int xRight=295-10;
                 double x=(double)(xRight-xLeft)*(1d-(double)(xRange.getMax()-time)/(double)xRange.getAmplitude())+(double)xLeft;
-                double value=measures1[i].getValue();
+                double value=calculateRealValue(measures1[i].getValue());
                 int yTop=0;
                 int yBottom=128-ordinateLabelTextHeight+3;
                 double y1=(double)(yBottom-yTop)*(1d-(value-yRange.getMin())/yRange.getAmplitude())+(double)yTop;
-                value=measures2[i].getValue();
+                value=calculateRealValue(measures2[i].getValue());
                 double y2=(double)(yBottom-yTop)*(1d-(value-yRange.getMin())/yRange.getAmplitude())+(double)yTop;
                 winds[i]=new Wind(measures1[i].getDate(),
-                        measures1[i].getValue(),
+                        calculateRealValue(measures1[i].getValue()),
                         angleMeasures1[i].getValue(),
-                        measures2[i].getValue(),
+                        calculateRealValue(measures2[i].getValue()),
                         angleMeasures2[i].getValue(),
                         x,
                         y1,
@@ -168,8 +182,8 @@ public class AnemometreWindCurvePage extends AbstractNetatmoCurvePage
                 g2d.drawLine((int)x,128-ordinateLabelTextHeight+5,(int)x,0);
             }
             g2d.setStroke(new BasicStroke());
-            drawData(g2d,measures1,new SpecialWindList(winds,false),ordinateLabelTextHeight);
-            drawData(g2d,measures2,new SpecialWindList(winds,true),ordinateLabelTextHeight);
+            drawData(g2d,new SpecialWindList(winds,false),ordinateLabelTextHeight);
+            drawData(g2d,new SpecialWindList(winds,true),ordinateLabelTextHeight);
             for(int i=winds.length-1;i>=0;i-=4)
             {
                 int j=Math.max(0,i-3);
@@ -210,6 +224,11 @@ public class AnemometreWindCurvePage extends AbstractNetatmoCurvePage
                 g2d.fill(path);
             }
         }
+    }
+
+    private double calculateRealValue(double value)
+    {
+        return (double)Integer.parseInt(INTEGER_FORMAT.format(value/LOW_HEIGHT_RATIO))*LOW_HEIGHT_RATIO;
     }
 
     public static void main(String[] args)
@@ -281,7 +300,7 @@ public class AnemometreWindCurvePage extends AbstractNetatmoCurvePage
         }
     }
 
-    public class SpecialWindList extends AbstractList<Point2D>
+    public static class SpecialWindList extends AbstractList<Point2D>
     {
         private final Wind[] winds;
         private final boolean gust;

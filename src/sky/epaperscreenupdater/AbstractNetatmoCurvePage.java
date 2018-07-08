@@ -198,7 +198,7 @@ public abstract class AbstractNetatmoCurvePage extends AbstractNetatmoPage
                 g2d.drawLine((int)x,128-ordinateLabelTextHeight+5,(int)x,0);
             }
             g2d.setStroke(new BasicStroke());
-            drawData(g2d,measures,measurePoints,ordinateLabelTextHeight);
+            drawData(g2d,measurePoints,ordinateLabelTextHeight);
         }
     }
 
@@ -221,19 +221,26 @@ public abstract class AbstractNetatmoCurvePage extends AbstractNetatmoPage
                 yMax=measure.getValue();
         }
         double yAmplitude=yMax-yMin;
-        if(yAmplitude<=0d)
+        if(yAmplitude<0d)
         {
-            if(yMin==1e10d)
-                yMin=0d;
+            yMin=0d;
+            yMax=1d;
             yAmplitude=1d;
-            yMax=yMin+1d;
         }
         else
             if(yAmplitude<getMinimalYRange())
             {
-                yMin-=(getMinimalYRange()-yAmplitude)/2d;
-                yMax+=(getMinimalYRange()-yAmplitude)/2d;
+                double offset=(getMinimalYRange()-yAmplitude)/2d;
+                yMin-=offset;
+                yMax+=offset;
+                yAmplitude=yMax-yMin;
             }
+        if(yMin<getMinimalY())
+        {
+            double offset=getMinimalY()-yMin;
+            yMin+=offset;
+            yMax+=offset;
+        }
         yMin-=yAmplitude/15d;
         yMax+=yAmplitude/15d;
         return new YRange(yMin,yMax);
@@ -241,15 +248,17 @@ public abstract class AbstractNetatmoCurvePage extends AbstractNetatmoPage
 
     protected abstract double getMinimalYRange();
 
-    protected void drawData(Graphics2D g2d,Measure[] measures,List<Point2D> measurePoints,int ordinateLabelTextHeight)
+    protected abstract double getMinimalY();
+
+    protected void drawData(Graphics2D g2d,List<Point2D> measurePoints,int ordinateLabelTextHeight)
     {
-        for(int i=0;i<measures.length;i++)
+        for(int i=0;i<measurePoints.size();i++)
         {
             double x=measurePoints.get(i).getX();
             double y=measurePoints.get(i).getY();
             g2d.drawOval((int)x-2,(int)y-2,4,4);
         }
-        if(measures.length==2)
+        if(measurePoints.size()==2)
         {
             double x1=measurePoints.get(0).getX();
             double y1=measurePoints.get(0).getY();
@@ -260,7 +269,7 @@ public abstract class AbstractNetatmoCurvePage extends AbstractNetatmoPage
         else//construction de la spline
         {
             Path2D path=new Path2D.Double();
-            int np=measures.length; // number of points
+            int np=measurePoints.size(); // number of points
             double[] d=new double[np]; // Newton form coefficients
             double[] x=new double[np]; // x-coordinates of nodes
             double y;

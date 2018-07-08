@@ -34,6 +34,11 @@ public class ChambreCarbonDioxydeCurvePage extends AbstractNetatmoCurvePage
         return 500d;
     }
 
+    protected double getMinimalY()
+    {
+        return 0d;
+    }
+
     protected String getVerificationFileName()
     {
         return "courbeccd.png";
