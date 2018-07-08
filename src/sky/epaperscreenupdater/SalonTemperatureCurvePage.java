@@ -31,12 +31,12 @@ public class SalonTemperatureCurvePage extends AbstractNetatmoCurvePage
 
     protected double getMinimalYRange()
     {
-        return 5d;
+        return STANDARD_TEMPERATURE_MINIMAL_Y_RANGE;
     }
 
     protected double getMinimalY()
     {
-        return -100d;
+        return STANDARD_TEMPERATURE_MINIMAL_Y;
     }
 
     protected String getVerificationFileName()

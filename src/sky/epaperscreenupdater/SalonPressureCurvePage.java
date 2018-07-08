@@ -31,12 +31,12 @@ public class SalonPressureCurvePage extends AbstractNetatmoCurvePage
 
     protected double getMinimalYRange()
     {
-        return 2d;
+        return STANDARD_PRESSURE_MINIMAL_Y_RANGE;
     }
 
     protected double getMinimalY()
     {
-        return 0d;
+        return STANDARD_PRESSURE_MINIMAL_Y;
     }
 
     protected String getVerificationFileName()

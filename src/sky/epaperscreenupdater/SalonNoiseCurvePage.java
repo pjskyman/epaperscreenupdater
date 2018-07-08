@@ -31,12 +31,12 @@ public class SalonNoiseCurvePage extends AbstractNetatmoCurvePage
 
     protected double getMinimalYRange()
     {
-        return 25d;
+        return STANDARD_NOISE_MINIMAL_Y_RANGE;
     }
 
     protected double getMinimalY()
     {
-        return 0d;
+        return STANDARD_NOISE_MINIMAL_Y;
     }
 
     protected String getVerificationFileName()

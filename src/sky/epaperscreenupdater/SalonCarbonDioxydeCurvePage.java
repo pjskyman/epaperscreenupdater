@@ -31,12 +31,12 @@ public class SalonCarbonDioxydeCurvePage extends AbstractNetatmoCurvePage
 
     protected double getMinimalYRange()
     {
-        return 500d;
+        return STANDARD_CARBON_DIOXYDE_MINIMAL_Y_RANGE;
     }
 
     protected double getMinimalY()
     {
-        return 0d;
+        return STANDARD_CARBON_DIOXYDE_MINIMAL_Y;
     }
 
     protected String getVerificationFileName()

@@ -31,12 +31,12 @@ public class SousSolHumidityCurvePage extends AbstractNetatmoCurvePage
 
     protected double getMinimalYRange()
     {
-        return 10d;
+        return STANDARD_HUMIDITY_MINIMAL_Y_RANGE;
     }
 
     protected double getMinimalY()
     {
-        return 0d;
+        return STANDARD_HUMIDITY_MINIMAL_Y;
     }
 
     protected String getVerificationFileName()

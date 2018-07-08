@@ -51,12 +51,12 @@ public class AnemometreWindCurvePage extends AbstractNetatmoCurvePage
 
     protected double getMinimalYRange()
     {
-        return 10d;
+        return STANDARD_WIND_MINIMAL_Y_RANGE;
     }
 
     protected double getMinimalY()
     {
-        return 0d;
+        return STANDARD_WIND_MINIMAL_Y;
     }
 
     @Override

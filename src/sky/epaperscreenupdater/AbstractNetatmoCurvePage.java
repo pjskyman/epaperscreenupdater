@@ -87,6 +87,18 @@ public abstract class AbstractNetatmoCurvePage extends AbstractNetatmoPage
         2e10d,
         5e10d,
     };
+    public static final double STANDARD_WIND_MINIMAL_Y_RANGE=10d;
+    public static final double STANDARD_WIND_MINIMAL_Y=0d;
+    public static final double STANDARD_CARBON_DIOXYDE_MINIMAL_Y_RANGE=500d;
+    public static final double STANDARD_CARBON_DIOXYDE_MINIMAL_Y=0d;
+    public static final double STANDARD_HUMIDITY_MINIMAL_Y_RANGE=5d;
+    public static final double STANDARD_HUMIDITY_MINIMAL_Y=0d;
+    public static final double STANDARD_TEMPERATURE_MINIMAL_Y_RANGE=2.5d;
+    public static final double STANDARD_TEMPERATURE_MINIMAL_Y=-100d;
+    public static final double STANDARD_NOISE_MINIMAL_Y_RANGE=25d;
+    public static final double STANDARD_NOISE_MINIMAL_Y=0d;
+    public static final double STANDARD_PRESSURE_MINIMAL_Y_RANGE=2d;
+    public static final double STANDARD_PRESSURE_MINIMAL_Y=0d;
 
     protected AbstractNetatmoCurvePage(Page parentPage)
     {
