@@ -110,11 +110,11 @@ public class DailyWeatherForecast1Page extends AbstractWeatherForecastPage
 
                     g2d.drawImage(Icons.getIcon(daily.getIcon()),baseX+1,21,null);
 
-                    string=DECIMAL_0_FORMAT.format(daily.getTemperatureLow());
+                    string=DECIMAL_0_FORMAT.format(daily.getTemperatureMin());
                     stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
                     g2d.drawString(string,baseX+18-stringWidth/2,43);
 
-                    string=DECIMAL_0_FORMAT.format(daily.getTemperatureHigh());
+                    string=DECIMAL_0_FORMAT.format(daily.getTemperatureMax());
                     stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
                     g2d.drawString(string,baseX+18-stringWidth/2,55);
 
