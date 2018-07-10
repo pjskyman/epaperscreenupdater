@@ -119,8 +119,12 @@ public class DailyWeatherForecast1Page extends AbstractWeatherForecastPage
                     g2d.drawString(string,baseX+18-stringWidth/2,55);
 
                     string=INTEGER_FORMAT.format(daily.getHumidity()*100d);
-                    stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
+                    stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth())+12;
                     g2d.drawString(string,baseX+18-stringWidth/2,67);
+                    g2d.fillOval(baseX+18+stringWidth/2-12/2-4,67-12/2-5,12,12);
+                    g2d.setColor(Color.WHITE);
+                    g2d.fillArc(baseX+18+stringWidth/2-10/2-4,67-10/2-5,10,10,90,(int)(360d-daily.getHumidity()*360d));
+                    g2d.setColor(Color.BLACK);
 
                     string=DECIMAL_0_FORMAT.format(daily.getDewPoint());
                     stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
@@ -139,8 +143,12 @@ public class DailyWeatherForecast1Page extends AbstractWeatherForecastPage
                     g2d.drawString(string,baseX+18-stringWidth/2,103);
 
                     string=INTEGER_FORMAT.format(daily.getPrecipProbability()*100d);
-                    stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
+                    stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth())+12;
                     g2d.drawString(string,baseX+18-stringWidth/2,115);
+                    g2d.fillOval(baseX+18+stringWidth/2-12/2-4,115-12/2-5,12,12);
+                    g2d.setColor(Color.WHITE);
+                    g2d.fillArc(baseX+18+stringWidth/2-10/2-4,115-10/2-5,10,10,90,(int)(360d-daily.getPrecipProbability()*360d));
+                    g2d.setColor(Color.BLACK);
 
                     string=INTEGER_FORMAT.format(daily.getPressure());
                     stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());

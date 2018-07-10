@@ -108,8 +108,12 @@ public abstract class AbstractHourlyWeatherForecastPage extends AbstractWeatherF
                     g2d.drawString(string,baseX+18-stringWidth/2,43);
 
                     string=INTEGER_FORMAT.format(hourly.getHumidity()*100d);
-                    stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
+                    stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth())+12;
                     g2d.drawString(string,baseX+18-stringWidth/2,55);
+                    g2d.fillOval(baseX+18+stringWidth/2-12/2-4,55-12/2-5,12,12);
+                    g2d.setColor(Color.WHITE);
+                    g2d.fillArc(baseX+18+stringWidth/2-10/2-4,55-10/2-5,10,10,90,(int)(360d-hourly.getHumidity()*360d));
+                    g2d.setColor(Color.BLACK);
 
                     string=DECIMAL_0_FORMAT.format(hourly.getDewPoint());
                     stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
@@ -128,16 +132,24 @@ public abstract class AbstractHourlyWeatherForecastPage extends AbstractWeatherF
                     g2d.drawString(string,baseX+18-stringWidth/2,91);
 
                     string=INTEGER_FORMAT.format(hourly.getPrecipProbability()*100d);
-                    stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
+                    stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth())+12;
                     g2d.drawString(string,baseX+18-stringWidth/2,103);
+                    g2d.fillOval(baseX+18+stringWidth/2-12/2-4,103-12/2-5,12,12);
+                    g2d.setColor(Color.WHITE);
+                    g2d.fillArc(baseX+18+stringWidth/2-10/2-4,103-10/2-5,10,10,90,(int)(360d-hourly.getPrecipProbability()*360d));
+                    g2d.setColor(Color.BLACK);
 
                     string=INTEGER_FORMAT.format(hourly.getPressure());
                     stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
                     g2d.drawString(string,baseX+18-stringWidth/2,115);
 
                     string=INTEGER_FORMAT.format(hourly.getCloudCover()*100d);
-                    stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
+                    stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth())+12;
                     g2d.drawString(string,baseX+18-stringWidth/2,127);
+                    g2d.fillOval(baseX+18+stringWidth/2-12/2-4,127-12/2-5,12,12);
+                    g2d.setColor(Color.WHITE);
+                    g2d.fillArc(baseX+18+stringWidth/2-10/2-4,127-10/2-5,10,10,90,(int)(360d-hourly.getCloudCover()*360d));
+                    g2d.setColor(Color.BLACK);
                 }
                 g2d.dispose();
 //                try(OutputStream outputStream=new FileOutputStream(new File(getVerificationFileName())))
