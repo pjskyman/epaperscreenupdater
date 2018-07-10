@@ -19,7 +19,7 @@ public class SalonNoiseCurvePage extends AbstractNetatmoCurvePage
         return Duration.of(1).minutePlus(17).second();
     }
 
-    protected String getMeasureMapKey()
+    protected String getMeasureKind()
     {
         return SALON_NOISE;
     }

@@ -19,7 +19,7 @@ public class SousSolCarbonDioxydeCurvePage extends AbstractNetatmoCurvePage
         return Duration.of(1).minutePlus(40).second();
     }
 
-    protected String getMeasureMapKey()
+    protected String getMeasureKind()
     {
         return SOUS_SOL_CARBON_DIOXYDE;
     }

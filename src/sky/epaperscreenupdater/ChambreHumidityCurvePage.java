@@ -19,7 +19,7 @@ public class ChambreHumidityCurvePage extends AbstractNetatmoCurvePage
         return Duration.of(1).minutePlus(20).second();
     }
 
-    protected String getMeasureMapKey()
+    protected String getMeasureKind()
     {
         return CHAMBRE_HUMIDITY;
     }

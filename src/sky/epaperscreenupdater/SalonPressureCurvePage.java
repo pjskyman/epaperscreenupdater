@@ -19,7 +19,7 @@ public class SalonPressureCurvePage extends AbstractNetatmoCurvePage
         return Duration.of(1).minutePlus(12).second();
     }
 
-    protected String getMeasureMapKey()
+    protected String getMeasureKind()
     {
         return SALON_PRESSURE;
     }

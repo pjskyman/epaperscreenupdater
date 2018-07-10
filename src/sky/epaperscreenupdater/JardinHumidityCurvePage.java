@@ -19,7 +19,7 @@ public class JardinHumidityCurvePage extends AbstractNetatmoCurvePage
         return Duration.of(1).minutePlus(5).second();
     }
 
-    protected String getMeasureMapKey()
+    protected String getMeasureKind()
     {
         return JARDIN_HUMIDITY;
     }

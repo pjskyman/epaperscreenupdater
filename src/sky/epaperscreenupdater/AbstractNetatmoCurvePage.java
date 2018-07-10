@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import sky.netatmo.Measure;
+import sky.program.Duration;
 
 public abstract class AbstractNetatmoCurvePage extends AbstractNetatmoPage
 {
@@ -145,17 +146,24 @@ public abstract class AbstractNetatmoCurvePage extends AbstractNetatmoPage
 
     protected void drawChart(Map<String,Measure[]> measureMap,Font baseFont,Font verticalBaseFont,Graphics2D g2d)
     {
-        Measure[] rawMeasures=measureMap.get(getMeasureMapKey());
+        Measure[] rawMeasures=measureMap.get(getMeasureKind());
         Measure[] measures=HomeWeatherVariationPage.filterTimedWindowMeasures(rawMeasures,3);
         if(measures!=null)
         {
+            Measure[] yesterdaysMeasures=DATABASE.getMeasures(getMeasureKind(),
+                                                              measures[0].getDate().getTime()-Duration.of(1).day(),
+                                                              measures[measures.length-1].getDate().getTime()-Duration.of(1).day()
+            );
             String ordinateLabelText=getOrdinateLabelText();
             int ordinateLabelTextWidth=(int)Math.ceil(baseFont.getStringBounds(ordinateLabelText,g2d.getFontRenderContext()).getWidth());
             int ordinateLabelTextHeight=(int)Math.ceil(baseFont.getStringBounds(ordinateLabelText,g2d.getFontRenderContext()).getHeight());
             g2d.setFont(verticalBaseFont);
             g2d.drawString(ordinateLabelText,ordinateLabelTextHeight-5,(128-ordinateLabelTextHeight+3)/2+ordinateLabelTextWidth/2);
             XRange xRange=computeXRange(measures);
-            YRange yRange=computeYRange(measures);
+            Measure[] tempArray=new Measure[measures.length+yesterdaysMeasures.length];
+            System.arraycopy(measures,0,tempArray,0,measures.length);
+            System.arraycopy(yesterdaysMeasures,0,tempArray,measures.length,yesterdaysMeasures.length);
+            YRange yRange=computeYRange(tempArray);
             double choosenTickOffset=0d;
             for(int index=0;index<TICK_OFFSETS.length;index++)
             {
@@ -210,7 +218,21 @@ public abstract class AbstractNetatmoCurvePage extends AbstractNetatmoPage
                 g2d.drawLine((int)x,128-ordinateLabelTextHeight+5,(int)x,0);
             }
             g2d.setStroke(new BasicStroke());
-            drawData(g2d,measurePoints,ordinateLabelTextHeight);
+            drawData(g2d,measurePoints,ordinateLabelTextHeight,false);
+            List<Point2D> yesterdaysMeasurePoints=new ArrayList<>(yesterdaysMeasures.length);
+            for(Measure yesterdaysMeasure:yesterdaysMeasures)
+            {
+                long time=yesterdaysMeasure.getDate().getTime()+Duration.of(1).day();
+                int xLeft=ordinateLabelTextHeight+maxOrdinateWidth;
+                int xRight=295-10;
+                double x=(double)(xRight-xLeft)*(1d-(double)(xRange.getMax()-time)/(double)xRange.getAmplitude())+(double)xLeft;
+                double value=yesterdaysMeasure.getValue();
+                int yTop=0;
+                int yBottom=128-ordinateLabelTextHeight+3;
+                double y=(double)(yBottom-yTop)*(1d-(value-yRange.getMin())/yRange.getAmplitude())+(double)yTop;
+                yesterdaysMeasurePoints.add(new Point2D.Double(x,y));
+            }
+            drawData(g2d,yesterdaysMeasurePoints,ordinateLabelTextHeight,true);
         }
     }
 
@@ -262,80 +284,96 @@ public abstract class AbstractNetatmoCurvePage extends AbstractNetatmoPage
 
     protected abstract double getMinimalY();
 
-    protected void drawData(Graphics2D g2d,List<Point2D> measurePoints,int ordinateLabelTextHeight)
+    protected void drawData(Graphics2D g2d,List<Point2D> measurePoints,int ordinateLabelTextHeight,boolean yesterday)
     {
-        for(int i=0;i<measurePoints.size();i++)
+        if(yesterday)
         {
-            double x=measurePoints.get(i).getX();
-            double y=measurePoints.get(i).getY();
-            g2d.drawOval((int)x-2,(int)y-2,4,4);
-        }
-        if(measurePoints.size()==2)
-        {
-            double x1=measurePoints.get(0).getX();
-            double y1=measurePoints.get(0).getY();
-            double x2=measurePoints.get(1).getX();
-            double y2=measurePoints.get(1).getY();
-            g2d.drawLine((int)x1,(int)y1,(int)x2,(int)y2);
-        }
-        else//construction de la spline
-        {
-            Path2D path=new Path2D.Double();
-            int np=measurePoints.size(); // number of points
-            double[] d=new double[np]; // Newton form coefficients
-            double[] x=new double[np]; // x-coordinates of nodes
-            double y;
-            double t;
-            double oldy=0d;
-            double oldt=0d;
-
-            double[] a=new double[np];
-            double t1;
-            double t2;
-            double[] h=new double[np];
-
-            for(int i=0;i<np;i++)
+            g2d.setStroke(new BasicStroke(1f,BasicStroke.CAP_BUTT,BasicStroke.JOIN_BEVEL,1f,new float[]{1f,2.5f},0f));
+            for(int i=1;i<measurePoints.size();i++)
             {
-                x[i]=measurePoints.get(i).getX();
-                d[i]=measurePoints.get(i).getY();
+                double x1=measurePoints.get(i-1).getX();
+                double y1=measurePoints.get(i-1).getY();
+                double x2=measurePoints.get(i).getX();
+                double y2=measurePoints.get(i).getY();
+                g2d.drawLine((int)x1,(int)y1,(int)x2,(int)y2);
             }
-
-            for(int i=1;i<=np-1;i++)
-                h[i]=x[i]-x[i-1];
-            double[] sub=new double[np-1];
-            double[] diag=new double[np-1];
-            double[] sup=new double[np-1];
-
-            for(int i=1;i<=np-2;i++)
+            g2d.setStroke(new BasicStroke());
+        }
+        else
+        {
+            for(int i=0;i<measurePoints.size();i++)
             {
-                diag[i]=(h[i]+h[i+1])/3d;
-                sup[i]=h[i+1]/6d;
-                sub[i]=h[i]/6d;
-                a[i]=(d[i+1]-d[i])/h[i+1]-(d[i]-d[i-1])/h[i];
+                double x=measurePoints.get(i).getX();
+                double y=measurePoints.get(i).getY();
+                g2d.drawOval((int)x-2,(int)y-2,4,4);
             }
-            solveTridiag(sub,diag,sup,a,np-2);
-
-            // note that a[0]=a[np-1]=0
-            // draw
-            oldt=x[0];
-            oldy=d[0];
-            int precision=5;
-            path.moveTo((int)oldt,(int)oldy);
-            for(int i=1;i<=np-1;i++)
+            if(measurePoints.size()==2)
             {
-                // loop over intervals between nodes
-                for(int j=1;j<=precision;j++)
+                double x1=measurePoints.get(0).getX();
+                double y1=measurePoints.get(0).getY();
+                double x2=measurePoints.get(1).getX();
+                double y2=measurePoints.get(1).getY();
+                g2d.drawLine((int)x1,(int)y1,(int)x2,(int)y2);
+            }
+            else//construction de la spline
+            {
+                Path2D path=new Path2D.Double();
+                int np=measurePoints.size(); // number of points
+                double[] d=new double[np]; // Newton form coefficients
+                double[] x=new double[np]; // x-coordinates of nodes
+                double y;
+                double t;
+                double oldy=0d;
+                double oldt=0d;
+
+                double[] a=new double[np];
+                double t1;
+                double t2;
+                double[] h=new double[np];
+
+                for(int i=0;i<np;i++)
                 {
-                    t1=(h[i]*j)/precision;
-                    t2=h[i]-t1;
-                    y=((-a[i-1]/6d*(t2+h[i])*t1+d[i-1])*t2+(-a[i]/6d*(t1+h[i])*t2+d[i])*t1)/h[i];
-                    t=x[i-1]+t1;
-                    path.lineTo((int)t,(int)y);
-                    oldt=t;
-                    oldy=y;
+                    x[i]=measurePoints.get(i).getX();
+                    d[i]=measurePoints.get(i).getY();
                 }
+
+                for(int i=1;i<=np-1;i++)
+                    h[i]=x[i]-x[i-1];
+                double[] sub=new double[np-1];
+                double[] diag=new double[np-1];
+                double[] sup=new double[np-1];
+
+                for(int i=1;i<=np-2;i++)
+                {
+                    diag[i]=(h[i]+h[i+1])/3d;
+                    sup[i]=h[i+1]/6d;
+                    sub[i]=h[i]/6d;
+                    a[i]=(d[i+1]-d[i])/h[i+1]-(d[i]-d[i-1])/h[i];
+                }
+                solveTridiag(sub,diag,sup,a,np-2);
+
+                // note that a[0]=a[np-1]=0
+                // draw
+                oldt=x[0];
+                oldy=d[0];
+                int precision=5;
+                path.moveTo((int)oldt,(int)oldy);
+                for(int i=1;i<=np-1;i++)
+                {
+                    // loop over intervals between nodes
+                    for(int j=1;j<=precision;j++)
+                    {
+                        t1=(h[i]*j)/precision;
+                        t2=h[i]-t1;
+                        y=((-a[i-1]/6d*(t2+h[i])*t1+d[i-1])*t2+(-a[i]/6d*(t1+h[i])*t2+d[i])*t1)/h[i];
+                        t=x[i-1]+t1;
+                        path.lineTo((int)t,(int)y);
+                        oldt=t;
+                        oldy=y;
+                    }
+                }
+                g2d.draw(path);
             }
-            g2d.draw(path);
         }
     }
 
@@ -364,7 +402,7 @@ public abstract class AbstractNetatmoCurvePage extends AbstractNetatmoPage
 
     protected abstract long getRefreshDelay();
 
-    protected abstract String getMeasureMapKey();
+    protected abstract String getMeasureKind();
 
     protected abstract String getOrdinateLabelText();
 
@@ -406,6 +444,6 @@ public abstract class AbstractNetatmoCurvePage extends AbstractNetatmoPage
 
     public static void main(String[] args)
     {
-        AnemometreWindCurvePage.main(args);
+        JardinTemperatureCurvePage.main(args);
     }
 }

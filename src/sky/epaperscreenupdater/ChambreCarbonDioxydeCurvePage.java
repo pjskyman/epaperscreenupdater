@@ -19,7 +19,7 @@ public class ChambreCarbonDioxydeCurvePage extends AbstractNetatmoCurvePage
         return Duration.of(1).minutePlus(21).second();
     }
 
-    protected String getMeasureMapKey()
+    protected String getMeasureKind()
     {
         return CHAMBRE_CARBON_DIOXYDE;
     }

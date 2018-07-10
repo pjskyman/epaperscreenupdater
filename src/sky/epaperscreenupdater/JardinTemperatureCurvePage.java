@@ -19,7 +19,7 @@ public class JardinTemperatureCurvePage extends AbstractNetatmoCurvePage
         return Duration.of(1).minutePlus(3).second();
     }
 
-    protected String getMeasureMapKey()
+    protected String getMeasureKind()
     {
         return JARDIN_TEMPERATURE;
     }

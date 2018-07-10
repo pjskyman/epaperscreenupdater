@@ -34,7 +34,7 @@ public class AnemometreWindCurvePage extends AbstractNetatmoCurvePage
         return Duration.of(1).minutePlus(43).second();
     }
 
-    protected String getMeasureMapKey()
+    protected String getMeasureKind()
     {
         return ANEMOMETRE_GUST_STRENGTH;
     }
@@ -182,8 +182,8 @@ public class AnemometreWindCurvePage extends AbstractNetatmoCurvePage
                 g2d.drawLine((int)x,128-ordinateLabelTextHeight+5,(int)x,0);
             }
             g2d.setStroke(new BasicStroke());
-            drawData(g2d,new SpecialWindList(winds,false),ordinateLabelTextHeight);
-            drawData(g2d,new SpecialWindList(winds,true),ordinateLabelTextHeight);
+            drawData(g2d,new SpecialWindList(winds,false),ordinateLabelTextHeight,false);
+            drawData(g2d,new SpecialWindList(winds,true),ordinateLabelTextHeight,false);
             for(int i=winds.length-1;i>=0;i-=4)
             {
                 int j=Math.max(0,i-3);

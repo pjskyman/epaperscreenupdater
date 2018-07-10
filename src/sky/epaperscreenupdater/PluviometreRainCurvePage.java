@@ -23,7 +23,7 @@ public class PluviometreRainCurvePage extends AbstractNetatmoCurvePage
         return Duration.of(1).minutePlus(41).second();
     }
 
-    protected String getMeasureMapKey()
+    protected String getMeasureKind()
     {
         return PLUVIOMETRE_RAIN;
     }
@@ -62,8 +62,10 @@ public class PluviometreRainCurvePage extends AbstractNetatmoCurvePage
     }
 
     @Override
-    protected void drawData(Graphics2D g2d,List<Point2D> measurePoints,int ordinateLabelTextHeight)
+    protected void drawData(Graphics2D g2d,List<Point2D> measurePoints,int ordinateLabelTextHeight,boolean yesterday)
     {
+        if(yesterday)
+            return;
         for(int i=0;i<measurePoints.size();i++)
         {
             double x=measurePoints.get(i).getX();

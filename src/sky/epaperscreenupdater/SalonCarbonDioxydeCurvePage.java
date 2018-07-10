@@ -19,7 +19,7 @@ public class SalonCarbonDioxydeCurvePage extends AbstractNetatmoCurvePage
         return Duration.of(1).minutePlus(15).second();
     }
 
-    protected String getMeasureMapKey()
+    protected String getMeasureKind()
     {
         return SALON_CARBON_DIOXYDE;
     }

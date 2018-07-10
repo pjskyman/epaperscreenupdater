@@ -73,6 +73,7 @@ public abstract class AbstractNetatmoPage extends AbstractSinglePage
     protected static final String ANEMOMETRE_MAX_GUST_STRENGTH="anemometreMaxGustStrength";
     protected static final String ANEMOMETRE_MAX_GUST_ANGLE="anemometreMaxGustAngle";
     private static final Comparator<Measure> MEASURE_COMPARATOR=(o1,o2)->Long.compare(o1.getDate().getTime(),o2.getDate().getTime());
+    protected static final MeasureDatabase DATABASE=new MeasureDatabase();
     protected static final boolean NETATMO_ENABLED=true;
 
     protected AbstractNetatmoPage(Page parentPage)
@@ -133,7 +134,7 @@ public abstract class AbstractNetatmoPage extends AbstractSinglePage
                         Module anemometre=homeModules[3];//06:00:00:00:72:9a
                         JsonObject anemometreDashboardDataObject=anemometre.getAttributes().get("dashboard_data").getAsJsonObject();
                         anemometreMaxGustStrength=new Measure[]{new StandAloneMeasure(new Date(now),MeasurementType.GUST_STRENGTH,anemometreDashboardDataObject.get("max_wind_str").getAsDouble())};
-                        anemometreMaxGustAngle=new Measure[]{new StandAloneMeasure(new Date(now),MeasurementType.GUST_STRENGTH,anemometreDashboardDataObject.get("max_wind_angle").getAsDouble())};
+                        anemometreMaxGustAngle=new Measure[]{new StandAloneMeasure(new Date(now),MeasurementType.GUST_ANGLE,anemometreDashboardDataObject.get("max_wind_angle").getAsDouble())};
                         Module sousSol=homeModules[4];//03:00:00:03:fe:8e
                         Module pluviometre=homeModules[5];//05:00:00:04:15:2c
                         JsonObject pluviometreDashboardDataObject=pluviometre.getAttributes().get("dashboard_data").getAsJsonObject();
@@ -147,35 +148,57 @@ public abstract class AbstractNetatmoPage extends AbstractSinglePage
                         Measure[] sousSolMeasures=sousSol.getMeasures(MeasurementScale.MAX,new Date(now-Duration.of(3).hour()),new Date(now+Duration.of(5).minute()),MeasurementType.TEMPERATURE,MeasurementType.HUMIDITY,MeasurementType.CO2);
                         Measure[] pluviometreMeasures=pluviometre.getMeasures(MeasurementScale.MAX,new Date(now-Duration.of(3).hour()),new Date(now+Duration.of(5).minute()),MeasurementType.RAIN);
                         lastSalonTemperatures=compileMeasures(salonMeasures,MeasurementType.TEMPERATURE);
+                        DATABASE.addMeasures(SALON_TEMPERATURE,lastSalonTemperatures);
                         lastSalonHumidities=compileMeasures(salonMeasures,MeasurementType.HUMIDITY);
+                        DATABASE.addMeasures(SALON_HUMIDITY,lastSalonHumidities);
                         lastSalonPressures=compileMeasures(salonPressureMeasures,MeasurementType.PRESSURE);
+                        DATABASE.addMeasures(SALON_PRESSURE,lastSalonPressures);
                         lastSalonCarbonDioxydes=compileMeasures(salonMeasures,MeasurementType.CO2);
+                        DATABASE.addMeasures(SALON_CARBON_DIOXYDE,lastSalonCarbonDioxydes);
                         lastSalonNoises=compileMeasures(salonMeasures,MeasurementType.NOISE);
+                        DATABASE.addMeasures(SALON_NOISE,lastSalonNoises);
                         lastChambreTemperatures=compileMeasures(chambreMeasures,MeasurementType.TEMPERATURE);
+                        DATABASE.addMeasures(CHAMBRE_TEMPERATURE,lastChambreTemperatures);
                         lastChambreHumidities=compileMeasures(chambreMeasures,MeasurementType.HUMIDITY);
+                        DATABASE.addMeasures(CHAMBRE_HUMIDITY,lastChambreHumidities);
                         lastChambreCarbonDioxydes=compileMeasures(chambreMeasures,MeasurementType.CO2);
+                        DATABASE.addMeasures(CHAMBRE_CARBON_DIOXYDE,lastChambreCarbonDioxydes);
                         lastSalleDeBainTemperatures=compileMeasures(salleDeBainMeasures,MeasurementType.TEMPERATURE);
+                        DATABASE.addMeasures(SALLE_DE_BAIN_TEMPERATURE,lastSalleDeBainTemperatures);
                         lastSalleDeBainHumidities=compileMeasures(salleDeBainMeasures,MeasurementType.HUMIDITY);
+                        DATABASE.addMeasures(SALLE_DE_BAIN_HUMIDITY,lastSalleDeBainHumidities);
                         lastSalleDeBainCarbonDioxydes=compileMeasures(salleDeBainMeasures,MeasurementType.CO2);
+                        DATABASE.addMeasures(SALLE_DE_BAIN_CARBON_DIOXYDE,lastSalleDeBainCarbonDioxydes);
                         lastSousSolTemperatures=compileMeasures(sousSolMeasures,MeasurementType.TEMPERATURE);
+                        DATABASE.addMeasures(SOUS_SOL_TEMPERATURE,lastSousSolTemperatures);
                         lastSousSolHumidities=compileMeasures(sousSolMeasures,MeasurementType.HUMIDITY);
+                        DATABASE.addMeasures(SOUS_SOL_HUMIDITY,lastSousSolHumidities);
                         lastSousSolCarbonDioxydes=compileMeasures(sousSolMeasures,MeasurementType.CO2);
+                        DATABASE.addMeasures(SOUS_SOL_CARBON_DIOXYDE,lastSousSolCarbonDioxydes);
                         lastJardinTemperatures=compileMeasures(jardinMeasures,MeasurementType.TEMPERATURE);
+                        DATABASE.addMeasures(JARDIN_TEMPERATURE,lastJardinTemperatures);
                         lastJardinHumidities=compileMeasures(jardinMeasures,MeasurementType.HUMIDITY);
+                        DATABASE.addMeasures(JARDIN_HUMIDITY,lastJardinHumidities);
                         lastPluviometreRains=compileMeasures(pluviometreMeasures,MeasurementType.RAIN);
+                        DATABASE.addMeasures(PLUVIOMETRE_RAIN,lastPluviometreRains);
                         lastAnemometreWindStrengths=compileMeasures(anemometreMeasures,MeasurementType.WIND_STRENGTH);
+                        DATABASE.addMeasures(ANEMOMETRE_WIND_STRENGTH,lastAnemometreWindStrengths);
                         lastAnemometreWindAngles=compileMeasures(anemometreMeasures,MeasurementType.WIND_ANGLE);
+                        DATABASE.addMeasures(ANEMOMETRE_WIND_ANGLE,lastAnemometreWindAngles);
                         lastAnemometreGustStrengths=compileMeasures(anemometreMeasures,MeasurementType.GUST_STRENGTH);
+                        DATABASE.addMeasures(ANEMOMETRE_GUST_STRENGTH,lastAnemometreGustStrengths);
                         lastAnemometreGustAngles=compileMeasures(anemometreMeasures,MeasurementType.GUST_ANGLE);
+                        DATABASE.addMeasures(ANEMOMETRE_GUST_ANGLE,lastAnemometreGustAngles);
+                        DATABASE.clean();
                         ok=true;
                         if(lastSalonTemperatures!=null&&lastSalonTemperatures.length>0)
                         {
                             long lastMeasureTime=lastSalonTemperatures[lastSalonTemperatures.length-1].getDate().getTime();
-                            long nextMeasureTime=lastMeasureTime+Duration.of(10).minutePlus(30).second();//30 secondes de rab' pour laisser le temps à Netatmo de publier sa mesure
+                            long nextMeasureTime=lastMeasureTime+Duration.of(11).minute();//1 minute de rab' pour laisser le temps à Netatmo de publier sa mesure
                             long nextNetatmoVerificationTime=lastNetatmoVerificationTime+Duration.of(10).minute();
                             if(nextNetatmoVerificationTime-nextMeasureTime<Duration.of(10).minute())
                             {
-                                lastNetatmoVerificationTime=lastMeasureTime+Duration.of(30).second();
+                                lastNetatmoVerificationTime=lastMeasureTime+Duration.of(1).minute();
                                 Logger.LOGGER.info("Anticipation of the next Netatmo update from "+DateFormat.getTimeInstance(DateFormat.MEDIUM).format(new Date(nextNetatmoVerificationTime))+" to "+DateFormat.getTimeInstance(DateFormat.MEDIUM).format(new Date(nextMeasureTime))+" because last measure was taken at "+DateFormat.getTimeInstance(DateFormat.MEDIUM).format(new Date(lastMeasureTime)));
                             }
                         }
@@ -260,6 +283,8 @@ public abstract class AbstractNetatmoPage extends AbstractSinglePage
                 new StandAloneMeasure(new Date(now-Duration.of(6).minute()),MeasurementType.TEMPERATURE,27.8d),
                 new StandAloneMeasure(new Date(now-Duration.of(1).minute()),MeasurementType.TEMPERATURE,24d),
             };
+            for(Measure measure:lastJardinTemperatures)
+                DATABASE.addMeasures(JARDIN_TEMPERATURE,new Measure[]{new StandAloneMeasure(new Date(measure.getDate().getTime()-Duration.of(1).day()),MeasurementType.TEMPERATURE,measure.getValue()/1.5d+2d)});
             lastJardinHumidities=new Measure[]{new StandAloneMeasure(new Date(now-Duration.of(1).hour()),MeasurementType.HUMIDITY,69d),new StandAloneMeasure(new Date(now),MeasurementType.HUMIDITY,66d)};
             lastPluviometreRains=new Measure[]
             {

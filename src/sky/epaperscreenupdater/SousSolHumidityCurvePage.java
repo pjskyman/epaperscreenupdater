@@ -19,7 +19,7 @@ public class SousSolHumidityCurvePage extends AbstractNetatmoCurvePage
         return Duration.of(1).minutePlus(35).second();
     }
 
-    protected String getMeasureMapKey()
+    protected String getMeasureKind()
     {
         return SOUS_SOL_HUMIDITY;
     }

@@ -19,7 +19,7 @@ public class SalleDeBainTemperatureCurvePage extends AbstractNetatmoCurvePage
         return Duration.of(1).minutePlus(27).second();
     }
 
-    protected String getMeasureMapKey()
+    protected String getMeasureKind()
     {
         return SALLE_DE_BAIN_TEMPERATURE;
     }

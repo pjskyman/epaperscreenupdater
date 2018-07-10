@@ -19,7 +19,7 @@ public class ChambreTemperatureCurvePage extends AbstractNetatmoCurvePage
         return Duration.of(1).minutePlus(18).second();
     }
 
-    protected String getMeasureMapKey()
+    protected String getMeasureKind()
     {
         return CHAMBRE_TEMPERATURE;
     }
