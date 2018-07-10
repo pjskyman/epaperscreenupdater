@@ -7,9 +7,6 @@ import java.awt.Graphics2D;
 import java.awt.Stroke;
 import java.awt.geom.Path2D;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -17,7 +14,6 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
-import javax.imageio.ImageIO;
 import sky.program.Duration;
 
 public class DailyWeatherForecast1Page extends AbstractWeatherForecastPage
@@ -183,10 +179,10 @@ public class DailyWeatherForecast1Page extends AbstractWeatherForecastPage
                     g2d.drawString(string,baseX+18-stringWidth/2,127);
                 }
                 g2d.dispose();
-                try(OutputStream outputStream=new FileOutputStream(new File("weather1.png")))
-                {
-                    ImageIO.write(sourceImage,"png",outputStream);
-                }
+//                try(OutputStream outputStream=new FileOutputStream(new File("weather1.png")))
+//                {
+//                    ImageIO.write(sourceImage,"png",outputStream);
+//                }
                 pixels=new Pixels(RefreshType.PARTIAL_REFRESH).writeImage(sourceImage);
                 Logger.LOGGER.info("Page \""+getName()+"\" updated successfully");
             }

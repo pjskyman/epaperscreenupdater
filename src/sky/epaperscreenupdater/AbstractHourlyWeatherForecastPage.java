@@ -7,16 +7,12 @@ import java.awt.Graphics2D;
 import java.awt.Stroke;
 import java.awt.geom.Path2D;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
-import javax.imageio.ImageIO;
 
 public abstract class AbstractHourlyWeatherForecastPage extends AbstractWeatherForecastPage
 {
@@ -180,10 +176,10 @@ public abstract class AbstractHourlyWeatherForecastPage extends AbstractWeatherF
                     g2d.setColor(Color.BLACK);
                 }
                 g2d.dispose();
-                try(OutputStream outputStream=new FileOutputStream(new File(getVerificationFileName())))
-                {
-                    ImageIO.write(sourceImage,"png",outputStream);
-                }
+//                try(OutputStream outputStream=new FileOutputStream(new File(getVerificationFileName())))
+//                {
+//                    ImageIO.write(sourceImage,"png",outputStream);
+//                }
                 pixels=new Pixels(RefreshType.PARTIAL_REFRESH).writeImage(sourceImage);
                 Logger.LOGGER.info("Page \""+getName()+"\" updated successfully");
             }

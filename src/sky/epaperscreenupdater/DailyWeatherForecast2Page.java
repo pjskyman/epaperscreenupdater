@@ -3,6 +3,8 @@ package sky.epaperscreenupdater;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.geom.Area;
+import java.awt.geom.Path2D;
 import java.awt.image.BufferedImage;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -124,9 +126,39 @@ public class DailyWeatherForecast2Page extends AbstractWeatherForecastPage
                     stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
                     g2d.drawString(string,baseX+18-stringWidth/2,79);
 
-                    string=""+daily.getMoonPhase();
-                    stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
-                    g2d.drawString(string,baseX+18-stringWidth/2,91);
+                    g2d.fillOval(baseX+18-12/2-4,91-12/2-5,12,12);
+                    g2d.setColor(Color.WHITE);
+//                    g2d.fillArc(baseX+18-10/2-4,91-10/2-5,10,10,90,(int)(360d-daily.getMoonPhase()*360d));
+                    Path2D path=new Path2D.Double();
+                    path.moveTo((double)baseX+18d,82d);
+                    if(daily.getMoonPhase()<=.5d)
+                    {
+                        for(int degree=0;degree<=180;degree+=10)
+                            path.lineTo(
+                                    (double)baseX+18d-4d+5d*Math.sin((double)degree*Math.PI/180d),
+                                    91d-5d-5d*Math.cos((double)degree*Math.PI/180d)
+                            );
+                        for(int degree=180;degree>=0;degree-=10)
+                            path.lineTo(
+                                    (double)baseX+18d-4d+5d*Math.sin((double)degree*Math.PI/180d)*Math.cos(daily.getMoonPhase()*Math.PI/.5d),
+                                    91d-5d-5d*Math.cos((double)degree*Math.PI/180d)
+                            );
+                    }
+                    else
+                    {
+                        for(int degree=0;degree<=180;degree+=10)
+                            path.lineTo(
+                                    (double)baseX+18d-4d-5d*Math.sin((double)degree*Math.PI/180d)*Math.cos((1d-daily.getMoonPhase())*Math.PI/.5d),
+                                    91d-5d-5d*Math.cos((double)degree*Math.PI/180d)
+                            );
+                        for(int degree=180;degree>=0;degree-=10)
+                            path.lineTo(
+                                    (double)baseX+18d-4d-5d*Math.sin((double)degree*Math.PI/180d),
+                                    91d-5d-5d*Math.cos((double)degree*Math.PI/180d)
+                            );
+                    }
+                    g2d.fill(new Area(path));
+                    g2d.setColor(Color.BLACK);
 
                     string=DECIMAL_0_FORMAT.format(daily.getVisibility());
                     stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
