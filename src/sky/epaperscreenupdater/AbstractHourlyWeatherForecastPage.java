@@ -42,74 +42,99 @@ public abstract class AbstractHourlyWeatherForecastPage extends AbstractWeatherF
                     g2d.drawLine(0,y,295,y);
                 Font baseFont=EpaperScreenUpdater.FREDOKA_ONE_FONT.deriveFont(12f);
                 Font alternativeBaseFont=baseFont.deriveFont(AffineTransform.getScaleInstance(.75d,1d));
+
                 g2d.setFont(baseFont);
+
                 String string="Heure";
                 int stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
                 g2d.drawString(string,26-stringWidth/2,14);
+
                 string="Icône";
                 stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
                 g2d.drawString(string,26-stringWidth/2,31);
+
                 string="°C";
                 stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
                 g2d.drawString(string,26-stringWidth/2,43);
+
                 string="%Hum";
                 stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
                 g2d.drawString(string,26-stringWidth/2,55);
+
                 string="°CRosée";
                 stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
                 g2d.drawString(string,26-stringWidth/2,67);
+
                 string="Vent";
                 stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
                 g2d.drawString(string,26-stringWidth/2,79);
+
                 string="mmPluie";
                 stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
                 g2d.drawString(string,26-stringWidth/2,91);
+
                 string="%Pluie";
                 stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
                 g2d.drawString(string,26-stringWidth/2,103);
+
                 string="hPa";
                 stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
                 g2d.drawString(string,26-stringWidth/2,115);
+
                 string="%Nuage";
                 stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
                 g2d.drawString(string,26-stringWidth/2,127);
+
                 for(int i=getHourStartOffset();i<Math.min(hourlies.size(),getHourStartOffset()+7);i++)
                 {
                     int baseX=51+(i-getHourStartOffset())*35;
                     Hourly hourly=hourlies.get(i);
+
                     GregorianCalendar calendar=new GregorianCalendar();
                     calendar.setTimeInMillis(hourly.getTime());
                     string=new SimpleDateFormat("HH:mm").format(new Date(hourly.getTime()));
                     stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
                     g2d.drawString(string,baseX+18-stringWidth/2,9);
+
                     string=calendar.getDisplayName(Calendar.DAY_OF_WEEK,Calendar.SHORT,Locale.FRANCE);
                     string=string.substring(0,1).toUpperCase()+string.substring(1);
                     stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
                     g2d.drawString(string,baseX+18-stringWidth/2,19);
+
                     g2d.drawImage(Icons.getIcon(hourly.getIcon()),baseX+1,21,null);
+
                     string=DECIMAL_0_FORMAT.format(hourly.getTemperature());
                     stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
                     g2d.drawString(string,baseX+18-stringWidth/2,43);
+
                     string=INTEGER_FORMAT.format(hourly.getHumidity()*100d);
                     stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
                     g2d.drawString(string,baseX+18-stringWidth/2,55);
+
                     string=DECIMAL_0_FORMAT.format(hourly.getDewPoint());
                     stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
                     g2d.drawString(string,baseX+18-stringWidth/2,67);
+
                     g2d.setFont(alternativeBaseFont);
+
                     string=INTEGER_FORMAT.format(hourly.getWindGust())+"/"+HomeWeatherPage.convertWindAngle(hourly.getWindBearing());
                     stringWidth=(int)Math.ceil(alternativeBaseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
                     g2d.drawString(string,baseX+18-stringWidth/2,79);
+
                     g2d.setFont(baseFont);
+
                     string=DECIMAL_0_FORMAT.format(hourly.getPrecipIntensity());
                     stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
                     g2d.drawString(string,baseX+18-stringWidth/2,91);
+
                     string=INTEGER_FORMAT.format(hourly.getPrecipProbability()*100d);
                     stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
                     g2d.drawString(string,baseX+18-stringWidth/2,103);
+
                     string=INTEGER_FORMAT.format(hourly.getPressure());
                     stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
                     g2d.drawString(string,baseX+18-stringWidth/2,115);
+
                     string=INTEGER_FORMAT.format(hourly.getCloudCover()*100d);
                     stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
                     g2d.drawString(string,baseX+18-stringWidth/2,127);
