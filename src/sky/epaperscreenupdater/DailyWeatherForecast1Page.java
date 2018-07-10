@@ -1,10 +1,15 @@
 package sky.epaperscreenupdater;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
-import java.awt.geom.AffineTransform;
+import java.awt.Stroke;
+import java.awt.geom.Path2D;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -12,6 +17,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
+import javax.imageio.ImageIO;
 import sky.program.Duration;
 
 public class DailyWeatherForecast1Page extends AbstractWeatherForecastPage
@@ -48,7 +54,6 @@ public class DailyWeatherForecast1Page extends AbstractWeatherForecastPage
                 for(int y=20;y<128;y+=12)
                     g2d.drawLine(0,y,295,y);
                 Font baseFont=EpaperScreenUpdater.FREDOKA_ONE_FONT.deriveFont(12f);
-                Font alternativeBaseFont=baseFont.deriveFont(AffineTransform.getScaleInstance(.75d,1d));
 
                 g2d.setFont(baseFont);
 
@@ -92,6 +97,10 @@ public class DailyWeatherForecast1Page extends AbstractWeatherForecastPage
                 stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
                 g2d.drawString(string,26-stringWidth/2,127);
 
+                Stroke largeStroke=new BasicStroke(2.5f);
+                Stroke normalStroke=new BasicStroke();
+                g2d.setStroke(normalStroke);
+
                 for(int i=0;i<dailies.size();i++)
                 {
                     int baseX=51+i*35;
@@ -130,13 +139,32 @@ public class DailyWeatherForecast1Page extends AbstractWeatherForecastPage
                     stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
                     g2d.drawString(string,baseX+18-stringWidth/2,79);
 
-                    g2d.setFont(alternativeBaseFont);
-
-                    string=INTEGER_FORMAT.format(daily.getWindGust())+"/"+HomeWeatherPage.convertWindAngle(daily.getWindBearing());
-                    stringWidth=(int)Math.ceil(alternativeBaseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
+                    string=INTEGER_FORMAT.format(daily.getWindGust());
+                    stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth())+12;
                     g2d.drawString(string,baseX+18-stringWidth/2,91);
-
-                    g2d.setFont(baseFont);
+                    g2d.setStroke(largeStroke);
+                    g2d.drawLine(
+                            baseX+18+stringWidth/2-4+(int)(Math.sin((double)daily.getWindBearing()*Math.PI/180d)*6d),
+                            91-5-(int)(Math.cos((double)daily.getWindBearing()*Math.PI/180d)*6d),
+                            baseX+18+stringWidth/2-4-(int)(Math.sin((double)daily.getWindBearing()*Math.PI/180d)*4d),
+                            91-5+(int)(Math.cos((double)daily.getWindBearing()*Math.PI/180d)*4d)
+                    );
+                    g2d.setStroke(normalStroke);
+                    Path2D path=new Path2D.Double();
+                    path.moveTo(
+                            (double)baseX+18d+(double)stringWidth/2d-4d-Math.sin((double)daily.getWindBearing()*Math.PI/180d)*6d,
+                            91d-5d+Math.cos((double)daily.getWindBearing()*Math.PI/180d)*6d
+                    );
+                    path.lineTo(
+                            (double)baseX+18d+(double)stringWidth/2d-4d-Math.sin((double)(daily.getWindBearing()+90)*Math.PI/180d)*5d,
+                            91d-5d+Math.cos((double)(daily.getWindBearing()+90)*Math.PI/180d)*5d
+                    );
+                    path.lineTo(
+                            (double)baseX+18d+(double)stringWidth/2d-4d-Math.sin((double)(daily.getWindBearing()-90)*Math.PI/180d)*5d,
+                            91d-5d+Math.cos((double)(daily.getWindBearing()-90)*Math.PI/180d)*5d
+                    );
+                    path.closePath();
+                    g2d.fill(path);
 
                     string=DECIMAL_0_FORMAT.format(daily.getPrecipIntensity()*24d);
                     stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
@@ -155,10 +183,10 @@ public class DailyWeatherForecast1Page extends AbstractWeatherForecastPage
                     g2d.drawString(string,baseX+18-stringWidth/2,127);
                 }
                 g2d.dispose();
-//                try(OutputStream outputStream=new FileOutputStream(new File("weather1.png")))
-//                {
-//                    ImageIO.write(sourceImage,"png",outputStream);
-//                }
+                try(OutputStream outputStream=new FileOutputStream(new File("weather1.png")))
+                {
+                    ImageIO.write(sourceImage,"png",outputStream);
+                }
                 pixels=new Pixels(RefreshType.PARTIAL_REFRESH).writeImage(sourceImage);
                 Logger.LOGGER.info("Page \""+getName()+"\" updated successfully");
             }
