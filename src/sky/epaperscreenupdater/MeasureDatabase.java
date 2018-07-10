@@ -37,6 +37,6 @@ public class MeasureDatabase
                 .filter(entry->entry.getKey().getMeasureKind().equals(measureKind)&&entry.getKey().getTime()>=from&&entry.getKey().getTime()<=to)
                 .map(entry->entry.getValue())
                 .sorted()
-                .toArray(size->new Measure[size]);
+                .toArray(Measure[]::new);
     }
 }
