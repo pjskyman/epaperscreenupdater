@@ -95,7 +95,7 @@ public class HomeWeatherVariationPage extends AbstractNetatmoPage
             Measure[] lastToiletsTemperature=loadTemperatures(730).stream()//730 car 720 théoriques + 10 par sécurité
                     .filter(temperature->now-temperature.getTime()<Duration.of(1).hour())
                     .map(temperature->new StandAloneMeasure(new Date(temperature.getTime()),MeasurementType.TEMPERATURE,temperature.getTemperature()))
-                    .toArray(size->new Measure[size]);
+                    .toArray(Measure[]::new);
             double toiletsTemperatureVariation=getHourlyVariation(lastToiletsTemperature);
             try
             {
@@ -329,7 +329,7 @@ public class HomeWeatherVariationPage extends AbstractNetatmoPage
             return null;
         return Arrays.stream(measures)
                 .filter(measure->measures[measures.length-1].getDate().getTime()-measure.getDate().getTime()<Duration.of(hour).hour())
-                .toArray(size->new Measure[size]);
+                .toArray(Measure[]::new);
     }
 
     private static List<Temperature> loadTemperatures(int number)

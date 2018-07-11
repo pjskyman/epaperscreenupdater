@@ -71,7 +71,7 @@ public abstract class AbstractMenuPage extends AbstractPage
 
     public synchronized Page potentiallyUpdate()
     {
-        subpages.forEach(page->page.potentiallyUpdate());//avant tout le reste, comme ça on pourra récupérer leurs nouveaux pixels le cas échéant
+        subpages.forEach(Page::potentiallyUpdate);//avant tout le reste, comme ça on pourra récupérer leurs nouveaux pixels le cas échéant
         Pixels tempPagePixels=currentPageRank==-1?BLANK_PIXELS:subpages.get(currentPageRank-1).getPixels();
         if(currentPageRank!=cachedCurrentPageRank||currentlySelectedPageRank!=cachedCurrentlySelectedPageRank||tempPagePixels!=cachedPagePixels)
             try

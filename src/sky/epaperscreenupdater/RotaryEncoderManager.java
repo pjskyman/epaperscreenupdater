@@ -65,7 +65,7 @@ public class RotaryEncoderManager
                 {
 //                    System.out.println("click "+event.getState()+" "+System.currentTimeMillis());
                     if(event.getState()==PinState.HIGH)
-                        SWITCH_LISTENERS.forEach(t->t.switched());
+                        SWITCH_LISTENERS.forEach(SwitchListener::switched);
                 }
             });
         }

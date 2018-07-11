@@ -48,7 +48,7 @@ public final class EpaperScreenUpdater
             long lastCompleteRefresh=System.currentTimeMillis();
             EpaperScreenManager.displayPage(currentPixels,RefreshType.TOTAL_REFRESH);
             Logger.LOGGER.info("Display content successfully updated from page \""+mainMenuPage.getActivePageName()+"\" ("+RefreshType.TOTAL_REFRESH.toString()+")");
-            RotaryEncoderManager.addRotationListener(rotationDirection->mainMenuPage.rotated(rotationDirection));
+            RotaryEncoderManager.addRotationListener(mainMenuPage::rotated);
             RotaryEncoderManager.addSwitchListener(()->mainMenuPage.clicked(false));
             Logger.LOGGER.info(EpaperScreenUpdater.class.getSimpleName()+" is now ready!");
             new Thread("pageUpdater")
