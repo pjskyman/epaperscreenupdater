@@ -27,7 +27,7 @@ public class MeasureDatabase
         int sizeBefore=measures.size();
         long now=System.currentTimeMillis();
         measures.keySet().stream()
-                .filter(key->now-key.getTime()>Duration.of(1).dayPlus(3).hour())
+                .filter(measure->now-measure.getTime()>Duration.of(1).dayPlus(3).hour())
                 .forEach(measures::remove);
         Logger.LOGGER.info("Database cleaned in "+(System.currentTimeMillis()-now)+" ms, "+(sizeBefore-measures.size())+" measures deleted");
     }
