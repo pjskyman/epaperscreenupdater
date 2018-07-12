@@ -35,7 +35,9 @@ public class MeasureDatabase
     public Measure[] getMeasures(String measureKind,long from,long to)
     {
         return measures.entrySet().stream()
-                .filter(entry->entry.getKey().getMeasureKind().equals(measureKind)&&entry.getKey().getTime()>=from&&entry.getKey().getTime()<=to)
+                .filter(entry->entry.getKey().getMeasureKind().equals(measureKind))
+                .filter(entry->entry.getKey().getTime()>=from)
+                .filter(entry->entry.getKey().getTime()<=to)
                 .map(Entry::getValue)
                 .sorted()
                 .toArray(Measure[]::new);
