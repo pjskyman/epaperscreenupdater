@@ -288,7 +288,7 @@ public abstract class AbstractNetatmoCurvePage extends AbstractNetatmoPage
     {
         if(yesterday)
         {
-            g2d.setStroke(new BasicStroke(1f,BasicStroke.CAP_BUTT,BasicStroke.JOIN_BEVEL,1f,new float[]{1f,2.5f},0f));
+            g2d.setStroke(new BasicStroke(1f,BasicStroke.CAP_BUTT,BasicStroke.JOIN_BEVEL,1f,new float[]{1f,1.5f},0f));
             for(int i=1;i<measurePoints.size();i++)
             {
                 double x1=measurePoints.get(i-1).getX();
