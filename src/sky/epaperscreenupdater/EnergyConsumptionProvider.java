@@ -141,7 +141,7 @@ public class EnergyConsumptionProvider
 //                            return instantaneousConsumptions.get(instantaneousConsumptions.size()/2).getPricingPeriod().isWhiteDay();
 //                        else
 //                            return instantaneousConsumptions.get(instantaneousConsumptions.size()/2).getPricingPeriod().isRedDay();
-//                }).forEach(t->list.add(t));
+//                }).forEach(list::add);
 //                Logger.LOGGER.info(instantaneousConsumptions.size()+" rows fetched in "+(System.currentTimeMillis()-startTime)+" ms");
                 return instantaneousConsumptions;
             }

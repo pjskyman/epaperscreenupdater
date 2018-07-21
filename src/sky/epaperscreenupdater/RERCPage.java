@@ -35,6 +35,7 @@ public class RERCPage extends AbstractSinglePage
         return "RER C";
     }
 
+    @SuppressWarnings("unchecked")
     public synchronized Page potentiallyUpdate()
     {
         long now=System.currentTimeMillis();

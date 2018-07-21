@@ -498,6 +498,6 @@ public abstract class AbstractNetatmoPage extends AbstractSinglePage
         return Arrays.stream(rawMeasures)
                 .filter(t->t.getMeasurementType()==measurementType)
                 .sorted(MEASURE_COMPARATOR)
-                .toArray(size->new Measure[size]);
+                .toArray(Measure[]::new);
     }
 }
