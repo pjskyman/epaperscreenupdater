@@ -36,7 +36,7 @@ public class EnergyConsumptionPage extends AbstractSinglePage
                 g2d.setColor(Color.WHITE);
                 g2d.fillRect(0,0,296,128);
                 g2d.setColor(Color.BLACK);
-                Font baseFont=EpaperScreenUpdater.FREDOKA_ONE_FONT.deriveFont(11f);
+                Font baseFont=Main.FREDOKA_ONE_FONT.deriveFont(11f);
                 g2d.setFont(baseFont);
                 GregorianCalendar calendar=new GregorianCalendar();
                 int nowHour=calendar.get(Calendar.HOUR_OF_DAY);

@@ -40,7 +40,7 @@ public class WasherSupervisionPage extends AbstractSinglePage
                 g2d.setColor(Color.WHITE);
                 g2d.fillRect(0,0,296,128);
                 g2d.setColor(Color.BLACK);
-                Font baseFont=EpaperScreenUpdater.FREDOKA_ONE_FONT.deriveFont(18f);
+                Font baseFont=Main.FREDOKA_ONE_FONT.deriveFont(18f);
                 g2d.setFont(baseFont);
                 long baseTime=System.currentTimeMillis();
                 List<WasherInstantaneousConsumption> consumptions=loadWasherInstantaneousConsumptions(baseTime-Duration.of(1).day(),baseTime+Duration.of(10).second());

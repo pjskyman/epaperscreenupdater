@@ -42,7 +42,7 @@ public abstract class AbstractHourlyWeatherForecastPage extends AbstractWeatherF
                     g2d.drawLine(x,0,x,127);
                 for(int y=20;y<128;y+=12)
                     g2d.drawLine(0,y,295,y);
-                Font baseFont=EpaperScreenUpdater.FREDOKA_ONE_FONT.deriveFont(12f);
+                Font baseFont=Main.FREDOKA_ONE_FONT.deriveFont(12f);
 
                 g2d.setFont(baseFont);
 

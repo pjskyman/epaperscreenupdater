@@ -14,7 +14,7 @@ import java.util.Collections;
 import java.util.List;
 import sky.program.Duration;
 
-public final class EpaperScreenUpdater
+public final class Main
 {
     public static final Font FREDOKA_ONE_FONT;
 
@@ -33,24 +33,23 @@ public final class EpaperScreenUpdater
         FREDOKA_ONE_FONT=font;
     }
 
-    private EpaperScreenUpdater()
+    private Main()
     {
     }
 
     public static void main(String[] args)
     {
-        Logger.LOGGER.info("Starting "+EpaperScreenUpdater.class.getSimpleName()+"...");
+        Logger.LOGGER.info("Starting "+Main.class.getSimpleName()+"...");
         try
         {
             MainMenuPage mainMenuPage=new MainMenuPage();
-            mainMenuPage.potentiallyUpdate();
             Pixels currentPixels=mainMenuPage.potentiallyUpdate().getPixels();
             long lastCompleteRefresh=System.currentTimeMillis();
             EpaperScreenManager.displayPage(currentPixels,RefreshType.TOTAL_REFRESH);
             Logger.LOGGER.info("Display content successfully updated from page \""+mainMenuPage.getActivePageName()+"\" ("+RefreshType.TOTAL_REFRESH.toString()+")");
             RotaryEncoderManager.addRotationListener(mainMenuPage::rotated);
             RotaryEncoderManager.addSwitchListener(()->mainMenuPage.clicked(false));
-            Logger.LOGGER.info(EpaperScreenUpdater.class.getSimpleName()+" is now ready!");
+            Logger.LOGGER.info(Main.class.getSimpleName()+" is now ready!");
             new Thread("pageUpdater")
             {
                 @Override

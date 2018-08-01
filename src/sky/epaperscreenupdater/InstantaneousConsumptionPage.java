@@ -44,7 +44,7 @@ public class InstantaneousConsumptionPage extends AbstractNetatmoPage
 
     public synchronized Page potentiallyUpdate()
     {
-        List<InstantaneousConsumption> list=EpaperScreenUpdater.loadInstantaneousConsumptions(1);
+        List<InstantaneousConsumption> list=Main.loadInstantaneousConsumptions(1);
         if(list.isEmpty())
             return this;
         InstantaneousConsumption instantaneousConsumption=list.get(0);
@@ -70,7 +70,7 @@ public class InstantaneousConsumptionPage extends AbstractNetatmoPage
                 g2d.drawLine(79,31,80,31);
                 g2d.setColor(Color.WHITE);
 
-                Font baseFont=EpaperScreenUpdater.FREDOKA_ONE_FONT.deriveFont(20f);
+                Font baseFont=Main.FREDOKA_ONE_FONT.deriveFont(20f);
                 Font bigFont=baseFont.deriveFont(34f).deriveFont(AffineTransform.getScaleInstance(.7d,1d));
                 Font unitFont=baseFont.deriveFont(14f);
                 Font verticalUnitFont=unitFont.deriveFont(AffineTransform.getQuadrantRotateInstance(3));

@@ -36,7 +36,7 @@ public class DigitalClockPage extends AbstractSinglePage
                 g2d.setColor(Color.WHITE);
                 g2d.fillRect(0,0,296,128);
                 g2d.setColor(Color.BLACK);
-                Font baseFont=EpaperScreenUpdater.FREDOKA_ONE_FONT.deriveFont(70f);
+                Font baseFont=Main.FREDOKA_ONE_FONT.deriveFont(70f);
                 g2d.setFont(baseFont);
                 String clockString=SimpleDateFormat.getTimeInstance(SimpleDateFormat.MEDIUM).format(new Date());
                 int clockStringWidth=(int)Math.ceil(baseFont.getStringBounds(clockString,g2d.getFontRenderContext()).getWidth());

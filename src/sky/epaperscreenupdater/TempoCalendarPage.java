@@ -169,7 +169,7 @@ public class TempoCalendarPage extends AbstractSinglePage
                     e.printStackTrace();
                 }
 
-                Font baseFont=EpaperScreenUpdater.FREDOKA_ONE_FONT.deriveFont(20f);
+                Font baseFont=Main.FREDOKA_ONE_FONT.deriveFont(20f);
                 Font monthFont=baseFont.deriveFont(11f);
                 Font dayFont=baseFont.deriveFont(11f).deriveFont(AffineTransform.getScaleInstance(.9d,1d));
                 Font bottomFont=baseFont.deriveFont(12f);

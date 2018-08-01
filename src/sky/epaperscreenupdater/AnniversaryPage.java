@@ -68,7 +68,7 @@ public class AnniversaryPage extends AbstractSinglePage
                 g2d.setColor(Color.WHITE);
                 g2d.fillRect(0,0,296,128);
                 g2d.setColor(Color.BLACK);
-                Font baseFont=EpaperScreenUpdater.FREDOKA_ONE_FONT.deriveFont(14f);
+                Font baseFont=Main.FREDOKA_ONE_FONT.deriveFont(14f);
                 g2d.setFont(baseFont);
                 g2d.drawString("Prochains anniversaires :",5,14);
                 GregorianCalendar nowCalendar=new GregorianCalendar();

@@ -143,7 +143,7 @@ public class MoonPage extends AbstractSinglePage
                 g2d.setColor(Color.BLACK);
                 g2d.fillRect(0,0,296,128);
                 g2d.setColor(Color.WHITE);
-                Font baseFont=EpaperScreenUpdater.FREDOKA_ONE_FONT.deriveFont(11f);
+                Font baseFont=Main.FREDOKA_ONE_FONT.deriveFont(11f);
                 g2d.setFont(baseFont);
                 GregorianCalendar calendar=new GregorianCalendar();
                 int hour=calendar.get(Calendar.HOUR_OF_DAY);

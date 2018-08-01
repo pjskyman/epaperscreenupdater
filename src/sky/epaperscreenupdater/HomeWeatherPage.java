@@ -159,7 +159,7 @@ public class HomeWeatherPage extends AbstractNetatmoPage
                 g2d.drawLine(235,81,235,47);
                 g2d.drawLine(235,47,211,47);
 
-                Font baseFont=EpaperScreenUpdater.FREDOKA_ONE_FONT.deriveFont(20f);
+                Font baseFont=Main.FREDOKA_ONE_FONT.deriveFont(20f);
                 Font measureFont=baseFont.deriveFont(16f).deriveFont(AffineTransform.getScaleInstance(.7d,1d));
                 g2d.setFont(measureFont);
 

@@ -122,7 +122,7 @@ public abstract class AbstractNetatmoCurvePage extends AbstractNetatmoPage
                 g2d.fillRect(0,0,296,128);
                 g2d.setColor(Color.BLACK);
 
-                Font baseFont=EpaperScreenUpdater.FREDOKA_ONE_FONT.deriveFont(11f);
+                Font baseFont=Main.FREDOKA_ONE_FONT.deriveFont(11f);
                 g2d.setFont(baseFont);
                 Font verticalBaseFont=baseFont.deriveFont(AffineTransform.getQuadrantRotateInstance(-1));
 

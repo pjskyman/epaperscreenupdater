@@ -44,7 +44,7 @@ public class AboutPage extends AbstractSinglePage
                 {
                     g2d.drawImage(ImageIO.read(inputStream),12,12,null);
                 }
-                Font baseFont=EpaperScreenUpdater.FREDOKA_ONE_FONT.deriveFont(13f);
+                Font baseFont=Main.FREDOKA_ONE_FONT.deriveFont(13f);
                 g2d.setFont(baseFont);
                 g2d.drawString("EpaperScreenUpdater by PJ Skyman",55,24);
                 g2d.drawString("A Pie Jam Sun production",55,44);

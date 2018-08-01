@@ -124,7 +124,7 @@ public class RERCPage extends AbstractSinglePage
                 g2d.setColor(Color.WHITE);
                 g2d.fillRect(0,0,296,128);
                 g2d.setColor(Color.BLACK);
-                Font baseFont=EpaperScreenUpdater.FREDOKA_ONE_FONT.deriveFont(16f);
+                Font baseFont=Main.FREDOKA_ONE_FONT.deriveFont(16f);
                 g2d.setFont(baseFont);
                 g2d.drawString("Prochains départs vers Austerlitz :",5,16);
                 for(int i=0;i<nextTrains.size();i++)

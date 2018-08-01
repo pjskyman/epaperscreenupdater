@@ -40,7 +40,7 @@ public class IncrustGenerator
             if(!empty)
             {
                 g2d.setColor(Color.BLACK);
-                Font baseFont=EpaperScreenUpdater.FREDOKA_ONE_FONT.deriveFont(40f);
+                Font baseFont=Main.FREDOKA_ONE_FONT.deriveFont(40f);
                 Font descriptionFont=baseFont.deriveFont(20f);
                 g2d.setFont(baseFont);
                 Page parentPage=page.getParentPage();

@@ -51,7 +51,7 @@ public class CO2WeightPage extends AbstractNetatmoPage
                 g2d.setColor(Color.WHITE);
                 g2d.fillRect(0,0,296,128);
                 g2d.setColor(Color.BLACK);
-                Font baseFont=EpaperScreenUpdater.FREDOKA_ONE_FONT.deriveFont(24f);
+                Font baseFont=Main.FREDOKA_ONE_FONT.deriveFont(24f);
                 g2d.setFont(baseFont);
                 g2d.drawString("Masse totale de CO2 :",5,25);
                 g2d.drawString("- Étage="+DECIMAL_000_FORMAT.format(totalCarbonDioxydeWeight1)+" kg",5,55);

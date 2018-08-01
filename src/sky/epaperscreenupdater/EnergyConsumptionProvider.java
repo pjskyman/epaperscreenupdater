@@ -215,7 +215,7 @@ public class EnergyConsumptionProvider
                                         prices[j]+=increment*RED_DAY_PEAK_HOUR_PRICE;
             }
         }
-        InstantaneousConsumption instantaneousConsumption=instantaneousConsumptions.isEmpty()?EpaperScreenUpdater.loadInstantaneousConsumptions(1).get(0):instantaneousConsumptions.get(0);
+        InstantaneousConsumption instantaneousConsumption=instantaneousConsumptions.isEmpty()?Main.loadInstantaneousConsumptions(1).get(0):instantaneousConsumptions.get(0);
         return new EnergyConsumption(instantaneousConsumption.getConsumer1Name(),accumulations[0]/3600d/1000d,prices[0]/3600d/1000d,
                                      instantaneousConsumption.getConsumer2Name(),accumulations[1]/3600d/1000d,prices[1]/3600d/1000d,
                                      instantaneousConsumption.getConsumer3Name(),accumulations[2]/3600d/1000d,prices[2]/3600d/1000d,
