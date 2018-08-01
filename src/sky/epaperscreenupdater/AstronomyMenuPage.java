@@ -11,6 +11,6 @@ public class AstronomyMenuPage extends AbstractMenuPage
 
     public String getName()
     {
-        return "Courbes chambre";
+        return "Astronomie";
     }
 }
