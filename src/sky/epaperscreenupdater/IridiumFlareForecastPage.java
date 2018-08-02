@@ -11,14 +11,13 @@ import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -28,12 +27,12 @@ import java.util.List;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javax.imageio.ImageIO;
 import sky.program.Duration;
 
 public class IridiumFlareForecastPage extends AbstractSinglePage
 {
     private long lastRefreshTime;
+    private static final boolean IRIDIUM_FLARE_FORECAST_WEBSITE_ENABLED=true;
 
     public IridiumFlareForecastPage(Page parentPage)
     {
@@ -60,13 +59,7 @@ public class IridiumFlareForecastPage extends AbstractSinglePage
                 try
                 {
                     StringBuilder stringBuilder=new StringBuilder();
-                    try(BufferedReader reader=new BufferedReader(new InputStreamReader(new FileInputStream(new File("iridium.html")),Charset.forName("Unicode"))))
-                    {
-                        String line;
-                        while((line=reader.readLine())!=null)
-                            stringBuilder.append(line);
-                    }
-                    if(false)
+                    if(IRIDIUM_FLARE_FORECAST_WEBSITE_ENABLED)
                     {
                         connection=(HttpURLConnection)new URL("https://www.heavens-above.com/IridiumFlares.aspx?lat=48.5322&lng=2.2953&loc=91770+Saint-Vrain%2c+France&alt=83&tz=CET").openConnection();
                         connection.setConnectTimeout(5000);
@@ -80,6 +73,13 @@ public class IridiumFlareForecastPage extends AbstractSinglePage
                             stringBuilder.append(line);
                         connection.disconnect();
                     }
+                    else
+                        try(BufferedReader reader=new BufferedReader(new InputStreamReader(new FileInputStream(new File("iridium.html")),Charset.forName("Unicode"))))
+                        {
+                            String line;
+                            while((line=reader.readLine())!=null)
+                                stringBuilder.append(line);
+                        }
 //                    System.out.println("requestResponse="+stringBuilder.toString());
                     Pattern pattern1=Pattern.compile(".*<tbody>(.*)</tbody>.*");
                     Matcher matcher1=pattern1.matcher(stringBuilder.toString());
@@ -138,9 +138,17 @@ public class IridiumFlareForecastPage extends AbstractSinglePage
                             GregorianCalendar calendar=new GregorianCalendar();
                             int year=calendar.get(Calendar.YEAR);
                             Date date;
-                            SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy MMMM d, HH:mm:ss");
+                            SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy MMMM d, HH:mm:ss",Locale.ENGLISH);
                             String string2=year+" "+string;
-                            date=dateFormat.parse(string2);
+                            try
+                            {
+                                date=dateFormat.parse(string2);
+                            }
+                            catch(ParseException e)
+                            {
+                                dateFormat=new SimpleDateFormat("yyyy MMMM d, HH:mm:ss",Locale.FRENCH);
+                                date=dateFormat.parse(string2);
+                            }
                             if(Math.abs(date.getTime()-calendar.getTimeInMillis())>Duration.of(180).day())
                             {
                                 string2=(year-1)+" "+string;
@@ -188,8 +196,8 @@ public class IridiumFlareForecastPage extends AbstractSinglePage
                     if(connection!=null)
                         connection.disconnect();
                 }
-                nextIridiumFlares.stream()
-                        .forEach(iridiumFlare->System.out.println(iridiumFlare.toString()));
+//                nextIridiumFlares.stream()
+//                        .forEach(iridiumFlare->System.out.println(iridiumFlare.toString()));
 
                 BufferedImage sourceImage=new BufferedImage(296,128,BufferedImage.TYPE_INT_ARGB_PRE);
                 Graphics2D g2d=sourceImage.createGraphics();
@@ -337,10 +345,10 @@ public class IridiumFlareForecastPage extends AbstractSinglePage
                     g2d.setColor(Color.BLACK);
                 }
                 g2d.dispose();
-                try(OutputStream outputStream=new FileOutputStream(new File("iridium.png")))
-                {
-                    ImageIO.write(sourceImage,"png",outputStream);
-                }
+//                try(OutputStream outputStream=new FileOutputStream(new File("iridium.png")))
+//                {
+//                    ImageIO.write(sourceImage,"png",outputStream);
+//                }
                 pixels=new Pixels(RefreshType.PARTIAL_REFRESH).writeImage(sourceImage);
                 Logger.LOGGER.info("Page \""+getName()+"\" updated successfully");
             }
