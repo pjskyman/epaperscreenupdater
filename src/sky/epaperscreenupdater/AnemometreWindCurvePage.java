@@ -113,7 +113,7 @@ public class AnemometreWindCurvePage extends AbstractNetatmoCurvePage
             XRange xRange=computeXRange(measures1);
             YRange yRange1=computeYRange(measures1);
             YRange yRange2=computeYRange(measures2);
-            YRange yRange=new YRange(Math.min(yRange1.getMin(),yRange2.getMin()),Math.max(yRange1.getMax(),yRange2.getMax()));
+            YRange yRange=new YRange(yRange1,yRange2);
             double choosenTickOffset=0d;
             for(int index=0;index<TICK_OFFSETS.length;index++)
             {
