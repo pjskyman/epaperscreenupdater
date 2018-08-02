@@ -58,6 +58,7 @@ public class TemperatureComparisonPage extends AbstractNetatmoCurvePage
         String[] measureKinds=new String[]
         {
             SALON_TEMPERATURE,
+            SOUS_SOL_TEMPERATURE,
             JARDIN_TEMPERATURE
         };
         Measure[][] rawMeasures=new Measure[measureKinds.length][];
