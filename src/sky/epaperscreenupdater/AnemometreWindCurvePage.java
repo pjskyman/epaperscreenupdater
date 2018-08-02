@@ -44,11 +44,6 @@ public class AnemometreWindCurvePage extends AbstractNetatmoCurvePage
         return "Vent jardin (km/h)";
     }
 
-    protected String getVerificationFileName()
-    {
-        return "courbeaw.png";
-    }
-
     protected double getMinimalYRange()
     {
         return STANDARD_WIND_MINIMAL_Y_RANGE;
@@ -229,6 +224,11 @@ public class AnemometreWindCurvePage extends AbstractNetatmoCurvePage
     private double calculateRealValue(double value)
     {
         return (double)Integer.parseInt(INTEGER_FORMAT.format(value/LOW_HEIGHT_RATIO))*LOW_HEIGHT_RATIO;
+    }
+
+    protected String getVerificationFileName()
+    {
+        return "courbeaw.png";
     }
 
     public static void main(String[] args)
