@@ -93,7 +93,7 @@ public class AnemometreWindCurvePage extends AbstractNetatmoCurvePage
             yMax+=offset;
         }
         yMin-=yAmplitude/15d;
-        yMax+=yAmplitude/2.5d;
+        yMax+=yAmplitude/2.5d;//cette redéfinition de computeYRange rajoute davantage de marge en haut des courbes pour accueillir les flèches de direction du vent
         return new YRange(yMin,yMax);
     }
 
@@ -217,7 +217,7 @@ public class AnemometreWindCurvePage extends AbstractNetatmoCurvePage
                         (int)(meanX-Math.sin(meanWindAngle*Math.PI/180d)*6d),(int)(y+Math.cos(meanWindAngle*Math.PI/180d)*6d)
                 );
                 Path2D path=new Path2D.Double();
-                path.moveTo(meanX-Math.sin(meanWindAngle*Math.PI/180d)*10d,y+Math.cos((double)meanWindAngle*Math.PI/180d)*10d);
+                path.moveTo(meanX-Math.sin(meanWindAngle*Math.PI/180d)*10d,y+Math.cos(meanWindAngle*Math.PI/180d)*10d);
                 path.lineTo(meanX-Math.sin((meanWindAngle+90d)*Math.PI/180d)*5d,y+Math.cos((meanWindAngle+90d)*Math.PI/180d)*5d);
                 path.lineTo(meanX-Math.sin((meanWindAngle-90d)*Math.PI/180d)*5d,y+Math.cos((meanWindAngle-90d)*Math.PI/180d)*5d);
                 path.closePath();
