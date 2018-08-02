@@ -10,6 +10,7 @@ public class CurveMenuPage extends AbstractMenuPage
         subpages.add(new SalleDeBainCurveMenuPage(this).potentiallyUpdate());
         subpages.add(new SousSolCurveMenuPage(this).potentiallyUpdate());
         subpages.add(new JardinCurveMenuPage(this).potentiallyUpdate());
+        subpages.add(new TemperatureComparisonPage(this).potentiallyUpdate());
     }
 
     public String getName()
