@@ -11,6 +11,12 @@ public class YRange
         this.max=max;
     }
 
+    public YRange(YRange yRange1,YRange yRange2)
+    {
+        min=Math.min(yRange1.getMin(),yRange2.getMin());
+        max=Math.max(yRange1.getMax(),yRange2.getMax());
+    }
+
     public double getMin()
     {
         return min;
