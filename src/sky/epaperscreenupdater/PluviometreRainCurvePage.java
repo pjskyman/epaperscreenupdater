@@ -36,6 +36,7 @@ public class PluviometreRainCurvePage extends AbstractNetatmoCurvePage
     @Override
     protected YRange computeYRange(Measure[] measures)
     {
+        //cette redéfinition est spécifique pour les barres de pluviométrie qui n'ont rien à voir avec des courbes classiques
         double yMin=0d;
         double yMax=-1e10d;
         for(Measure measure:measures)
@@ -64,6 +65,7 @@ public class PluviometreRainCurvePage extends AbstractNetatmoCurvePage
     @Override
     protected void drawData(Graphics2D g2d,List<Point2D> measurePoints,int ordinateLabelTextHeight,boolean yesterday)
     {
+        //cette redéfinition est spécifique pour dessiner les barres de pluviométrie qui n'ont rien à voir avec des courbes classiques
         if(yesterday)
             return;
         for(int i=0;i<measurePoints.size();i++)

@@ -52,6 +52,7 @@ public class TemperatureComparisonPage extends AbstractNetatmoCurvePage
     @Override
     protected void drawChart(Map<String,Measure[]> measureMap,Font baseFont,Font verticalBaseFont,Graphics2D g2d)
     {
+        //cette redéfinition est spécifique pour dessiner toutes les courbes de température
         Measure[] rawMeasures1=measureMap.get(JARDIN_TEMPERATURE);
         Measure[] rawMeasures2=measureMap.get(SALON_TEMPERATURE);
         Measure[] measures1=HomeWeatherVariationPage.filterTimedWindowMeasures(rawMeasures1,3);

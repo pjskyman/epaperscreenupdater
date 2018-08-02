@@ -57,6 +57,7 @@ public class AnemometreWindCurvePage extends AbstractNetatmoCurvePage
     @Override
     protected YRange computeYRange(Measure[] measures)
     {
+        //cette redéfinition est spécifique pour rajouter davantage de marge en haut des courbes pour accueillir les flèches de direction du vent
         double yMin=1e10d;
         double yMax=-1e10d;
         for(Measure measure:measures)
@@ -95,6 +96,7 @@ public class AnemometreWindCurvePage extends AbstractNetatmoCurvePage
     @Override
     protected void drawChart(Map<String,Measure[]> measureMap,Font baseFont,Font verticalBaseFont,Graphics2D g2d)
     {
+        //cette redéfinition est spécifique pour dessiner les 2 courbes du vent ainsi que les flèches de direction en haut du graphique
         Measure[] rawMeasures1=measureMap.get(ANEMOMETRE_WIND_STRENGTH);
         Measure[] rawAngleMeasures1=measureMap.get(ANEMOMETRE_WIND_ANGLE);
         Measure[] rawMeasures2=measureMap.get(ANEMOMETRE_GUST_STRENGTH);
