@@ -357,6 +357,7 @@ public abstract class AbstractNetatmoCurvePage extends AbstractNetatmoPage
                 oldy=d[0];
                 int precision=5;
                 path.moveTo((int)oldt,(int)oldy);
+                int count=1;
                 for(int i=1;i<=np-1;i++)
                 {
                     // loop over intervals between nodes
@@ -367,11 +368,25 @@ public abstract class AbstractNetatmoCurvePage extends AbstractNetatmoPage
                         y=((-a[i-1]/6d*(t2+h[i])*t1+d[i-1])*t2+(-a[i]/6d*(t1+h[i])*t2+d[i])*t1)/h[i];
                         t=x[i-1]+t1;
                         path.lineTo((int)t,(int)y);
+                        count++;
                         oldt=t;
                         oldy=y;
                     }
                 }
-                g2d.draw(path);
+                if(count>=2)
+                    g2d.draw(path);
+                else
+                {
+                    Logger.LOGGER.warn("The spline cannot be drawn in page "+getName());
+                    for(int i=1;i<measurePoints.size();i++)
+                    {
+                        double x1=measurePoints.get(i-1).getX();
+                        double y1=measurePoints.get(i-1).getY();
+                        double x2=measurePoints.get(i).getX();
+                        double y2=measurePoints.get(i).getY();
+                        g2d.drawLine((int)x1,(int)y1,(int)x2,(int)y2);
+                    }
+                }
             }
         }
     }
