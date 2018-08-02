@@ -36,7 +36,7 @@ public class AnemometreWindCurvePage extends AbstractNetatmoCurvePage
 
     protected String getMeasureKind()
     {
-        return ANEMOMETRE_GUST_STRENGTH;
+        return ANEMOMETRE_WIND_STRENGTH;
     }
 
     protected String getOrdinateLabelText()
