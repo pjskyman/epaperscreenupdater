@@ -150,7 +150,7 @@ public abstract class AbstractNetatmoCurvePage extends AbstractNetatmoPage
         Measure[] measures=HomeWeatherVariationPage.filterTimedWindowMeasures(rawMeasures,3);
         if(measures!=null)
         {
-            Measure[] yesterdaysMeasures=DATABASE.getMeasures(getMeasureKind(),
+            Measure[] yesterdayMeasures=DATABASE.getMeasures(getMeasureKind(),
                                                               measures[0].getDate().getTime()-Duration.of(1).day(),
                                                               measures[measures.length-1].getDate().getTime()-Duration.of(1).day()
             );
@@ -160,10 +160,9 @@ public abstract class AbstractNetatmoCurvePage extends AbstractNetatmoPage
             g2d.setFont(verticalBaseFont);
             g2d.drawString(ordinateLabelText,ordinateLabelTextHeight-5,(128-ordinateLabelTextHeight+3)/2+ordinateLabelTextWidth/2);
             XRange xRange=computeXRange(measures);
-            Measure[] tempArray=new Measure[measures.length+yesterdaysMeasures.length];
-            System.arraycopy(measures,0,tempArray,0,measures.length);
-            System.arraycopy(yesterdaysMeasures,0,tempArray,measures.length,yesterdaysMeasures.length);
-            YRange yRange=computeYRange(tempArray);
+            YRange todayYRange=computeYRange(measures);
+            YRange yesterdayYRange=computeYRange(yesterdayMeasures);
+            YRange yRange=new YRange(todayYRange,yesterdayYRange);
             double choosenTickOffset=0d;
             for(int index=0;index<TICK_OFFSETS.length;index++)
             {
@@ -219,20 +218,20 @@ public abstract class AbstractNetatmoCurvePage extends AbstractNetatmoPage
             }
             g2d.setStroke(new BasicStroke());
             drawData(g2d,measurePoints,ordinateLabelTextHeight,false);
-            List<Point2D> yesterdaysMeasurePoints=new ArrayList<>(yesterdaysMeasures.length);
-            for(Measure yesterdaysMeasure:yesterdaysMeasures)
+            List<Point2D> yesterdayMeasurePoints=new ArrayList<>(yesterdayMeasures.length);
+            for(Measure yesterdayMeasure:yesterdayMeasures)
             {
-                long time=yesterdaysMeasure.getDate().getTime()+Duration.of(1).day();
+                long time=yesterdayMeasure.getDate().getTime()+Duration.of(1).day();
                 int xLeft=ordinateLabelTextHeight+maxOrdinateWidth;
                 int xRight=295-10;
                 double x=(double)(xRight-xLeft)*(1d-(double)(xRange.getMax()-time)/(double)xRange.getAmplitude())+(double)xLeft;
-                double value=yesterdaysMeasure.getValue();
+                double value=yesterdayMeasure.getValue();
                 int yTop=0;
                 int yBottom=128-ordinateLabelTextHeight+3;
                 double y=(double)(yBottom-yTop)*(1d-(value-yRange.getMin())/yRange.getAmplitude())+(double)yTop;
-                yesterdaysMeasurePoints.add(new Point2D.Double(x,y));
+                yesterdayMeasurePoints.add(new Point2D.Double(x,y));
             }
-            drawData(g2d,yesterdaysMeasurePoints,ordinateLabelTextHeight,true);
+            drawData(g2d,yesterdayMeasurePoints,ordinateLabelTextHeight,true);
         }
     }
 
