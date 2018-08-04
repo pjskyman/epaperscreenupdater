@@ -10,12 +10,16 @@ import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import javax.imageio.ImageIO;
 import sky.netatmo.Measure;
 import sky.program.Duration;
 
@@ -129,10 +133,10 @@ public abstract class AbstractNetatmoCurvePage extends AbstractNetatmoPage
                 drawChart(measureMap,baseFont,verticalBaseFont,g2d);
 
                 g2d.dispose();
-//                try(OutputStream outputStream=new FileOutputStream(new File(getVerificationFileName())))
-//                {
-//                    ImageIO.write(sourceImage,"png",outputStream);
-//                }
+                try(OutputStream outputStream=new FileOutputStream(new File(getVerificationFileName())))
+                {
+                    ImageIO.write(sourceImage,"png",outputStream);
+                }
                 pixels=new Pixels(RefreshType.PARTIAL_REFRESH).writeImage(sourceImage);
                 Logger.LOGGER.info("Page \""+getName()+"\" updated successfully");
             }
@@ -217,7 +221,7 @@ public abstract class AbstractNetatmoCurvePage extends AbstractNetatmoPage
                 g2d.drawLine((int)x,128-ordinateLabelTextHeight+5,(int)x,0);
             }
             g2d.setStroke(new BasicStroke());
-            drawData(g2d,measurePoints,ordinateLabelTextHeight,false);
+            drawData(g2d,measurePoints,ordinateLabelTextHeight,CurveLineType.SPLINE,CurveStrokeType.CONTINUOUS_LINE,CurvePointShape.CIRCLE);
             List<Point2D> yesterdayMeasurePoints=new ArrayList<>(yesterdayMeasures.length);
             for(Measure yesterdayMeasure:yesterdayMeasures)
             {
@@ -231,7 +235,7 @@ public abstract class AbstractNetatmoCurvePage extends AbstractNetatmoPage
                 double y=(double)(yBottom-yTop)*(1d-(value-yRange.getMin())/yRange.getAmplitude())+(double)yTop;
                 yesterdayMeasurePoints.add(new Point2D.Double(x,y));
             }
-            drawData(g2d,yesterdayMeasurePoints,ordinateLabelTextHeight,true);
+            drawData(g2d,yesterdayMeasurePoints,ordinateLabelTextHeight,CurveLineType.SPLINE,CurveStrokeType.DOTTED_LINE,CurvePointShape.NOTHING);
         }
     }
 
@@ -283,11 +287,21 @@ public abstract class AbstractNetatmoCurvePage extends AbstractNetatmoPage
 
     protected abstract double getMinimalY();
 
-    protected void drawData(Graphics2D g2d,List<Point2D> measurePoints,int ordinateLabelTextHeight,boolean yesterday)
+    protected void drawData(Graphics2D g2d,List<Point2D> measurePoints,int ordinateLabelTextHeight,CurveLineType curveLineType,CurveStrokeType curveStrokeType,CurvePointShape curvePointShape)
     {
-        if(yesterday)
+        BasicStroke stroke=null;
+        if(curveStrokeType==CurveStrokeType.DOTTED_LINE)
         {
-            g2d.setStroke(new BasicStroke(1f,BasicStroke.CAP_BUTT,BasicStroke.JOIN_BEVEL,1f,new float[]{1f,1.5f},0f));
+            stroke=new BasicStroke(1f,BasicStroke.CAP_BUTT,BasicStroke.JOIN_BEVEL,1f,new float[]{1f,1.5f},0f);
+            g2d.setStroke(stroke);
+        }
+        else
+            if(curveStrokeType==CurveStrokeType.DASHED_LINE)
+            {
+                stroke=new BasicStroke(1f,BasicStroke.CAP_BUTT,BasicStroke.JOIN_BEVEL,1f,new float[]{5f,5f},0f);
+                g2d.setStroke(stroke);
+            }
+        if(curveLineType==CurveLineType.LINE)
             for(int i=1;i<measurePoints.size();i++)
             {
                 double x1=measurePoints.get(i-1).getX();
@@ -295,100 +309,124 @@ public abstract class AbstractNetatmoCurvePage extends AbstractNetatmoPage
                 double x2=measurePoints.get(i).getX();
                 double y2=measurePoints.get(i).getY();
                 g2d.drawLine((int)x1,(int)y1,(int)x2,(int)y2);
+                if(stroke!=null)
+                    stroke=new BasicStroke(stroke.getLineWidth(),stroke.getEndCap(),stroke.getLineJoin(),stroke.getMiterLimit(),stroke.getDashArray(),stroke.getDashPhase()+(float)Point2D.distance(x1,y1,x2,y2));
             }
-            g2d.setStroke(new BasicStroke());
-        }
         else
-        {
+            if(curveLineType==CurveLineType.SPLINE)
+                if(measurePoints.size()==2)//pas de spline si deux points ou moins, et ligne uniquement si deux points, sinon rien
+                {
+                    double x1=measurePoints.get(0).getX();
+                    double y1=measurePoints.get(0).getY();
+                    double x2=measurePoints.get(1).getX();
+                    double y2=measurePoints.get(1).getY();
+                    g2d.drawLine((int)x1,(int)y1,(int)x2,(int)y2);
+                }
+                else
+                    if(measurePoints.size()>2)//construction de la spline possible
+                    {
+                        Path2D path=new Path2D.Double();
+                        int np=measurePoints.size(); // number of points
+                        double[] d=new double[np]; // Newton form coefficients
+                        double[] x=new double[np]; // x-coordinates of nodes
+                        double y;
+                        double t;
+                        double oldy=0d;
+                        double oldt=0d;
+
+                        double[] a=new double[np];
+                        double t1;
+                        double t2;
+                        double[] h=new double[np];
+
+                        for(int i=0;i<np;i++)
+                        {
+                            x[i]=measurePoints.get(i).getX();
+                            d[i]=measurePoints.get(i).getY();
+                        }
+
+                        for(int i=1;i<=np-1;i++)
+                            h[i]=x[i]-x[i-1];
+                        double[] sub=new double[np-1];
+                        double[] diag=new double[np-1];
+                        double[] sup=new double[np-1];
+
+                        for(int i=1;i<=np-2;i++)
+                        {
+                            diag[i]=(h[i]+h[i+1])/3d;
+                            sup[i]=h[i+1]/6d;
+                            sub[i]=h[i]/6d;
+                            a[i]=(d[i+1]-d[i])/h[i+1]-(d[i]-d[i-1])/h[i];
+                        }
+                        solveTridiag(sub,diag,sup,a,np-2);
+
+                        // note that a[0]=a[np-1]=0
+                        // draw
+                        oldt=x[0];
+                        oldy=d[0];
+                        int precision=5;
+                        path.moveTo((int)oldt,(int)oldy);
+                        int count=1;
+                        for(int i=1;i<=np-1;i++)
+                        {
+                            // loop over intervals between nodes
+                            for(int j=1;j<=precision;j++)
+                            {
+                                t1=(h[i]*j)/precision;
+                                t2=h[i]-t1;
+                                y=((-a[i-1]/6d*(t2+h[i])*t1+d[i-1])*t2+(-a[i]/6d*(t1+h[i])*t2+d[i])*t1)/h[i];
+                                t=x[i-1]+t1;
+                                path.lineTo((int)t,(int)y);
+                                count++;
+                                oldt=t;
+                                oldy=y;
+                            }
+                        }
+                        if(count>=2)
+                            g2d.draw(path);
+                        else
+                        {
+                            Logger.LOGGER.warn("The spline cannot be drawn in page "+getName());
+                            for(int i=1;i<measurePoints.size();i++)
+                            {
+                                double x1=measurePoints.get(i-1).getX();
+                                double y1=measurePoints.get(i-1).getY();
+                                double x2=measurePoints.get(i).getX();
+                                double y2=measurePoints.get(i).getY();
+                                g2d.drawLine((int)x1,(int)y1,(int)x2,(int)y2);
+                                if(stroke!=null)
+                                    stroke=new BasicStroke(stroke.getLineWidth(),stroke.getEndCap(),stroke.getLineJoin(),stroke.getMiterLimit(),stroke.getDashArray(),stroke.getDashPhase()+(float)Point2D.distance(x1,y1,x2,y2));
+                            }
+                        }
+                    }
+        if(curveStrokeType==CurveStrokeType.DOTTED_LINE||curveStrokeType==CurveStrokeType.DASHED_LINE)
+            g2d.setStroke(new BasicStroke());
+        if(curvePointShape==CurvePointShape.CIRCLE)
             for(int i=0;i<measurePoints.size();i++)
             {
                 double x=measurePoints.get(i).getX();
                 double y=measurePoints.get(i).getY();
                 g2d.drawOval((int)x-2,(int)y-2,4,4);
             }
-            if(measurePoints.size()==2)
-            {
-                double x1=measurePoints.get(0).getX();
-                double y1=measurePoints.get(0).getY();
-                double x2=measurePoints.get(1).getX();
-                double y2=measurePoints.get(1).getY();
-                g2d.drawLine((int)x1,(int)y1,(int)x2,(int)y2);
-            }
-            else//construction de la spline
-            {
-                Path2D path=new Path2D.Double();
-                int np=measurePoints.size(); // number of points
-                double[] d=new double[np]; // Newton form coefficients
-                double[] x=new double[np]; // x-coordinates of nodes
-                double y;
-                double t;
-                double oldy=0d;
-                double oldt=0d;
-
-                double[] a=new double[np];
-                double t1;
-                double t2;
-                double[] h=new double[np];
-
-                for(int i=0;i<np;i++)
+        else
+            if(curvePointShape==CurvePointShape.CROSS)
+                for(int i=0;i<measurePoints.size();i++)
                 {
-                    x[i]=measurePoints.get(i).getX();
-                    d[i]=measurePoints.get(i).getY();
+                    double x=measurePoints.get(i).getX();
+                    double y=measurePoints.get(i).getY();
+                    g2d.drawLine((int)x-2,(int)y-2,(int)x+2,(int)y+2);
+                    g2d.drawLine((int)x-2,(int)y+2,(int)x+2,(int)y-2);
                 }
-
-                for(int i=1;i<=np-1;i++)
-                    h[i]=x[i]-x[i-1];
-                double[] sub=new double[np-1];
-                double[] diag=new double[np-1];
-                double[] sup=new double[np-1];
-
-                for(int i=1;i<=np-2;i++)
-                {
-                    diag[i]=(h[i]+h[i+1])/3d;
-                    sup[i]=h[i+1]/6d;
-                    sub[i]=h[i]/6d;
-                    a[i]=(d[i+1]-d[i])/h[i+1]-(d[i]-d[i-1])/h[i];
-                }
-                solveTridiag(sub,diag,sup,a,np-2);
-
-                // note that a[0]=a[np-1]=0
-                // draw
-                oldt=x[0];
-                oldy=d[0];
-                int precision=5;
-                path.moveTo((int)oldt,(int)oldy);
-                int count=1;
-                for(int i=1;i<=np-1;i++)
-                {
-                    // loop over intervals between nodes
-                    for(int j=1;j<=precision;j++)
+            else
+                if(curvePointShape==CurvePointShape.TRIANGLE)
+                    for(int i=0;i<measurePoints.size();i++)
                     {
-                        t1=(h[i]*j)/precision;
-                        t2=h[i]-t1;
-                        y=((-a[i-1]/6d*(t2+h[i])*t1+d[i-1])*t2+(-a[i]/6d*(t1+h[i])*t2+d[i])*t1)/h[i];
-                        t=x[i-1]+t1;
-                        path.lineTo((int)t,(int)y);
-                        count++;
-                        oldt=t;
-                        oldy=y;
+                        double x=measurePoints.get(i).getX();
+                        double y=measurePoints.get(i).getY();
+                        g2d.drawLine((int)x,(int)y-2,(int)x-2,(int)y+2);
+                        g2d.drawLine((int)x-2,(int)y+2,(int)x+2,(int)y+2);
+                        g2d.drawLine((int)x+2,(int)y+2,(int)x,(int)y-2);
                     }
-                }
-                if(count>=2)
-                    g2d.draw(path);
-                else
-                {
-                    Logger.LOGGER.warn("The spline cannot be drawn in page "+getName());
-                    for(int i=1;i<measurePoints.size();i++)
-                    {
-                        double x1=measurePoints.get(i-1).getX();
-                        double y1=measurePoints.get(i-1).getY();
-                        double x2=measurePoints.get(i).getX();
-                        double y2=measurePoints.get(i).getY();
-                        g2d.drawLine((int)x1,(int)y1,(int)x2,(int)y2);
-                    }
-                }
-            }
-        }
     }
 
     private static void solveTridiag(double[] sub,double[] diag,double[] sup,double[] b,int n)

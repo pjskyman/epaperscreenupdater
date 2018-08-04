@@ -137,7 +137,7 @@ public class TemperatureComparisonPage extends AbstractNetatmoCurvePage
             }
             g2d.setStroke(new BasicStroke());
             for(int i=0;i<measureKinds.length;i++)
-                drawData(g2d,measurePoints[i],ordinateLabelTextHeight,false);
+                drawData(g2d,measurePoints[i],ordinateLabelTextHeight,CurveLineType.SPLINE,i<measureKinds.length-1?CurveStrokeType.CONTINUOUS_LINE:CurveStrokeType.DASHED_LINE,i<measureKinds.length-1?CurvePointShape.values()[i%3]:CurvePointShape.NOTHING);
         }
     }
 

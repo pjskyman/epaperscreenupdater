@@ -179,8 +179,8 @@ public class AnemometreWindCurvePage extends AbstractNetatmoCurvePage
                 g2d.drawLine((int)x,128-ordinateLabelTextHeight+5,(int)x,0);
             }
             g2d.setStroke(new BasicStroke());
-            drawData(g2d,new SpecialWindList(winds,false),ordinateLabelTextHeight,false);
-            drawData(g2d,new SpecialWindList(winds,true),ordinateLabelTextHeight,false);
+            drawData(g2d,new SpecialWindList(winds,false),ordinateLabelTextHeight,CurveLineType.SPLINE,CurveStrokeType.CONTINUOUS_LINE,CurvePointShape.CIRCLE);
+            drawData(g2d,new SpecialWindList(winds,true),ordinateLabelTextHeight,CurveLineType.SPLINE,CurveStrokeType.CONTINUOUS_LINE,CurvePointShape.CIRCLE);
             for(int i=winds.length-1;i>=0;i-=4)
             {
                 int j=Math.max(0,i-3);

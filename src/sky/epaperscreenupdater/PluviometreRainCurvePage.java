@@ -63,10 +63,10 @@ public class PluviometreRainCurvePage extends AbstractNetatmoCurvePage
     }
 
     @Override
-    protected void drawData(Graphics2D g2d,List<Point2D> measurePoints,int ordinateLabelTextHeight,boolean yesterday)
+    protected void drawData(Graphics2D g2d,List<Point2D> measurePoints,int ordinateLabelTextHeight,CurveLineType curveLineType,CurveStrokeType curveStrokeType,CurvePointShape curvePointShape)
     {
         //cette redéfinition est spécifique pour dessiner les barres de pluviométrie qui n'ont rien à voir avec des courbes classiques
-        if(yesterday)
+        if(curveLineType==CurveLineType.NOTHING)
             return;
         for(int i=0;i<measurePoints.size();i++)
         {
