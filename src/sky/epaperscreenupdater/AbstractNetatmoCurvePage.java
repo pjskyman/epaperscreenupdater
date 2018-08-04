@@ -162,7 +162,7 @@ public abstract class AbstractNetatmoCurvePage extends AbstractNetatmoPage
             XRange xRange=computeXRange(measures);
             YRange todayYRange=computeYRange(measures);
             YRange yesterdayYRange=computeYRange(yesterdayMeasures);
-            YRange yRange=new YRange(todayYRange,yesterdayYRange);
+            YRange yRange=yesterdayMeasures.length>0?new YRange(todayYRange,yesterdayYRange):todayYRange;
             double choosenTickOffset=0d;
             for(int index=0;index<TICK_OFFSETS.length;index++)
             {
@@ -306,7 +306,10 @@ public abstract class AbstractNetatmoCurvePage extends AbstractNetatmoPage
                 double y2=measurePoints.get(i).getY();
                 g2d.drawLine((int)x1,(int)y1,(int)x2,(int)y2);
                 if(stroke!=null)
+                {
                     stroke=new BasicStroke(stroke.getLineWidth(),stroke.getEndCap(),stroke.getLineJoin(),stroke.getMiterLimit(),stroke.getDashArray(),stroke.getDashPhase()+(float)Point2D.distance(x1,y1,x2,y2));
+                    g2d.setStroke(stroke);
+                }
             }
         else
             if(curveLineType==CurveLineType.SPLINE)
@@ -391,7 +394,10 @@ public abstract class AbstractNetatmoCurvePage extends AbstractNetatmoPage
                                 double y2=measurePoints.get(i).getY();
                                 g2d.drawLine((int)x1,(int)y1,(int)x2,(int)y2);
                                 if(stroke!=null)
+                                {
                                     stroke=new BasicStroke(stroke.getLineWidth(),stroke.getEndCap(),stroke.getLineJoin(),stroke.getMiterLimit(),stroke.getDashArray(),stroke.getDashPhase()+(float)Point2D.distance(x1,y1,x2,y2));
+                                    g2d.setStroke(stroke);
+                                }
                             }
                         }
                     }
