@@ -10,16 +10,12 @@ import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import javax.imageio.ImageIO;
 import sky.netatmo.Measure;
 import sky.program.Duration;
 
@@ -133,10 +129,10 @@ public abstract class AbstractNetatmoCurvePage extends AbstractNetatmoPage
                 drawChart(measureMap,baseFont,verticalBaseFont,g2d);
 
                 g2d.dispose();
-                try(OutputStream outputStream=new FileOutputStream(new File(getVerificationFileName())))
-                {
-                    ImageIO.write(sourceImage,"png",outputStream);
-                }
+//                try(OutputStream outputStream=new FileOutputStream(new File(getVerificationFileName())))
+//                {
+//                    ImageIO.write(sourceImage,"png",outputStream);
+//                }
                 pixels=new Pixels(RefreshType.PARTIAL_REFRESH).writeImage(sourceImage);
                 Logger.LOGGER.info("Page \""+getName()+"\" updated successfully");
             }
