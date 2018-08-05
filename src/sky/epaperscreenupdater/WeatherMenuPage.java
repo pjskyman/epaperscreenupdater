@@ -7,6 +7,7 @@ public class WeatherMenuPage extends AbstractMenuPage
         super(parentPage);
         subpages.add(new HomeWeatherPage(this).potentiallyUpdate());
         subpages.add(new HomeWeatherVariationPage(this).potentiallyUpdate());
+        subpages.add(new NetatmoModuleStatePage(this).potentiallyUpdate());
         subpages.add(new CurveMenuPage(this).potentiallyUpdate());
         subpages.add(new DailyWeatherForecast1Page(this).potentiallyUpdate());
         subpages.add(new DailyWeatherForecast2Page(this).potentiallyUpdate());
