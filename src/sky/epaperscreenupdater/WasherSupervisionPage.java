@@ -24,7 +24,7 @@ public class WasherSupervisionPage extends AbstractSinglePage
 
     public String getName()
     {
-        return "Surveillance L&V";
+        return "Surveillance LV/LL";
     }
 
     public synchronized Page potentiallyUpdate()

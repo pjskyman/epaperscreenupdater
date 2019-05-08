@@ -24,82 +24,82 @@ public abstract class AbstractNetatmoPage extends AbstractSinglePage
 {
     private static Token token=null;
     private static long lastNetatmoVerificationTime=0L;
-    private static Measure[] lastSalonTemperatures=null;
-    private static Measure[] lastSalonHumidities=null;
-    private static Measure[] lastSalonPressures=null;
-    private static Measure[] lastSalonCarbonDioxydes=null;
-    private static Measure[] lastSalonNoises=null;
-    private static Measure[] salonWifi=null;
-    private static Measure[] salonFirmware=null;
-    private static Measure[] lastChambreTemperatures=null;
-    private static Measure[] lastChambreHumidities=null;
-    private static Measure[] lastChambreCarbonDioxydes=null;
-    private static Measure[] chambreBattery=null;
-    private static Measure[] chambreRadio=null;
-    private static Measure[] lastSalleDeBainTemperatures=null;
-    private static Measure[] lastSalleDeBainHumidities=null;
-    private static Measure[] lastSalleDeBainCarbonDioxydes=null;
-    private static Measure[] salleDeBainBattery=null;
-    private static Measure[] salleDeBainRadio=null;
-    private static Measure[] lastSousSolTemperatures=null;
-    private static Measure[] lastSousSolHumidities=null;
-    private static Measure[] lastSousSolCarbonDioxydes=null;
-    private static Measure[] sousSolBattery=null;
-    private static Measure[] sousSolRadio=null;
-    private static Measure[] lastJardinTemperatures=null;
-    private static Measure[] lastJardinHumidities=null;
-    private static Measure[] jardinBattery=null;
-    private static Measure[] jardinRadio=null;
-    private static Measure[] lastPluviometreRains=null;
-    private static Measure[] pluviometreTotalRain=null;
-    private static Measure[] pluviometreBattery=null;
-    private static Measure[] pluviometreRadio=null;
-    private static Measure[] lastAnemometreWindStrengths=null;
-    private static Measure[] lastAnemometreWindAngles=null;
-    private static Measure[] lastAnemometreGustStrengths=null;
-    private static Measure[] lastAnemometreGustAngles=null;
-    private static Measure[] anemometreMaxGustStrength=null;
-    private static Measure[] anemometreMaxGustAngle=null;
-    private static Measure[] anemometreBattery=null;
-    private static Measure[] anemometreRadio=null;
-    protected static final String SALON_TEMPERATURE="salonTemperature";
-    protected static final String SALON_HUMIDITY="salonHumidity";
-    protected static final String SALON_PRESSURE="salonPressure";
-    protected static final String SALON_CARBON_DIOXYDE="salonCarbonDioxyde";
-    protected static final String SALON_NOISE="salonNoise";
-    protected static final String SALON_WIFI="salonWifi";
-    protected static final String SALON_FIRMWARE="salonFirmware";
-    protected static final String CHAMBRE_TEMPERATURE="chambreTemperature";
-    protected static final String CHAMBRE_HUMIDITY="chambreHumidity";
-    protected static final String CHAMBRE_CARBON_DIOXYDE="chambreCarbonDioxyde";
-    protected static final String CHAMBRE_BATTERY="chambreBattery";
-    protected static final String CHAMBRE_RADIO="chambreRadio";
-    protected static final String SALLE_DE_BAIN_TEMPERATURE="salleDeBainTemperature";
-    protected static final String SALLE_DE_BAIN_HUMIDITY="salleDeBainHumidity";
-    protected static final String SALLE_DE_BAIN_CARBON_DIOXYDE="salleDeBainCarbonDioxyde";
-    protected static final String SALLE_DE_BAIN_BATTERY="salleDeBainBattery";
-    protected static final String SALLE_DE_BAIN_RADIO="salleDeBainRadio";
-    protected static final String SOUS_SOL_TEMPERATURE="sousSolTemperature";
-    protected static final String SOUS_SOL_HUMIDITY="sousSolHumidity";
-    protected static final String SOUS_SOL_CARBON_DIOXYDE="sousSolCarbonDioxyde";
-    protected static final String SOUS_SOL_BATTERY="sousSolBattery";
-    protected static final String SOUS_SOL_RADIO="sousSolRadio";
-    protected static final String JARDIN_TEMPERATURE="jardinTemperature";
-    protected static final String JARDIN_HUMIDITY="jardinHumidity";
-    protected static final String JARDIN_BATTERY="jardinBattery";
-    protected static final String JARDIN_RADIO="jardinRadio";
-    protected static final String PLUVIOMETRE_RAIN="pluviometreRain";
-    protected static final String PLUVIOMETRE_TOTAL_RAIN="pluviometreTotalRain";
-    protected static final String PLUVIOMETRE_BATTERY="pluviometreBattery";
-    protected static final String PLUVIOMETRE_RADIO="pluviometreRadio";
-    protected static final String ANEMOMETRE_WIND_STRENGTH="anemometreWindStrength";
-    protected static final String ANEMOMETRE_WIND_ANGLE="anemometreWindAngle";
-    protected static final String ANEMOMETRE_GUST_STRENGTH="anemometreGustStrength";
-    protected static final String ANEMOMETRE_GUST_ANGLE="anemometreGustAngle";
-    protected static final String ANEMOMETRE_MAX_GUST_STRENGTH="anemometreMaxGustStrength";
-    protected static final String ANEMOMETRE_MAX_GUST_ANGLE="anemometreMaxGustAngle";
-    protected static final String ANEMOMETRE_BATTERY="anemometreBattery";
-    protected static final String ANEMOMETRE_RADIO="anemometreRadio";
+    private static Measure[] last70ee50000deaTemperatures=null;
+    private static Measure[] last70ee50000deaHumidities=null;
+    private static Measure[] last70ee50000deaPressures=null;
+    private static Measure[] last70ee50000deaCarbonDioxydes=null;
+    private static Measure[] last70ee50000deaNoises=null;
+    private static Measure[] _70ee50000deaWifi=null;
+    private static Measure[] _70ee50000deaFirmware=null;
+    private static Measure[] last030000000216Temperatures=null;
+    private static Measure[] last030000000216Humidities=null;
+    private static Measure[] last030000000216CarbonDioxydes=null;
+    private static Measure[] _030000000216Battery=null;
+    private static Measure[] _030000000216Radio=null;
+    private static Measure[] last03000000076eTemperatures=null;
+    private static Measure[] last03000000076eHumidities=null;
+    private static Measure[] last03000000076eCarbonDioxydes=null;
+    private static Measure[] _03000000076eBattery=null;
+    private static Measure[] _03000000076eRadio=null;
+    private static Measure[] last03000003fe8eTemperatures=null;
+    private static Measure[] last03000003fe8eHumidities=null;
+    private static Measure[] last03000003fe8eCarbonDioxydes=null;
+    private static Measure[] _03000003fe8eBattery=null;
+    private static Measure[] _03000003fe8eRadio=null;
+    private static Measure[] last0200000010baTemperatures=null;
+    private static Measure[] last0200000010baHumidities=null;
+    private static Measure[] _0200000010baBattery=null;
+    private static Measure[] _0200000010baRadio=null;
+    private static Measure[] last05000004152cRains=null;
+    private static Measure[] _05000004152cTotalRain=null;
+    private static Measure[] _05000004152cBattery=null;
+    private static Measure[] _05000004152cRadio=null;
+    private static Measure[] last06000000729aWindStrengths=null;
+    private static Measure[] last06000000729aWindAngles=null;
+    private static Measure[] last06000000729aGustStrengths=null;
+    private static Measure[] last06000000729aGustAngles=null;
+    private static Measure[] _06000000729aMaxGustStrength=null;
+    private static Measure[] _06000000729aMaxGustAngle=null;
+    private static Measure[] _06000000729aBattery=null;
+    private static Measure[] _06000000729aRadio=null;
+    protected static final String _70ee50000dea_TEMPERATURE="70ee50000deaTemperature";
+    protected static final String _70ee50000dea_HUMIDITY="70ee50000deaHumidity";
+    protected static final String _70ee50000dea_PRESSURE="70ee50000deaPressure";
+    protected static final String _70ee50000dea_CARBON_DIOXYDE="70ee50000deaCarbonDioxyde";
+    protected static final String _70ee50000dea_NOISE="70ee50000deaNoise";
+    protected static final String _70ee50000dea_WIFI="70ee50000deaWifi";
+    protected static final String _70ee50000dea_FIRMWARE="70ee50000deaFirmware";
+    protected static final String _030000000216_TEMPERATURE="030000000216Temperature";
+    protected static final String _030000000216_HUMIDITY="030000000216Humidity";
+    protected static final String _030000000216_CARBON_DIOXYDE="030000000216CarbonDioxyde";
+    protected static final String _030000000216_BATTERY="030000000216Battery";
+    protected static final String _030000000216_RADIO="030000000216Radio";
+    protected static final String _03000000076e_TEMPERATURE="03000000076eTemperature";
+    protected static final String _03000000076e_HUMIDITY="03000000076eHumidity";
+    protected static final String _03000000076e_CARBON_DIOXYDE="03000000076eCarbonDioxyde";
+    protected static final String _03000000076e_BATTERY="03000000076eBattery";
+    protected static final String _03000000076e_RADIO="03000000076eRadio";
+    protected static final String _03000003fe8e_TEMPERATURE="03000003fe8eTemperature";
+    protected static final String _03000003fe8e_HUMIDITY="03000003fe8eHumidity";
+    protected static final String _03000003fe8e_CARBON_DIOXYDE="03000003fe8eCarbonDioxyde";
+    protected static final String _03000003fe8e_BATTERY="03000003fe8eBattery";
+    protected static final String _03000003fe8e_RADIO="03000003fe8eRadio";
+    protected static final String _0200000010ba_TEMPERATURE="0200000010baTemperature";
+    protected static final String _0200000010ba_HUMIDITY="0200000010baHumidity";
+    protected static final String _0200000010ba_BATTERY="0200000010baBattery";
+    protected static final String _0200000010ba_RADIO="0200000010baRadio";
+    protected static final String _05000004152c_RAIN="05000004152cRain";
+    protected static final String _05000004152c_TOTAL_RAIN="05000004152cTotalRain";
+    protected static final String _05000004152c_BATTERY="05000004152cBattery";
+    protected static final String _05000004152c_RADIO="05000004152cRadio";
+    protected static final String _06000000729a_WIND_STRENGTH="06000000729aWindStrength";
+    protected static final String _06000000729a_WIND_ANGLE="06000000729aWindAngle";
+    protected static final String _06000000729a_GUST_STRENGTH="06000000729aGustStrength";
+    protected static final String _06000000729a_GUST_ANGLE="06000000729aGustAngle";
+    protected static final String _06000000729a_MAX_GUST_STRENGTH="06000000729aMaxGustStrength";
+    protected static final String _06000000729a_MAX_GUST_ANGLE="06000000729aMaxGustAngle";
+    protected static final String _06000000729a_BATTERY="06000000729aBattery";
+    protected static final String _06000000729a_RADIO="06000000729aRadio";
     private static final Comparator<Measure> MEASURE_COMPARATOR=(o1,o2)->Long.compare(o1.getDate().getTime(),o2.getDate().getTime());
     protected static final MeasureDatabase DATABASE=new MeasureDatabase();
     protected static final boolean NETATMO_ENABLED=true;
@@ -154,95 +154,95 @@ public abstract class AbstractNetatmoPage extends AbstractSinglePage
                     if(token!=null)
                     {
                         Device homeDevice=token.getUser().getDevices()[0];
-                        Device salon=homeDevice;//70:ee:50:00:0d:ea
-                        JsonObject salonObject=salon.getAttributes();
-                        salonWifi=new Measure[]{new StandAloneMeasure(new Date(now),null,salonObject.get("wifi_status").getAsDouble())};
-                        salonFirmware=new Measure[]{new StandAloneMeasure(new Date(now),null,salonObject.get("firmware").getAsDouble())};
+                        Device _70ee50000dea=homeDevice;
+                        JsonObject _70ee50000deaObject=_70ee50000dea.getAttributes();
+                        _70ee50000deaWifi=new Measure[]{new StandAloneMeasure(new Date(now),null,_70ee50000deaObject.get("wifi_status").getAsDouble())};
+                        _70ee50000deaFirmware=new Measure[]{new StandAloneMeasure(new Date(now),null,_70ee50000deaObject.get("firmware").getAsDouble())};
                         Module[] homeModules=homeDevice.getModules();
-                        Module jardin=homeModules[0];//02:00:00:00:10:ba
-                        JsonObject jardinObject=jardin.getAttributes();
-                        jardinBattery=new Measure[]{new StandAloneMeasure(new Date(now),null,jardinObject.get("battery_vp").getAsDouble())};
-                        jardinRadio=new Measure[]{new StandAloneMeasure(new Date(now),null,jardinObject.get("rf_status").getAsDouble())};
-                        Module chambre=homeModules[1];//03:00:00:00:02:16
-                        JsonObject chambreObject=chambre.getAttributes();
-                        chambreBattery=new Measure[]{new StandAloneMeasure(new Date(now),null,chambreObject.get("battery_vp").getAsDouble())};
-                        chambreRadio=new Measure[]{new StandAloneMeasure(new Date(now),null,chambreObject.get("rf_status").getAsDouble())};
-                        Module salleDeBain=homeModules[2];//03:00:00:00:07:6e
-                        JsonObject salleDeBainObject=salleDeBain.getAttributes();
-                        salleDeBainBattery=new Measure[]{new StandAloneMeasure(new Date(now),null,salleDeBainObject.get("battery_vp").getAsDouble())};
-                        salleDeBainRadio=new Measure[]{new StandAloneMeasure(new Date(now),null,salleDeBainObject.get("rf_status").getAsDouble())};
-                        Module anemometre=homeModules[3];//06:00:00:00:72:9a
-                        JsonObject anemometreObject=anemometre.getAttributes();
-                        JsonObject anemometreDashboardDataObject=anemometreObject.get("dashboard_data").getAsJsonObject();
-                        anemometreMaxGustStrength=new Measure[]{new StandAloneMeasure(new Date(now),MeasurementType.GUST_STRENGTH,anemometreDashboardDataObject.get("max_wind_str").getAsDouble())};
-                        anemometreMaxGustAngle=new Measure[]{new StandAloneMeasure(new Date(now),MeasurementType.GUST_ANGLE,anemometreDashboardDataObject.get("max_wind_angle").getAsDouble())};
-                        anemometreBattery=new Measure[]{new StandAloneMeasure(new Date(now),null,anemometreObject.get("battery_vp").getAsDouble())};
-                        anemometreRadio=new Measure[]{new StandAloneMeasure(new Date(now),null,anemometreObject.get("rf_status").getAsDouble())};
-                        Module sousSol=homeModules[4];//03:00:00:03:fe:8e
-                        JsonObject sousSolObject=sousSol.getAttributes();
-                        sousSolBattery=new Measure[]{new StandAloneMeasure(new Date(now),null,sousSolObject.get("battery_vp").getAsDouble())};
-                        sousSolRadio=new Measure[]{new StandAloneMeasure(new Date(now),null,sousSolObject.get("rf_status").getAsDouble())};
-                        Module pluviometre=homeModules[5];//05:00:00:04:15:2c
-                        JsonObject pluviometreObject=pluviometre.getAttributes();
-                        JsonObject pluviometreDashboardDataObject=pluviometreObject.get("dashboard_data").getAsJsonObject();
-                        pluviometreTotalRain=new Measure[]{new StandAloneMeasure(new Date(now),MeasurementType.RAIN,pluviometreDashboardDataObject.get("sum_rain_24").getAsDouble())};
-                        pluviometreBattery=new Measure[]{new StandAloneMeasure(new Date(now),null,pluviometreObject.get("battery_vp").getAsDouble())};
-                        pluviometreRadio=new Measure[]{new StandAloneMeasure(new Date(now),null,pluviometreObject.get("rf_status").getAsDouble())};
-                        Measure[] salonMeasures=salon.getMeasures(MeasurementScale.MAX,new Date(now-Duration.of(3).hour()),new Date(now+Duration.of(5).minute()),MeasurementType.TEMPERATURE,MeasurementType.HUMIDITY,MeasurementType.CO2,MeasurementType.NOISE);
-                        Measure[] salonPressureMeasures=salon.getMeasures(MeasurementScale.MAX,new Date(now-Duration.of(3).hourPlus(15).minute()),new Date(now+Duration.of(5).minute()),MeasurementType.PRESSURE);
-                        Measure[] jardinMeasures=jardin.getMeasures(MeasurementScale.MAX,new Date(now-Duration.of(3).hour()),new Date(now+Duration.of(5).minute()),MeasurementType.TEMPERATURE,MeasurementType.HUMIDITY);
-                        Measure[] chambreMeasures=chambre.getMeasures(MeasurementScale.MAX,new Date(now-Duration.of(3).hour()),new Date(now+Duration.of(5).minute()),MeasurementType.TEMPERATURE,MeasurementType.HUMIDITY,MeasurementType.CO2);
-                        Measure[] salleDeBainMeasures=salleDeBain.getMeasures(MeasurementScale.MAX,new Date(now-Duration.of(3).hour()),new Date(now+Duration.of(5).minute()),MeasurementType.TEMPERATURE,MeasurementType.HUMIDITY,MeasurementType.CO2);
-                        Measure[] anemometreMeasures=anemometre.getMeasures(MeasurementScale.MAX,new Date(now-Duration.of(3).hour()),new Date(now+Duration.of(5).minute()),MeasurementType.WIND_STRENGTH,MeasurementType.WIND_ANGLE,MeasurementType.GUST_STRENGTH,MeasurementType.GUST_ANGLE);
-                        Measure[] sousSolMeasures=sousSol.getMeasures(MeasurementScale.MAX,new Date(now-Duration.of(3).hour()),new Date(now+Duration.of(5).minute()),MeasurementType.TEMPERATURE,MeasurementType.HUMIDITY,MeasurementType.CO2);
-                        Measure[] pluviometreMeasures=pluviometre.getMeasures(MeasurementScale.MAX,new Date(now-Duration.of(3).hour()),new Date(now+Duration.of(5).minute()),MeasurementType.RAIN);
-                        lastSalonTemperatures=compileMeasures(salonMeasures,MeasurementType.TEMPERATURE);
-                        DATABASE.addMeasures(SALON_TEMPERATURE,lastSalonTemperatures);
-                        lastSalonHumidities=compileMeasures(salonMeasures,MeasurementType.HUMIDITY);
-                        DATABASE.addMeasures(SALON_HUMIDITY,lastSalonHumidities);
-                        lastSalonPressures=compileMeasures(salonPressureMeasures,MeasurementType.PRESSURE);
-                        DATABASE.addMeasures(SALON_PRESSURE,lastSalonPressures);
-                        lastSalonCarbonDioxydes=compileMeasures(salonMeasures,MeasurementType.CO2);
-                        DATABASE.addMeasures(SALON_CARBON_DIOXYDE,lastSalonCarbonDioxydes);
-                        lastSalonNoises=compileMeasures(salonMeasures,MeasurementType.NOISE);
-                        DATABASE.addMeasures(SALON_NOISE,lastSalonNoises);
-                        lastChambreTemperatures=compileMeasures(chambreMeasures,MeasurementType.TEMPERATURE);
-                        DATABASE.addMeasures(CHAMBRE_TEMPERATURE,lastChambreTemperatures);
-                        lastChambreHumidities=compileMeasures(chambreMeasures,MeasurementType.HUMIDITY);
-                        DATABASE.addMeasures(CHAMBRE_HUMIDITY,lastChambreHumidities);
-                        lastChambreCarbonDioxydes=compileMeasures(chambreMeasures,MeasurementType.CO2);
-                        DATABASE.addMeasures(CHAMBRE_CARBON_DIOXYDE,lastChambreCarbonDioxydes);
-                        lastSalleDeBainTemperatures=compileMeasures(salleDeBainMeasures,MeasurementType.TEMPERATURE);
-                        DATABASE.addMeasures(SALLE_DE_BAIN_TEMPERATURE,lastSalleDeBainTemperatures);
-                        lastSalleDeBainHumidities=compileMeasures(salleDeBainMeasures,MeasurementType.HUMIDITY);
-                        DATABASE.addMeasures(SALLE_DE_BAIN_HUMIDITY,lastSalleDeBainHumidities);
-                        lastSalleDeBainCarbonDioxydes=compileMeasures(salleDeBainMeasures,MeasurementType.CO2);
-                        DATABASE.addMeasures(SALLE_DE_BAIN_CARBON_DIOXYDE,lastSalleDeBainCarbonDioxydes);
-                        lastSousSolTemperatures=compileMeasures(sousSolMeasures,MeasurementType.TEMPERATURE);
-                        DATABASE.addMeasures(SOUS_SOL_TEMPERATURE,lastSousSolTemperatures);
-                        lastSousSolHumidities=compileMeasures(sousSolMeasures,MeasurementType.HUMIDITY);
-                        DATABASE.addMeasures(SOUS_SOL_HUMIDITY,lastSousSolHumidities);
-                        lastSousSolCarbonDioxydes=compileMeasures(sousSolMeasures,MeasurementType.CO2);
-                        DATABASE.addMeasures(SOUS_SOL_CARBON_DIOXYDE,lastSousSolCarbonDioxydes);
-                        lastJardinTemperatures=compileMeasures(jardinMeasures,MeasurementType.TEMPERATURE);
-                        DATABASE.addMeasures(JARDIN_TEMPERATURE,lastJardinTemperatures);
-                        lastJardinHumidities=compileMeasures(jardinMeasures,MeasurementType.HUMIDITY);
-                        DATABASE.addMeasures(JARDIN_HUMIDITY,lastJardinHumidities);
-                        lastPluviometreRains=compileMeasures(pluviometreMeasures,MeasurementType.RAIN);
-                        DATABASE.addMeasures(PLUVIOMETRE_RAIN,lastPluviometreRains);
-                        lastAnemometreWindStrengths=compileMeasures(anemometreMeasures,MeasurementType.WIND_STRENGTH);
-                        DATABASE.addMeasures(ANEMOMETRE_WIND_STRENGTH,lastAnemometreWindStrengths);
-                        lastAnemometreWindAngles=compileMeasures(anemometreMeasures,MeasurementType.WIND_ANGLE);
-                        DATABASE.addMeasures(ANEMOMETRE_WIND_ANGLE,lastAnemometreWindAngles);
-                        lastAnemometreGustStrengths=compileMeasures(anemometreMeasures,MeasurementType.GUST_STRENGTH);
-                        DATABASE.addMeasures(ANEMOMETRE_GUST_STRENGTH,lastAnemometreGustStrengths);
-                        lastAnemometreGustAngles=compileMeasures(anemometreMeasures,MeasurementType.GUST_ANGLE);
-                        DATABASE.addMeasures(ANEMOMETRE_GUST_ANGLE,lastAnemometreGustAngles);
+                        Module _0200000010ba=homeModules[0];
+                        JsonObject _0200000010baObject=_0200000010ba.getAttributes();
+                        _0200000010baBattery=new Measure[]{new StandAloneMeasure(new Date(now),null,_0200000010baObject.get("battery_vp").getAsDouble())};
+                        _0200000010baRadio=new Measure[]{new StandAloneMeasure(new Date(now),null,_0200000010baObject.get("rf_status").getAsDouble())};
+                        Module _030000000216=homeModules[1];
+                        JsonObject _030000000216Object=_030000000216.getAttributes();
+                        _030000000216Battery=new Measure[]{new StandAloneMeasure(new Date(now),null,_030000000216Object.get("battery_vp").getAsDouble())};
+                        _030000000216Radio=new Measure[]{new StandAloneMeasure(new Date(now),null,_030000000216Object.get("rf_status").getAsDouble())};
+                        Module _03000000076e=homeModules[2];
+                        JsonObject _03000000076eObject=_03000000076e.getAttributes();
+                        _03000000076eBattery=new Measure[]{new StandAloneMeasure(new Date(now),null,_03000000076eObject.get("battery_vp").getAsDouble())};
+                        _03000000076eRadio=new Measure[]{new StandAloneMeasure(new Date(now),null,_03000000076eObject.get("rf_status").getAsDouble())};
+                        Module _06000000729a=homeModules[3];
+                        JsonObject _06000000729aObject=_06000000729a.getAttributes();
+                        JsonObject _06000000729aDashboardDataObject=_06000000729aObject.get("dashboard_data").getAsJsonObject();
+                        _06000000729aMaxGustStrength=new Measure[]{new StandAloneMeasure(new Date(now),MeasurementType.GUST_STRENGTH,_06000000729aDashboardDataObject.get("max_wind_str").getAsDouble())};
+                        _06000000729aMaxGustAngle=new Measure[]{new StandAloneMeasure(new Date(now),MeasurementType.GUST_ANGLE,_06000000729aDashboardDataObject.get("max_wind_angle").getAsDouble())};
+                        _06000000729aBattery=new Measure[]{new StandAloneMeasure(new Date(now),null,_06000000729aObject.get("battery_vp").getAsDouble())};
+                        _06000000729aRadio=new Measure[]{new StandAloneMeasure(new Date(now),null,_06000000729aObject.get("rf_status").getAsDouble())};
+                        Module _03000003fe8e=homeModules[4];
+                        JsonObject _03000003fe8eObject=_03000003fe8e.getAttributes();
+                        _03000003fe8eBattery=new Measure[]{new StandAloneMeasure(new Date(now),null,_03000003fe8eObject.get("battery_vp").getAsDouble())};
+                        _03000003fe8eRadio=new Measure[]{new StandAloneMeasure(new Date(now),null,_03000003fe8eObject.get("rf_status").getAsDouble())};
+                        Module _05000004152c=homeModules[5];
+                        JsonObject _05000004152cObject=_05000004152c.getAttributes();
+                        JsonObject _05000004152cDashboardDataObject=_05000004152cObject.get("dashboard_data").getAsJsonObject();
+                        _05000004152cTotalRain=new Measure[]{new StandAloneMeasure(new Date(now),MeasurementType.RAIN,_05000004152cDashboardDataObject.get("sum_rain_24").getAsDouble())};
+                        _05000004152cBattery=new Measure[]{new StandAloneMeasure(new Date(now),null,_05000004152cObject.get("battery_vp").getAsDouble())};
+                        _05000004152cRadio=new Measure[]{new StandAloneMeasure(new Date(now),null,_05000004152cObject.get("rf_status").getAsDouble())};
+                        Measure[] _70ee50000deaMeasures=_70ee50000dea.getMeasures(MeasurementScale.MAX,new Date(now-Duration.of(3).hour()),new Date(now+Duration.of(5).minute()),MeasurementType.TEMPERATURE,MeasurementType.HUMIDITY,MeasurementType.CO2,MeasurementType.NOISE);
+                        Measure[] _70ee50000deaPressureMeasures=_70ee50000dea.getMeasures(MeasurementScale.MAX,new Date(now-Duration.of(3).hourPlus(15).minute()),new Date(now+Duration.of(5).minute()),MeasurementType.PRESSURE);
+                        Measure[] _0200000010baMeasures=_0200000010ba.getMeasures(MeasurementScale.MAX,new Date(now-Duration.of(3).hour()),new Date(now+Duration.of(5).minute()),MeasurementType.TEMPERATURE,MeasurementType.HUMIDITY);
+                        Measure[] _030000000216Measures=_030000000216.getMeasures(MeasurementScale.MAX,new Date(now-Duration.of(3).hour()),new Date(now+Duration.of(5).minute()),MeasurementType.TEMPERATURE,MeasurementType.HUMIDITY,MeasurementType.CO2);
+                        Measure[] _03000000076eMeasures=_03000000076e.getMeasures(MeasurementScale.MAX,new Date(now-Duration.of(3).hour()),new Date(now+Duration.of(5).minute()),MeasurementType.TEMPERATURE,MeasurementType.HUMIDITY,MeasurementType.CO2);
+                        Measure[] _06000000729aMeasures=_06000000729a.getMeasures(MeasurementScale.MAX,new Date(now-Duration.of(3).hour()),new Date(now+Duration.of(5).minute()),MeasurementType.WIND_STRENGTH,MeasurementType.WIND_ANGLE,MeasurementType.GUST_STRENGTH,MeasurementType.GUST_ANGLE);
+                        Measure[] _03000003fe8eMeasures=_03000003fe8e.getMeasures(MeasurementScale.MAX,new Date(now-Duration.of(3).hour()),new Date(now+Duration.of(5).minute()),MeasurementType.TEMPERATURE,MeasurementType.HUMIDITY,MeasurementType.CO2);
+                        Measure[] _05000004152cMeasures=_05000004152c.getMeasures(MeasurementScale.MAX,new Date(now-Duration.of(3).hour()),new Date(now+Duration.of(5).minute()),MeasurementType.RAIN);
+                        last70ee50000deaTemperatures=compileMeasures(_70ee50000deaMeasures,MeasurementType.TEMPERATURE);
+                        DATABASE.addMeasures(_70ee50000dea_TEMPERATURE,last70ee50000deaTemperatures);
+                        last70ee50000deaHumidities=compileMeasures(_70ee50000deaMeasures,MeasurementType.HUMIDITY);
+                        DATABASE.addMeasures(_70ee50000dea_HUMIDITY,last70ee50000deaHumidities);
+                        last70ee50000deaPressures=compileMeasures(_70ee50000deaPressureMeasures,MeasurementType.PRESSURE);
+                        DATABASE.addMeasures(_70ee50000dea_PRESSURE,last70ee50000deaPressures);
+                        last70ee50000deaCarbonDioxydes=compileMeasures(_70ee50000deaMeasures,MeasurementType.CO2);
+                        DATABASE.addMeasures(_70ee50000dea_CARBON_DIOXYDE,last70ee50000deaCarbonDioxydes);
+                        last70ee50000deaNoises=compileMeasures(_70ee50000deaMeasures,MeasurementType.NOISE);
+                        DATABASE.addMeasures(_70ee50000dea_NOISE,last70ee50000deaNoises);
+                        last030000000216Temperatures=compileMeasures(_030000000216Measures,MeasurementType.TEMPERATURE);
+                        DATABASE.addMeasures(_030000000216_TEMPERATURE,last030000000216Temperatures);
+                        last030000000216Humidities=compileMeasures(_030000000216Measures,MeasurementType.HUMIDITY);
+                        DATABASE.addMeasures(_030000000216_HUMIDITY,last030000000216Humidities);
+                        last030000000216CarbonDioxydes=compileMeasures(_030000000216Measures,MeasurementType.CO2);
+                        DATABASE.addMeasures(_030000000216_CARBON_DIOXYDE,last030000000216CarbonDioxydes);
+                        last03000000076eTemperatures=compileMeasures(_03000000076eMeasures,MeasurementType.TEMPERATURE);
+                        DATABASE.addMeasures(_03000000076e_TEMPERATURE,last03000000076eTemperatures);
+                        last03000000076eHumidities=compileMeasures(_03000000076eMeasures,MeasurementType.HUMIDITY);
+                        DATABASE.addMeasures(_03000000076e_HUMIDITY,last03000000076eHumidities);
+                        last03000000076eCarbonDioxydes=compileMeasures(_03000000076eMeasures,MeasurementType.CO2);
+                        DATABASE.addMeasures(_03000000076e_CARBON_DIOXYDE,last03000000076eCarbonDioxydes);
+                        last03000003fe8eTemperatures=compileMeasures(_03000003fe8eMeasures,MeasurementType.TEMPERATURE);
+                        DATABASE.addMeasures(_03000003fe8e_TEMPERATURE,last03000003fe8eTemperatures);
+                        last03000003fe8eHumidities=compileMeasures(_03000003fe8eMeasures,MeasurementType.HUMIDITY);
+                        DATABASE.addMeasures(_03000003fe8e_HUMIDITY,last03000003fe8eHumidities);
+                        last03000003fe8eCarbonDioxydes=compileMeasures(_03000003fe8eMeasures,MeasurementType.CO2);
+                        DATABASE.addMeasures(_03000003fe8e_CARBON_DIOXYDE,last03000003fe8eCarbonDioxydes);
+                        last0200000010baTemperatures=compileMeasures(_0200000010baMeasures,MeasurementType.TEMPERATURE);
+                        DATABASE.addMeasures(_0200000010ba_TEMPERATURE,last0200000010baTemperatures);
+                        last0200000010baHumidities=compileMeasures(_0200000010baMeasures,MeasurementType.HUMIDITY);
+                        DATABASE.addMeasures(_0200000010ba_HUMIDITY,last0200000010baHumidities);
+                        last05000004152cRains=compileMeasures(_05000004152cMeasures,MeasurementType.RAIN);
+                        DATABASE.addMeasures(_05000004152c_RAIN,last05000004152cRains);
+                        last06000000729aWindStrengths=compileMeasures(_06000000729aMeasures,MeasurementType.WIND_STRENGTH);
+                        DATABASE.addMeasures(_06000000729a_WIND_STRENGTH,last06000000729aWindStrengths);
+                        last06000000729aWindAngles=compileMeasures(_06000000729aMeasures,MeasurementType.WIND_ANGLE);
+                        DATABASE.addMeasures(_06000000729a_WIND_ANGLE,last06000000729aWindAngles);
+                        last06000000729aGustStrengths=compileMeasures(_06000000729aMeasures,MeasurementType.GUST_STRENGTH);
+                        DATABASE.addMeasures(_06000000729a_GUST_STRENGTH,last06000000729aGustStrengths);
+                        last06000000729aGustAngles=compileMeasures(_06000000729aMeasures,MeasurementType.GUST_ANGLE);
+                        DATABASE.addMeasures(_06000000729a_GUST_ANGLE,last06000000729aGustAngles);
                         DATABASE.clean();
                         ok=true;
-                        if(lastSalonTemperatures!=null&&lastSalonTemperatures.length>0)
+                        if(last70ee50000deaTemperatures!=null&&last70ee50000deaTemperatures.length>0)
                         {
-                            long lastMeasureTime=lastSalonTemperatures[lastSalonTemperatures.length-1].getDate().getTime();
+                            long lastMeasureTime=last70ee50000deaTemperatures[last70ee50000deaTemperatures.length-1].getDate().getTime();
                             long nextMeasureTime=lastMeasureTime+Duration.of(11).minute();//1 minute de rab' pour laisser le temps à Netatmo de publier sa mesure
                             long nextNetatmoVerificationTime=lastNetatmoVerificationTime+Duration.of(10).minute();
                             if(nextNetatmoVerificationTime-nextMeasureTime<Duration.of(10).minute())
@@ -259,50 +259,50 @@ public abstract class AbstractNetatmoPage extends AbstractSinglePage
                 }
                 if(!ok)
                 {
-                    lastSalonTemperatures=null;
-                    lastSalonHumidities=null;
-                    lastSalonPressures=null;
-                    lastSalonCarbonDioxydes=null;
-                    lastSalonNoises=null;
-                    salonWifi=null;
-                    salonFirmware=null;
-                    lastChambreTemperatures=null;
-                    lastChambreHumidities=null;
-                    lastChambreCarbonDioxydes=null;
-                    chambreBattery=null;
-                    chambreRadio=null;
-                    lastSalleDeBainTemperatures=null;
-                    lastSalleDeBainHumidities=null;
-                    lastSalleDeBainCarbonDioxydes=null;
-                    salleDeBainBattery=null;
-                    salleDeBainRadio=null;
-                    lastSousSolTemperatures=null;
-                    lastSousSolHumidities=null;
-                    lastSousSolCarbonDioxydes=null;
-                    sousSolBattery=null;
-                    sousSolRadio=null;
-                    lastJardinTemperatures=null;
-                    lastJardinHumidities=null;
-                    jardinBattery=null;
-                    jardinRadio=null;
-                    lastPluviometreRains=null;
-                    pluviometreTotalRain=null;
-                    pluviometreBattery=null;
-                    pluviometreRadio=null;
-                    lastAnemometreWindStrengths=null;
-                    lastAnemometreWindAngles=null;
-                    lastAnemometreGustStrengths=null;
-                    lastAnemometreGustAngles=null;
-                    anemometreMaxGustStrength=null;
-                    anemometreMaxGustAngle=null;
-                    anemometreBattery=null;
-                    anemometreRadio=null;
+                    last70ee50000deaTemperatures=null;
+                    last70ee50000deaHumidities=null;
+                    last70ee50000deaPressures=null;
+                    last70ee50000deaCarbonDioxydes=null;
+                    last70ee50000deaNoises=null;
+                    _70ee50000deaWifi=null;
+                    _70ee50000deaFirmware=null;
+                    last030000000216Temperatures=null;
+                    last030000000216Humidities=null;
+                    last030000000216CarbonDioxydes=null;
+                    _030000000216Battery=null;
+                    _030000000216Radio=null;
+                    last03000000076eTemperatures=null;
+                    last03000000076eHumidities=null;
+                    last03000000076eCarbonDioxydes=null;
+                    _03000000076eBattery=null;
+                    _03000000076eRadio=null;
+                    last03000003fe8eTemperatures=null;
+                    last03000003fe8eHumidities=null;
+                    last03000003fe8eCarbonDioxydes=null;
+                    _03000003fe8eBattery=null;
+                    _03000003fe8eRadio=null;
+                    last0200000010baTemperatures=null;
+                    last0200000010baHumidities=null;
+                    _0200000010baBattery=null;
+                    _0200000010baRadio=null;
+                    last05000004152cRains=null;
+                    _05000004152cTotalRain=null;
+                    _05000004152cBattery=null;
+                    _05000004152cRadio=null;
+                    last06000000729aWindStrengths=null;
+                    last06000000729aWindAngles=null;
+                    last06000000729aGustStrengths=null;
+                    last06000000729aGustAngles=null;
+                    _06000000729aMaxGustStrength=null;
+                    _06000000729aMaxGustAngle=null;
+                    _06000000729aBattery=null;
+                    _06000000729aRadio=null;
                 }
             }
         }
         else
         {
-            lastSalonTemperatures=new Measure[]
+            last70ee50000deaTemperatures=new Measure[]
             {
                 new StandAloneMeasure(new Date(now-Duration.of(181).minute()),MeasurementType.TEMPERATURE,26.2d),
                 new StandAloneMeasure(new Date(now-Duration.of(179).minute()),MeasurementType.TEMPERATURE,23.2d),
@@ -332,23 +332,23 @@ public abstract class AbstractNetatmoPage extends AbstractSinglePage
                 new StandAloneMeasure(new Date(now-Duration.of(6).minute()),MeasurementType.TEMPERATURE,25.8d),
                 new StandAloneMeasure(new Date(now-Duration.of(1).minute()),MeasurementType.TEMPERATURE,27d),
             };
-            lastSalonHumidities=new Measure[]{new StandAloneMeasure(new Date(now-Duration.of(1).hour()),MeasurementType.HUMIDITY,65d),new StandAloneMeasure(new Date(now),MeasurementType.HUMIDITY,60d)};
-            lastSalonPressures=new Measure[]{new StandAloneMeasure(new Date(now-Duration.of(2).hour()),MeasurementType.PRESSURE,1032.7d),new StandAloneMeasure(new Date(now),MeasurementType.PRESSURE,1030.2d)};
-            lastSalonCarbonDioxydes=new Measure[]{new StandAloneMeasure(new Date(now-Duration.of(1).hour()),MeasurementType.CO2,4687d),new StandAloneMeasure(new Date(now),MeasurementType.CO2,4235d)};
-            lastSalonNoises=new Measure[]{new StandAloneMeasure(new Date(now-Duration.of(1).hour()),MeasurementType.NOISE,60d),new StandAloneMeasure(new Date(now),MeasurementType.NOISE,57d)};
-            salonWifi=new Measure[]{new StandAloneMeasure(new Date(now-Duration.of(1).minute()),null,60d)};
-            salonFirmware=new Measure[]{new StandAloneMeasure(new Date(now-Duration.of(1).minute()),null,135d)};
-            lastChambreTemperatures=new Measure[]{new StandAloneMeasure(new Date(now-Duration.of(1).hour()),MeasurementType.TEMPERATURE,23.4d),new StandAloneMeasure(new Date(now),MeasurementType.TEMPERATURE,22.5d)};
-            lastChambreHumidities=new Measure[]{new StandAloneMeasure(new Date(now-Duration.of(1).hour()),MeasurementType.HUMIDITY,68d),new StandAloneMeasure(new Date(now),MeasurementType.HUMIDITY,62d)};
-            lastChambreCarbonDioxydes=new Measure[]{new StandAloneMeasure(new Date(now-Duration.of(1).hour()),MeasurementType.CO2,3232d),new StandAloneMeasure(new Date(now),MeasurementType.CO2,3125d)};
-            chambreBattery=new Measure[]{new StandAloneMeasure(new Date(now-Duration.of(1).minute()),null,5105d)};
-            chambreRadio=new Measure[]{new StandAloneMeasure(new Date(now-Duration.of(1).minute()),null,74d)};
-            lastSalleDeBainTemperatures=new Measure[]{new StandAloneMeasure(new Date(now-Duration.of(1).hour()),MeasurementType.TEMPERATURE,23.4d),new StandAloneMeasure(new Date(now),MeasurementType.TEMPERATURE,22.3d)};
-            lastSalleDeBainHumidities=new Measure[]{new StandAloneMeasure(new Date(now-Duration.of(1).hour()),MeasurementType.HUMIDITY,43d),new StandAloneMeasure(new Date(now),MeasurementType.HUMIDITY,40d)};
-            lastSalleDeBainCarbonDioxydes=new Measure[]{new StandAloneMeasure(new Date(now-Duration.of(1).hour()),MeasurementType.CO2,3232d),new StandAloneMeasure(new Date(now),MeasurementType.CO2,3148d)};
-            salleDeBainBattery=new Measure[]{new StandAloneMeasure(new Date(now-Duration.of(1).minute()),null,5323d)};
-            salleDeBainRadio=new Measure[]{new StandAloneMeasure(new Date(now-Duration.of(1).minute()),null,59d)};
-            lastSousSolTemperatures=new Measure[]
+            last70ee50000deaHumidities=new Measure[]{new StandAloneMeasure(new Date(now-Duration.of(1).hour()),MeasurementType.HUMIDITY,65d),new StandAloneMeasure(new Date(now),MeasurementType.HUMIDITY,60d)};
+            last70ee50000deaPressures=new Measure[]{new StandAloneMeasure(new Date(now-Duration.of(2).hour()),MeasurementType.PRESSURE,1032.7d),new StandAloneMeasure(new Date(now),MeasurementType.PRESSURE,1030.2d)};
+            last70ee50000deaCarbonDioxydes=new Measure[]{new StandAloneMeasure(new Date(now-Duration.of(1).hour()),MeasurementType.CO2,4687d),new StandAloneMeasure(new Date(now),MeasurementType.CO2,4235d)};
+            last70ee50000deaNoises=new Measure[]{new StandAloneMeasure(new Date(now-Duration.of(1).hour()),MeasurementType.NOISE,60d),new StandAloneMeasure(new Date(now),MeasurementType.NOISE,57d)};
+            _70ee50000deaWifi=new Measure[]{new StandAloneMeasure(new Date(now-Duration.of(1).minute()),null,60d)};
+            _70ee50000deaFirmware=new Measure[]{new StandAloneMeasure(new Date(now-Duration.of(1).minute()),null,135d)};
+            last030000000216Temperatures=new Measure[]{new StandAloneMeasure(new Date(now-Duration.of(1).hour()),MeasurementType.TEMPERATURE,23.4d),new StandAloneMeasure(new Date(now),MeasurementType.TEMPERATURE,22.5d)};
+            last030000000216Humidities=new Measure[]{new StandAloneMeasure(new Date(now-Duration.of(1).hour()),MeasurementType.HUMIDITY,68d),new StandAloneMeasure(new Date(now),MeasurementType.HUMIDITY,62d)};
+            last030000000216CarbonDioxydes=new Measure[]{new StandAloneMeasure(new Date(now-Duration.of(1).hour()),MeasurementType.CO2,3232d),new StandAloneMeasure(new Date(now),MeasurementType.CO2,3125d)};
+            _030000000216Battery=new Measure[]{new StandAloneMeasure(new Date(now-Duration.of(1).minute()),null,5105d)};
+            _030000000216Radio=new Measure[]{new StandAloneMeasure(new Date(now-Duration.of(1).minute()),null,74d)};
+            last03000000076eTemperatures=new Measure[]{new StandAloneMeasure(new Date(now-Duration.of(1).hour()),MeasurementType.TEMPERATURE,23.4d),new StandAloneMeasure(new Date(now),MeasurementType.TEMPERATURE,22.3d)};
+            last03000000076eHumidities=new Measure[]{new StandAloneMeasure(new Date(now-Duration.of(1).hour()),MeasurementType.HUMIDITY,43d),new StandAloneMeasure(new Date(now),MeasurementType.HUMIDITY,40d)};
+            last03000000076eCarbonDioxydes=new Measure[]{new StandAloneMeasure(new Date(now-Duration.of(1).hour()),MeasurementType.CO2,3232d),new StandAloneMeasure(new Date(now),MeasurementType.CO2,3148d)};
+            _03000000076eBattery=new Measure[]{new StandAloneMeasure(new Date(now-Duration.of(1).minute()),null,5323d)};
+            _03000000076eRadio=new Measure[]{new StandAloneMeasure(new Date(now-Duration.of(1).minute()),null,59d)};
+            last03000003fe8eTemperatures=new Measure[]
             {
                 new StandAloneMeasure(new Date(now-Duration.of(181).minute()),MeasurementType.TEMPERATURE,26.2d),
                 new StandAloneMeasure(new Date(now-Duration.of(179).minute()),MeasurementType.TEMPERATURE,25.2d),
@@ -378,11 +378,11 @@ public abstract class AbstractNetatmoPage extends AbstractSinglePage
                 new StandAloneMeasure(new Date(now-Duration.of(6).minute()),MeasurementType.TEMPERATURE,28.8d),
                 new StandAloneMeasure(new Date(now-Duration.of(1).minute()),MeasurementType.TEMPERATURE,29d),
             };
-            lastSousSolHumidities=new Measure[]{new StandAloneMeasure(new Date(now-Duration.of(1).hour()),MeasurementType.HUMIDITY,67d),new StandAloneMeasure(new Date(now),MeasurementType.HUMIDITY,61d)};
-            lastSousSolCarbonDioxydes=new Measure[]{new StandAloneMeasure(new Date(now-Duration.of(1).hour()),MeasurementType.CO2,1725d),new StandAloneMeasure(new Date(now),MeasurementType.CO2,1526d)};
-            sousSolBattery=new Measure[]{new StandAloneMeasure(new Date(now-Duration.of(1).minute()),null,5331d)};
-            sousSolRadio=new Measure[]{new StandAloneMeasure(new Date(now-Duration.of(1).minute()),null,64d)};
-            lastJardinTemperatures=new Measure[]
+            last03000003fe8eHumidities=new Measure[]{new StandAloneMeasure(new Date(now-Duration.of(1).hour()),MeasurementType.HUMIDITY,67d),new StandAloneMeasure(new Date(now),MeasurementType.HUMIDITY,61d)};
+            last03000003fe8eCarbonDioxydes=new Measure[]{new StandAloneMeasure(new Date(now-Duration.of(1).hour()),MeasurementType.CO2,1725d),new StandAloneMeasure(new Date(now),MeasurementType.CO2,1526d)};
+            _03000003fe8eBattery=new Measure[]{new StandAloneMeasure(new Date(now-Duration.of(1).minute()),null,5331d)};
+            _03000003fe8eRadio=new Measure[]{new StandAloneMeasure(new Date(now-Duration.of(1).minute()),null,64d)};
+            last0200000010baTemperatures=new Measure[]
             {
                 new StandAloneMeasure(new Date(now-Duration.of(181).minute()),MeasurementType.TEMPERATURE,27.2d),
                 new StandAloneMeasure(new Date(now-Duration.of(179).minute()),MeasurementType.TEMPERATURE,24.2d),
@@ -412,12 +412,12 @@ public abstract class AbstractNetatmoPage extends AbstractSinglePage
                 new StandAloneMeasure(new Date(now-Duration.of(6).minute()),MeasurementType.TEMPERATURE,27.8d),
                 new StandAloneMeasure(new Date(now-Duration.of(1).minute()),MeasurementType.TEMPERATURE,24d),
             };
-            for(Measure measure:lastJardinTemperatures)
-                DATABASE.addMeasures(JARDIN_TEMPERATURE,new Measure[]{new StandAloneMeasure(new Date(measure.getDate().getTime()-Duration.of(1).day()),MeasurementType.TEMPERATURE,measure.getValue()/1.5d+2d)});
-            lastJardinHumidities=new Measure[]{new StandAloneMeasure(new Date(now-Duration.of(1).hour()),MeasurementType.HUMIDITY,69d),new StandAloneMeasure(new Date(now),MeasurementType.HUMIDITY,66d)};
-            jardinBattery=new Measure[]{new StandAloneMeasure(new Date(now-Duration.of(1).minute()),null,5259d)};
-            jardinRadio=new Measure[]{new StandAloneMeasure(new Date(now-Duration.of(1).minute()),null,79d)};
-            lastPluviometreRains=new Measure[]
+            for(Measure measure:last0200000010baTemperatures)
+                DATABASE.addMeasures(_0200000010ba_TEMPERATURE,new Measure[]{new StandAloneMeasure(new Date(measure.getDate().getTime()-Duration.of(1).day()),MeasurementType.TEMPERATURE,measure.getValue()/1.5d+2d)});
+            last0200000010baHumidities=new Measure[]{new StandAloneMeasure(new Date(now-Duration.of(1).hour()),MeasurementType.HUMIDITY,69d),new StandAloneMeasure(new Date(now),MeasurementType.HUMIDITY,66d)};
+            _0200000010baBattery=new Measure[]{new StandAloneMeasure(new Date(now-Duration.of(1).minute()),null,5259d)};
+            _0200000010baRadio=new Measure[]{new StandAloneMeasure(new Date(now-Duration.of(1).minute()),null,79d)};
+            last05000004152cRains=new Measure[]
             {
                 new StandAloneMeasure(new Date(now-Duration.of(181).minute()),MeasurementType.RAIN,.2d),
                 new StandAloneMeasure(new Date(now-Duration.of(179).minute()),MeasurementType.RAIN,.1d),
@@ -452,10 +452,10 @@ public abstract class AbstractNetatmoPage extends AbstractSinglePage
                 new StandAloneMeasure(new Date(now-Duration.of(6).minute()),MeasurementType.RAIN,.5d),
                 new StandAloneMeasure(new Date(now-Duration.of(1).minute()),MeasurementType.RAIN,.1d),
             };
-            pluviometreTotalRain=new Measure[]{new StandAloneMeasure(new Date(now),MeasurementType.RAIN,12.4d)};
-            pluviometreBattery=new Measure[]{new StandAloneMeasure(new Date(now-Duration.of(1).minute()),null,5668d)};
-            pluviometreRadio=new Measure[]{new StandAloneMeasure(new Date(now-Duration.of(1).minute()),null,71d)};
-            lastAnemometreWindStrengths=new Measure[]
+            _05000004152cTotalRain=new Measure[]{new StandAloneMeasure(new Date(now),MeasurementType.RAIN,12.4d)};
+            _05000004152cBattery=new Measure[]{new StandAloneMeasure(new Date(now-Duration.of(1).minute()),null,5668d)};
+            _05000004152cRadio=new Measure[]{new StandAloneMeasure(new Date(now-Duration.of(1).minute()),null,71d)};
+            last06000000729aWindStrengths=new Measure[]
             {
                 new StandAloneMeasure(new Date(now-Duration.of(181).minute()),MeasurementType.WIND_STRENGTH,8d),
                 new StandAloneMeasure(new Date(now-Duration.of(179).minute()),MeasurementType.WIND_STRENGTH,9d),
@@ -490,7 +490,7 @@ public abstract class AbstractNetatmoPage extends AbstractSinglePage
                 new StandAloneMeasure(new Date(now-Duration.of(6).minute()),MeasurementType.WIND_STRENGTH,1d),
                 new StandAloneMeasure(new Date(now-Duration.of(1).minute()),MeasurementType.WIND_STRENGTH,8d),
             };
-            lastAnemometreWindAngles=new Measure[]
+            last06000000729aWindAngles=new Measure[]
             {
                 new StandAloneMeasure(new Date(now-Duration.of(181).minute()),MeasurementType.WIND_ANGLE,220d),
                 new StandAloneMeasure(new Date(now-Duration.of(179).minute()),MeasurementType.WIND_ANGLE,220d),
@@ -525,7 +525,7 @@ public abstract class AbstractNetatmoPage extends AbstractSinglePage
                 new StandAloneMeasure(new Date(now-Duration.of(6).minute()),MeasurementType.WIND_ANGLE,220d),
                 new StandAloneMeasure(new Date(now-Duration.of(1).minute()),MeasurementType.WIND_ANGLE,220d),
             };
-            lastAnemometreGustStrengths=new Measure[]
+            last06000000729aGustStrengths=new Measure[]
             {
                 new StandAloneMeasure(new Date(now-Duration.of(181).minute()),MeasurementType.GUST_STRENGTH,15d),
                 new StandAloneMeasure(new Date(now-Duration.of(179).minute()),MeasurementType.GUST_STRENGTH,12d),
@@ -560,7 +560,7 @@ public abstract class AbstractNetatmoPage extends AbstractSinglePage
                 new StandAloneMeasure(new Date(now-Duration.of(6).minute()),MeasurementType.GUST_STRENGTH,8d),
                 new StandAloneMeasure(new Date(now-Duration.of(1).minute()),MeasurementType.GUST_STRENGTH,12d),
             };
-            lastAnemometreGustAngles=new Measure[]
+            last06000000729aGustAngles=new Measure[]
             {
                 new StandAloneMeasure(new Date(now-Duration.of(181).minute()),MeasurementType.GUST_ANGLE,200d),
                 new StandAloneMeasure(new Date(now-Duration.of(179).minute()),MeasurementType.GUST_ANGLE,200d),
@@ -595,50 +595,50 @@ public abstract class AbstractNetatmoPage extends AbstractSinglePage
                 new StandAloneMeasure(new Date(now-Duration.of(6).minute()),MeasurementType.GUST_ANGLE,200d),
                 new StandAloneMeasure(new Date(now-Duration.of(1).minute()),MeasurementType.GUST_ANGLE,200d),
             };
-            anemometreMaxGustStrength=new Measure[]{new StandAloneMeasure(new Date(now),MeasurementType.GUST_STRENGTH,42d)};
-            anemometreMaxGustAngle=new Measure[]{new StandAloneMeasure(new Date(now),MeasurementType.GUST_ANGLE,238d)};
-            anemometreBattery=new Measure[]{new StandAloneMeasure(new Date(now-Duration.of(1).minute()),null,4819d)};
-            anemometreRadio=new Measure[]{new StandAloneMeasure(new Date(now-Duration.of(1).minute()),null,95d)};
+            _06000000729aMaxGustStrength=new Measure[]{new StandAloneMeasure(new Date(now),MeasurementType.GUST_STRENGTH,42d)};
+            _06000000729aMaxGustAngle=new Measure[]{new StandAloneMeasure(new Date(now),MeasurementType.GUST_ANGLE,238d)};
+            _06000000729aBattery=new Measure[]{new StandAloneMeasure(new Date(now-Duration.of(1).minute()),null,4819d)};
+            _06000000729aRadio=new Measure[]{new StandAloneMeasure(new Date(now-Duration.of(1).minute()),null,95d)};
         }
         Map<String,Measure[]> lastMeasures=new HashMap<>();
-        lastMeasures.put(SALON_TEMPERATURE,lastSalonTemperatures);
-        lastMeasures.put(SALON_HUMIDITY,lastSalonHumidities);
-        lastMeasures.put(SALON_PRESSURE,lastSalonPressures);
-        lastMeasures.put(SALON_CARBON_DIOXYDE,lastSalonCarbonDioxydes);
-        lastMeasures.put(SALON_NOISE,lastSalonNoises);
-        lastMeasures.put(SALON_WIFI,salonWifi);
-        lastMeasures.put(SALON_FIRMWARE,salonFirmware);
-        lastMeasures.put(CHAMBRE_TEMPERATURE,lastChambreTemperatures);
-        lastMeasures.put(CHAMBRE_HUMIDITY,lastChambreHumidities);
-        lastMeasures.put(CHAMBRE_CARBON_DIOXYDE,lastChambreCarbonDioxydes);
-        lastMeasures.put(CHAMBRE_BATTERY,chambreBattery);
-        lastMeasures.put(CHAMBRE_RADIO,chambreRadio);
-        lastMeasures.put(SALLE_DE_BAIN_TEMPERATURE,lastSalleDeBainTemperatures);
-        lastMeasures.put(SALLE_DE_BAIN_HUMIDITY,lastSalleDeBainHumidities);
-        lastMeasures.put(SALLE_DE_BAIN_CARBON_DIOXYDE,lastSalleDeBainCarbonDioxydes);
-        lastMeasures.put(SALLE_DE_BAIN_BATTERY,salleDeBainBattery);
-        lastMeasures.put(SALLE_DE_BAIN_RADIO,salleDeBainRadio);
-        lastMeasures.put(SOUS_SOL_TEMPERATURE,lastSousSolTemperatures);
-        lastMeasures.put(SOUS_SOL_HUMIDITY,lastSousSolHumidities);
-        lastMeasures.put(SOUS_SOL_CARBON_DIOXYDE,lastSousSolCarbonDioxydes);
-        lastMeasures.put(SOUS_SOL_BATTERY,sousSolBattery);
-        lastMeasures.put(SOUS_SOL_RADIO,sousSolRadio);
-        lastMeasures.put(JARDIN_TEMPERATURE,lastJardinTemperatures);
-        lastMeasures.put(JARDIN_HUMIDITY,lastJardinHumidities);
-        lastMeasures.put(JARDIN_BATTERY,jardinBattery);
-        lastMeasures.put(JARDIN_RADIO,jardinRadio);
-        lastMeasures.put(PLUVIOMETRE_RAIN,lastPluviometreRains);
-        lastMeasures.put(PLUVIOMETRE_TOTAL_RAIN,pluviometreTotalRain);
-        lastMeasures.put(PLUVIOMETRE_BATTERY,pluviometreBattery);
-        lastMeasures.put(PLUVIOMETRE_RADIO,pluviometreRadio);
-        lastMeasures.put(ANEMOMETRE_WIND_STRENGTH,lastAnemometreWindStrengths);
-        lastMeasures.put(ANEMOMETRE_WIND_ANGLE,lastAnemometreWindAngles);
-        lastMeasures.put(ANEMOMETRE_GUST_STRENGTH,lastAnemometreGustStrengths);
-        lastMeasures.put(ANEMOMETRE_GUST_ANGLE,lastAnemometreGustAngles);
-        lastMeasures.put(ANEMOMETRE_MAX_GUST_STRENGTH,anemometreMaxGustStrength);
-        lastMeasures.put(ANEMOMETRE_MAX_GUST_ANGLE,anemometreMaxGustAngle);
-        lastMeasures.put(ANEMOMETRE_BATTERY,anemometreBattery);
-        lastMeasures.put(ANEMOMETRE_RADIO,anemometreRadio);
+        lastMeasures.put(_70ee50000dea_TEMPERATURE,last70ee50000deaTemperatures);
+        lastMeasures.put(_70ee50000dea_HUMIDITY,last70ee50000deaHumidities);
+        lastMeasures.put(_70ee50000dea_PRESSURE,last70ee50000deaPressures);
+        lastMeasures.put(_70ee50000dea_CARBON_DIOXYDE,last70ee50000deaCarbonDioxydes);
+        lastMeasures.put(_70ee50000dea_NOISE,last70ee50000deaNoises);
+        lastMeasures.put(_70ee50000dea_WIFI,_70ee50000deaWifi);
+        lastMeasures.put(_70ee50000dea_FIRMWARE,_70ee50000deaFirmware);
+        lastMeasures.put(_030000000216_TEMPERATURE,last030000000216Temperatures);
+        lastMeasures.put(_030000000216_HUMIDITY,last030000000216Humidities);
+        lastMeasures.put(_030000000216_CARBON_DIOXYDE,last030000000216CarbonDioxydes);
+        lastMeasures.put(_030000000216_BATTERY,_030000000216Battery);
+        lastMeasures.put(_030000000216_RADIO,_030000000216Radio);
+        lastMeasures.put(_03000000076e_TEMPERATURE,last03000000076eTemperatures);
+        lastMeasures.put(_03000000076e_HUMIDITY,last03000000076eHumidities);
+        lastMeasures.put(_03000000076e_CARBON_DIOXYDE,last03000000076eCarbonDioxydes);
+        lastMeasures.put(_03000000076e_BATTERY,_03000000076eBattery);
+        lastMeasures.put(_03000000076e_RADIO,_03000000076eRadio);
+        lastMeasures.put(_03000003fe8e_TEMPERATURE,last03000003fe8eTemperatures);
+        lastMeasures.put(_03000003fe8e_HUMIDITY,last03000003fe8eHumidities);
+        lastMeasures.put(_03000003fe8e_CARBON_DIOXYDE,last03000003fe8eCarbonDioxydes);
+        lastMeasures.put(_03000003fe8e_BATTERY,_03000003fe8eBattery);
+        lastMeasures.put(_03000003fe8e_RADIO,_03000003fe8eRadio);
+        lastMeasures.put(_0200000010ba_TEMPERATURE,last0200000010baTemperatures);
+        lastMeasures.put(_0200000010ba_HUMIDITY,last0200000010baHumidities);
+        lastMeasures.put(_0200000010ba_BATTERY,_0200000010baBattery);
+        lastMeasures.put(_0200000010ba_RADIO,_0200000010baRadio);
+        lastMeasures.put(_05000004152c_RAIN,last05000004152cRains);
+        lastMeasures.put(_05000004152c_TOTAL_RAIN,_05000004152cTotalRain);
+        lastMeasures.put(_05000004152c_BATTERY,_05000004152cBattery);
+        lastMeasures.put(_05000004152c_RADIO,_05000004152cRadio);
+        lastMeasures.put(_06000000729a_WIND_STRENGTH,last06000000729aWindStrengths);
+        lastMeasures.put(_06000000729a_WIND_ANGLE,last06000000729aWindAngles);
+        lastMeasures.put(_06000000729a_GUST_STRENGTH,last06000000729aGustStrengths);
+        lastMeasures.put(_06000000729a_GUST_ANGLE,last06000000729aGustAngles);
+        lastMeasures.put(_06000000729a_MAX_GUST_STRENGTH,_06000000729aMaxGustStrength);
+        lastMeasures.put(_06000000729a_MAX_GUST_ANGLE,_06000000729aMaxGustAngle);
+        lastMeasures.put(_06000000729a_BATTERY,_06000000729aBattery);
+        lastMeasures.put(_06000000729a_RADIO,_06000000729aRadio);
         return lastMeasures;
     }
 

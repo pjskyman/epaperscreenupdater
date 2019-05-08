@@ -498,6 +498,6 @@ public abstract class AbstractNetatmoCurvePage extends AbstractNetatmoPage
 
     public static void main(String[] args)
     {
-        JardinTemperatureCurvePage.main(args);
+        _0200000010baTemperatureCurvePage.main(args);
     }
 }

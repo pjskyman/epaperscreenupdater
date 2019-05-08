@@ -1,5 +1,12 @@
 package sky.epaperscreenupdater;
 
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -8,17 +15,11 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
+import javax.imageio.ImageIO;
 import sky.program.Duration;
 
 public class EnergyConsumptionProvider
 {
-    public static final double BLUE_DAY_OFF_PEAK_HOUR_PRICE=.1113d;
-    public static final double BLUE_DAY_PEAK_HOUR_PRICE=.1327d;
-    public static final double WHITE_DAY_OFF_PEAK_HOUR_PRICE=.1347d;
-    public static final double WHITE_DAY_PEAK_HOUR_PRICE=.1629d;
-    public static final double RED_DAY_OFF_PEAK_HOUR_PRICE=.1747d;
-    public static final double RED_DAY_PEAK_HOUR_PRICE=.5482d;
-
     public static List<InstantaneousConsumption> getInstantaneousConsumptions(int year)
     {
         return getInstantaneousConsumptions(1,1,year,31,12,year);
@@ -195,24 +196,7 @@ public class EnergyConsumptionProvider
             {
                 double increment=(double)instantaneousConsumptions.get(i).getConsumerConsumption(j+1)*timeOffset;
                 accumulations[j]+=increment;
-                PricingPeriod pricingPeriod=instantaneousConsumptions.get(i).getPricingPeriod();
-                if(pricingPeriod==PricingPeriod.BLUE_DAY_OFF_PEAK_HOUR)
-                    prices[j]+=increment*BLUE_DAY_OFF_PEAK_HOUR_PRICE;
-                else
-                    if(pricingPeriod==PricingPeriod.BLUE_DAY_PEAK_HOUR)
-                        prices[j]+=increment*BLUE_DAY_PEAK_HOUR_PRICE;
-                    else
-                        if(pricingPeriod==PricingPeriod.WHITE_DAY_OFF_PEAK_HOUR)
-                            prices[j]+=increment*WHITE_DAY_OFF_PEAK_HOUR_PRICE;
-                        else
-                            if(pricingPeriod==PricingPeriod.WHITE_DAY_PEAK_HOUR)
-                                prices[j]+=increment*WHITE_DAY_PEAK_HOUR_PRICE;
-                            else
-                                if(pricingPeriod==PricingPeriod.RED_DAY_OFF_PEAK_HOUR)
-                                    prices[j]+=increment*RED_DAY_OFF_PEAK_HOUR_PRICE;
-                                else
-                                    if(pricingPeriod==PricingPeriod.RED_DAY_PEAK_HOUR)
-                                        prices[j]+=increment*RED_DAY_PEAK_HOUR_PRICE;
+                prices[j]+=increment*instantaneousConsumptions.get(i).getPricingPeriod().getPrice();
             }
         }
         InstantaneousConsumption instantaneousConsumption=instantaneousConsumptions.isEmpty()?Main.loadInstantaneousConsumptions(1).get(0):instantaneousConsumptions.get(0);
@@ -231,9 +215,81 @@ public class EnergyConsumptionProvider
     public static void main(String[] args)
     {
         long startTime=System.currentTimeMillis();
-        EnergyConsumption energyConsumption=calculateEnergyConsumption(8,5,2018);
-        System.out.println(AbstractPage.DECIMAL_000_FORMAT.format(energyConsumption.getTotalOfConsumptions())+" kWh");
-        System.out.println(AbstractPage.DECIMAL_00_FORMAT.format(energyConsumption.getTotalOfPrices())+" €");
+//        EnergyConsumption energyConsumption=calculateEnergyConsumption(8,5,2018);
+//        System.out.println(AbstractPage.DECIMAL_000_FORMAT.format(energyConsumption.getTotalOfConsumptions())+" kWh");
+//        System.out.println(AbstractPage.DECIMAL_00_FORMAT.format(energyConsumption.getTotalOfPrices())+" €");
+        //Lave-vaisselle 45-65 29/12/2018 1546099386831L 1546108347421L
+        //Lave-linge 40 30/12/2018 1546193633099L 1546201293588L
+        //Lave-vaisselle 70 01/01/2019 1546356684103L 1546364874626L
+        //Lave-vaisselle 50 02/01/2019 1546479018996L 1546489909748L
+        //Lave-linge 60 30&31/01/2019 1548904134106L 1548912624649L
+
+        List<InstantaneousConsumption> list=getInstantaneousConsumptions(30,1,2019,31,1,2019);
+
+//        for(InstantaneousConsumption instantaneousConsumption:list)
+//            System.out.println(instantaneousConsumption.getTime()+" "+instantaneousConsumption.getConsumer7Consumption());
+//        if(2==2)
+//            return;
+
+        List<InstantaneousConsumption> list2=new ArrayList<>();
+        list.stream()
+                .filter(instantaneousConsumption->instantaneousConsumption.getTime()>=1548904134106L)
+                .filter(instantaneousConsumption->instantaneousConsumption.getTime()<=1548912624649L)
+                .forEach(list2::add);
+        try(DataOutputStream outputStream=new DataOutputStream(new FileOutputStream(new File("profile.profile"))))
+        {
+            outputStream.writeInt(list2.size());
+            for(InstantaneousConsumption instantaneousConsumption:list2)
+            {
+                outputStream.writeLong(instantaneousConsumption.getTime());
+                outputStream.writeInt(instantaneousConsumption.getConsumer7Consumption());
+                System.out.println(instantaneousConsumption.getTime()+" "+instantaneousConsumption.getConsumer7Consumption());
+            }
+        }
+        catch(IOException e)
+        {
+            e.printStackTrace();
+        }
+        ConsumptionProfileCalculator consumptionProfile=ConsumptionProfileCalculator.construct(list2);
+        List<PricingPeriodZone> pricingPeriodZones=new ArrayList<>();
+        pricingPeriodZones.add(new PricingPeriodZone(0,0,6,2,PricingPeriod.RED_DAY_OFF_PEAK_HOUR));
+        pricingPeriodZones.add(new PricingPeriodZone(6,2,7,32,PricingPeriod.BLUE_DAY_OFF_PEAK_HOUR));
+        pricingPeriodZones.add(new PricingPeriodZone(7,32,20,00,PricingPeriod.BLUE_DAY_PEAK_HOUR));
+        BufferedImage image=new BufferedImage(840,900,BufferedImage.TYPE_INT_ARGB_PRE);
+        Graphics2D g2d=image.createGraphics();
+        g2d.setColor(Color.WHITE);
+        g2d.fillRect(0,0,840,900);
+        for(int hour=2;hour<=8;hour++)
+        {
+            g2d.setColor(Color.BLACK);
+            g2d.drawLine((hour-2)*60*2,0,(hour-2)*60*2,900);
+            g2d.setColor(Color.RED);
+            g2d.drawString(""+hour,(hour-2)*60*2,15);
+            g2d.setColor(Color.BLACK);
+            for(int minute=0;minute<=59;minute++)
+            {
+                if(minute>0&&minute%10==0)
+                {
+                    g2d.setColor(Color.LIGHT_GRAY);
+                    g2d.drawLine((hour-2)*60*2+minute*2,0,(hour-2)*60*2+minute*2,900);
+                    g2d.drawLine((hour-2)*60*2+minute*2+1,0,(hour-2)*60*2+minute*2+1,900);
+                    g2d.setColor(Color.BLACK);
+                }
+                double price=consumptionProfile.getTotalPricing(hour,minute,pricingPeriodZones);
+                System.out.println(hour+":"+minute+" "+price);
+                g2d.drawLine((hour-2)*60*2+minute*2,900,(hour-2)*60*2+minute*2,900-(int)(price/.55d*900d));
+                g2d.drawLine((hour-2)*60*2+minute*2+1,900,(hour-2)*60*2+minute*2+1,900-(int)(price/.55d*900d));
+            }
+        }
+        g2d.dispose();
+        try
+        {
+            ImageIO.write(image,"png",new File("price.png"));
+        }
+        catch(IOException e)
+        {
+            e.printStackTrace();
+        }
         System.out.println("Total "+(System.currentTimeMillis()-startTime)+" ms");
     }
 }

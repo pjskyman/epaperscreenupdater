@@ -15,26 +15,25 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
+import org.apache.commons.math3.fitting.PolynomialCurveFitter;
+import org.apache.commons.math3.fitting.WeightedObservedPoint;
 import sky.netatmo.Measure;
-import sky.program.Duration;
+import sky.netatmo.MeasurementType;
 
 public class InstantaneousConsumptionPage extends AbstractNetatmoPage
 {
     private long lastConsumptionTime;
-    private long lastTomorrowVerificationTime;
-    private String tomorrow;
+    private static final long MEASURE_DELAY=1_200_000L;
 
     public InstantaneousConsumptionPage(Page parentPage)
     {
         super(parentPage);
         lastConsumptionTime=0L;
-        lastTomorrowVerificationTime=0L;
-        tomorrow="ND";
     }
 
     public String getName()
@@ -80,9 +79,9 @@ public class InstantaneousConsumptionPage extends AbstractNetatmoPage
                 Font verticalConsumptionFont=baseFont.deriveFont(15f).deriveFont(AffineTransform.getQuadrantRotateInstance(3));
 
                 Map<String,Measure[]> lastMeasures=getLastMeasures();
-                Measure[] array=lastMeasures.get(JARDIN_TEMPERATURE);
-                Measure temperature=array!=null&&array.length>=1?array[array.length-1]:null;
-                array=HomeWeatherVariationPage.filterTimedWindowMeasures(lastMeasures.get(SALON_PRESSURE),2);
+                Measure[] array=lastMeasures.get(_0200000010ba_TEMPERATURE);
+                Measure temperature=estimate(array);
+                array=HomeWeatherVariationPage.filterTimedWindowMeasures(lastMeasures.get(_70ee50000dea_PRESSURE),2);
                 Measure pressure=array!=null&&array.length>=1?array[array.length-1]:null;
                 PressureTendancy pressureTendancy=PressureTendancy.UNKNOWN;
                 if(array!=null&&array.length>=3)
@@ -105,8 +104,8 @@ public class InstantaneousConsumptionPage extends AbstractNetatmoPage
                         else
                             pressureTendancy=PressureTendancy.NEGATIVE;
                 }
-                array=lastMeasures.get(SALON_CARBON_DIOXYDE);
-                Measure carbonDioxyde=array!=null&&array.length>=1?array[array.length-1]:null;
+                array=lastMeasures.get(_70ee50000dea_CARBON_DIOXYDE);
+                Measure carbonDioxyde=estimate(array);
                 if(pressureTendancy==PressureTendancy.CONSTANT)
                 {
                     g2d.drawLine(85,12,85,19);
@@ -144,7 +143,7 @@ public class InstantaneousConsumptionPage extends AbstractNetatmoPage
                         }
 
                 g2d.setFont(bigFont);
-                String temperatureString=temperature!=null?""+temperature.getValue():"?";
+                String temperatureString=temperature!=null?DECIMAL_0_FORMAT.format(temperature.getValue()).replace(",","."):"?";
                 int temperatureStringWidth=(int)Math.ceil(bigFont.getStringBounds(temperatureString,g2d.getFontRenderContext()).getWidth());
 
                 g2d.setFont(unitFont);
@@ -214,38 +213,7 @@ public class InstantaneousConsumptionPage extends AbstractNetatmoPage
                         if((x+y)%2==0||instantaneousConsumption.getPricingPeriod().isRedDay())
                             g2d.drawRect(x,y,0,0);
 //                Logger.LOGGER.info("Current pricing period: "+instantaneousConsumption.getPricingPeriod().name());
-                long now=System.currentTimeMillis();
-                if(now-lastTomorrowVerificationTime>Duration.of(5).minutePlus(3).second())
-                    try
-                    {
-                        GregorianCalendar calendar=new GregorianCalendar(Locale.FRANCE);
-                        calendar.setTimeInMillis(now);
-                        int hour=calendar.get(Calendar.HOUR_OF_DAY);
-                        int minute=calendar.get(Calendar.MINUTE);
-                        if(hour>=7||hour==6&&minute>=2)//on est en journée, après la bascule de jour du matin à 6h02 et avant minuit
-                            calendar.setTimeInMillis(now+Duration.of(1).day());//pour avoir demain
-                        String day=""+calendar.get(Calendar.DAY_OF_MONTH);
-                        if(day.length()==1)
-                            day="0"+day;
-                        String month=""+(calendar.get(Calendar.MONTH)+1);
-                        if(month.length()==1)
-                            month="0"+month;
-                        JsonObject tomorrowObject=getJsonResponse("https://particulier.edf.fr/bin/edf_rc/servlets/ejptemponew?Date_a_remonter="+calendar.get(Calendar.YEAR)+"-"+month+"-"+day+"&TypeAlerte=TEMPO");
-                        String oldTomorrow=tomorrow;
-                        if(tomorrowObject!=null)
-                        {
-                            tomorrow=tomorrowObject.getAsJsonObject("JourJ").getAsJsonPrimitive("Tempo").getAsString();
-                            if(tomorrow.equals(oldTomorrow))
-                                Logger.LOGGER.info("Tomorrow's color verified, no change, always "+oldTomorrow);
-                            else
-                                Logger.LOGGER.info("Tomorrow's color updated: "+oldTomorrow+" -> "+tomorrow);
-                            lastTomorrowVerificationTime=now;
-                        }
-                    }
-                    catch(Exception e)
-                    {
-                        Logger.LOGGER.error("Unable to get tomorrow's color ("+e.toString()+")");
-                    }
+                String tomorrow=TomorrowManager.getTomorrow();
                 if(tomorrow.equals("BLEU"))
                 {
                     g2d.drawLine(4,109,4,109);
@@ -437,8 +405,98 @@ public class InstantaneousConsumptionPage extends AbstractNetatmoPage
         }
     }
 
-    public static void main(String[] args)
+    public static void main2(String[] args)
     {
         new InstantaneousConsumptionPage(null).potentiallyUpdate();
+    }
+
+    public static void main(String[] args)
+    {
+        double[] temperatures=new double[]
+        {
+            4.9d,
+            5.2d,
+            5.5d,
+            5.8d,
+            6.1d,
+            6.4d,
+            6.7d,
+            7.0d,
+            7.3d,
+            7.6d,
+            7.6d,
+            7.8d,
+            8.0d,
+            8.2d,
+            8.4d,
+            8.7d,
+            8.9d,
+            9.1d,
+            9.3d,
+            9.1d,
+            9.0d,
+            8.9d,
+            9.0d,
+            9.5d,
+        };
+
+        long now=1554637759387L;
+        List<Measure> measures=new ArrayList<>(temperatures.length);
+        for(int index=0;index<temperatures.length;index++)
+            measures.add(new StandAloneMeasure(new Date(now+(long)(index*301_500)),MeasurementType.TEMPERATURE,temperatures[index]));
+
+        List<WeightedObservedPoint> points=new ArrayList<>(measures.size());
+        for(int index=0;index<measures.size();index++)
+            points.add(new WeightedObservedPoint(index==measures.size()-1?1_000d:1d,(double)measures.get(index).getDate().getTime(),measures.get(index).getValue()));
+        while(points.get(points.size()-1).getX()-points.get(0).getX()>1_200_000d&&points.size()>4)
+            points.remove(0);
+        points.forEach(point->System.out.println("mesure utilisée pour le calcul : "+(long)point.getX()+" "+point.getY()));
+
+        List<WeightedObservedPoint> correctedPoints=new ArrayList<>(points.size());
+        points.forEach(point->correctedPoints.add(new WeightedObservedPoint(point.getWeight(),(point.getX()-points.get(0).getX())/60_000d,point.getY())));
+
+        int degree=Math.min(2,correctedPoints.size()-1);
+        System.out.println("degré de la régression : "+degree);
+        PolynomialCurveFitter curveFitter=PolynomialCurveFitter.create(degree);
+        double[] result=curveFitter.fit(correctedPoints);
+        System.out.println("coefficients de la régression : "+Arrays.toString(result));
+        for(int index=0;index<=30;index++)
+        {
+            double time=correctedPoints.get(correctedPoints.size()-1).getX()+(double)(60_000*index)/60_000d;
+            double value=0d;
+            for(int index2=0;index2<result.length;index2++)
+                value+=result[index2]*Math.pow(time,(double)index2);
+            System.out.println((long)time+" minutes plus tard, valeur estimée : "+DECIMAL_0_FORMAT.format(value)+" ("+value+")");
+        }
+    }
+
+    private static Measure estimate(Measure[] measures)
+    {
+        if(measures==null||measures.length<1)
+            return null;
+        try
+        {
+            long now=System.currentTimeMillis();
+            Measure[] filteredMeasures=Arrays.stream(measures).filter(measure->measures[measures.length-1].getDate().getTime()-measure.getDate().getTime()<MEASURE_DELAY).toArray(Measure[]::new);
+            List<WeightedObservedPoint> points=new ArrayList<>(filteredMeasures.length);
+            for(int index=0;index<filteredMeasures.length;index++)
+                points.add(new WeightedObservedPoint(index==filteredMeasures.length-1?1_000d:1d,(double)filteredMeasures[index].getDate().getTime(),filteredMeasures[index].getValue()));
+            while(points.size()>4)
+                points.remove(0);
+            List<WeightedObservedPoint> correctedPoints=new ArrayList<>(points.size());
+            points.forEach(point->correctedPoints.add(new WeightedObservedPoint(point.getWeight(),(point.getX()-points.get(0).getX())/60_000d,point.getY())));
+            int degree=Math.min(2,correctedPoints.size()-1);
+            PolynomialCurveFitter curveFitter=PolynomialCurveFitter.create(degree);
+            double[] result=curveFitter.fit(correctedPoints);
+            double time=((double)now-points.get(0).getX())/60_000d;
+            double value=0d;
+            for(int index=0;index<result.length;index++)
+                value+=result[index]*Math.pow(time,(double)index);
+            return new StandAloneMeasure(new Date(now),measures[measures.length-1].getMeasurementType(),value);
+        }
+        catch(Exception e)
+        {
+            return measures[measures.length-1];
+        }
     }
 }

@@ -31,20 +31,20 @@ public class NetatmoModuleStatePage extends AbstractNetatmoPage
         {
             lastRefreshTime=now;
             Map<String,Measure[]> lastMeasures=getLastMeasures();
-            Measure salonWifi=HomeWeatherPage.getLastMeasure(lastMeasures,SALON_WIFI);
-            Measure salonFirmware=HomeWeatherPage.getLastMeasure(lastMeasures,SALON_FIRMWARE);
-            Measure chambreBattery=HomeWeatherPage.getLastMeasure(lastMeasures,CHAMBRE_BATTERY);
-            Measure chambreRadio=HomeWeatherPage.getLastMeasure(lastMeasures,CHAMBRE_RADIO);
-            Measure salleDeBainBattery=HomeWeatherPage.getLastMeasure(lastMeasures,SALLE_DE_BAIN_BATTERY);
-            Measure salleDeBainRadio=HomeWeatherPage.getLastMeasure(lastMeasures,SALLE_DE_BAIN_RADIO);
-            Measure sousSolBattery=HomeWeatherPage.getLastMeasure(lastMeasures,SOUS_SOL_BATTERY);
-            Measure sousSolRadio=HomeWeatherPage.getLastMeasure(lastMeasures,SOUS_SOL_RADIO);
-            Measure jardinBattery=HomeWeatherPage.getLastMeasure(lastMeasures,JARDIN_BATTERY);
-            Measure jardinRadio=HomeWeatherPage.getLastMeasure(lastMeasures,JARDIN_RADIO);
-            Measure pluviometreBattery=HomeWeatherPage.getLastMeasure(lastMeasures,PLUVIOMETRE_BATTERY);
-            Measure pluviometreRadio=HomeWeatherPage.getLastMeasure(lastMeasures,PLUVIOMETRE_RADIO);
-            Measure anemometreBattery=HomeWeatherPage.getLastMeasure(lastMeasures,ANEMOMETRE_BATTERY);
-            Measure anemometreRadio=HomeWeatherPage.getLastMeasure(lastMeasures,ANEMOMETRE_RADIO);
+            Measure _70ee50000deaWifi=HomeWeatherPage.getLastMeasure(lastMeasures,_70ee50000dea_WIFI);
+            Measure _70ee50000deaFirmware=HomeWeatherPage.getLastMeasure(lastMeasures,_70ee50000dea_FIRMWARE);
+            Measure _030000000216Battery=HomeWeatherPage.getLastMeasure(lastMeasures,_030000000216_BATTERY);
+            Measure _030000000216Radio=HomeWeatherPage.getLastMeasure(lastMeasures,_030000000216_RADIO);
+            Measure _03000000076eBattery=HomeWeatherPage.getLastMeasure(lastMeasures,_03000000076e_BATTERY);
+            Measure _03000000076eRadio=HomeWeatherPage.getLastMeasure(lastMeasures,_03000000076e_RADIO);
+            Measure _03000003fe8eBattery=HomeWeatherPage.getLastMeasure(lastMeasures,_03000003fe8e_BATTERY);
+            Measure _03000003fe8eRadio=HomeWeatherPage.getLastMeasure(lastMeasures,_03000003fe8e_RADIO);
+            Measure _0200000010baBattery=HomeWeatherPage.getLastMeasure(lastMeasures,_0200000010ba_BATTERY);
+            Measure _0200000010baRadio=HomeWeatherPage.getLastMeasure(lastMeasures,_0200000010ba_RADIO);
+            Measure _05000004152cBattery=HomeWeatherPage.getLastMeasure(lastMeasures,_05000004152c_BATTERY);
+            Measure _05000004152cRadio=HomeWeatherPage.getLastMeasure(lastMeasures,_05000004152c_RADIO);
+            Measure _06000000729aBattery=HomeWeatherPage.getLastMeasure(lastMeasures,_06000000729a_BATTERY);
+            Measure _06000000729aRadio=HomeWeatherPage.getLastMeasure(lastMeasures,_06000000729a_RADIO);
             try
             {
                 BufferedImage sourceImage=new BufferedImage(296,128,BufferedImage.TYPE_INT_ARGB_PRE);
@@ -68,24 +68,24 @@ public class NetatmoModuleStatePage extends AbstractNetatmoPage
                 };
                 double[] batteries=new double[]
                 {
-                    ((jardinBattery==null?0d:jardinBattery.getValue())-4000d)/(5500d-4000d),
-                    ((chambreBattery==null?0d:chambreBattery.getValue())-4560d)/(5640d-4560d),
-                    ((salleDeBainBattery==null?0d:salleDeBainBattery.getValue())-4560d)/(5640d-4560d),
-                    ((sousSolBattery==null?0d:sousSolBattery.getValue())-4560d)/(5640d-4560d),
-                    ((anemometreBattery==null?0d:anemometreBattery.getValue())-4360d)/(5590d-4360d),
-                    ((pluviometreBattery==null?0d:pluviometreBattery.getValue())-4000d)/(5500d-4000d),
+                    ((_0200000010baBattery==null?0d:_0200000010baBattery.getValue())-4000d)/(5500d-4000d),
+                    ((_030000000216Battery==null?0d:_030000000216Battery.getValue())-4560d)/(5640d-4560d),
+                    ((_03000000076eBattery==null?0d:_03000000076eBattery.getValue())-4560d)/(5640d-4560d),
+                    ((_03000003fe8eBattery==null?0d:_03000003fe8eBattery.getValue())-4560d)/(5640d-4560d),
+                    ((_06000000729aBattery==null?0d:_06000000729aBattery.getValue())-4360d)/(5590d-4360d),
+                    ((_05000004152cBattery==null?0d:_05000004152cBattery.getValue())-4000d)/(5500d-4000d),
                 };
                 double[] radios=new double[]
                 {
-                    (96d-(jardinRadio==null?100d:jardinRadio.getValue()))/(96d-59d),
-                    (96d-(chambreRadio==null?100d:chambreRadio.getValue()))/(96d-59d),
-                    (96d-(salleDeBainRadio==null?100d:salleDeBainRadio.getValue()))/(96d-59d),
-                    (96d-(sousSolRadio==null?100d:sousSolRadio.getValue()))/(96d-59d),
-                    (96d-(anemometreRadio==null?100d:anemometreRadio.getValue()))/(96d-59d),
-                    (96d-(pluviometreRadio==null?100d:pluviometreRadio.getValue()))/(96d-59d),
+                    (96d-(_0200000010baRadio==null?100d:_0200000010baRadio.getValue()))/(96d-59d),
+                    (96d-(_030000000216Radio==null?100d:_030000000216Radio.getValue()))/(96d-59d),
+                    (96d-(_03000000076eRadio==null?100d:_03000000076eRadio.getValue()))/(96d-59d),
+                    (96d-(_03000003fe8eRadio==null?100d:_03000003fe8eRadio.getValue()))/(96d-59d),
+                    (96d-(_06000000729aRadio==null?100d:_06000000729aRadio.getValue()))/(96d-59d),
+                    (96d-(_05000004152cRadio==null?100d:_05000004152cRadio.getValue()))/(96d-59d),
                 };
-                double wifi=(86d-(salonWifi==null?100d:salonWifi.getValue()))/(86d-56d);
-                int firmware=salonFirmware==null?0:(int)salonFirmware.getValue();
+                double wifi=(86d-(_70ee50000deaWifi==null?100d:_70ee50000deaWifi.getValue()))/(86d-56d);
+                int firmware=_70ee50000deaFirmware==null?0:(int)_70ee50000deaFirmware.getValue();
 
                 for(int i=0;i<names.length;i++)
                 {

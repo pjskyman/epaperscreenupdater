@@ -32,7 +32,7 @@ public class HomeWeatherVariationPage extends AbstractNetatmoPage
 
     public String getName()
     {
-        return "Données météo (variations)";
+        return "Données météo (var./tot.)";
     }
 
     public synchronized Page potentiallyUpdate()
@@ -42,56 +42,56 @@ public class HomeWeatherVariationPage extends AbstractNetatmoPage
         {
             lastRefreshTime=now;
             Map<String,Measure[]> lastMeasures=getLastMeasures();
-            Measure[] lastSalonTemperatures=lastMeasures.get(SALON_TEMPERATURE);
-            double salonTemperatureVariation=getHourlyVariation(filterTimedWindowMeasures(lastSalonTemperatures,1));
-            Measure[] lastSalonHumidities=lastMeasures.get(SALON_HUMIDITY);
-            double salonHumidityVariation=getHourlyVariation(filterTimedWindowMeasures(lastSalonHumidities,1));
-            Measure[] lastSalonPressures=lastMeasures.get(SALON_PRESSURE);
-            double salonPressureVariation=getHourlyVariation(filterTimedWindowMeasures(lastSalonPressures,2));
-            Measure[] lastSalonCarbonDioxydes=lastMeasures.get(SALON_CARBON_DIOXYDE);
-            double salonCarbonDioxydeVariation=getHourlyVariation(filterTimedWindowMeasures(lastSalonCarbonDioxydes,1));
-            Measure[] lastSalonNoises=lastMeasures.get(SALON_NOISE);
-            double salonNoiseVariation=getHourlyVariation(filterTimedWindowMeasures(lastSalonNoises,1));
-            Measure[] lastChambreTemperatures=lastMeasures.get(CHAMBRE_TEMPERATURE);
-            double chambreTemperatureVariation=getHourlyVariation(filterTimedWindowMeasures(lastChambreTemperatures,1));
-            Measure[] lastChambreHumidities=lastMeasures.get(CHAMBRE_HUMIDITY);
-            double chambreHumidityVariation=getHourlyVariation(filterTimedWindowMeasures(lastChambreHumidities,1));
-            Measure[] lastChambreCarbonDioxydes=lastMeasures.get(CHAMBRE_CARBON_DIOXYDE);
-            double chambreCarbonDioxydeVariation=getHourlyVariation(filterTimedWindowMeasures(lastChambreCarbonDioxydes,1));
-            Measure[] lastSalleDeBainTemperatures=lastMeasures.get(SALLE_DE_BAIN_TEMPERATURE);
-            double salleDeBainTemperatureVariation=getHourlyVariation(filterTimedWindowMeasures(lastSalleDeBainTemperatures,1));
-            Measure[] lastSalleDeBainHumidities=lastMeasures.get(SALLE_DE_BAIN_HUMIDITY);
-            double salleDeBainHumidityVariation=getHourlyVariation(filterTimedWindowMeasures(lastSalleDeBainHumidities,1));
-            Measure[] lastSalleDeBainCarbonDioxydes=lastMeasures.get(SALLE_DE_BAIN_CARBON_DIOXYDE);
-            double salleDeBainCarbonDioxydeVariation=getHourlyVariation(filterTimedWindowMeasures(lastSalleDeBainCarbonDioxydes,1));
-            Measure[] lastSousSolTemperatures=lastMeasures.get(SOUS_SOL_TEMPERATURE);
-            double sousSolTemperatureVariation=getHourlyVariation(filterTimedWindowMeasures(lastSousSolTemperatures,1));
-            Measure[] lastSousSolHumidities=lastMeasures.get(SOUS_SOL_HUMIDITY);
-            double sousSolHumidityVariation=getHourlyVariation(filterTimedWindowMeasures(lastSousSolHumidities,1));
-            Measure[] lastSousSolCarbonDioxydes=lastMeasures.get(SOUS_SOL_CARBON_DIOXYDE);
-            double sousSolCarbonDioxydeVariation=getHourlyVariation(filterTimedWindowMeasures(lastSousSolCarbonDioxydes,1));
-            Measure[] lastJardinTemperatures=lastMeasures.get(JARDIN_TEMPERATURE);
-            double jardinTemperatureVariation=getHourlyVariation(filterTimedWindowMeasures(lastJardinTemperatures,1));
-            Measure[] lastJardinHumidities=lastMeasures.get(JARDIN_HUMIDITY);
-            double jardinHumidityVariation=getHourlyVariation(filterTimedWindowMeasures(lastJardinHumidities,1));
-            Measure[] array=lastMeasures.get(PLUVIOMETRE_TOTAL_RAIN);
-            double pluviometreTotalRain;
+            Measure[] last70ee50000deaTemperatures=lastMeasures.get(_70ee50000dea_TEMPERATURE);
+            double _70ee50000deaTemperatureVariation=getHourlyVariation(filterTimedWindowMeasures(last70ee50000deaTemperatures,1));
+            Measure[] last70ee50000deaHumidities=lastMeasures.get(_70ee50000dea_HUMIDITY);
+            double _70ee50000deaHumidityVariation=getHourlyVariation(filterTimedWindowMeasures(last70ee50000deaHumidities,1));
+            Measure[] last70ee50000deaPressures=lastMeasures.get(_70ee50000dea_PRESSURE);
+            double _70ee50000deaPressureVariation=getHourlyVariation(filterTimedWindowMeasures(last70ee50000deaPressures,2));
+            Measure[] last70ee50000deaCarbonDioxydes=lastMeasures.get(_70ee50000dea_CARBON_DIOXYDE);
+            double _70ee50000deaCarbonDioxydeVariation=getHourlyVariation(filterTimedWindowMeasures(last70ee50000deaCarbonDioxydes,1));
+            Measure[] last70ee50000deaNoises=lastMeasures.get(_70ee50000dea_NOISE);
+            double _70ee50000deaNoiseVariation=getHourlyVariation(filterTimedWindowMeasures(last70ee50000deaNoises,1));
+            Measure[] last030000000216Temperatures=lastMeasures.get(_030000000216_TEMPERATURE);
+            double _030000000216TemperatureVariation=getHourlyVariation(filterTimedWindowMeasures(last030000000216Temperatures,1));
+            Measure[] last030000000216Humidities=lastMeasures.get(_030000000216_HUMIDITY);
+            double _030000000216HumidityVariation=getHourlyVariation(filterTimedWindowMeasures(last030000000216Humidities,1));
+            Measure[] last030000000216CarbonDioxydes=lastMeasures.get(_030000000216_CARBON_DIOXYDE);
+            double _030000000216CarbonDioxydeVariation=getHourlyVariation(filterTimedWindowMeasures(last030000000216CarbonDioxydes,1));
+            Measure[] last03000000076eTemperatures=lastMeasures.get(_03000000076e_TEMPERATURE);
+            double _03000000076eTemperatureVariation=getHourlyVariation(filterTimedWindowMeasures(last03000000076eTemperatures,1));
+            Measure[] last03000000076eHumidities=lastMeasures.get(_03000000076e_HUMIDITY);
+            double _03000000076eHumidityVariation=getHourlyVariation(filterTimedWindowMeasures(last03000000076eHumidities,1));
+            Measure[] last03000000076eCarbonDioxydes=lastMeasures.get(_03000000076e_CARBON_DIOXYDE);
+            double _03000000076eCarbonDioxydeVariation=getHourlyVariation(filterTimedWindowMeasures(last03000000076eCarbonDioxydes,1));
+            Measure[] last03000003fe8eTemperatures=lastMeasures.get(_03000003fe8e_TEMPERATURE);
+            double _03000003fe8eTemperatureVariation=getHourlyVariation(filterTimedWindowMeasures(last03000003fe8eTemperatures,1));
+            Measure[] last03000003fe8eHumidities=lastMeasures.get(_03000003fe8e_HUMIDITY);
+            double _03000003fe8eHumidityVariation=getHourlyVariation(filterTimedWindowMeasures(last03000003fe8eHumidities,1));
+            Measure[] last03000003fe8eCarbonDioxydes=lastMeasures.get(_03000003fe8e_CARBON_DIOXYDE);
+            double _03000003fe8eCarbonDioxydeVariation=getHourlyVariation(filterTimedWindowMeasures(last03000003fe8eCarbonDioxydes,1));
+            Measure[] last0200000010baTemperatures=lastMeasures.get(_0200000010ba_TEMPERATURE);
+            double _0200000010baTemperatureVariation=getHourlyVariation(filterTimedWindowMeasures(last0200000010baTemperatures,1));
+            Measure[] last0200000010baHumidities=lastMeasures.get(_0200000010ba_HUMIDITY);
+            double _0200000010baHumidityVariation=getHourlyVariation(filterTimedWindowMeasures(last0200000010baHumidities,1));
+            Measure[] array=lastMeasures.get(_05000004152c_TOTAL_RAIN);
+            double _05000004152cTotalRain;
             if(array!=null&&array.length==1)
-                pluviometreTotalRain=array[0].getValue();
+                _05000004152cTotalRain=array[0].getValue();
             else
-                pluviometreTotalRain=Double.NaN;
-            array=lastMeasures.get(ANEMOMETRE_MAX_GUST_STRENGTH);
-            double anemometreMaxGustStrength;
+                _05000004152cTotalRain=Double.NaN;
+            array=lastMeasures.get(_06000000729a_MAX_GUST_STRENGTH);
+            double _06000000729aMaxGustStrength;
             if(array!=null&&array.length==1)
-                anemometreMaxGustStrength=array[0].getValue();
+                _06000000729aMaxGustStrength=array[0].getValue();
             else
-                anemometreMaxGustStrength=Double.NaN;
-            array=lastMeasures.get(ANEMOMETRE_MAX_GUST_ANGLE);
-            double anemometreMaxGustAngle;
+                _06000000729aMaxGustStrength=Double.NaN;
+            array=lastMeasures.get(_06000000729a_MAX_GUST_ANGLE);
+            double _06000000729aMaxGustAngle;
             if(array!=null&&array.length==1)
-                anemometreMaxGustAngle=array[0].getValue();
+                _06000000729aMaxGustAngle=array[0].getValue();
             else
-                anemometreMaxGustAngle=Double.NaN;
+                _06000000729aMaxGustAngle=Double.NaN;
             Measure[] lastToiletsTemperature=loadTemperatures(730).stream()//730 car 720 théoriques + 10 par sécurité
                     .filter(temperature->now-temperature.getTime()<Duration.of(1).hour())
                     .map(temperature->new StandAloneMeasure(new Date(temperature.getTime()),MeasurementType.TEMPERATURE,temperature.getTemperature()))
@@ -130,14 +130,14 @@ public class HomeWeatherVariationPage extends AbstractNetatmoPage
                 g2d.drawLine(85,68,85,66);
                 g2d.drawLine(85,66,83,66);
                 g2d.drawLine(83,66,83,68);
-                g2d.drawLine(74,52,76,52);
-                g2d.drawLine(76,52,76,50);
-                g2d.drawLine(76,50,74,50);
-                g2d.drawLine(74,50,74,52);
-                g2d.drawLine(83,58,85,58);
-                g2d.drawLine(85,58,85,56);
-                g2d.drawLine(85,56,83,56);
-                g2d.drawLine(83,56,83,58);
+                g2d.drawLine(94,63,96,63);
+                g2d.drawLine(96,63,96,61);
+                g2d.drawLine(96,61,94,61);
+                g2d.drawLine(94,61,94,63);
+                g2d.drawLine(226,71,228,71);
+                g2d.drawLine(228,71,228,69);
+                g2d.drawLine(228,69,226,69);
+                g2d.drawLine(226,69,226,71);
                 g2d.drawLine(66,64,68,64);
                 g2d.drawLine(68,64,68,62);
                 g2d.drawLine(68,62,66,62);
@@ -159,15 +159,15 @@ public class HomeWeatherVariationPage extends AbstractNetatmoPage
                 g2d.drawLine(217,64,217,73);
                 g2d.drawLine(217,78,217,80);
                 g2d.drawLine(198,75,202,75);
-                g2d.drawLine(213,64,213,52);
-                g2d.drawLine(217,52,217,60);
+                g2d.drawLine(213,59,213,52);
+                g2d.drawLine(217,52,217,64);
                 g2d.drawLine(213,53,217,53);
                 g2d.drawLine(213,55,217,55);
                 g2d.drawLine(213,57,217,57);
                 g2d.drawLine(213,59,217,59);
+                g2d.drawLine(234,67,226,67);
                 g2d.drawLine(234,64,226,64);
-                g2d.drawLine(234,61,226,61);
-                g2d.drawLine(226,61,226,52);
+                g2d.drawLine(226,64,226,52);
                 g2d.drawLine(226,52,228,52);
                 g2d.drawLine(210,68,212,68);
                 g2d.drawLine(212,68,212,66);
@@ -196,51 +196,54 @@ public class HomeWeatherVariationPage extends AbstractNetatmoPage
                 Font measureFont=baseFont.deriveFont(16f).deriveFont(AffineTransform.getScaleInstance(.7d,1d));
                 g2d.setFont(measureFont);
 
-                String salonString1=(Double.isNaN(salonTemperatureVariation)?"?":(salonTemperatureVariation>0d?"+":"")+DECIMAL_0_FORMAT.format(salonTemperatureVariation).replace(",","."))+"°C’  ";
-                salonString1+=(Double.isNaN(salonHumidityVariation)?"?":(salonHumidityVariation>0d?"+":"")+INTEGER_FORMAT.format(salonHumidityVariation).replace(",","."))+"%’  ";
-                salonString1+=(Double.isNaN(salonPressureVariation)?"?":(salonPressureVariation>0d?"+":"")+DECIMAL_0_FORMAT.format(salonPressureVariation).replace(",","."))+" hPa’";
-                int salonString1Width=(int)Math.ceil(measureFont.getStringBounds(salonString1,g2d.getFontRenderContext()).getWidth());
-                g2d.drawString(salonString1,74f-(float)salonString1Width/2f,110f);
+                String _70ee50000deaString1=(Double.isNaN(_70ee50000deaTemperatureVariation)?"?":(_70ee50000deaTemperatureVariation>0d?"+":"")+DECIMAL_0_FORMAT.format(_70ee50000deaTemperatureVariation).replace(",","."))+"°C’  ";
+                _70ee50000deaString1+=(Double.isNaN(_70ee50000deaHumidityVariation)?"?":(_70ee50000deaHumidityVariation>0d?"+":"")+INTEGER_FORMAT.format(_70ee50000deaHumidityVariation).replace(",","."))+"%’  ";
+                _70ee50000deaString1+=(Double.isNaN(_70ee50000deaPressureVariation)?"?":(_70ee50000deaPressureVariation>0d?"+":"")+DECIMAL_0_FORMAT.format(_70ee50000deaPressureVariation).replace(",","."))+" hPa’";
+                int _70ee50000deaString1Width=(int)Math.ceil(measureFont.getStringBounds(_70ee50000deaString1,g2d.getFontRenderContext()).getWidth());
+                g2d.drawString(_70ee50000deaString1,74f-(float)_70ee50000deaString1Width/2f,110f);
 
-                String salonString2=(Double.isNaN(salonCarbonDioxydeVariation)?"?":(salonCarbonDioxydeVariation>0d?"+":"")+INTEGER_FORMAT.format(salonCarbonDioxydeVariation).replace(",","."))+" ppm’  ";
-                salonString2+=(Double.isNaN(salonNoiseVariation)?"?":(salonNoiseVariation>0d?"+":"")+INTEGER_FORMAT.format(salonNoiseVariation).replace(",","."))+" dB’";
-                int salonString2Width=(int)Math.ceil(measureFont.getStringBounds(salonString2,g2d.getFontRenderContext()).getWidth());
-                g2d.drawString(salonString2,74f-(float)salonString2Width/2f,124f);
+                String _70ee50000deaString2=(Double.isNaN(_70ee50000deaCarbonDioxydeVariation)?"?":(_70ee50000deaCarbonDioxydeVariation>0d?"+":"")+INTEGER_FORMAT.format(_70ee50000deaCarbonDioxydeVariation).replace(",","."))+" ppm’  ";
+                _70ee50000deaString2+=(Double.isNaN(_70ee50000deaNoiseVariation)?"?":(_70ee50000deaNoiseVariation>0d?"+":"")+INTEGER_FORMAT.format(_70ee50000deaNoiseVariation).replace(",","."))+" dB’";
+                int _70ee50000deaString2Width=(int)Math.ceil(measureFont.getStringBounds(_70ee50000deaString2,g2d.getFontRenderContext()).getWidth());
+                g2d.drawString(_70ee50000deaString2,74f-(float)_70ee50000deaString2Width/2f,124f);
 
-                int maxSalonStringWidth=Math.max(salonString1Width,salonString2Width);
-                g2d.drawLine(74-maxSalonStringWidth/2-1,96,74+maxSalonStringWidth/2+1,96);
+                int max70ee50000deaStringWidth=Math.max(_70ee50000deaString1Width,_70ee50000deaString2Width);
+                g2d.drawLine(74-max70ee50000deaStringWidth/2-1,96,74+max70ee50000deaStringWidth/2+1,96);
                 g2d.drawLine(83,68,64,96);
-                g2d.drawString("Salon",74-maxSalonStringWidth/2,95);
+                g2d.drawString("Salon",74-max70ee50000deaStringWidth/2,95);
 
-                String chambreString1=(Double.isNaN(chambreTemperatureVariation)?"?":(chambreTemperatureVariation>0d?"+":"")+DECIMAL_0_FORMAT.format(chambreTemperatureVariation).replace(",","."))+"°C’  ";
-                chambreString1+=(Double.isNaN(chambreHumidityVariation)?"?":(chambreHumidityVariation>0d?"+":"")+INTEGER_FORMAT.format(chambreHumidityVariation).replace(",","."))+"%’";
-                int chambreString1Width=(int)Math.ceil(measureFont.getStringBounds(chambreString1,g2d.getFontRenderContext()).getWidth());
-                g2d.drawString(chambreString1,37f-(float)chambreString1Width/2f,16f);
+                String _030000000216String1=(Double.isNaN(_030000000216TemperatureVariation)?"?":(_030000000216TemperatureVariation>0d?"+":"")+DECIMAL_0_FORMAT.format(_030000000216TemperatureVariation).replace(",","."))+"°C’  ";
+                _030000000216String1+=(Double.isNaN(_030000000216HumidityVariation)?"?":(_030000000216HumidityVariation>0d?"+":"")+INTEGER_FORMAT.format(_030000000216HumidityVariation).replace(",","."))+"%’";
+                int _030000000216String1Width=(int)Math.ceil(measureFont.getStringBounds(_030000000216String1,g2d.getFontRenderContext()).getWidth());
+                g2d.drawString(_030000000216String1,37f-(float)_030000000216String1Width/2f,16f);
 
-                String chambreString2=(Double.isNaN(chambreCarbonDioxydeVariation)?"?":(chambreCarbonDioxydeVariation>0d?"+":"")+INTEGER_FORMAT.format(chambreCarbonDioxydeVariation).replace(",","."))+" ppm’";
-                int chambreString2Width=(int)Math.ceil(measureFont.getStringBounds(chambreString2,g2d.getFontRenderContext()).getWidth());
-                g2d.drawString(chambreString2,37f-(float)chambreString2Width/2f,30f);
+                String _030000000216String2=(Double.isNaN(_030000000216CarbonDioxydeVariation)?"?":(_030000000216CarbonDioxydeVariation>0d?"+":"")+INTEGER_FORMAT.format(_030000000216CarbonDioxydeVariation).replace(",","."))+" ppm’";
+                int _030000000216String2Width=(int)Math.ceil(measureFont.getStringBounds(_030000000216String2,g2d.getFontRenderContext()).getWidth());
+                g2d.drawString(_030000000216String2,37f-(float)_030000000216String2Width/2f,30f);
 
-                int maxChambreStringWidth=Math.max(chambreString1Width,chambreString2Width);
-                g2d.drawLine(37-maxChambreStringWidth/2-1,31,37+maxChambreStringWidth/2+1,31);
-                g2d.drawLine(74,50,58,31);
-                g2d.drawString("Chambre",37-maxChambreStringWidth/2,45);
+                int max030000000216StringWidth=Math.max(_030000000216String1Width,_030000000216String2Width);
+                g2d.drawLine(37-max030000000216StringWidth/2-1,31,37+max030000000216StringWidth/2+1,31);
+                g2d.drawLine(58,31,86,41);
+                g2d.drawLine(86,41,94,60);
+                g2d.drawString("Filles",37-max030000000216StringWidth/2,45);
 
-                String salleDeBainString1=(Double.isNaN(salleDeBainTemperatureVariation)?"?":(salleDeBainTemperatureVariation>0d?"+":"")+DECIMAL_0_FORMAT.format(salleDeBainTemperatureVariation).replace(",","."))+"°C’  ";
-                salleDeBainString1+=(Double.isNaN(salleDeBainHumidityVariation)?"?":(salleDeBainHumidityVariation>0d?"+":"")+INTEGER_FORMAT.format(salleDeBainHumidityVariation).replace(",","."))+"%’";
-                int salleDeBainString1Width=(int)Math.ceil(measureFont.getStringBounds(salleDeBainString1,g2d.getFontRenderContext()).getWidth());
-                g2d.drawString(salleDeBainString1,111f-(float)salleDeBainString1Width/2f,16f);
+                String _03000000076eString1=(Double.isNaN(_03000000076eTemperatureVariation)?"?":(_03000000076eTemperatureVariation>0d?"+":"")+DECIMAL_0_FORMAT.format(_03000000076eTemperatureVariation).replace(",","."))+"°C’  ";
+                _03000000076eString1+=(Double.isNaN(_03000000076eHumidityVariation)?"?":(_03000000076eHumidityVariation>0d?"+":"")+INTEGER_FORMAT.format(_03000000076eHumidityVariation).replace(",","."))+"%’";
+                int _03000000076eString1Width=(int)Math.ceil(measureFont.getStringBounds(_03000000076eString1,g2d.getFontRenderContext()).getWidth());
+                g2d.drawString(_03000000076eString1,111f-(float)_03000000076eString1Width/2f,16f);
 
-                String salleDeBainString2=(Double.isNaN(salleDeBainCarbonDioxydeVariation)?"?":(salleDeBainCarbonDioxydeVariation>0d?"+":"")+INTEGER_FORMAT.format(salleDeBainCarbonDioxydeVariation).replace(",","."))+" ppm’";
-                int salleDeBainString2Width=(int)Math.ceil(measureFont.getStringBounds(salleDeBainString2,g2d.getFontRenderContext()).getWidth());
-                g2d.drawString(salleDeBainString2,111f-(float)salleDeBainString2Width/2f,30f);
+                String _03000000076eString2=(Double.isNaN(_03000000076eCarbonDioxydeVariation)?"?":(_03000000076eCarbonDioxydeVariation>0d?"+":"")+INTEGER_FORMAT.format(_03000000076eCarbonDioxydeVariation).replace(",","."))+" ppm’";
+                int _03000000076eString2Width=(int)Math.ceil(measureFont.getStringBounds(_03000000076eString2,g2d.getFontRenderContext()).getWidth());
+                g2d.drawString(_03000000076eString2,111f-(float)_03000000076eString2Width/2f,30f);
 
-                int maxSalleDeBainStringWidth=Math.max(salleDeBainString1Width,salleDeBainString2Width);
-                g2d.drawLine(111-maxSalleDeBainStringWidth/2-1,31,111+maxSalleDeBainStringWidth/2+1,31);
-                g2d.drawLine(85,56,103,31);
-                String sdbString="SdB";
-                int sdbStringWidth=(int)Math.ceil(measureFont.getStringBounds(sdbString,g2d.getFontRenderContext()).getWidth());
-                g2d.drawString(sdbString,111+maxSalleDeBainStringWidth/2+1-sdbStringWidth,45);
+                int max03000000076eStringWidth=Math.max(_03000000076eString1Width,_03000000076eString2Width);
+                g2d.drawLine(111-max03000000076eStringWidth/2-1,31,111+max03000000076eStringWidth/2+1,31);
+                g2d.drawLine(89,31,118,57);
+                g2d.drawLine(118,57,205,57);
+                g2d.drawLine(205,57,226,69);
+                String _03000000076eString="Garage";
+                int _03000000076eStringWidth=(int)Math.ceil(measureFont.getStringBounds(_03000000076eString,g2d.getFontRenderContext()).getWidth());
+                g2d.drawString(_03000000076eString,111+max03000000076eStringWidth/2+1-_03000000076eStringWidth,45);
 
                 String toiletsString=(Double.isNaN(toiletsTemperatureVariation)?"?":(toiletsTemperatureVariation>0d?"+":"")+DECIMAL_0_FORMAT.format(toiletsTemperatureVariation).replace(",","."))+"°C’";
                 int toiletsStringWidth=(int)Math.ceil(measureFont.getStringBounds(toiletsString,g2d.getFontRenderContext()).getWidth());
@@ -251,52 +254,52 @@ public class HomeWeatherVariationPage extends AbstractNetatmoPage
                 g2d.drawLine(38,73,25,64);
                 g2d.drawString("WC",2,78);
 
-                String jardinString1=(Double.isNaN(jardinTemperatureVariation)?"?":(jardinTemperatureVariation>0d?"+":"")+DECIMAL_0_FORMAT.format(jardinTemperatureVariation).replace(",","."))+"°C’  ";
-                jardinString1+=(Double.isNaN(jardinHumidityVariation)?"?":(jardinHumidityVariation>0d?"+":"")+INTEGER_FORMAT.format(jardinHumidityVariation).replace(",","."))+"%’";
-                int jardinString1Width=(int)Math.ceil(measureFont.getStringBounds(jardinString1,g2d.getFontRenderContext()).getWidth());
-                int jardinLeftOffset=Math.max(0,34-jardinString1Width/2);
-                g2d.drawString(jardinString1,185f-(float)jardinString1Width/2f-(float)jardinLeftOffset,110f);
+                String _0200000010baString1=(Double.isNaN(_0200000010baTemperatureVariation)?"?":(_0200000010baTemperatureVariation>0d?"+":"")+DECIMAL_0_FORMAT.format(_0200000010baTemperatureVariation).replace(",","."))+"°C’  ";
+                _0200000010baString1+=(Double.isNaN(_0200000010baHumidityVariation)?"?":(_0200000010baHumidityVariation>0d?"+":"")+INTEGER_FORMAT.format(_0200000010baHumidityVariation).replace(",","."))+"%’";
+                int _0200000010baString1Width=(int)Math.ceil(measureFont.getStringBounds(_0200000010baString1,g2d.getFontRenderContext()).getWidth());
+                int _0200000010baLeftOffset=Math.max(0,34-_0200000010baString1Width/2);
+                g2d.drawString(_0200000010baString1,185f-(float)_0200000010baString1Width/2f-(float)_0200000010baLeftOffset,110f);
 
-                g2d.drawLine(185-jardinString1Width/2-1-jardinLeftOffset,96,185+jardinString1Width/2+1-jardinLeftOffset,96);
+                g2d.drawLine(185-_0200000010baString1Width/2-1-_0200000010baLeftOffset,96,185+_0200000010baString1Width/2+1-_0200000010baLeftOffset,96);
                 g2d.drawLine(190,84,195,96);
-                g2d.drawString("Jardin",185-jardinString1Width/2-jardinLeftOffset,95);
+                g2d.drawString("Jardin",185-_0200000010baString1Width/2-_0200000010baLeftOffset,95);
 
-                String sousSolString1=(Double.isNaN(sousSolTemperatureVariation)?"?":(sousSolTemperatureVariation>0d?"+":"")+DECIMAL_0_FORMAT.format(sousSolTemperatureVariation).replace(",","."))+"°C’  ";
-                sousSolString1+=(Double.isNaN(sousSolHumidityVariation)?"?":(sousSolHumidityVariation>0d?"+":"")+INTEGER_FORMAT.format(sousSolHumidityVariation).replace(",","."))+"%’";
-                int sousSolString1Width=(int)Math.ceil(measureFont.getStringBounds(sousSolString1,g2d.getFontRenderContext()).getWidth());
-                g2d.drawString(sousSolString1,259f-(float)sousSolString1Width/2f,110f);
+                String _03000003fe8eString1=(Double.isNaN(_03000003fe8eTemperatureVariation)?"?":(_03000003fe8eTemperatureVariation>0d?"+":"")+DECIMAL_0_FORMAT.format(_03000003fe8eTemperatureVariation).replace(",","."))+"°C’  ";
+                _03000003fe8eString1+=(Double.isNaN(_03000003fe8eHumidityVariation)?"?":(_03000003fe8eHumidityVariation>0d?"+":"")+INTEGER_FORMAT.format(_03000003fe8eHumidityVariation).replace(",","."))+"%’";
+                int _03000003fe8eString1Width=(int)Math.ceil(measureFont.getStringBounds(_03000003fe8eString1,g2d.getFontRenderContext()).getWidth());
+                g2d.drawString(_03000003fe8eString1,259f-(float)_03000003fe8eString1Width/2f,110f);
 
-                String sousSolString2=(Double.isNaN(sousSolCarbonDioxydeVariation)?"?":(sousSolCarbonDioxydeVariation>0d?"+":"")+INTEGER_FORMAT.format(sousSolCarbonDioxydeVariation).replace(",","."))+" ppm’";
-                int sousSolString2Width=(int)Math.ceil(measureFont.getStringBounds(sousSolString2,g2d.getFontRenderContext()).getWidth());
-                g2d.drawString(sousSolString2,259f-(float)sousSolString2Width/2f,124f);
+                String _03000003fe8eString2=(Double.isNaN(_03000003fe8eCarbonDioxydeVariation)?"?":(_03000003fe8eCarbonDioxydeVariation>0d?"+":"")+INTEGER_FORMAT.format(_03000003fe8eCarbonDioxydeVariation).replace(",","."))+" ppm’";
+                int _03000003fe8eString2Width=(int)Math.ceil(measureFont.getStringBounds(_03000003fe8eString2,g2d.getFontRenderContext()).getWidth());
+                g2d.drawString(_03000003fe8eString2,259f-(float)_03000003fe8eString2Width/2f,124f);
 
-                int maxSousSolStringWidth=Math.max(sousSolString1Width,sousSolString2Width);
-                g2d.drawLine(259-maxSousSolStringWidth/2-1,96,259+maxSousSolStringWidth/2+1,96);
+                int max03000003fe8eStringWidth=Math.max(_03000003fe8eString1Width,_03000003fe8eString2Width);
+                g2d.drawLine(259-max03000003fe8eStringWidth/2-1,96,259+max03000003fe8eStringWidth/2+1,96);
                 g2d.drawLine(212,68,253,96);
-                String sousSolString="PJ";
-                int sousSolStringWidth=(int)Math.ceil(measureFont.getStringBounds(sousSolString,g2d.getFontRenderContext()).getWidth());
-                g2d.drawString(sousSolString,259+maxSousSolStringWidth/2+1-sousSolStringWidth,95);
+                String _03000003fe8eString="PJ";
+                int _03000003fe8eStringWidth=(int)Math.ceil(measureFont.getStringBounds(_03000003fe8eString,g2d.getFontRenderContext()).getWidth());
+                g2d.drawString(_03000003fe8eString,259+max03000003fe8eStringWidth/2+1-_03000003fe8eStringWidth,95);
 
-                String pluviometreString1=(Double.isNaN(pluviometreTotalRain)?"?":DECIMAL_0_FORMAT.format(pluviometreTotalRain).replace(",","."))+" mm";
-                int pluviometreString1Width=(int)Math.ceil(measureFont.getStringBounds(pluviometreString1,g2d.getFontRenderContext()).getWidth());
-                g2d.drawString(pluviometreString1,180f-(float)pluviometreString1Width/2f,30f);
+                String _05000004152cString1=(Double.isNaN(_05000004152cTotalRain)?"?":DECIMAL_0_FORMAT.format(_05000004152cTotalRain).replace(",","."))+" mm";
+                int _05000004152cString1Width=(int)Math.ceil(measureFont.getStringBounds(_05000004152cString1,g2d.getFontRenderContext()).getWidth());
+                g2d.drawString(_05000004152cString1,180f-(float)_05000004152cString1Width/2f,30f);
 
-                g2d.drawLine(180-pluviometreString1Width/2-1,31,180+pluviometreString1Width/2+1,31);
+                g2d.drawLine(180-_05000004152cString1Width/2-1,31,180+_05000004152cString1Width/2+1,31);
                 g2d.drawLine(193,68,188,63);
                 g2d.drawLine(188,63,188,31);
-                g2d.drawString("Pluie",180-pluviometreString1Width/2,45);
+                g2d.drawString("Pluie",180-_05000004152cString1Width/2,45);
 
-                String anemometreString="ˆ"+(Double.isNaN(anemometreMaxGustStrength)?"?":INTEGER_FORMAT.format(anemometreMaxGustStrength).replace(",","."))+" km/h ";
-                anemometreString+=Double.isNaN(anemometreMaxGustAngle)?"":" "+HomeWeatherPage.convertWindAngle(anemometreMaxGustAngle);
-                int anemometreStringWidth=(int)Math.ceil(measureFont.getStringBounds(anemometreString,g2d.getFontRenderContext()).getWidth());
-                g2d.drawString(anemometreString,254f-(float)anemometreStringWidth/2f,30f);
+                String _06000000729aString="ˆ"+(Double.isNaN(_06000000729aMaxGustStrength)?"?":INTEGER_FORMAT.format(_06000000729aMaxGustStrength).replace(",","."))+" km/h ";
+                _06000000729aString+=Double.isNaN(_06000000729aMaxGustAngle)?"":" "+HomeWeatherPage.convertWindAngle(_06000000729aMaxGustAngle);
+                int _06000000729aStringWidth=(int)Math.ceil(measureFont.getStringBounds(_06000000729aString,g2d.getFontRenderContext()).getWidth());
+                g2d.drawString(_06000000729aString,254f-(float)_06000000729aStringWidth/2f,30f);
 
-                g2d.drawLine(254-anemometreStringWidth/2-1,31,254+anemometreStringWidth/2+1,31);
+                g2d.drawLine(254-_06000000729aStringWidth/2-1,31,254+_06000000729aStringWidth/2+1,31);
                 g2d.drawLine(194,63,194,42);
                 g2d.drawLine(194,42,238,31);
-                String anemometreStringBis="Vent";
-                int anemometreStringBisWidth=(int)Math.ceil(measureFont.getStringBounds(anemometreStringBis,g2d.getFontRenderContext()).getWidth());
-                g2d.drawString(anemometreStringBis,254+anemometreStringWidth/2/*+1*/-anemometreStringBisWidth,45);
+                String _06000000729aStringBis="Vent";
+                int _06000000729aStringBisWidth=(int)Math.ceil(measureFont.getStringBounds(_06000000729aStringBis,g2d.getFontRenderContext()).getWidth());
+                g2d.drawString(_06000000729aStringBis,254+_06000000729aStringWidth/2/*+1*/-_06000000729aStringBisWidth,45);
 
                 g2d.dispose();
 //                try(OutputStream outputStream=new FileOutputStream(new File("meteo_variation.png")))
