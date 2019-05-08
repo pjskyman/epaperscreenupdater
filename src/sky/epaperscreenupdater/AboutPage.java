@@ -48,17 +48,17 @@ public class AboutPage extends AbstractSinglePage
                 g2d.setFont(baseFont);
                 g2d.drawString("EpaperScreenUpdater by PJ Skyman",55,24);
                 g2d.drawString("A Pie Jam Sun production",55,44);
-                g2d.drawString("© 2018",55,64);
+                g2d.drawString("©2018-2019",55,64);
                 g2d.setFont(baseFont.deriveFont(12f));
                 try
                 {
                     SystemInfoProvider systemInfoProvider=PlatformManager.getPlatform().getSystemInfoProvider();
-                    String systemInfo="CPU@"+DECIMAL_0_FORMAT.format((double)systemInfoProvider.getClockFrequencyArm()/1e9d)+" GHz: "+DECIMAL_0_FORMAT.format((double)systemInfoProvider.getCpuTemperature())+"°C@"+DECIMAL_00_FORMAT.format((double)systemInfoProvider.getCpuVoltage())+" V, RAM free: "+INTEGER_FORMAT.format((double)systemInfoProvider.getMemoryFree()/1_048_576d)+" Mo";
+                    String systemInfo="CPU temp: "+DECIMAL_0_FORMAT.format((double)systemInfoProvider.getCpuTemperature())+" °C, RAM free: "+INTEGER_FORMAT.format((double)systemInfoProvider.getMemoryFree()/1_048_576d)+" MB";
                     g2d.drawString(systemInfo,12,118);
                 }
                 catch(Exception e)
                 {
-                    g2d.drawString("Infos about system unavailable",12,118);
+                    g2d.drawString("Info about system unavailable",12,118);
                     Logger.LOGGER.error(e.toString());
                 }
                 g2d.dispose();
