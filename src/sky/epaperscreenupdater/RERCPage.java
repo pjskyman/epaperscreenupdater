@@ -70,7 +70,7 @@ public class RERCPage extends AbstractSinglePage
                     {
                         Logger.LOGGER.error("Unable to read Transilien configuration from the config file ("+e.toString()+")");
                     }
-                    connection=(HttpURLConnection)new URL("http://api.transilien.com/gare/"+depart+"/depart/"+arrivee).openConnection();
+                    connection=(HttpURLConnection)new URL("https://api.transilien.com/gare/"+depart+"/depart/"+arrivee).openConnection();
                     connection.setRequestProperty("Authorization","Basic "+Base64.getEncoder().encodeToString((login+":"+password).getBytes()));
                     connection.setRequestProperty("Accept","application/vnd.sncf.transilien.od.depart+xml;vers=1");
                     connection.setConnectTimeout(5000);
@@ -91,21 +91,14 @@ public class RERCPage extends AbstractSinglePage
                     Element passagesElement=new SAXBuilder().build(new StringReader(stringBuilder.toString())).getRootElement();
                     ((List<Element>)passagesElement.getChildren("train")).forEach(trainElement->
                     {
-                        String nextTrain="["+trainElement.getChild("miss").getText()+"]";
                         String date=trainElement.getChild("date").getText();
-                        nextTrain+=" "+date.substring(date.length()-5,date.length());
-                        Element termElement=trainElement.getChild("term");
-                        if(termElement!=null)
-                            if(termElement.getText().equals("87393843"))
-                                nextTrain+=" —› S-Q-e-Y";
-                            else
-                                if(termElement.getText().equals("87547000")||termElement.getText().equals("87547026"))
-                                    nextTrain+=" —› Austerlitz";
-                                else
-                                    nextTrain+=" —› "+termElement.getText();
+                        String nextTrain=date.substring(date.length()-5,date.length());
                         Element etatElement=trainElement.getChild("etat");
-                        if(etatElement!=null)
-                            nextTrain+=" ("+etatElement.getText()+")";
+                        if(etatElement!=null&&etatElement.getText().toLowerCase().contains("retar"))
+                            nextTrain+="*";
+                        nextTrain+=" "+trainElement.getChild("miss").getText();
+                        if(etatElement!=null&&etatElement.getText().toLowerCase().contains("suppr"))
+                            nextTrain+="_";
                         nextTrains.add(nextTrain);
                     });
                 }
@@ -124,11 +117,39 @@ public class RERCPage extends AbstractSinglePage
                 g2d.setColor(Color.WHITE);
                 g2d.fillRect(0,0,296,128);
                 g2d.setColor(Color.BLACK);
-                Font baseFont=Main.FREDOKA_ONE_FONT.deriveFont(16f);
+                Font baseFont=Main.FREDOKA_ONE_FONT.deriveFont(24f);
                 g2d.setFont(baseFont);
-                g2d.drawString("Prochains départs vers Austerlitz :",5,16);
-                for(int i=0;i<nextTrains.size();i++)
-                    g2d.drawString(nextTrains.get(i),5,16*(i+2));
+                g2d.drawString("Direction Austerlitz",5,24);
+                for(int i=0;i<Math.min(nextTrains.size(),4);i++)
+                {
+                    String string=nextTrains.get(i).replace("_","");
+                    int stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
+                    g2d.drawString(string,5,24*(i+2));
+                    if(nextTrains.get(i).contains("_"))
+                    {
+                        g2d.drawLine(1,24*(i+2)-9,stringWidth+9,24*(i+2)-9);
+                        g2d.drawLine(0,24*(i+2)-10,stringWidth+10,24*(i+2)-10);
+                        g2d.drawLine(1,24*(i+2)-11,stringWidth+9,24*(i+2)-11);
+                    }
+                }
+                if(nextTrains.size()>4)
+                {
+                    g2d.drawLine(145,31,145,118);
+                    g2d.drawLine(146,30,146,119);
+                    g2d.drawLine(147,31,147,118);
+                    for(int i=4;i<Math.min(nextTrains.size(),8);i++)
+                    {
+                        String string=nextTrains.get(i).replace("_","");
+                        int stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
+                        g2d.drawString(string,150+5,24*(i-2));
+                        if(nextTrains.get(i).contains("_"))
+                        {
+                            g2d.drawLine(150+1,24*(i-2)-9,150+stringWidth+9,24*(i-2)-9);
+                            g2d.drawLine(150+0,24*(i-2)-10,150+stringWidth+10,24*(i-2)-10);
+                            g2d.drawLine(150+1,24*(i-2)-11,150+stringWidth+9,24*(i-2)-11);
+                        }
+                    }
+                }
                 g2d.dispose();
 //                try(OutputStream outputStream=new FileOutputStream(new File("rerc.png")))
 //                {
