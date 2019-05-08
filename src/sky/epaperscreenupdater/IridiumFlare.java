@@ -73,19 +73,14 @@ public class IridiumFlare
 
     public double getPJIndex()
     {
-        double magnitudeIndex=magnitude>-.3d?0d:
-                              magnitude<-8.4d?1d:
-                              .015532243525986d*magnitude*magnitude+
-                              .00990603588329d*magnitude+
-                              .01472952107232d-
-                              .01315007d;
-        magnitudeIndex=Math.max(Math.min(magnitudeIndex,1d),0d);
-        double altitudeIndex=altitude<10d?0d:
-                             altitude>70d?1d:
-                             (altitude-10d)/60d;
-        double sunAltitudeIndex=sunAltitude<-20d?1d:
-                                sunAltitude>0d?0d:
-                                sunAltitude/-20d;
+        double magnitudeIndex=Math.min(Math.max(-.09523809524d*magnitude+.2d,0d),1d);
+        double altitudeIndex=Math.min(Math.max(.02222222222d*altitude,0d),1d);
+        double sunAltitudeIndex=Math.min(Math.max(-.05d*sunAltitude,0d),1d);
         return Math.sqrt(magnitudeIndex*altitudeIndex*sunAltitudeIndex);
+    }
+
+    public static void main(String[] args)
+    {
+        System.out.println(new IridiumFlare(new Date(),-6.5d,45,45,"",0,-8.4d,-17).getPJIndex());
     }
 }
