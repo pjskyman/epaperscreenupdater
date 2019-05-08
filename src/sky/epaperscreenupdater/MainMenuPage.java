@@ -8,7 +8,7 @@ public class MainMenuPage extends AbstractMenuPage
         subpages.add(new InstantaneousConsumptionPage(this).potentiallyUpdate());
         subpages.add(new WeatherMenuPage(this).potentiallyUpdate());
         subpages.add(new ElectricityMenuPage(this).potentiallyUpdate());
-        subpages.add(new ClockMenuPage(this).potentiallyUpdate());
+//        subpages.add(new ClockMenuPage(this).potentiallyUpdate());
         subpages.add(new RERCPage(this).potentiallyUpdate());
         subpages.add(new AstronomyMenuPage(this).potentiallyUpdate());
         subpages.add(new AnniversaryPage(this).potentiallyUpdate());
