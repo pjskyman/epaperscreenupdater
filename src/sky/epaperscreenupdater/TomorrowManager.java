@@ -48,7 +48,13 @@ public class TomorrowManager
             catch(Exception e)
             {
                 Logger.LOGGER.error("Unable to get tomorrow's color ("+e.toString()+")");
+                e.printStackTrace();
             }
         return tomorrow;
+    }
+
+    public static void main(String[] args)
+    {
+        System.out.println(getTomorrow());
     }
 }

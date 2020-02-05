@@ -32,6 +32,7 @@ public final class Database
         catch(IOException e)
         {
             Logger.LOGGER.error("Unable to read database connection infos from the config file ("+e.toString()+")");
+            e.printStackTrace();
         }
         Connection connection=null;
         try
@@ -50,6 +51,7 @@ public final class Database
             {
             }
             Logger.LOGGER.error(e.toString());
+            e.printStackTrace();
         }
         return connection;
     }

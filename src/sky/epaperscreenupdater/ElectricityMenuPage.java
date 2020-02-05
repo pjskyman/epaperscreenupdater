@@ -5,6 +5,7 @@ public class ElectricityMenuPage extends AbstractMenuPage
     public ElectricityMenuPage(Page parentPage)
     {
         super(parentPage);
+        subpages.add(new InstantaneousConsumptionGraphPage(this).potentiallyUpdate());
         subpages.add(new EnergyConsumptionPage(this).potentiallyUpdate());
 //        subpages.add(new TodayPricePage(this).potentiallyUpdate());
         subpages.add(new DelayedStartTablePage(this).potentiallyUpdate());

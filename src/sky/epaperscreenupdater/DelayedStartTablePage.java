@@ -32,6 +32,7 @@ public class DelayedStartTablePage extends AbstractSinglePage
         long now=System.currentTimeMillis();
         if(now-lastRefreshTime>Duration.of(1).minutePlus(13).secondPlus(253).millisecond())
         {
+            Logger.LOGGER.info("Page \""+getName()+"\" needs to be updated");
             lastRefreshTime=now;
             try
             {
@@ -84,32 +85,32 @@ public class DelayedStartTablePage extends AbstractSinglePage
                     String tomorrow=TomorrowManager.getTomorrow();
 //                    String tomorrow="BLEU";
                     List<PricingPeriodZone> pricingPeriodZones=new ArrayList<>();
-                    if(today.equals("BLEU"))
+                    if(today.contains("BLEU"))
                         pricingPeriodZones.add(new PricingPeriodZone(0,0,6,2,PricingPeriod.BLUE_DAY_OFF_PEAK_HOUR));
                     else
-                        if(today.equals("BLANC"))
+                        if(today.contains("BLANC"))
                             pricingPeriodZones.add(new PricingPeriodZone(0,0,6,2,PricingPeriod.WHITE_DAY_OFF_PEAK_HOUR));
                         else
-                            if(today.equals("ROUGE"))
+                            if(today.contains("ROUGE"))
                                 pricingPeriodZones.add(new PricingPeriodZone(0,0,6,2,PricingPeriod.RED_DAY_OFF_PEAK_HOUR));
-                    if(tomorrow.equals("BLEU"))
+                    if(tomorrow.contains("BLEU"))
                     {
                         pricingPeriodZones.add(new PricingPeriodZone(6,2,7,32,PricingPeriod.BLUE_DAY_OFF_PEAK_HOUR));
                         pricingPeriodZones.add(new PricingPeriodZone(7,32,20,0,PricingPeriod.BLUE_DAY_PEAK_HOUR));
                     }
                     else
-                        if(tomorrow.equals("BLANC"))
+                        if(tomorrow.contains("BLANC"))
                         {
                             pricingPeriodZones.add(new PricingPeriodZone(6,2,7,32,PricingPeriod.WHITE_DAY_OFF_PEAK_HOUR));
                             pricingPeriodZones.add(new PricingPeriodZone(7,32,20,0,PricingPeriod.WHITE_DAY_PEAK_HOUR));
                         }
                         else
-                            if(tomorrow.equals("RED"))
+                            if(tomorrow.contains("RED"))
                                 pricingPeriodZones.add(new PricingPeriodZone(6,2,20,0,PricingPeriod.RED_DAY_PEAK_HOUR));
-                    if(!today.equals("ND")&&!tomorrow.equals("ND"))
-                        if(today.equals("ROUGE")&&tomorrow.equals("BLEU")||
-                           today.equals("ROUGE")&&tomorrow.equals("BLANC")||
-                           today.equals("BLANC")&&tomorrow.equals("BLEU"))//besoin d'analyse fine
+                    if(!today.contains("ND")&&!tomorrow.contains("ND"))
+                        if(today.contains("ROUGE")&&tomorrow.contains("BLEU")||
+                           today.contains("ROUGE")&&tomorrow.contains("BLANC")||
+                           today.contains("BLANC")&&tomorrow.contains("BLEU"))//besoin d'analyse fine
                         {
                             g2d.drawString("Diff.",78,18);
                             g2d.drawLine(106,0,106,128);
@@ -352,7 +353,8 @@ public class DelayedStartTablePage extends AbstractSinglePage
             }
             catch(Exception e)
             {
-                Logger.LOGGER.error("Unknown error ("+e.toString()+")");
+                Logger.LOGGER.error("Unknown error when updating page \""+getName()+"\"");
+                e.printStackTrace();
             }
         }
         return this;

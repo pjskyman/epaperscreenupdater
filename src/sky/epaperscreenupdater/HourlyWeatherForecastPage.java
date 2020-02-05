@@ -7,16 +7,12 @@ import java.awt.Graphics2D;
 import java.awt.Stroke;
 import java.awt.geom.Path2D;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
-import javax.imageio.ImageIO;
 import sky.program.Duration;
 
 public class HourlyWeatherForecastPage extends AbstractWeatherForecastPage
@@ -43,6 +39,7 @@ public class HourlyWeatherForecastPage extends AbstractWeatherForecastPage
         long now=System.currentTimeMillis();
         if(now-lastRefreshTime>refreshDelay)
         {
+            Logger.LOGGER.info("Page \""+getName()+"\" needs to be updated");
             lastRefreshTime=now;
             List<Hourly> hourlies=getLastHourlies();
             try
@@ -190,16 +187,17 @@ public class HourlyWeatherForecastPage extends AbstractWeatherForecastPage
                     g2d.setColor(Color.BLACK);
                 }
                 g2d.dispose();
-                try(OutputStream outputStream=new FileOutputStream(new File("weather"+(rank+2)+".png")))
-                {
-                    ImageIO.write(sourceImage,"png",outputStream);
-                }
+//                try(OutputStream outputStream=new FileOutputStream(new File("weather"+(rank+2)+".png")))
+//                {
+//                    ImageIO.write(sourceImage,"png",outputStream);
+//                }
                 pixels=new Pixels(RefreshType.PARTIAL_REFRESH).writeImage(sourceImage);
                 Logger.LOGGER.info("Page \""+getName()+"\" updated successfully");
             }
             catch(Exception e)
             {
-                Logger.LOGGER.error("Unknown error ("+e.toString()+")");
+                Logger.LOGGER.error("Unknown error when updating page \""+getName()+"\"");
+                e.printStackTrace();
             }
         }
         return this;

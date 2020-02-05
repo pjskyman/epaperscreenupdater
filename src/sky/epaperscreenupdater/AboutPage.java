@@ -32,6 +32,7 @@ public class AboutPage extends AbstractSinglePage
         long now=System.currentTimeMillis();
         if(now-lastRefreshTime>Duration.of(9).secondMinus(200).millisecond())
         {
+            Logger.LOGGER.info("Page \""+getName()+"\" needs to be updated");
             lastRefreshTime=now;
             try
             {
@@ -60,6 +61,7 @@ public class AboutPage extends AbstractSinglePage
                 {
                     g2d.drawString("Info about system unavailable",12,118);
                     Logger.LOGGER.error(e.toString());
+                    e.printStackTrace();
                 }
                 g2d.dispose();
 //                try(OutputStream outputStream=new FileOutputStream(new File("about.png")))
@@ -71,7 +73,8 @@ public class AboutPage extends AbstractSinglePage
             }
             catch(Exception e)
             {
-                Logger.LOGGER.error("Unknown error ("+e.toString()+")");
+                Logger.LOGGER.error("Unknown error when updating page \""+getName()+"\"");
+                e.printStackTrace();
             }
         }
         return this;

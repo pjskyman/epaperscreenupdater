@@ -136,6 +136,7 @@ public abstract class AbstractNetatmoPage extends AbstractSinglePage
                         catch(IOException e)
                         {
                             Logger.LOGGER.error("Unable to read Netatmo access informations from the config file ("+e.toString()+")");
+                            e.printStackTrace();
                         }
                         token=Token.getToken(clientId,clientSecret,userName,password);
                         if(token!=null)
@@ -256,6 +257,7 @@ public abstract class AbstractNetatmoPage extends AbstractSinglePage
                 catch(NetatmoException e)
                 {
                     Logger.LOGGER.error(e.toString());
+                    e.printStackTrace();
                 }
                 if(!ok)
                 {
