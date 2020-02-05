@@ -79,14 +79,10 @@ public class InstantaneousConsumptionPage extends AbstractNetatmoPage
                 Font consumerNameFont3=baseFont.deriveFont(15f).deriveFont(AffineTransform.getScaleInstance(.6d,1d));
                 Font verticalConsumptionFont=baseFont.deriveFont(15f).deriveFont(AffineTransform.getQuadrantRotateInstance(3));
 
-                Logger.LOGGER.info("A");
                 Map<String,Measure[]> lastMeasures=getLastMeasures();
-                Logger.LOGGER.info("B");
                 Measure[] array=lastMeasures.get(_0200000010ba_TEMPERATURE);
                 Measure temperature=estimate(array);
-                Logger.LOGGER.info("C");
                 array=HomeWeatherVariationPage.filterTimedWindowMeasures(lastMeasures.get(_70ee50000dea_PRESSURE),2);
-                Logger.LOGGER.info("D");
                 Measure pressure=array!=null&&array.length>=1?array[array.length-1]:null;
                 PressureTendancy pressureTendancy=PressureTendancy.UNKNOWN;
                 if(array!=null&&array.length>=3)
@@ -109,10 +105,8 @@ public class InstantaneousConsumptionPage extends AbstractNetatmoPage
                         else
                             pressureTendancy=PressureTendancy.NEGATIVE;
                 }
-                Logger.LOGGER.info("E");
                 array=lastMeasures.get(_70ee50000dea_CARBON_DIOXYDE);
                 Measure carbonDioxyde=estimate(array);
-                Logger.LOGGER.info("F");
                 if(pressureTendancy==PressureTendancy.CONSTANT)
                 {
                     g2d.drawLine(85,12,85,19);
@@ -194,7 +188,6 @@ public class InstantaneousConsumptionPage extends AbstractNetatmoPage
                 String totalPowerString=""+instantaneousConsumption.getTotalOfConsumptions();
                 int totalPowerStringWidth=(int)Math.ceil(bigFont.getStringBounds(totalPowerString,g2d.getFontRenderContext()).getWidth());
 
-                Logger.LOGGER.info("G");
                 g2d.setFont(unitFont);
                 String totalPowerUnitString="W";
                 int totalPowerUnitStringWidth=(int)Math.ceil(unitFont.getStringBounds(totalPowerUnitString,g2d.getFontRenderContext()).getWidth());
@@ -221,9 +214,7 @@ public class InstantaneousConsumptionPage extends AbstractNetatmoPage
                         if((x+y)%2==0||instantaneousConsumption.getPricingPeriod().isRedDay())
                             g2d.drawRect(x,y,0,0);
 //                Logger.LOGGER.info("Current pricing period: "+instantaneousConsumption.getPricingPeriod().name());
-                Logger.LOGGER.info("H");
                 String tomorrow=TomorrowManager.getTomorrow();
-                Logger.LOGGER.info("I");
                 if(tomorrow.contains("BLEU"))
                 {
                     g2d.drawLine(4,109,4,109);
@@ -293,7 +284,6 @@ public class InstantaneousConsumptionPage extends AbstractNetatmoPage
                 g2d.drawLine(95,128-13-4,95,128-13+4);
                 g2d.drawLine(96,128-13-2,96,128-13+2);
                 g2d.drawLine(97,128-13-1,97,128-13+1);
-                Logger.LOGGER.info("J");
                 int[] powers=new int[10];
                 for(int i=0;i<powers.length;i++)
                     powers[i]=instantaneousConsumption.getConsumerConsumption(i+1);
@@ -341,9 +331,7 @@ public class InstantaneousConsumptionPage extends AbstractNetatmoPage
                         }
                     }
                 }
-                Logger.LOGGER.info("K");
                 g2d.dispose();
-                Logger.LOGGER.info("L");
 //                try(OutputStream outputStream=new FileOutputStream(new File("powers.png")))
 //                {
 //                    ImageIO.write(sourceImage,"png",outputStream);
@@ -491,7 +479,6 @@ public class InstantaneousConsumptionPage extends AbstractNetatmoPage
 
     private static Measure estimate(Measure[] measures)
     {
-        Logger.LOGGER.info(" a");
         if(measures==null||measures.length<1)
             return null;
         try
@@ -500,27 +487,21 @@ public class InstantaneousConsumptionPage extends AbstractNetatmoPage
             Measure[] filteredMeasures=Arrays.stream(measures)
                     .filter(measure->measures[measures.length-1].getDate().getTime()-measure.getDate().getTime()<MEASURE_DELAY)
                     .toArray(Measure[]::new);
-            Logger.LOGGER.info(" b");
             List<WeightedObservedPoint> points=new ArrayList<>(filteredMeasures.length);
             for(int index=0;index<filteredMeasures.length;index++)
                 points.add(new WeightedObservedPoint(index==filteredMeasures.length-1?1_000d:1d,(double)filteredMeasures[index].getDate().getTime(),filteredMeasures[index].getValue()));
-            Logger.LOGGER.info(" c");
             while(points.size()>4)
                 points.remove(0);
-            Logger.LOGGER.info(" d");
             List<WeightedObservedPoint> correctedPoints=new ArrayList<>(points.size());
             points.forEach(point->correctedPoints.add(new WeightedObservedPoint(point.getWeight(),(point.getX()-points.get(0).getX())/60_000d,point.getY())));
-            Logger.LOGGER.info(" e");
             int degree=Math.min(2,correctedPoints.size()-1);
             double[] result=PolynomialCurveFitter.create(degree)
                     .withMaxIterations(1_000)
                     .fit(correctedPoints);
-            Logger.LOGGER.info(" f");
             double time=((double)now-points.get(0).getX())/60_000d;
             double value=0d;
             for(int index=0;index<result.length;index++)
                 value+=result[index]*Math.pow(time,(double)index);
-            Logger.LOGGER.info(" g");
             return new StandAloneMeasure(new Date(now),measures[measures.length-1].getMeasurementType(),value);
         }
         catch(Exception e)
