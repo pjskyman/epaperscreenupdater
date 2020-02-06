@@ -28,6 +28,7 @@ public class CarbonDioxydeWeightPage extends AbstractNetatmoPage
         long now=System.currentTimeMillis();
         if(now-lastRefreshTime>Duration.of(10).minutePlus(2).secondPlus(500).millisecond())
         {
+            Logger.LOGGER.info("Page \""+getName()+"\" needs to be updated");
             lastRefreshTime=now;
             Map<String,Measure[]> lastMeasures=getLastMeasures();
             Measure last70ee50000deaCarbonDioxyde=HomeWeatherPage.getLastMeasure(lastMeasures,_70ee50000dea_CARBON_DIOXYDE);//salon
@@ -66,7 +67,8 @@ public class CarbonDioxydeWeightPage extends AbstractNetatmoPage
             }
             catch(Exception e)
             {
-                Logger.LOGGER.error("Unknown error ("+e.toString()+")");
+                Logger.LOGGER.error("Unknown error when updating page \""+getName()+"\"");
+                e.printStackTrace();
             }
         }
         return this;

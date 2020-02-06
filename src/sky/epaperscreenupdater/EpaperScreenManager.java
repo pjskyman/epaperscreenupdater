@@ -39,6 +39,7 @@ public class EpaperScreenManager
             catch(IOException e)
             {
                 Logger.LOGGER.error("Unable to get SPI device ("+e.toString()+")");
+                e.printStackTrace();
                 System.exit(1);
             }
             DEVICE=device;
@@ -158,6 +159,7 @@ public class EpaperScreenManager
         catch(IOException e)
         {
             Logger.LOGGER.error("Unable to initialize device or to send image to device ("+e.toString()+")");
+            e.printStackTrace();
         }
     }
 }

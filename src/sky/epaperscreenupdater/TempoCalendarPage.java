@@ -32,6 +32,7 @@ public class TempoCalendarPage extends AbstractSinglePage
         long now=System.currentTimeMillis();
         if(now-lastRefreshTime>Duration.of(11).minutePlus(15).second())
         {
+            Logger.LOGGER.info("Page \""+getName()+"\" needs to be updated");
             lastRefreshTime=now;
             try
             {
@@ -91,7 +92,7 @@ public class TempoCalendarPage extends AbstractSinglePage
                             String color=history.get(i).getAsJsonObject().getAsJsonPrimitive("couleur").getAsString();
                             lastDateDay=day;
                             lastDateColor=color;
-                            if(color.equals("BLEU"))
+                            if(color.contains("BLEU"))
                             {
                                 g2d.drawLine(x+3,y+3,x+4,y+3);
                                 g2d.drawLine(x+3,y+4,x+4,y+4);
@@ -99,7 +100,7 @@ public class TempoCalendarPage extends AbstractSinglePage
                                 remainingBlueDayCount--;
                             }
                             else
-                                if(color.equals("BLANC"))
+                                if(color.contains("BLANC"))
                                 {
                                     g2d.drawLine(x+3,y+2,x+4,y+2);
                                     g2d.drawLine(x+2,y+3,x+5,y+3);
@@ -109,7 +110,7 @@ public class TempoCalendarPage extends AbstractSinglePage
                                     remainingWhiteDayCount--;
                                 }
                                 else
-                                    if(color.equals("ROUGE"))
+                                    if(color.contains("ROUGE"))
                                     {
                                         g2d.drawLine(x+2,y+1,x+5,y+1);
                                         g2d.drawLine(x+1,y+2,x+6,y+2);
@@ -142,19 +143,19 @@ public class TempoCalendarPage extends AbstractSinglePage
                             if(currentDay!=lastDateDay||
                                currentDay==lastDateDay&&currentHour<6||
                                currentDay==lastDateDay&&currentHour==6&&currentMinute<=2)
-                                if(lastDateColor!=null&&lastDateColor.equals("BLEU"))
+                                if(lastDateColor!=null&&lastDateColor.contains("BLEU"))
                                 {
                                     elapsedBlueDayCount--;
                                     remainingBlueDayCount++;
                                 }
                                 else
-                                    if(lastDateColor!=null&&lastDateColor.equals("BLANC"))
+                                    if(lastDateColor!=null&&lastDateColor.contains("BLANC"))
                                     {
                                         elapsedWhiteDayCount--;
                                         remainingWhiteDayCount++;
                                     }
                                     else
-                                        if(lastDateColor!=null&&lastDateColor.equals("ROUGE"))
+                                        if(lastDateColor!=null&&lastDateColor.contains("ROUGE"))
                                         {
                                             elapsedRedDayCount--;
                                             remainingRedDayCount++;
@@ -207,7 +208,8 @@ public class TempoCalendarPage extends AbstractSinglePage
             }
             catch(Exception e)
             {
-                Logger.LOGGER.error("Unknown error ("+e.toString()+")");
+                Logger.LOGGER.error("Unknown error when updating page \""+getName()+"\"");
+                e.printStackTrace();
             }
         }
         return this;

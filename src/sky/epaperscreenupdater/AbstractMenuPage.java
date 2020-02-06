@@ -74,6 +74,8 @@ public abstract class AbstractMenuPage extends AbstractPage
         subpages.forEach(Page::potentiallyUpdate);//avant tout le reste, comme ça on pourra récupérer leurs nouveaux pixels le cas échéant
         Pixels tempPagePixels=currentPageRank==-1?BLANK_PIXELS:subpages.get(currentPageRank-1).getPixels();
         if(currentPageRank!=cachedCurrentPageRank||currentlySelectedPageRank!=cachedCurrentlySelectedPageRank||tempPagePixels!=cachedPagePixels)
+        {
+            Logger.LOGGER.info("Menu \""+getName()+"\" needs to be updated");
             try
             {
                 cachedCurrentPageRank=currentPageRank;
@@ -89,8 +91,10 @@ public abstract class AbstractMenuPage extends AbstractPage
             }
             catch(Exception e)
             {
-                Logger.LOGGER.error("Unknown error ("+e.toString()+")");
+                Logger.LOGGER.error("Unknown error when updating menu \""+getName()+"\"");
+                e.printStackTrace();
             }
+        }
         return this;
     }
 

@@ -150,6 +150,7 @@ public class EnergyConsumptionProvider
         catch(NotAvailableDatabaseException|SQLException e)
         {
             Logger.LOGGER.error("Unable to parse the request response ("+e.toString()+")");
+            e.printStackTrace();
             return new ArrayList<>(0);
         }
     }

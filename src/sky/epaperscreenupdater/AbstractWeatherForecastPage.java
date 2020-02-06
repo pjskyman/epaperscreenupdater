@@ -63,6 +63,7 @@ public abstract class AbstractWeatherForecastPage extends AbstractSinglePage
                     catch(IOException e)
                     {
                         Logger.LOGGER.error("Unable to read Darksky access informations from the config file ("+e.toString()+")");
+                        e.printStackTrace();
                     }
                     connection=(HttpURLConnection)new URL("https://api.darksky.net/forecast/"+apiKey+"/"+latitude+","+longitude+"?exclude=currently,minutely&lang=fr&units=ca").openConnection();
                     connection.setConnectTimeout(5000);
@@ -168,6 +169,7 @@ public abstract class AbstractWeatherForecastPage extends AbstractSinglePage
             catch(Exception e)
             {
                 Logger.LOGGER.error(e.toString());
+                e.printStackTrace();
             }
             if(!dailiesOk)
                 lastDailies=new ArrayList<>();

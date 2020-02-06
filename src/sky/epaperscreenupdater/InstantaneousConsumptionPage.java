@@ -13,13 +13,13 @@ import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import javax.net.ssl.HttpsURLConnection;
 import org.apache.commons.math3.fitting.PolynomialCurveFitter;
 import org.apache.commons.math3.fitting.WeightedObservedPoint;
 import sky.netatmo.Measure;
@@ -50,6 +50,7 @@ public class InstantaneousConsumptionPage extends AbstractNetatmoPage
         long consumptionTime=instantaneousConsumption.getTime();
         if(consumptionTime!=lastConsumptionTime)
         {
+            Logger.LOGGER.info("Page \""+getName()+"\" needs to be updated");
             lastConsumptionTime=consumptionTime;
             try
             {
@@ -214,21 +215,21 @@ public class InstantaneousConsumptionPage extends AbstractNetatmoPage
                             g2d.drawRect(x,y,0,0);
 //                Logger.LOGGER.info("Current pricing period: "+instantaneousConsumption.getPricingPeriod().name());
                 String tomorrow=TomorrowManager.getTomorrow();
-                if(tomorrow.equals("BLEU"))
+                if(tomorrow.contains("BLEU"))
                 {
                     g2d.drawLine(4,109,4,109);
                     g2d.drawLine(3,110,5,110);
                     g2d.drawLine(2,111,6,111);
                 }
                 else
-                    if(tomorrow.equals("BLANC"))
+                    if(tomorrow.contains("BLANC"))
                     {
                         g2d.drawLine(10,109,10,109);
                         g2d.drawLine(9,110,11,110);
                         g2d.drawLine(8,111,12,111);
                     }
                     else
-                        if(tomorrow.equals("ROUGE"))
+                        if(tomorrow.contains("ROUGE"))
                         {
                             g2d.drawLine(16,109,16,109);
                             g2d.drawLine(15,110,17,110);
@@ -340,7 +341,8 @@ public class InstantaneousConsumptionPage extends AbstractNetatmoPage
             }
             catch(Exception e)
             {
-                Logger.LOGGER.error("Unknown error ("+e.toString()+")");
+                Logger.LOGGER.error("Unknown error when updating page \""+getName()+"\"");
+                e.printStackTrace();
             }
         }
         return this;
@@ -382,26 +384,31 @@ public class InstantaneousConsumptionPage extends AbstractNetatmoPage
     public static JsonObject getJsonResponse(String url) throws IOException,JsonSyntaxException
     {
         URL urlObject=new URL(url);
-        HttpURLConnection httpConnection=null;
+        HttpsURLConnection httpsConnection=null;
         try
         {
-            httpConnection=(HttpURLConnection)urlObject.openConnection();
-            httpConnection.setConnectTimeout(5000);
-            httpConnection.setReadTimeout(5000);
-            httpConnection.setRequestMethod("GET");
+            httpsConnection=(HttpsURLConnection)urlObject.openConnection();
+            httpsConnection.setConnectTimeout(5000);
+            httpsConnection.setReadTimeout(5000);
+            httpsConnection.setRequestMethod("GET");
             StringBuilder response=new StringBuilder();
             String inputLine;
-            try(BufferedReader bufferedReader=new BufferedReader(new InputStreamReader(httpConnection.getInputStream())))
+            try(BufferedReader bufferedReader=new BufferedReader(new InputStreamReader(httpsConnection.getInputStream())))
             {
                 while((inputLine=bufferedReader.readLine())!=null)
                     response.append(inputLine);
             }
             return new JsonParser().parse(response.toString()).getAsJsonObject();
         }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+            return new JsonObject();
+        }
         finally
         {
-            if(httpConnection!=null)
-                httpConnection.disconnect();
+            if(httpsConnection!=null)
+                httpsConnection.disconnect();
         }
     }
 
@@ -477,7 +484,9 @@ public class InstantaneousConsumptionPage extends AbstractNetatmoPage
         try
         {
             long now=System.currentTimeMillis();
-            Measure[] filteredMeasures=Arrays.stream(measures).filter(measure->measures[measures.length-1].getDate().getTime()-measure.getDate().getTime()<MEASURE_DELAY).toArray(Measure[]::new);
+            Measure[] filteredMeasures=Arrays.stream(measures)
+                    .filter(measure->measures[measures.length-1].getDate().getTime()-measure.getDate().getTime()<MEASURE_DELAY)
+                    .toArray(Measure[]::new);
             List<WeightedObservedPoint> points=new ArrayList<>(filteredMeasures.length);
             for(int index=0;index<filteredMeasures.length;index++)
                 points.add(new WeightedObservedPoint(index==filteredMeasures.length-1?1_000d:1d,(double)filteredMeasures[index].getDate().getTime(),filteredMeasures[index].getValue()));
@@ -486,8 +495,9 @@ public class InstantaneousConsumptionPage extends AbstractNetatmoPage
             List<WeightedObservedPoint> correctedPoints=new ArrayList<>(points.size());
             points.forEach(point->correctedPoints.add(new WeightedObservedPoint(point.getWeight(),(point.getX()-points.get(0).getX())/60_000d,point.getY())));
             int degree=Math.min(2,correctedPoints.size()-1);
-            PolynomialCurveFitter curveFitter=PolynomialCurveFitter.create(degree);
-            double[] result=curveFitter.fit(correctedPoints);
+            double[] result=PolynomialCurveFitter.create(degree)
+                    .withMaxIterations(1_000)
+                    .fit(correctedPoints);
             double time=((double)now-points.get(0).getX())/60_000d;
             double value=0d;
             for(int index=0;index<result.length;index++)

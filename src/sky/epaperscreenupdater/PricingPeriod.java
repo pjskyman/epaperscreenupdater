@@ -39,7 +39,7 @@ public enum PricingPeriod
 
         public double getPrice()
         {
-            return .1104d;
+            return .1214d;
         }
 
         @Override
@@ -62,7 +62,7 @@ public enum PricingPeriod
 
         public double getPrice()
         {
-            return .1329d;
+            return .146d;
         }
 
         @Override
@@ -85,7 +85,7 @@ public enum PricingPeriod
 
         public double getPrice()
         {
-            return .1255d;
+            return .1287d;
         }
 
         @Override
@@ -108,7 +108,7 @@ public enum PricingPeriod
 
         public double getPrice()
         {
-            return .1558d;
+            return .1619d;
         }
 
         @Override
@@ -131,7 +131,7 @@ public enum PricingPeriod
 
         public double getPrice()
         {
-            return .1323d;
+            return .137d;
         }
 
         @Override
@@ -154,7 +154,7 @@ public enum PricingPeriod
 
         public double getPrice()
         {
-            return .5413d;
+            return .6182d;
         }
 
         @Override

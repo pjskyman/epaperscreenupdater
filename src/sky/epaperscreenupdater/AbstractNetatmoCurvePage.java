@@ -112,6 +112,7 @@ public abstract class AbstractNetatmoCurvePage extends AbstractNetatmoPage
         long now=System.currentTimeMillis();
         if(now-lastRefreshTime>getRefreshDelay())
         {
+            Logger.LOGGER.info("Page \""+getName()+"\" needs to be updated");
             lastRefreshTime=now;
             Map<String,Measure[]> measureMap=getLastMeasures();
             try
@@ -138,7 +139,8 @@ public abstract class AbstractNetatmoCurvePage extends AbstractNetatmoPage
             }
             catch(Exception e)
             {
-                Logger.LOGGER.error("Unknown error ("+e.toString()+")");
+                Logger.LOGGER.error("Unknown error when updating page \""+getName()+"\"");
+                e.printStackTrace();
             }
         }
         return this;

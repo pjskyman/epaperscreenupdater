@@ -79,7 +79,8 @@ public class IncrustGenerator
         }
         catch(Exception e)
         {
-            Logger.LOGGER.error("Unknown error ("+e.toString()+")");
+            Logger.LOGGER.error("Unknown error");
+            e.printStackTrace();
             return new Pixels(RefreshType.PARTIAL_REFRESH_IN_FAST_MODE);
         }
     }

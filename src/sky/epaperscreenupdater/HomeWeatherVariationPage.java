@@ -40,6 +40,7 @@ public class HomeWeatherVariationPage extends AbstractNetatmoPage
         long now=System.currentTimeMillis();
         if(now-lastRefreshTime>Duration.of(1).minutePlus(4).second())
         {
+            Logger.LOGGER.info("Page \""+getName()+"\" needs to be updated");
             lastRefreshTime=now;
             Map<String,Measure[]> lastMeasures=getLastMeasures();
             Measure[] last70ee50000deaTemperatures=lastMeasures.get(_70ee50000dea_TEMPERATURE);
@@ -312,7 +313,8 @@ public class HomeWeatherVariationPage extends AbstractNetatmoPage
             }
             catch(Exception e)
             {
-                Logger.LOGGER.error("Unknown error ("+e.toString()+")");
+                Logger.LOGGER.error("Unknown error when updating page \""+getName()+"\"");
+                e.printStackTrace();
             }
         }
         return this;
@@ -366,6 +368,7 @@ public class HomeWeatherVariationPage extends AbstractNetatmoPage
         catch(NotAvailableDatabaseException|SQLException e)
         {
             Logger.LOGGER.error(e.toString());
+            e.printStackTrace();
             return new ArrayList<>(0);
         }
     }
@@ -389,6 +392,7 @@ public class HomeWeatherVariationPage extends AbstractNetatmoPage
             {
             }
             Logger.LOGGER.error(e.toString());
+            e.printStackTrace();
         }
         return connection;
     }

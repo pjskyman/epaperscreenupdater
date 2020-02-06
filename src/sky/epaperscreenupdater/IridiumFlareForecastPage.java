@@ -51,6 +51,7 @@ public class IridiumFlareForecastPage extends AbstractSinglePage
         long now=System.currentTimeMillis();
         if(now-lastRefreshTime>Duration.of(1).hourPlus(2).minutePlus(36).second())
         {
+            Logger.LOGGER.info("Page \""+getName()+"\" needs to be updated");
             lastRefreshTime=now;
             try
             {
@@ -354,7 +355,8 @@ public class IridiumFlareForecastPage extends AbstractSinglePage
             }
             catch(Exception e)
             {
-                Logger.LOGGER.error("Unknown error ("+e.toString()+")");
+                Logger.LOGGER.error("Unknown error when updating page \""+getName()+"\"");
+                e.printStackTrace();
             }
         }
         return this;

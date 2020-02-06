@@ -29,6 +29,7 @@ public class NetatmoModuleStatePage extends AbstractNetatmoPage
         long now=System.currentTimeMillis();
         if(now-lastRefreshTime>Duration.of(3).minutePlus(46).second())
         {
+            Logger.LOGGER.info("Page \""+getName()+"\" needs to be updated");
             lastRefreshTime=now;
             Map<String,Measure[]> lastMeasures=getLastMeasures();
             Measure _70ee50000deaWifi=HomeWeatherPage.getLastMeasure(lastMeasures,_70ee50000dea_WIFI);
@@ -168,7 +169,8 @@ public class NetatmoModuleStatePage extends AbstractNetatmoPage
             }
             catch(Exception e)
             {
-                Logger.LOGGER.error("Unknown error ("+e.toString()+")");
+                Logger.LOGGER.error("Unknown error when updating page \""+getName()+"\"");
+                e.printStackTrace();
             }
         }
         return this;

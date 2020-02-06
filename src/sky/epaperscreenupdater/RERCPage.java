@@ -41,6 +41,7 @@ public class RERCPage extends AbstractSinglePage
         long now=System.currentTimeMillis();
         if(now-lastRefreshTime>Duration.of(1).minuteMinus(3).secondPlus(500).millisecond())
         {
+            Logger.LOGGER.info("Page \""+getName()+"\" needs to be updated");
             lastRefreshTime=now;
             try
             {
@@ -58,6 +59,7 @@ public class RERCPage extends AbstractSinglePage
                     catch(IOException e)
                     {
                         Logger.LOGGER.error("Unable to read Transilien access informations from the config file ("+e.toString()+")");
+                        e.printStackTrace();
                     }
                     String depart="";
                     String arrivee="";
@@ -69,6 +71,7 @@ public class RERCPage extends AbstractSinglePage
                     catch(IOException e)
                     {
                         Logger.LOGGER.error("Unable to read Transilien configuration from the config file ("+e.toString()+")");
+                        e.printStackTrace();
                     }
                     connection=(HttpURLConnection)new URL("https://api.transilien.com/gare/"+depart+"/depart/"+arrivee).openConnection();
                     connection.setRequestProperty("Authorization","Basic "+Base64.getEncoder().encodeToString((login+":"+password).getBytes()));
@@ -160,7 +163,8 @@ public class RERCPage extends AbstractSinglePage
             }
             catch(Exception e)
             {
-                Logger.LOGGER.error("Unknown error ("+e.toString()+")");
+                Logger.LOGGER.error("Unknown error when updating page \""+getName()+"\"");
+                e.printStackTrace();
             }
         }
         return this;

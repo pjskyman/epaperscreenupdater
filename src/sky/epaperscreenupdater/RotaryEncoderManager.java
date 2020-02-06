@@ -34,6 +34,7 @@ public class RotaryEncoderManager
         catch(Exception e)
         {
             Logger.LOGGER.error("Unable to get clock 1 pin ("+e.toString()+")");
+            e.printStackTrace();
             System.exit(1);
         }
         CLOCK_1=clock1;
@@ -52,6 +53,7 @@ public class RotaryEncoderManager
         catch(Exception e)
         {
             Logger.LOGGER.error("Unable to get clock 2 pin ("+e.toString()+")");
+            e.printStackTrace();
             System.exit(1);
         }
         CLOCK_2=clock2;
@@ -72,6 +74,7 @@ public class RotaryEncoderManager
         catch(Exception e)
         {
             Logger.LOGGER.error("Unable to get click pin ("+e.toString()+")");
+            e.printStackTrace();
             System.exit(1);
         }
         CLICK=click;

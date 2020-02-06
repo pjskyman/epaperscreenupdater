@@ -29,6 +29,7 @@ public final class Main
         catch(IOException|FontFormatException e)
         {
             Logger.LOGGER.error("Unable to load the font ("+e.toString()+")");
+            e.printStackTrace();
         }
         FREDOKA_ONE_FONT=font;
     }
@@ -67,6 +68,7 @@ public final class Main
                             catch(Throwable t)
                             {
                                 Logger.LOGGER.error("Unmanaged error during refresh ("+t.toString()+")");
+                                t.printStackTrace();
                             }
                             Thread.sleep(Duration.of(107).millisecond());
                         }
@@ -80,7 +82,9 @@ public final class Main
             {
                 while(true)
                 {
+//                    Logger.LOGGER.info("Getting new pixels from page \""+mainMenuPage.getActivePageName()+"\"");
                     Pixels newPixels=mainMenuPage.getPixels();
+//                    Logger.LOGGER.info("New pixels successfully got from page \""+mainMenuPage.getActivePageName()+"\"");
                     if(newPixels!=currentPixels)
                     {
                         long now=System.currentTimeMillis();
@@ -90,6 +94,7 @@ public final class Main
                             realRefreshType=realRefreshType.combine(RefreshType.TOTAL_REFRESH);
                             lastCompleteRefresh=now;
                         }
+                        Logger.LOGGER.info("Updating display content from page \""+mainMenuPage.getActivePageName()+"\" ("+realRefreshType.toString()+")");
                         EpaperScreenManager.displayPage(newPixels,realRefreshType);
                         Logger.LOGGER.info("Display content successfully updated from page \""+mainMenuPage.getActivePageName()+"\" ("+realRefreshType.toString()+")");
                         currentPixels=newPixels;
@@ -103,7 +108,8 @@ public final class Main
         }
         catch(Exception e)
         {
-            Logger.LOGGER.error("Unknown error ("+e.toString()+")");
+            Logger.LOGGER.error("Unknown error");
+            e.printStackTrace();
         }
     }
 
@@ -188,6 +194,7 @@ public final class Main
         catch(NotAvailableDatabaseException|SQLException e)
         {
             Logger.LOGGER.error("Unable to parse the request response ("+e.toString()+")");
+            e.printStackTrace();
             return new ArrayList<>(0);
         }
     }
