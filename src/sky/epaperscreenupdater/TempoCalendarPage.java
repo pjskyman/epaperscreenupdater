@@ -196,4 +196,9 @@ public class TempoCalendarPage extends AbstractSinglePage
     {
         return "calendar.png";
     }
+
+    public static void main(String[] args)
+    {
+        new TempoCalendarPage(null).potentiallyUpdate();
+    }
 }
