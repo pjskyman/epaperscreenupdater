@@ -14,7 +14,7 @@ public class _030000000216HumidityCurvePage extends AbstractNetatmoCurvePage
         return "Courbe humidité filles";
     }
 
-    protected long getRefreshDelay()
+    protected long getMinimalRefreshDelay()
     {
         return Duration.of(1).minutePlus(20).second();
     }
@@ -39,7 +39,7 @@ public class _030000000216HumidityCurvePage extends AbstractNetatmoCurvePage
         return STANDARD_HUMIDITY_MINIMAL_Y;
     }
 
-    protected String getVerificationFileName()
+    protected String getDebugImageFileName()
     {
         return "courbech.png";
     }

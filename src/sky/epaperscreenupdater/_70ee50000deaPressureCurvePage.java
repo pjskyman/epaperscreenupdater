@@ -14,7 +14,7 @@ public class _70ee50000deaPressureCurvePage extends AbstractNetatmoCurvePage
         return "Courbe pression salon";
     }
 
-    protected long getRefreshDelay()
+    protected long getMinimalRefreshDelay()
     {
         return Duration.of(1).minutePlus(12).second();
     }
@@ -39,7 +39,7 @@ public class _70ee50000deaPressureCurvePage extends AbstractNetatmoCurvePage
         return STANDARD_PRESSURE_MINIMAL_Y;
     }
 
-    protected String getVerificationFileName()
+    protected String getDebugImageFileName()
     {
         return "courbesp.png";
     }

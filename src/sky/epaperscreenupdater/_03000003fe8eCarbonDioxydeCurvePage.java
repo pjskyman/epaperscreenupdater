@@ -14,7 +14,7 @@ public class _03000003fe8eCarbonDioxydeCurvePage extends AbstractNetatmoCurvePag
         return "Courbe CO2 PJ";
     }
 
-    protected long getRefreshDelay()
+    protected long getMinimalRefreshDelay()
     {
         return Duration.of(1).minutePlus(40).second();
     }
@@ -39,7 +39,7 @@ public class _03000003fe8eCarbonDioxydeCurvePage extends AbstractNetatmoCurvePag
         return STANDARD_CARBON_DIOXYDE_MINIMAL_Y;
     }
 
-    protected String getVerificationFileName()
+    protected String getDebugImageFileName()
     {
         return "courbesscd.png";
     }

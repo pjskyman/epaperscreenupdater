@@ -14,7 +14,7 @@ public class _0200000010baHumidityCurvePage extends AbstractNetatmoCurvePage
         return "Courbe humidité jardin";
     }
 
-    protected long getRefreshDelay()
+    protected long getMinimalRefreshDelay()
     {
         return Duration.of(1).minutePlus(5).second();
     }
@@ -39,7 +39,7 @@ public class _0200000010baHumidityCurvePage extends AbstractNetatmoCurvePage
         return STANDARD_HUMIDITY_MINIMAL_Y;
     }
 
-    protected String getVerificationFileName()
+    protected String getDebugImageFileName()
     {
         return "courbejh.png";
     }

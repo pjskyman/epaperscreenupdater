@@ -14,7 +14,7 @@ public class _03000000076eTemperatureCurvePage extends AbstractNetatmoCurvePage
         return "Courbe température garage";
     }
 
-    protected long getRefreshDelay()
+    protected long getMinimalRefreshDelay()
     {
         return Duration.of(1).minutePlus(27).second();
     }
@@ -39,7 +39,7 @@ public class _03000000076eTemperatureCurvePage extends AbstractNetatmoCurvePage
         return STANDARD_TEMPERATURE_MINIMAL_Y;
     }
 
-    protected String getVerificationFileName()
+    protected String getDebugImageFileName()
     {
         return "courbesdbt.png";
     }

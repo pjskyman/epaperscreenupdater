@@ -25,7 +25,7 @@ public class TemperatureComparisonPage extends AbstractNetatmoCurvePage
         return "Comparaison températures";
     }
 
-    protected long getRefreshDelay()
+    protected long getMinimalRefreshDelay()
     {
         return Duration.of(1).minutePlus(23).secondPlus(567).millisecond();
     }
@@ -141,7 +141,7 @@ public class TemperatureComparisonPage extends AbstractNetatmoCurvePage
         }
     }
 
-    protected String getVerificationFileName()
+    protected String getDebugImageFileName()
     {
         return "comparaison_temperature.png";
     }

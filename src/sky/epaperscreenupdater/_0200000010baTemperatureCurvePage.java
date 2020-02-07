@@ -14,7 +14,7 @@ public class _0200000010baTemperatureCurvePage extends AbstractNetatmoCurvePage
         return "Courbe température jardin";
     }
 
-    protected long getRefreshDelay()
+    protected long getMinimalRefreshDelay()
     {
         return Duration.of(1).minutePlus(3).second();
     }
@@ -39,7 +39,7 @@ public class _0200000010baTemperatureCurvePage extends AbstractNetatmoCurvePage
         return STANDARD_TEMPERATURE_MINIMAL_Y;
     }
 
-    protected String getVerificationFileName()
+    protected String getDebugImageFileName()
     {
         return "courbejt.png";
     }

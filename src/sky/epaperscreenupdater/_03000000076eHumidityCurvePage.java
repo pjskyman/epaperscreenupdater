@@ -14,7 +14,7 @@ public class _03000000076eHumidityCurvePage extends AbstractNetatmoCurvePage
         return "Courbe humidité garage";
     }
 
-    protected long getRefreshDelay()
+    protected long getMinimalRefreshDelay()
     {
         return Duration.of(1).minutePlus(30).second();
     }
@@ -39,7 +39,7 @@ public class _03000000076eHumidityCurvePage extends AbstractNetatmoCurvePage
         return STANDARD_HUMIDITY_MINIMAL_Y;
     }
 
-    protected String getVerificationFileName()
+    protected String getDebugImageFileName()
     {
         return "courbesdbh.png";
     }

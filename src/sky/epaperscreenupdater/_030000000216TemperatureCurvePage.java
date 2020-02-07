@@ -14,7 +14,7 @@ public class _030000000216TemperatureCurvePage extends AbstractNetatmoCurvePage
         return "Courbe température filles";
     }
 
-    protected long getRefreshDelay()
+    protected long getMinimalRefreshDelay()
     {
         return Duration.of(1).minutePlus(18).second();
     }
@@ -39,7 +39,7 @@ public class _030000000216TemperatureCurvePage extends AbstractNetatmoCurvePage
         return STANDARD_TEMPERATURE_MINIMAL_Y;
     }
 
-    protected String getVerificationFileName()
+    protected String getDebugImageFileName()
     {
         return "courbect.png";
     }

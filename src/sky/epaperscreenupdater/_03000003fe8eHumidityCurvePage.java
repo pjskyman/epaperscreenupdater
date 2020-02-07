@@ -14,7 +14,7 @@ public class _03000003fe8eHumidityCurvePage extends AbstractNetatmoCurvePage
         return "Courbe humidité PJ";
     }
 
-    protected long getRefreshDelay()
+    protected long getMinimalRefreshDelay()
     {
         return Duration.of(1).minutePlus(35).second();
     }
@@ -39,7 +39,7 @@ public class _03000003fe8eHumidityCurvePage extends AbstractNetatmoCurvePage
         return STANDARD_HUMIDITY_MINIMAL_Y;
     }
 
-    protected String getVerificationFileName()
+    protected String getDebugImageFileName()
     {
         return "courbessh.png";
     }

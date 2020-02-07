@@ -1,7 +1,6 @@
 package sky.epaperscreenupdater;
 
 import java.awt.BasicStroke;
-import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.font.FontRenderContext;
@@ -9,7 +8,6 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-import java.awt.image.BufferedImage;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -21,7 +19,6 @@ import sky.program.Duration;
 
 public abstract class AbstractNetatmoCurvePage extends AbstractNetatmoPage
 {
-    private long lastRefreshTime;
     protected static final double[] TICK_OFFSETS=
     {
         1e-10d,
@@ -104,46 +101,20 @@ public abstract class AbstractNetatmoCurvePage extends AbstractNetatmoPage
     protected AbstractNetatmoCurvePage(Page parentPage)
     {
         super(parentPage);
-        lastRefreshTime=0L;
     }
 
-    public synchronized Page potentiallyUpdate()
+    protected RefreshType getRefreshType()
     {
-        long now=System.currentTimeMillis();
-        if(now-lastRefreshTime>getRefreshDelay())
-        {
-            Logger.LOGGER.info("Page \""+getName()+"\" needs to be updated");
-            lastRefreshTime=now;
-            Map<String,Measure[]> measureMap=getLastMeasures();
-            try
-            {
-                BufferedImage sourceImage=new BufferedImage(296,128,BufferedImage.TYPE_INT_ARGB_PRE);
-                Graphics2D g2d=sourceImage.createGraphics();
-                g2d.setColor(Color.WHITE);
-                g2d.fillRect(0,0,296,128);
-                g2d.setColor(Color.BLACK);
+        return RefreshType.PARTIAL_REFRESH;
+    }
 
-                Font baseFont=Main.FREDOKA_ONE_FONT.deriveFont(11f);
-                g2d.setFont(baseFont);
-                Font verticalBaseFont=baseFont.deriveFont(AffineTransform.getQuadrantRotateInstance(-1));
-
-                drawChart(measureMap,baseFont,verticalBaseFont,g2d);
-
-                g2d.dispose();
-//                try(OutputStream outputStream=new FileOutputStream(new File(getVerificationFileName())))
-//                {
-//                    ImageIO.write(sourceImage,"png",outputStream);
-//                }
-                pixels=new Pixels(RefreshType.PARTIAL_REFRESH).writeImage(sourceImage);
-                Logger.LOGGER.info("Page \""+getName()+"\" updated successfully");
-            }
-            catch(Exception e)
-            {
-                Logger.LOGGER.error("Unknown error when updating page \""+getName()+"\"");
-                e.printStackTrace();
-            }
-        }
-        return this;
+    protected void populateImage(Graphics2D g2d) throws Exception
+    {
+        Map<String,Measure[]> measureMap=getLastMeasures();
+        Font baseFont=Main.FREDOKA_ONE_FONT.deriveFont(11f);
+        g2d.setFont(baseFont);
+        Font verticalBaseFont=baseFont.deriveFont(AffineTransform.getQuadrantRotateInstance(-1));
+        drawChart(measureMap,baseFont,verticalBaseFont,g2d);
     }
 
     protected void drawChart(Map<String,Measure[]> measureMap,Font baseFont,Font verticalBaseFont,Graphics2D g2d)
@@ -236,6 +207,10 @@ public abstract class AbstractNetatmoCurvePage extends AbstractNetatmoPage
             drawData(g2d,yesterdayMeasurePoints,ordinateLabelTextHeight,CurveLineType.SPLINE,CurveStrokeType.DOTTED_LINE,CurvePointShape.NOTHING);
         }
     }
+
+    protected abstract String getMeasureKind();
+
+    protected abstract String getOrdinateLabelText();
 
     protected XRange computeXRange(Measure[] measures)
     {
@@ -455,14 +430,6 @@ public abstract class AbstractNetatmoCurvePage extends AbstractNetatmoPage
         for(i=n-1;i>=1;i--)
             b[i]=(b[i]-sup[i]*b[i+1])/diag[i];
     }
-
-    protected abstract long getRefreshDelay();
-
-    protected abstract String getMeasureKind();
-
-    protected abstract String getOrdinateLabelText();
-
-    protected abstract String getVerificationFileName();
 
     protected static class PreparedTick
     {

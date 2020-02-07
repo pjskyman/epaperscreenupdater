@@ -14,7 +14,7 @@ public class _03000000076eCarbonDioxydeCurvePage extends AbstractNetatmoCurvePag
         return "Courbe CO2 garage";
     }
 
-    protected long getRefreshDelay()
+    protected long getMinimalRefreshDelay()
     {
         return Duration.of(1).minutePlus(32).second();
     }
@@ -39,7 +39,7 @@ public class _03000000076eCarbonDioxydeCurvePage extends AbstractNetatmoCurvePag
         return STANDARD_CARBON_DIOXYDE_MINIMAL_Y;
     }
 
-    protected String getVerificationFileName()
+    protected String getDebugImageFileName()
     {
         return "courbesdbcd.png";
     }

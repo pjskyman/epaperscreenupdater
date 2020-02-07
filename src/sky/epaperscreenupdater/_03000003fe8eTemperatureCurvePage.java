@@ -14,7 +14,7 @@ public class _03000003fe8eTemperatureCurvePage extends AbstractNetatmoCurvePage
         return "Courbe température PJ";
     }
 
-    protected long getRefreshDelay()
+    protected long getMinimalRefreshDelay()
     {
         return Duration.of(1).minutePlus(34).second();
     }
@@ -39,7 +39,7 @@ public class _03000003fe8eTemperatureCurvePage extends AbstractNetatmoCurvePage
         return STANDARD_TEMPERATURE_MINIMAL_Y;
     }
 
-    protected String getVerificationFileName()
+    protected String getDebugImageFileName()
     {
         return "courbesst.png";
     }

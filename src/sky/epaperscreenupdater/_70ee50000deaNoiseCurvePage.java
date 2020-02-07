@@ -14,7 +14,7 @@ public class _70ee50000deaNoiseCurvePage extends AbstractNetatmoCurvePage
         return "Courbe bruit salon";
     }
 
-    protected long getRefreshDelay()
+    protected long getMinimalRefreshDelay()
     {
         return Duration.of(1).minutePlus(17).second();
     }
@@ -39,7 +39,7 @@ public class _70ee50000deaNoiseCurvePage extends AbstractNetatmoCurvePage
         return STANDARD_NOISE_MINIMAL_Y;
     }
 
-    protected String getVerificationFileName()
+    protected String getDebugImageFileName()
     {
         return "courbesn.png";
     }

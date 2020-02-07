@@ -14,7 +14,7 @@ public class _70ee50000deaHumidityCurvePage extends AbstractNetatmoCurvePage
         return "Courbe humidité salon";
     }
 
-    protected long getRefreshDelay()
+    protected long getMinimalRefreshDelay()
     {
         return Duration.of(1).minutePlus(11).second();
     }
@@ -39,7 +39,7 @@ public class _70ee50000deaHumidityCurvePage extends AbstractNetatmoCurvePage
         return STANDARD_HUMIDITY_MINIMAL_Y;
     }
 
-    protected String getVerificationFileName()
+    protected String getDebugImageFileName()
     {
         return "courbesh.png";
     }

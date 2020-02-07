@@ -18,7 +18,7 @@ public class _05000004152cRainCurvePage extends AbstractNetatmoCurvePage
         return "Courbe pluie";
     }
 
-    protected long getRefreshDelay()
+    protected long getMinimalRefreshDelay()
     {
         return Duration.of(1).minutePlus(41).second();
     }
@@ -86,7 +86,7 @@ public class _05000004152cRainCurvePage extends AbstractNetatmoCurvePage
         }
     }
 
-    protected String getVerificationFileName()
+    protected String getDebugImageFileName()
     {
         return "courbepr.png";
     }

@@ -29,7 +29,7 @@ public class _06000000729aWindCurvePage extends AbstractNetatmoCurvePage
         return "Courbe vent";
     }
 
-    protected long getRefreshDelay()
+    protected long getMinimalRefreshDelay()
     {
         return Duration.of(1).minutePlus(43).second();
     }
@@ -228,7 +228,7 @@ public class _06000000729aWindCurvePage extends AbstractNetatmoCurvePage
         return (double)Integer.parseInt(INTEGER_FORMAT.format(value/LOW_HEIGHT_RATIO))*LOW_HEIGHT_RATIO;
     }
 
-    protected String getVerificationFileName()
+    protected String getDebugImageFileName()
     {
         return "courbeaw.png";
     }

@@ -14,7 +14,7 @@ public class _70ee50000deaTemperatureCurvePage extends AbstractNetatmoCurvePage
         return "Courbe température salon";
     }
 
-    protected long getRefreshDelay()
+    protected long getMinimalRefreshDelay()
     {
         return Duration.of(1).minutePlus(8).second();
     }
@@ -39,7 +39,7 @@ public class _70ee50000deaTemperatureCurvePage extends AbstractNetatmoCurvePage
         return STANDARD_TEMPERATURE_MINIMAL_Y;
     }
 
-    protected String getVerificationFileName()
+    protected String getDebugImageFileName()
     {
         return "courbest.png";
     }

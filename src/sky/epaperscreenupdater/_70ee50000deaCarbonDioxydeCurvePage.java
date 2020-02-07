@@ -14,7 +14,7 @@ public class _70ee50000deaCarbonDioxydeCurvePage extends AbstractNetatmoCurvePag
         return "Courbe CO2 salon";
     }
 
-    protected long getRefreshDelay()
+    protected long getMinimalRefreshDelay()
     {
         return Duration.of(1).minutePlus(15).second();
     }
@@ -39,7 +39,7 @@ public class _70ee50000deaCarbonDioxydeCurvePage extends AbstractNetatmoCurvePag
         return STANDARD_CARBON_DIOXYDE_MINIMAL_Y;
     }
 
-    protected String getVerificationFileName()
+    protected String getDebugImageFileName()
     {
         return "courbescd.png";
     }
