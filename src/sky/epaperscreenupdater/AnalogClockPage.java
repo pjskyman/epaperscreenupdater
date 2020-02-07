@@ -29,7 +29,7 @@ public class AnalogClockPage extends AbstractSinglePage
         return Duration.of(1).secondMinus(50).millisecond();
     }
 
-    protected void populateImage(Graphics2D g2d) throws Exception
+    protected void populateImage(Graphics2D g2d) throws VetoException,Exception
     {
         g2d.drawOval(148-64,0,127,127);
         g2d.fillOval(148-5,64-5,9,9);

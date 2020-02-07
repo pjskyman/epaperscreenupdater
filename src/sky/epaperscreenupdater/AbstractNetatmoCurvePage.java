@@ -108,7 +108,7 @@ public abstract class AbstractNetatmoCurvePage extends AbstractNetatmoPage
         return RefreshType.PARTIAL_REFRESH;
     }
 
-    protected void populateImage(Graphics2D g2d) throws Exception
+    protected void populateImage(Graphics2D g2d) throws VetoException,Exception
     {
         Map<String,Measure[]> measureMap=getLastMeasures();
         Font baseFont=Main.FREDOKA_ONE_FONT.deriveFont(11f);

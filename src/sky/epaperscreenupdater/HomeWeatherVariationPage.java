@@ -40,7 +40,7 @@ public class HomeWeatherVariationPage extends AbstractNetatmoPage
         return Duration.of(1).minutePlus(4).second();
     }
 
-    protected void populateImage(Graphics2D g2d) throws Exception
+    protected void populateImage(Graphics2D g2d) throws VetoException,Exception
     {
         Map<String,Measure[]> lastMeasures=getLastMeasures();
         Measure[] last70ee50000deaTemperatures=lastMeasures.get(_70ee50000dea_TEMPERATURE);

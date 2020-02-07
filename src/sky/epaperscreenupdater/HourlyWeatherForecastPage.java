@@ -41,7 +41,7 @@ public class HourlyWeatherForecastPage extends AbstractWeatherForecastPage
         return minimalRefreshDelay;
     }
 
-    protected void populateImage(Graphics2D g2d) throws Exception
+    protected void populateImage(Graphics2D g2d) throws VetoException,Exception
     {
         List<Hourly> hourlies=getLastHourlies();
         for(int x=51;x<296;x+=35)

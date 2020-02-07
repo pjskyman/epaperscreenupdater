@@ -28,7 +28,7 @@ public class EnergyConsumptionPage extends AbstractSinglePage
         return Duration.of(10).minutePlus(37).second();
     }
 
-    protected void populateImage(Graphics2D g2d) throws Exception
+    protected void populateImage(Graphics2D g2d) throws VetoException,Exception
     {
         Font baseFont=Main.FREDOKA_ONE_FONT.deriveFont(11f);
         g2d.setFont(baseFont);

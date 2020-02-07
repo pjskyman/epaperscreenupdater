@@ -28,7 +28,7 @@ public class CarbonDioxydeWeightPage extends AbstractNetatmoPage
         return Duration.of(10).minutePlus(2).secondPlus(500).millisecond();
     }
 
-    protected void populateImage(Graphics2D g2d) throws Exception
+    protected void populateImage(Graphics2D g2d) throws VetoException,Exception
     {
         Map<String,Measure[]> lastMeasures=getLastMeasures();
         Measure last70ee50000deaCarbonDioxyde=HomeWeatherPage.getLastMeasure(lastMeasures,_70ee50000dea_CARBON_DIOXYDE);//salon

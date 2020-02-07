@@ -27,7 +27,7 @@ public class BinaryClockPage extends AbstractSinglePage
         return Duration.of(1).secondMinus(100).millisecond();
     }
 
-    protected void populateImage(Graphics2D g2d) throws Exception
+    protected void populateImage(Graphics2D g2d) throws VetoException,Exception
     {
         Date date=new Date();
         String hour=new SimpleDateFormat("HH").format(date);

@@ -32,7 +32,7 @@ public class AboutPage extends AbstractSinglePage
         return Duration.of(9).secondMinus(200).millisecond();
     }
 
-    protected void populateImage(Graphics2D g2d) throws Exception
+    protected void populateImage(Graphics2D g2d) throws VetoException,Exception
     {
         try(InputStream inputStream=new FileInputStream(new File("piejamsun.png")))
         {

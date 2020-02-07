@@ -32,7 +32,7 @@ public class DelayedStartTablePage extends AbstractSinglePage
         return Duration.of(1).minutePlus(13).secondPlus(253).millisecond();
     }
 
-    protected void populateImage(Graphics2D g2d) throws Exception
+    protected void populateImage(Graphics2D g2d) throws VetoException,Exception
     {
         Font baseFont=Main.FREDOKA_ONE_FONT.deriveFont(19f)
                 .deriveFont(AffineTransform.getScaleInstance(.7d,1d));

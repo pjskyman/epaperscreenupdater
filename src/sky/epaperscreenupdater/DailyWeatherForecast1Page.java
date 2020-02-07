@@ -37,7 +37,7 @@ public class DailyWeatherForecast1Page extends AbstractWeatherForecastPage
         return Duration.of(4).minutePlus(9).second();
     }
 
-    protected void populateImage(Graphics2D g2d) throws Exception
+    protected void populateImage(Graphics2D g2d) throws VetoException,Exception
     {
         List<Daily> dailies=getLastDailies();
         for(int x=51;x<296;x+=35)

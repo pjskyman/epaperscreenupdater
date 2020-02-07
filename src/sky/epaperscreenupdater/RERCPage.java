@@ -41,7 +41,7 @@ public class RERCPage extends AbstractSinglePage
     }
 
     @SuppressWarnings("unchecked")
-    protected void populateImage(Graphics2D g2d) throws Exception
+    protected void populateImage(Graphics2D g2d) throws VetoException,Exception
     {
         List<String> nextTrains=new ArrayList<>();
         HttpURLConnection connection=null;

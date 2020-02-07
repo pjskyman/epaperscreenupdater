@@ -39,7 +39,7 @@ public class AnniversaryPage extends AbstractSinglePage
         return Duration.of(1).hourPlus(1).minutePlus(20).second();
     }
 
-    protected void populateImage(Graphics2D g2d) throws Exception
+    protected void populateImage(Graphics2D g2d) throws VetoException,Exception
     {
         Properties properties=new Properties();
         try(InputStream inputStream=new FileInputStream(new File("anniversary.ini")))

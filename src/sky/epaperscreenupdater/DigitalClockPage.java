@@ -28,7 +28,7 @@ public class DigitalClockPage extends AbstractSinglePage
         return Duration.of(1).second();
     }
 
-    protected void populateImage(Graphics2D g2d) throws Exception
+    protected void populateImage(Graphics2D g2d) throws VetoException,Exception
     {
         Font baseFont=Main.FREDOKA_ONE_FONT.deriveFont(70f);
         g2d.setFont(baseFont);
