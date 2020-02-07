@@ -27,6 +27,7 @@ public class InstantaneousConsumptionGraphPage extends AbstractNetatmoPage
         return RefreshType.PARTIAL_REFRESH;
     }
 
+    @Override
     protected boolean canUpdate()
     {
         List<InstantaneousConsumption> list=Main.loadInstantaneousConsumptions(1);
