@@ -213,12 +213,79 @@ public class EnergyConsumptionProvider
                                      instantaneousConsumption.getConsumer10Name(),accumulations[9]/3600d/1000d,prices[9]/3600d/1000d);
     }
 
+    public static OffPeakHourPeriodEfficiency calculateOffPeakHourPeriodEfficiency(int year)
+    {
+        return calculateOffPeakHourPeriodEfficiency(getInstantaneousConsumptions(year));
+    }
+
+    public static OffPeakHourPeriodEfficiency calculateOffPeakHourPeriodEfficiency(int month,int year)
+    {
+        return calculateOffPeakHourPeriodEfficiency(getInstantaneousConsumptions(month,year));
+    }
+
+    public static OffPeakHourPeriodEfficiency calculateOffPeakHourPeriodEfficiency(int day,int month,int year)
+    {
+        return calculateOffPeakHourPeriodEfficiency(getInstantaneousConsumptions(day,month,year));
+    }
+
+    public static OffPeakHourPeriodEfficiency calculateOffPeakHourPeriodEfficiency(int day1,int month1,int year1,int day2,int month2,int year2)
+    {
+        return calculateOffPeakHourPeriodEfficiency(getInstantaneousConsumptions(day1,month1,year1,day2,month2,year2));
+    }
+
+    public static OffPeakHourPeriodEfficiency calculateOffPeakHourPeriodEfficiency(List<InstantaneousConsumption> instantaneousConsumptions)
+    {
+        double accumulation=0d;
+        double price=0d;
+        double offPeakAccumulation=0d;
+        double offPeakPrice=0d;
+        for(int i=0;i<instantaneousConsumptions.size();i++)
+        {
+            double timeOffset;//en secondes
+            if(i==0)
+                timeOffset=(double)(instantaneousConsumptions.get(1).getTime()-instantaneousConsumptions.get(0).getTime())/1000d;
+            else
+                if(i==instantaneousConsumptions.size()-1)
+                    timeOffset=(double)(instantaneousConsumptions.get(instantaneousConsumptions.size()-1).getTime()-instantaneousConsumptions.get(instantaneousConsumptions.size()-2).getTime())/1000d;
+                else
+                {
+                    InstantaneousConsumption previousInstantaneousConsumption=instantaneousConsumptions.get(i-1);
+                    InstantaneousConsumption nextInstantaneousConsumption=instantaneousConsumptions.get(i+1);
+                    timeOffset=(double)(nextInstantaneousConsumption.getTime()-previousInstantaneousConsumption.getTime())/2d/1000d;
+                }
+            InstantaneousConsumption instantaneousConsumption=instantaneousConsumptions.get(i);
+            double increment=(double)instantaneousConsumption.getTotalOfConsumptions()*timeOffset;
+            accumulation+=increment;
+            double priceIncrement=increment*instantaneousConsumption.getPricingPeriod().getPrice();
+            price+=priceIncrement;
+            if(instantaneousConsumption.getPricingPeriod().isOffPeakHourPeriod())
+            {
+                offPeakAccumulation+=increment;
+                offPeakPrice+=priceIncrement;
+            }
+        }
+        double consumptionEfficiency=offPeakAccumulation/accumulation;
+        if(Double.isNaN(consumptionEfficiency)||Double.isInfinite(consumptionEfficiency))
+            consumptionEfficiency=0d;
+        double priceEfficiency=offPeakPrice/price;
+        if(Double.isNaN(priceEfficiency)||Double.isInfinite(priceEfficiency))
+            priceEfficiency=0d;
+        return new OffPeakHourPeriodEfficiency(consumptionEfficiency*100d,priceEfficiency*100d);
+    }
+
     public static void main(String[] args)
     {
+        EnergyConsumption energyConsumption=calculateEnergyConsumption(5,2,2020);
+        System.out.println(AbstractPage.DECIMAL_000_FORMAT.format(energyConsumption.getTotalOfConsumptions())+" kWh");
+        System.out.println(AbstractPage.DECIMAL_00_FORMAT.format(energyConsumption.getTotalOfPrices())+" €");
+        OffPeakHourPeriodEfficiency offPeakHourPeriodEfficiency=calculateOffPeakHourPeriodEfficiency(5,2,2020);
+        System.out.println(AbstractPage.DECIMAL_0_FORMAT.format(offPeakHourPeriodEfficiency.getConsumptionEfficiency())+" %");
+        System.out.println(AbstractPage.DECIMAL_0_FORMAT.format(offPeakHourPeriodEfficiency.getPriceEfficiency())+" %");
+    }
+
+    public static void main2(String[] args)
+    {
         long startTime=System.currentTimeMillis();
-//        EnergyConsumption energyConsumption=calculateEnergyConsumption(8,5,2018);
-//        System.out.println(AbstractPage.DECIMAL_000_FORMAT.format(energyConsumption.getTotalOfConsumptions())+" kWh");
-//        System.out.println(AbstractPage.DECIMAL_00_FORMAT.format(energyConsumption.getTotalOfPrices())+" €");
         //Lave-vaisselle 45-65 29/12/2018 1546099386831L 1546108347421L
         //Lave-linge 40 30/12/2018 1546193633099L 1546201293588L
         //Lave-vaisselle 70 01/01/2019 1546356684103L 1546364874626L
