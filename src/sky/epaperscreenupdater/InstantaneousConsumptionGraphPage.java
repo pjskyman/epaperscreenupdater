@@ -50,6 +50,8 @@ public class InstantaneousConsumptionGraphPage extends AbstractNetatmoPage
     protected void populateImage(Graphics2D g2d) throws VetoException,Exception
     {
         List<InstantaneousConsumption> list=Main.loadInstantaneousConsumptions(296);
+        if(list.isEmpty())
+            throw new VetoException();
         int maxPower=list.stream()
                 .mapToInt(InstantaneousConsumption::getTotalOfConsumptions)
                 .max()
