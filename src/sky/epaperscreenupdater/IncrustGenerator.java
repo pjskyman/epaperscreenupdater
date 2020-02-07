@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import sky.epaperscreenupdater.page.AbstractPage;
+import sky.epaperscreenupdater.page.Page;
 
 public class IncrustGenerator
 {
@@ -14,22 +16,22 @@ public class IncrustGenerator
         this.page=page;
     }
 
-    public Pixels generateStandardIncrust()
+    public BufferedScreen generateStandardIncrust()
     {
         return generateIncrust(false,false);
     }
 
-    public Pixels generateEmptyIncrust()
+    public BufferedScreen generateEmptyIncrust()
     {
         return generateIncrust(true,false);
     }
 
-    public Pixels generateOutMessageIncrust()
+    public BufferedScreen generateOutMessageIncrust()
     {
         return generateIncrust(false,true);
     }
 
-    private Pixels generateIncrust(boolean empty,boolean outMessage)
+    private BufferedScreen generateIncrust(boolean empty,boolean outMessage)
     {
         try
         {
@@ -40,7 +42,7 @@ public class IncrustGenerator
             if(!empty)
             {
                 g2d.setColor(Color.BLACK);
-                Font baseFont=Main.FREDOKA_ONE_FONT.deriveFont(40f);
+                Font baseFont=AbstractPage.FREDOKA_ONE_FONT.deriveFont(40f);
                 Font descriptionFont=baseFont.deriveFont(20f);
                 g2d.setFont(baseFont);
                 Page parentPage=page.getParentPage();
@@ -75,13 +77,13 @@ public class IncrustGenerator
 //            {
 //                ImageIO.write(sourceImage,"png",outputStream);
 //            }
-            return new Pixels(empty?RefreshType.PARTIAL_REFRESH:RefreshType.PARTIAL_REFRESH_IN_FAST_MODE).writeImage(sourceImage);
+            return new BufferedScreen(empty?RefreshType.PARTIAL_REFRESH:RefreshType.PARTIAL_REFRESH_IN_FAST_MODE).writeImage(sourceImage);
         }
         catch(Exception e)
         {
             Logger.LOGGER.error("Unknown error");
             e.printStackTrace();
-            return new Pixels(RefreshType.PARTIAL_REFRESH_IN_FAST_MODE);
+            return new BufferedScreen(RefreshType.PARTIAL_REFRESH_IN_FAST_MODE);
         }
     }
 }
