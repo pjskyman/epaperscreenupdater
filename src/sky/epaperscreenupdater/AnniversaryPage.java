@@ -1,9 +1,7 @@
 package sky.epaperscreenupdater;
 
-import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -21,12 +19,9 @@ import sky.program.Duration;
 
 public class AnniversaryPage extends AbstractSinglePage
 {
-    private long lastRefreshTime;
-
     public AnniversaryPage(Page parentPage)
     {
         super(parentPage);
-        lastRefreshTime=0L;
     }
 
     public String getName()
@@ -34,73 +29,60 @@ public class AnniversaryPage extends AbstractSinglePage
         return "Anniversaires";
     }
 
-    public synchronized Page potentiallyUpdate()
+    protected RefreshType getRefreshType()
     {
-        long now=System.currentTimeMillis();
-        if(now-lastRefreshTime>Duration.of(1).hourPlus(1).minutePlus(20).second())
-        {
-            Logger.LOGGER.info("Page \""+getName()+"\" needs to be updated");
-            lastRefreshTime=now;
-            try
-            {
-                Properties properties=new Properties();
-                try(InputStream inputStream=new FileInputStream(new File("anniversary.ini")))
-                {
-                    properties.load(new InputStreamReader(inputStream,Charset.forName("utf8")));
-                }
-                List<Entry<Birthday,String>> anniversaries=new ArrayList<>();
-                properties.stringPropertyNames().forEach(key->
-                {
-                    String anniversaryDate=(String)properties.get(key);
-                    GregorianCalendar calendar=new GregorianCalendar();
-                    int year=calendar.get(Calendar.YEAR);
-                    int month=Integer.parseInt(anniversaryDate.substring(2,4));
-                    int day=Integer.parseInt(anniversaryDate.substring(0,2));
-                    calendar.clear();
-                    calendar.set(year,month-1,day,23,59,59);
-                    if(calendar.getTimeInMillis()<System.currentTimeMillis())
-                        calendar.set(Calendar.YEAR,year+1);
-                    anniversaries.add(new SimpleEntry<>(new Birthday(calendar,Integer.parseInt(anniversaryDate.substring(4,8))),key));
-                });
-                anniversaries.sort((o1,o2)->o1.getKey().getCalendar().compareTo(o2.getKey().getCalendar()));
+        return RefreshType.PARTIAL_REFRESH;
+    }
 
-                BufferedImage sourceImage=new BufferedImage(296,128,BufferedImage.TYPE_INT_ARGB_PRE);
-                Graphics2D g2d=sourceImage.createGraphics();
-                g2d.setColor(Color.WHITE);
-                g2d.fillRect(0,0,296,128);
-                g2d.setColor(Color.BLACK);
-                Font baseFont=Main.FREDOKA_ONE_FONT.deriveFont(14f);
-                g2d.setFont(baseFont);
-                g2d.drawString("Prochains anniversaires :",5,14);
-                GregorianCalendar nowCalendar=new GregorianCalendar();
-                for(int i=0;i<anniversaries.size();i++)
-                {
-                    GregorianCalendar calendar=anniversaries.get(i).getKey().getCalendar();
-                    String string=""+calendar.get(Calendar.DAY_OF_MONTH);
-                    if(string.equals("1"))
-                        string+="er";
-                    string+=" "+calendar.getDisplayName(Calendar.MONTH,Calendar.LONG,Locale.FRANCE);
-                    string+=" : "+anniversaries.get(i).getValue();
-                    string+=" ("+(calendar.get(Calendar.YEAR)-anniversaries.get(i).getKey().getBirthYear())+")";
-                    if(calendar.get(Calendar.DAY_OF_MONTH)==nowCalendar.get(Calendar.DAY_OF_MONTH)&&calendar.get(Calendar.MONTH)==nowCalendar.get(Calendar.MONTH))
-                        string="!!! "+string+" !!!";
-                    g2d.drawString(string,5,14*(i+2));
-                }
-                g2d.dispose();
-//                try(OutputStream outputStream=new FileOutputStream(new File("anniversary.png")))
-//                {
-//                    ImageIO.write(sourceImage,"png",outputStream);
-//                }
-                pixels=new Pixels(RefreshType.PARTIAL_REFRESH).writeImage(sourceImage);
-                Logger.LOGGER.info("Page \""+getName()+"\" updated successfully");
-            }
-            catch(Exception e)
-            {
-                Logger.LOGGER.error("Unknown error when updating page \""+getName()+"\"");
-                e.printStackTrace();
-            }
+    protected long getMinimalRefreshDelay()
+    {
+        return Duration.of(1).hourPlus(1).minutePlus(20).second();
+    }
+
+    protected void populateImage(Graphics2D g2d) throws Exception
+    {
+        Properties properties=new Properties();
+        try(InputStream inputStream=new FileInputStream(new File("anniversary.ini")))
+        {
+            properties.load(new InputStreamReader(inputStream,Charset.forName("utf8")));
         }
-        return this;
+        List<Entry<Birthday,String>> anniversaries=new ArrayList<>();
+        properties.stringPropertyNames().forEach(key->
+        {
+            String anniversaryDate=(String)properties.get(key);
+            GregorianCalendar calendar=new GregorianCalendar();
+            int year=calendar.get(Calendar.YEAR);
+            int month=Integer.parseInt(anniversaryDate.substring(2,4));
+            int day=Integer.parseInt(anniversaryDate.substring(0,2));
+            calendar.clear();
+            calendar.set(year,month-1,day,23,59,59);
+            if(calendar.getTimeInMillis()<System.currentTimeMillis())
+                calendar.set(Calendar.YEAR,year+1);
+            anniversaries.add(new SimpleEntry<>(new Birthday(calendar,Integer.parseInt(anniversaryDate.substring(4,8))),key));
+        });
+        anniversaries.sort((o1,o2)->o1.getKey().getCalendar().compareTo(o2.getKey().getCalendar()));
+        Font baseFont=Main.FREDOKA_ONE_FONT.deriveFont(14f);
+        g2d.setFont(baseFont);
+        g2d.drawString("Prochains anniversaires :",5,14);
+        GregorianCalendar nowCalendar=new GregorianCalendar();
+        for(int i=0;i<anniversaries.size();i++)
+        {
+            GregorianCalendar calendar=anniversaries.get(i).getKey().getCalendar();
+            String string=""+calendar.get(Calendar.DAY_OF_MONTH);
+            if(string.equals("1"))
+                string+="er";
+            string+=" "+calendar.getDisplayName(Calendar.MONTH,Calendar.LONG,Locale.FRANCE);
+            string+=" : "+anniversaries.get(i).getValue();
+            string+=" ("+(calendar.get(Calendar.YEAR)-anniversaries.get(i).getKey().getBirthYear())+")";
+            if(calendar.get(Calendar.DAY_OF_MONTH)==nowCalendar.get(Calendar.DAY_OF_MONTH)&&calendar.get(Calendar.MONTH)==nowCalendar.get(Calendar.MONTH))
+                string="!!! "+string+" !!!";
+            g2d.drawString(string,5,14*(i+2));
+        }
+    }
+
+    protected String getDebugImageFileName()
+    {
+        return "anniversary.png";
     }
 
     public static void main(String[] args)
