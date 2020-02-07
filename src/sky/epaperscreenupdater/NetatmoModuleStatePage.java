@@ -127,16 +127,16 @@ public class NetatmoModuleStatePage extends AbstractNetatmoPage
             if(up<66)
             {
                 g2d.setColor(Color.WHITE);
-                g2d.drawString(percentage,baseX+23-(int)percentageWidth/2,(79+up)/2+6);
+                g2d.drawString(percentage,baseX+23-percentageWidth/2,(79+up)/2+6);
                 g2d.setColor(Color.BLACK);
             }
             else
-                g2d.drawString(percentage,baseX+23-(int)percentageWidth/2,(16+up)/2+6);
+                g2d.drawString(percentage,baseX+23-percentageWidth/2,(16+up)/2+6);
 
             g2d.setFont(nameFont);
             String name=names[i];
             int nameWidth=(int)Math.ceil(nameFont.getStringBounds(name,g2d.getFontRenderContext()).getWidth());
-            g2d.drawString(name,baseX+22-(int)nameWidth/2,104);
+            g2d.drawString(name,baseX+22-nameWidth/2,104);
 
             double bornedRadio=Math.max(0d,Math.min(1d,radios[i]));
             g2d.drawLine(baseX+4,117,baseX+40,117);
