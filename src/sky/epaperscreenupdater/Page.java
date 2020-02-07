@@ -55,20 +55,21 @@ public interface Page
      * Lance la procédure de remise à jour potentielle de cette page et de ses
      * éventuelles sous-pages. Chaque page est en mesure de décider si elle se
      * remet effectivement à jour ou pas.
-     * @return La page elle-même pour créer des appels chaînés.
-     * @see #getPixels() getPixels()
+     * @return La page elle-même pour effectuer des appels chaînés.
+     * @see #getScreen() getScreen()
      */
     public Page potentiallyUpdate();
 
     /**
-     * Retourne un objet {@link Pixels} représentant le contenu de cette page.
-     * Le contenu de la page doit être généré à l'avance (et régulièrement) par
-     * la méthode {@link #potentiallyUpdate() potentiallyUpdate()} ; cette
+     * Retourne un objet {@link BufferedScreen} représentant le contenu de
+     * cette page. Le contenu de la page doit être généré à l'avance (et
+     * régulièrement) par la méthode
+     * {@link #potentiallyUpdate() potentiallyUpdate()} ; cette
      * méthode ne fait alors rien de spécial à part retourner l'instance
-     * interne de {@link Pixels} mise en cache.
+     * interne de {@link BufferedScreen} mise en cache.
      * @see #potentiallyUpdate() potentiallyUpdate()
      */
-    public Pixels getPixels();
+    public BufferedScreen getScreen();
 
     /**
      * Indique à cette page qu'un clic a été effectué.

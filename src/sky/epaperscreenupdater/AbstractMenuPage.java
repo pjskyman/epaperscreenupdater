@@ -98,11 +98,6 @@ public abstract class AbstractMenuPage extends AbstractPage
         return this;
     }
 
-    public Pixels getPixels()
-    {
-        return pixels;
-    }
-
     public boolean clicked(boolean initial)
     {
         if(currentPageRank==-1)
