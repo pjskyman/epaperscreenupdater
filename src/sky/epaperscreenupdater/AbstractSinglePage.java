@@ -69,7 +69,7 @@ public abstract class AbstractSinglePage extends AbstractPage
 
     protected abstract long getMinimalRefreshDelay();
 
-    protected abstract void populateImage(Graphics2D g2d) throws Exception;
+    protected abstract void populateImage(Graphics2D g2d) throws VetoException,Exception;
 
     protected abstract String getDebugImageFileName();
 
