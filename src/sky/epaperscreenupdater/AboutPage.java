@@ -49,7 +49,7 @@ public class AboutPage extends AbstractSinglePage
                 g2d.setFont(baseFont);
                 g2d.drawString("EpaperScreenUpdater by PJ Skyman",55,24);
                 g2d.drawString("A Pie Jam Sun production",55,44);
-                g2d.drawString("©2018-2019",55,64);
+                g2d.drawString("©2018-2020",55,64);
                 g2d.setFont(baseFont.deriveFont(12f));
                 try
                 {
