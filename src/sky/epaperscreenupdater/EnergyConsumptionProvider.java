@@ -15,11 +15,14 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Random;
 import javax.imageio.ImageIO;
 import sky.program.Duration;
 
 public class EnergyConsumptionProvider
 {
+    private static final Random RANDOM=new Random();
+
     public static List<InstantaneousConsumption> getInstantaneousConsumptions(int year)
     {
         return getInstantaneousConsumptions(1,1,year,31,12,year);
@@ -270,7 +273,12 @@ public class EnergyConsumptionProvider
         double priceEfficiency=offPeakPrice/price;
         if(Double.isNaN(priceEfficiency)||Double.isInfinite(priceEfficiency))
             priceEfficiency=0d;
-        return new OffPeakHourPeriodEfficiency(consumptionEfficiency*100d,priceEfficiency*100d);
+        PricingPeriod pricingPeriod;
+        if(instantaneousConsumptions.size()>1000)
+            pricingPeriod=instantaneousConsumptions.get(1000).getPricingPeriod();
+        else
+            pricingPeriod=instantaneousConsumptions.get(RANDOM.nextInt(instantaneousConsumptions.size())).getPricingPeriod();
+        return new OffPeakHourPeriodEfficiency(consumptionEfficiency*100d,priceEfficiency*100d,pricingPeriod,offPeakAccumulation/3600d/1000d);
     }
 
     public static void main(String[] args)
