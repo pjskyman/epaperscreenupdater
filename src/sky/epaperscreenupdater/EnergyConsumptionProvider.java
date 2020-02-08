@@ -277,18 +277,36 @@ public class EnergyConsumptionProvider
         if(instantaneousConsumptions.size()>1000)
             pricingPeriod=instantaneousConsumptions.get(1000).getPricingPeriod();
         else
-            pricingPeriod=instantaneousConsumptions.get(RANDOM.nextInt(instantaneousConsumptions.size())).getPricingPeriod();
+            if(!instantaneousConsumptions.isEmpty())
+                pricingPeriod=instantaneousConsumptions.get(RANDOM.nextInt(instantaneousConsumptions.size())).getPricingPeriod();
+            else
+                pricingPeriod=PricingPeriod.BLUE_DAY_PEAK_HOUR;
         return new OffPeakHourPeriodEfficiency(consumptionEfficiency*100d,priceEfficiency*100d,pricingPeriod,offPeakAccumulation/3600d/1000d);
     }
 
     public static void main(String[] args)
     {
-        EnergyConsumption energyConsumption=calculateEnergyConsumption(5,2,2020);
-        System.out.println(AbstractPage.DECIMAL_000_FORMAT.format(energyConsumption.getTotalOfConsumptions())+" kWh");
-        System.out.println(AbstractPage.DECIMAL_00_FORMAT.format(energyConsumption.getTotalOfPrices())+" €");
-        OffPeakHourPeriodEfficiency offPeakHourPeriodEfficiency=calculateOffPeakHourPeriodEfficiency(5,2,2020);
-        System.out.println(AbstractPage.DECIMAL_0_FORMAT.format(offPeakHourPeriodEfficiency.getConsumptionEfficiency())+" %");
-        System.out.println(AbstractPage.DECIMAL_0_FORMAT.format(offPeakHourPeriodEfficiency.getPriceEfficiency())+" %");
+        for(int day=1;day<=10;day++)
+        {
+            System.out.println("day="+day);
+            EnergyConsumption energyConsumption=calculateEnergyConsumption(day,2,2020);
+            System.out.println(AbstractPage.DECIMAL_000_FORMAT.format(energyConsumption.getTotalOfConsumptions())+" kWh");
+            System.out.println(AbstractPage.DECIMAL_00_FORMAT.format(energyConsumption.getTotalOfPrices())+" €");
+            OffPeakHourPeriodEfficiency offPeakHourPeriodEfficiency=calculateOffPeakHourPeriodEfficiency(day,2,2020);
+            System.out.println(AbstractPage.DECIMAL_0_FORMAT.format(offPeakHourPeriodEfficiency.getConsumptionEfficiency())+" %");
+            System.out.println(AbstractPage.DECIMAL_0_FORMAT.format(offPeakHourPeriodEfficiency.getPriceEfficiency())+" %");
+            PricingPeriod pricingPeriod=offPeakHourPeriodEfficiency.getPricingPeriod();
+            double savedMoney;
+            if(pricingPeriod.isBlueDay())
+                savedMoney=offPeakHourPeriodEfficiency.getOffPeakConsumption()*(PricingPeriod.BLUE_DAY_PEAK_HOUR.getPrice()-PricingPeriod.BLUE_DAY_OFF_PEAK_HOUR.getPrice());
+            else
+                if(pricingPeriod.isWhiteDay())
+                    savedMoney=offPeakHourPeriodEfficiency.getOffPeakConsumption()*(PricingPeriod.WHITE_DAY_PEAK_HOUR.getPrice()-PricingPeriod.WHITE_DAY_OFF_PEAK_HOUR.getPrice());
+                else
+                    savedMoney=offPeakHourPeriodEfficiency.getOffPeakConsumption()*(PricingPeriod.RED_DAY_PEAK_HOUR.getPrice()-PricingPeriod.RED_DAY_OFF_PEAK_HOUR.getPrice());
+            System.out.println(AbstractPage.DECIMAL_00_FORMAT.format(savedMoney)+" €");
+            System.out.println();
+        }
     }
 
     public static void main2(String[] args)
