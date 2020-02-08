@@ -21,7 +21,7 @@ public class _03000000076eCarbonDioxydeCurvePage extends AbstractNetatmoCurvePag
 
     protected String getMeasureKind()
     {
-        return _03000000076e_CARBON_DIOXYDE;
+        return NetatmoUtils._03000000076e_CARBON_DIOXYDE;
     }
 
     protected String getOrdinateLabelText()

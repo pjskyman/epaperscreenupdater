@@ -21,7 +21,7 @@ public class _70ee50000deaCarbonDioxydeCurvePage extends AbstractNetatmoCurvePag
 
     protected String getMeasureKind()
     {
-        return _70ee50000dea_CARBON_DIOXYDE;
+        return NetatmoUtils._70ee50000dea_CARBON_DIOXYDE;
     }
 
     protected String getOrdinateLabelText()

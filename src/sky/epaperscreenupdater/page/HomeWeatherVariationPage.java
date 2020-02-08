@@ -3,24 +3,14 @@ package sky.epaperscreenupdater.page;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
-import sky.epaperscreenupdater.Logger;
 import sky.epaperscreenupdater.RefreshType;
 import sky.netatmo.Measure;
 import sky.netatmo.MeasurementType;
 import sky.program.Duration;
 
-public class HomeWeatherVariationPage extends AbstractNetatmoPage
+public class HomeWeatherVariationPage extends AbstractSinglePage
 {
     public HomeWeatherVariationPage(Page parentPage)
     {
@@ -44,63 +34,63 @@ public class HomeWeatherVariationPage extends AbstractNetatmoPage
 
     protected void populateImage(Graphics2D g2d) throws VetoException,Exception
     {
-        Map<String,Measure[]> lastMeasures=getLastMeasures();
-        Measure[] last70ee50000deaTemperatures=lastMeasures.get(_70ee50000dea_TEMPERATURE);
-        double _70ee50000deaTemperatureVariation=getHourlyVariation(filterTimedWindowMeasures(last70ee50000deaTemperatures,1));
-        Measure[] last70ee50000deaHumidities=lastMeasures.get(_70ee50000dea_HUMIDITY);
-        double _70ee50000deaHumidityVariation=getHourlyVariation(filterTimedWindowMeasures(last70ee50000deaHumidities,1));
-        Measure[] last70ee50000deaPressures=lastMeasures.get(_70ee50000dea_PRESSURE);
-        double _70ee50000deaPressureVariation=getHourlyVariation(filterTimedWindowMeasures(last70ee50000deaPressures,2));
-        Measure[] last70ee50000deaCarbonDioxydes=lastMeasures.get(_70ee50000dea_CARBON_DIOXYDE);
-        double _70ee50000deaCarbonDioxydeVariation=getHourlyVariation(filterTimedWindowMeasures(last70ee50000deaCarbonDioxydes,1));
-        Measure[] last70ee50000deaNoises=lastMeasures.get(_70ee50000dea_NOISE);
-        double _70ee50000deaNoiseVariation=getHourlyVariation(filterTimedWindowMeasures(last70ee50000deaNoises,1));
-        Measure[] last030000000216Temperatures=lastMeasures.get(_030000000216_TEMPERATURE);
-        double _030000000216TemperatureVariation=getHourlyVariation(filterTimedWindowMeasures(last030000000216Temperatures,1));
-        Measure[] last030000000216Humidities=lastMeasures.get(_030000000216_HUMIDITY);
-        double _030000000216HumidityVariation=getHourlyVariation(filterTimedWindowMeasures(last030000000216Humidities,1));
-        Measure[] last030000000216CarbonDioxydes=lastMeasures.get(_030000000216_CARBON_DIOXYDE);
-        double _030000000216CarbonDioxydeVariation=getHourlyVariation(filterTimedWindowMeasures(last030000000216CarbonDioxydes,1));
-        Measure[] last03000000076eTemperatures=lastMeasures.get(_03000000076e_TEMPERATURE);
-        double _03000000076eTemperatureVariation=getHourlyVariation(filterTimedWindowMeasures(last03000000076eTemperatures,1));
-        Measure[] last03000000076eHumidities=lastMeasures.get(_03000000076e_HUMIDITY);
-        double _03000000076eHumidityVariation=getHourlyVariation(filterTimedWindowMeasures(last03000000076eHumidities,1));
-        Measure[] last03000000076eCarbonDioxydes=lastMeasures.get(_03000000076e_CARBON_DIOXYDE);
-        double _03000000076eCarbonDioxydeVariation=getHourlyVariation(filterTimedWindowMeasures(last03000000076eCarbonDioxydes,1));
-        Measure[] last03000003fe8eTemperatures=lastMeasures.get(_03000003fe8e_TEMPERATURE);
-        double _03000003fe8eTemperatureVariation=getHourlyVariation(filterTimedWindowMeasures(last03000003fe8eTemperatures,1));
-        Measure[] last03000003fe8eHumidities=lastMeasures.get(_03000003fe8e_HUMIDITY);
-        double _03000003fe8eHumidityVariation=getHourlyVariation(filterTimedWindowMeasures(last03000003fe8eHumidities,1));
-        Measure[] last03000003fe8eCarbonDioxydes=lastMeasures.get(_03000003fe8e_CARBON_DIOXYDE);
-        double _03000003fe8eCarbonDioxydeVariation=getHourlyVariation(filterTimedWindowMeasures(last03000003fe8eCarbonDioxydes,1));
-        Measure[] last0200000010baTemperatures=lastMeasures.get(_0200000010ba_TEMPERATURE);
-        double _0200000010baTemperatureVariation=getHourlyVariation(filterTimedWindowMeasures(last0200000010baTemperatures,1));
-        Measure[] last0200000010baHumidities=lastMeasures.get(_0200000010ba_HUMIDITY);
-        double _0200000010baHumidityVariation=getHourlyVariation(filterTimedWindowMeasures(last0200000010baHumidities,1));
-        Measure[] array=lastMeasures.get(_05000004152c_TOTAL_RAIN);
+        Map<String,Measure[]> lastMeasures=NetatmoUtils.getLastMeasures();
+        Measure[] last70ee50000deaTemperatures=lastMeasures.get(NetatmoUtils._70ee50000dea_TEMPERATURE);
+        double _70ee50000deaTemperatureVariation=NetatmoUtils.getHourlyVariation(NetatmoUtils.filterTimedWindowMeasures(last70ee50000deaTemperatures,1));
+        Measure[] last70ee50000deaHumidities=lastMeasures.get(NetatmoUtils._70ee50000dea_HUMIDITY);
+        double _70ee50000deaHumidityVariation=NetatmoUtils.getHourlyVariation(NetatmoUtils.filterTimedWindowMeasures(last70ee50000deaHumidities,1));
+        Measure[] last70ee50000deaPressures=lastMeasures.get(NetatmoUtils._70ee50000dea_PRESSURE);
+        double _70ee50000deaPressureVariation=NetatmoUtils.getHourlyVariation(NetatmoUtils.filterTimedWindowMeasures(last70ee50000deaPressures,2));
+        Measure[] last70ee50000deaCarbonDioxydes=lastMeasures.get(NetatmoUtils._70ee50000dea_CARBON_DIOXYDE);
+        double _70ee50000deaCarbonDioxydeVariation=NetatmoUtils.getHourlyVariation(NetatmoUtils.filterTimedWindowMeasures(last70ee50000deaCarbonDioxydes,1));
+        Measure[] last70ee50000deaNoises=lastMeasures.get(NetatmoUtils._70ee50000dea_NOISE);
+        double _70ee50000deaNoiseVariation=NetatmoUtils.getHourlyVariation(NetatmoUtils.filterTimedWindowMeasures(last70ee50000deaNoises,1));
+        Measure[] last030000000216Temperatures=lastMeasures.get(NetatmoUtils._030000000216_TEMPERATURE);
+        double _030000000216TemperatureVariation=NetatmoUtils.getHourlyVariation(NetatmoUtils.filterTimedWindowMeasures(last030000000216Temperatures,1));
+        Measure[] last030000000216Humidities=lastMeasures.get(NetatmoUtils._030000000216_HUMIDITY);
+        double _030000000216HumidityVariation=NetatmoUtils.getHourlyVariation(NetatmoUtils.filterTimedWindowMeasures(last030000000216Humidities,1));
+        Measure[] last030000000216CarbonDioxydes=lastMeasures.get(NetatmoUtils._030000000216_CARBON_DIOXYDE);
+        double _030000000216CarbonDioxydeVariation=NetatmoUtils.getHourlyVariation(NetatmoUtils.filterTimedWindowMeasures(last030000000216CarbonDioxydes,1));
+        Measure[] last03000000076eTemperatures=lastMeasures.get(NetatmoUtils._03000000076e_TEMPERATURE);
+        double _03000000076eTemperatureVariation=NetatmoUtils.getHourlyVariation(NetatmoUtils.filterTimedWindowMeasures(last03000000076eTemperatures,1));
+        Measure[] last03000000076eHumidities=lastMeasures.get(NetatmoUtils._03000000076e_HUMIDITY);
+        double _03000000076eHumidityVariation=NetatmoUtils.getHourlyVariation(NetatmoUtils.filterTimedWindowMeasures(last03000000076eHumidities,1));
+        Measure[] last03000000076eCarbonDioxydes=lastMeasures.get(NetatmoUtils._03000000076e_CARBON_DIOXYDE);
+        double _03000000076eCarbonDioxydeVariation=NetatmoUtils.getHourlyVariation(NetatmoUtils.filterTimedWindowMeasures(last03000000076eCarbonDioxydes,1));
+        Measure[] last03000003fe8eTemperatures=lastMeasures.get(NetatmoUtils._03000003fe8e_TEMPERATURE);
+        double _03000003fe8eTemperatureVariation=NetatmoUtils.getHourlyVariation(NetatmoUtils.filterTimedWindowMeasures(last03000003fe8eTemperatures,1));
+        Measure[] last03000003fe8eHumidities=lastMeasures.get(NetatmoUtils._03000003fe8e_HUMIDITY);
+        double _03000003fe8eHumidityVariation=NetatmoUtils.getHourlyVariation(NetatmoUtils.filterTimedWindowMeasures(last03000003fe8eHumidities,1));
+        Measure[] last03000003fe8eCarbonDioxydes=lastMeasures.get(NetatmoUtils._03000003fe8e_CARBON_DIOXYDE);
+        double _03000003fe8eCarbonDioxydeVariation=NetatmoUtils.getHourlyVariation(NetatmoUtils.filterTimedWindowMeasures(last03000003fe8eCarbonDioxydes,1));
+        Measure[] last0200000010baTemperatures=lastMeasures.get(NetatmoUtils._0200000010ba_TEMPERATURE);
+        double _0200000010baTemperatureVariation=NetatmoUtils.getHourlyVariation(NetatmoUtils.filterTimedWindowMeasures(last0200000010baTemperatures,1));
+        Measure[] last0200000010baHumidities=lastMeasures.get(NetatmoUtils._0200000010ba_HUMIDITY);
+        double _0200000010baHumidityVariation=NetatmoUtils.getHourlyVariation(NetatmoUtils.filterTimedWindowMeasures(last0200000010baHumidities,1));
+        Measure[] array=lastMeasures.get(NetatmoUtils._05000004152c_TOTAL_RAIN);
         double _05000004152cTotalRain;
         if(array!=null&&array.length==1)
             _05000004152cTotalRain=array[0].getValue();
         else
             _05000004152cTotalRain=Double.NaN;
-        array=lastMeasures.get(_06000000729a_MAX_GUST_STRENGTH);
+        array=lastMeasures.get(NetatmoUtils._06000000729a_MAX_GUST_STRENGTH);
         double _06000000729aMaxGustStrength;
         if(array!=null&&array.length==1)
             _06000000729aMaxGustStrength=array[0].getValue();
         else
             _06000000729aMaxGustStrength=Double.NaN;
-        array=lastMeasures.get(_06000000729a_MAX_GUST_ANGLE);
+        array=lastMeasures.get(NetatmoUtils._06000000729a_MAX_GUST_ANGLE);
         double _06000000729aMaxGustAngle;
         if(array!=null&&array.length==1)
             _06000000729aMaxGustAngle=array[0].getValue();
         else
             _06000000729aMaxGustAngle=Double.NaN;
         long now=System.currentTimeMillis();
-        Measure[] lastToiletsTemperature=loadTemperatures(730).stream()//730 car 720 théoriques + 10 par sécurité
+        Measure[] lastToiletsTemperature=WeatherUtils.loadTemperatures(730).stream()//730 car 720 théoriques + 10 par sécurité
                 .filter(temperature->now-temperature.getTime()<Duration.of(1).hour())
                 .map(temperature->new StandAloneMeasure(new Date(temperature.getTime()),MeasurementType.TEMPERATURE,temperature.getTemperature()))
                 .toArray(Measure[]::new);
-        double toiletsTemperatureVariation=getHourlyVariation(lastToiletsTemperature);
+        double toiletsTemperatureVariation=NetatmoUtils.getHourlyVariation(lastToiletsTemperature);
         g2d.drawLine(64,68,62,68);
         g2d.drawLine(62,68,62,80);
         g2d.drawLine(62,80,98,80);
@@ -286,7 +276,7 @@ public class HomeWeatherVariationPage extends AbstractNetatmoPage
         g2d.drawString("Pluie",180-_05000004152cString1Width/2,45);
 
         String _06000000729aString="ˆ"+(Double.isNaN(_06000000729aMaxGustStrength)?"?":INTEGER_FORMAT.format(_06000000729aMaxGustStrength).replace(",","."))+" km/h ";
-        _06000000729aString+=Double.isNaN(_06000000729aMaxGustAngle)?"":" "+HomeWeatherPage.convertWindAngle(_06000000729aMaxGustAngle);
+        _06000000729aString+=Double.isNaN(_06000000729aMaxGustAngle)?"":" "+WeatherUtils.convertWindAngle(_06000000729aMaxGustAngle);
         int _06000000729aStringWidth=(int)Math.ceil(measureFont.getStringBounds(_06000000729aString,g2d.getFontRenderContext()).getWidth());
         g2d.drawString(_06000000729aString,254f-(float)_06000000729aStringWidth/2f,30f);
 
@@ -301,83 +291,6 @@ public class HomeWeatherVariationPage extends AbstractNetatmoPage
     protected String getDebugImageFileName()
     {
         return "meteo_variation.png";
-    }
-
-    private static double getHourlyVariation(Measure[] lastMeasures)
-    {
-        if(lastMeasures!=null&&lastMeasures.length>=2)
-            return (lastMeasures[lastMeasures.length-1].getValue()-lastMeasures[0].getValue())/((double)(lastMeasures[lastMeasures.length-1].getDate().getTime()-lastMeasures[0].getDate().getTime())/3_600_000d);
-        else
-            return Double.NaN;
-    }
-
-    protected static Measure[] filterTimedWindowMeasures(Measure[] measures,int hour)//protected pour pouvoir y accéder depuis tout le package
-    {
-        if(measures==null)
-            return null;
-        return Arrays.stream(measures)
-                .filter(measure->measures[measures.length-1].getDate().getTime()-measure.getDate().getTime()<Duration.of(hour).hour())
-                .toArray(Measure[]::new);
-    }
-
-    private static List<Temperature> loadTemperatures(int number)
-    {
-        try
-        {
-            try(Connection connection=getConnection2())
-            {
-//                long startTime=System.currentTimeMillis();
-                List<Temperature> temperatures=new ArrayList<>();
-                try(Statement statement=connection.createStatement(ResultSet.TYPE_FORWARD_ONLY,ResultSet.CONCUR_READ_ONLY))
-                {
-                    try(ResultSet resultSet=statement.executeQuery("SELECT * FROM temperature ORDER BY time DESC LIMIT "+number+";"))
-                    {
-                        while(resultSet.next())
-                        {
-                            long time=resultSet.getLong("time");
-                            double temperature=resultSet.getDouble("temperature");
-                            double setPoint=resultSet.getDouble("setPoint");
-                            double ratio=resultSet.getDouble("ratio");
-                            boolean heaterOn=resultSet.getInt("heaterOn")==1;
-                            temperatures.add(new Temperature(time,temperature,setPoint,ratio,heaterOn));
-                        }
-                    }
-                }
-                Collections.reverse(temperatures);
-//                Logger.LOGGER.info(temperatures.size()+" rows fetched in "+(System.currentTimeMillis()-startTime)+" ms");
-                return temperatures;
-            }
-        }
-        catch(NotAvailableDatabaseException|SQLException e)
-        {
-            Logger.LOGGER.error(e.toString());
-            e.printStackTrace();
-            return new ArrayList<>(0);
-        }
-    }
-
-    private static Connection getConnection2() throws NotAvailableDatabaseException
-    {
-        Connection connection=null;
-        try
-        {
-            connection=DriverManager.getConnection("jdbc:mariadb://192.168.0.71:3306/toilettes?user=root&password=loop27c");
-//            Logger.LOGGER.info("Connection to SQLite has been established.");
-        }
-        catch(SQLException e)
-        {
-            try
-            {
-                if(connection!=null)
-                    connection.close();
-            }
-            catch(SQLException ex)
-            {
-            }
-            Logger.LOGGER.error(e.toString());
-            e.printStackTrace();
-        }
-        return connection;
     }
 
     public static void main(String[] args)

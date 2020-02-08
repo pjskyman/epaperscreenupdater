@@ -21,7 +21,7 @@ public class _70ee50000deaPressureCurvePage extends AbstractNetatmoCurvePage
 
     protected String getMeasureKind()
     {
-        return _70ee50000dea_PRESSURE;
+        return NetatmoUtils._70ee50000dea_PRESSURE;
     }
 
     protected String getOrdinateLabelText()

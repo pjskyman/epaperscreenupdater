@@ -21,7 +21,7 @@ public class _03000000076eTemperatureCurvePage extends AbstractNetatmoCurvePage
 
     protected String getMeasureKind()
     {
-        return _03000000076e_TEMPERATURE;
+        return NetatmoUtils._03000000076e_TEMPERATURE;
     }
 
     protected String getOrdinateLabelText()

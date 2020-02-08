@@ -25,7 +25,7 @@ public class _05000004152cRainCurvePage extends AbstractNetatmoCurvePage
 
     protected String getMeasureKind()
     {
-        return _05000004152c_RAIN;
+        return NetatmoUtils._05000004152c_RAIN;
     }
 
     protected String getOrdinateLabelText()

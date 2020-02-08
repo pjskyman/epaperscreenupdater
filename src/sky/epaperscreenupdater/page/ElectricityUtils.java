@@ -13,17 +13,188 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
 import javax.imageio.ImageIO;
 import sky.epaperscreenupdater.Logger;
-import sky.epaperscreenupdater.Main;
 import sky.program.Duration;
 
-public class ElectricityRequester
+public class ElectricityUtils
 {
     private static final Random RANDOM=new Random();
+
+    private ElectricityUtils()
+    {
+    }
+
+    public static int calculatePowerBarHeight(int power)
+    {
+        if(power==0)
+            return 0;
+        double ordinate1=13.105178503466455d
+                +.8935371553157391d*(double)power
+                +.0011767571668344792d*Math.pow((double)power,2d)
+                -1.2087136238229091e-4d*Math.pow((double)power,3d)
+                +1.1938931060353606e-6d*Math.pow((double)power,4d)
+                -5.366042379604714e-9d*Math.pow((double)power,5d)
+                +1.2375520523981775e-11d*Math.pow((double)power,6d)
+                -1.5252113325589502e-14d*Math.pow((double)power,7d)
+                +1.0111118973594798e-17d*Math.pow((double)power,8d)
+                -3.379100166542495e-21d*Math.pow((double)power,9d)
+                +4.117422344411683e-25d*Math.pow((double)power,10d)
+                +2.951303006401026e-29d*Math.pow((double)power,11d)
+                -4.740442092946457e-33d*Math.pow((double)power,12d)
+                -8.818731061778005e-37d*Math.pow((double)power,13d)
+                -3.5639045982917994e-41d*Math.pow((double)power,14d)
+                +1.8920748927329792e-44d*Math.pow((double)power,15d);
+        double ordinate2=23.462972022832d+11.798263558634d*Math.log((double)power);
+        if(power<180)
+            return (int)Math.max(13d,ordinate1)-13+1;
+        else
+            if(power>200)
+                return (int)Math.min(128d,ordinate2)-13+1;
+            else
+            {
+                double factor=((double)power-180d)/20d;
+                return (int)((1d-factor)*ordinate1+factor*ordinate2)-13+1;
+            }
+    }
+
+    public static List<WasherInstantaneousConsumption> loadWasherInstantaneousConsumptions(long startTimeRequested,long stopTimeRequested)
+    {
+        try
+        {
+            try(Connection connection=Database.getEcocompteurConnection())
+            {
+//                long startTime=System.currentTimeMillis();
+                List<WasherInstantaneousConsumption> washerInstantaneousConsumptions=new ArrayList<>();
+                try(Statement statement=connection.createStatement(ResultSet.TYPE_FORWARD_ONLY,ResultSet.CONCUR_READ_ONLY))
+                {
+                    try(ResultSet resultSet=statement.executeQuery("SELECT time,pricingPeriod,consumer7Consumption as consumption FROM instantaneous_consumption WHERE time>="+startTimeRequested+" AND time<"+stopTimeRequested+" ORDER BY time ASC;"))
+                    {
+                        while(resultSet.next())
+                        {
+                            long time=resultSet.getLong("time");
+                            PricingPeriod pricingPeriod=PricingPeriod.getPricingPeriodForCode(resultSet.getInt("pricingPeriod"));
+                            int consumption=resultSet.getInt("consumption");
+                            washerInstantaneousConsumptions.add(new WasherInstantaneousConsumption(time,pricingPeriod,consumption));
+                        }
+                    }
+                }
+//                Logger.LOGGER.info(washerInstantaneousConsumptions.size()+" rows fetched in "+(System.currentTimeMillis()-startTime)+" ms");
+                return washerInstantaneousConsumptions;
+            }
+        }
+        catch(NotAvailableDatabaseException|SQLException e)
+        {
+            Logger.LOGGER.error("Unable to parse the request response ("+e.toString()+")");
+            e.printStackTrace();
+            return new ArrayList<>(0);
+        }
+    }
+
+    public static InstantaneousConsumption getLastInstantaneousConsumption()
+    {
+        AtomicReference<InstantaneousConsumption> reference=new AtomicReference<>();
+        getLastInstantaneousConsumptionsImpl(1,reference::set);
+        return reference.get();
+    }
+
+    public static List<InstantaneousConsumption> getLastInstantaneousConsumptions(int count)
+    {
+        List<InstantaneousConsumption> instantaneousConsumptions=new ArrayList<>(count);
+        getLastInstantaneousConsumptionsImpl(count,instantaneousConsumptions::add);
+        Collections.reverse(instantaneousConsumptions);
+        return instantaneousConsumptions;
+    }
+
+    private static void getLastInstantaneousConsumptionsImpl(int count,Consumer<InstantaneousConsumption> consumer)
+    {
+//        long startTime=System.currentTimeMillis();
+        try(Connection connection=Database.getEcocompteurConnection())
+        {
+            try(Statement statement=connection.createStatement(ResultSet.TYPE_FORWARD_ONLY,ResultSet.CONCUR_READ_ONLY))
+            {
+                try(ResultSet resultSet=statement.executeQuery("SELECT * FROM instantaneous_consumption ORDER BY time DESC LIMIT "+count+";"))
+                {
+                    while(resultSet.next())
+                    {
+                        long time=resultSet.getLong("time");
+                        PricingPeriod pricingPeriod=PricingPeriod.getPricingPeriodForCode(resultSet.getInt("pricingPeriod"));
+                        double blueDayOffPeakHourTotal=resultSet.getDouble("blueDayOffPeakHourTotal");
+                        double blueDayPeakHourTotal=resultSet.getDouble("blueDayPeakHourTotal");
+                        double whiteDayOffPeakHourTotal=resultSet.getDouble("whiteDayOffPeakHourTotal");
+                        double whiteDayPeakHourTotal=resultSet.getDouble("whiteDayPeakHourTotal");
+                        double redDayOffPeakHourTotal=resultSet.getDouble("redDayOffPeakHourTotal");
+                        double redDayPeakHourTotal=resultSet.getDouble("redDayPeakHourTotal");
+                        String consumer1Name=resultSet.getString("consumer1Name");
+                        int consumer1Consumption=resultSet.getInt("consumer1Consumption");
+                        String consumer2Name=resultSet.getString("consumer2Name");
+                        int consumer2Consumption=resultSet.getInt("consumer2Consumption");
+                        String consumer3Name=resultSet.getString("consumer3Name");
+                        int consumer3Consumption=resultSet.getInt("consumer3Consumption");
+                        String consumer4Name=resultSet.getString("consumer4Name");
+                        int consumer4Consumption=resultSet.getInt("consumer4Consumption");
+                        String consumer5Name=resultSet.getString("consumer5Name");
+                        int consumer5Consumption=resultSet.getInt("consumer5Consumption");
+                        String consumer6Name=resultSet.getString("consumer6Name");
+                        int consumer6Consumption=resultSet.getInt("consumer6Consumption");
+                        String consumer7Name=resultSet.getString("consumer7Name");
+                        int consumer7Consumption=resultSet.getInt("consumer7Consumption");
+                        String consumer8Name=resultSet.getString("consumer8Name");
+                        int consumer8Consumption=resultSet.getInt("consumer8Consumption");
+                        String consumer9Name=resultSet.getString("consumer9Name");
+                        int consumer9Consumption=resultSet.getInt("consumer9Consumption");
+                        String consumer10Name=resultSet.getString("consumer10Name");
+                        int consumer10Consumption=resultSet.getInt("consumer10Consumption");
+                        consumer.accept(new InstantaneousConsumption(time,
+                                pricingPeriod,
+                                blueDayOffPeakHourTotal,
+                                blueDayPeakHourTotal,
+                                whiteDayOffPeakHourTotal,
+                                whiteDayPeakHourTotal,
+                                redDayOffPeakHourTotal,
+                                redDayPeakHourTotal,
+                                consumer1Name,
+                                consumer1Consumption,
+                                consumer2Name,
+                                consumer2Consumption,
+                                consumer3Name,
+                                consumer3Consumption,
+                                consumer4Name,
+                                consumer4Consumption,
+                                consumer5Name,
+                                consumer5Consumption,
+                                consumer6Name,
+                                consumer6Consumption,
+                                consumer7Name,
+                                consumer7Consumption,
+                                consumer8Name,
+                                consumer8Consumption,
+                                consumer9Name,
+                                consumer9Consumption,
+                                consumer10Name,
+                                consumer10Consumption));
+                    }
+//                    Logger.LOGGER.info(instantaneousConsumptions.size()+" rows fetched in "+(System.currentTimeMillis()-startTime)+" ms");
+                }
+            }
+        }
+        catch(NotAvailableDatabaseException e)
+        {
+            Logger.LOGGER.error("Database is unavailable ("+e.toString()+")");
+            e.printStackTrace();
+        }
+        catch(SQLException e)
+        {
+            Logger.LOGGER.error("Unable to parse the request response ("+e.toString()+")");
+            e.printStackTrace();
+        }
+    }
 
     public static List<InstantaneousConsumption> getInstantaneousConsumptions(int year)
     {
@@ -68,9 +239,9 @@ public class ElectricityRequester
             endCalendar.set(Calendar.DAY_OF_MONTH,endDay);
             endCalendar.set(Calendar.HOUR_OF_DAY,6);
             endCalendar.set(Calendar.MINUTE,2);
-            try(Connection connection=Database.getConnection())
+            try(Connection connection=Database.getEcocompteurConnection())
             {
-                long startTime=System.currentTimeMillis();
+//                long startTime=System.currentTimeMillis();
                 List<InstantaneousConsumption> instantaneousConsumptions=new ArrayList<>();
                 try(Statement statement=connection.createStatement(ResultSet.TYPE_FORWARD_ONLY,ResultSet.CONCUR_READ_ONLY))
                 {
@@ -205,7 +376,7 @@ public class ElectricityRequester
                 prices[j]+=increment*instantaneousConsumptions.get(i).getPricingPeriod().getPrice();
             }
         }
-        InstantaneousConsumption instantaneousConsumption=instantaneousConsumptions.isEmpty()?Main.loadInstantaneousConsumptions(1).get(0):instantaneousConsumptions.get(0);
+        InstantaneousConsumption instantaneousConsumption=instantaneousConsumptions.isEmpty()?getLastInstantaneousConsumption():instantaneousConsumptions.get(0);
         return new EnergyConsumption(instantaneousConsumption.getConsumer1Name(),accumulations[0]/3600d/1000d,prices[0]/3600d/1000d,
                                      instantaneousConsumption.getConsumer2Name(),accumulations[1]/3600d/1000d,prices[1]/3600d/1000d,
                                      instantaneousConsumption.getConsumer3Name(),accumulations[2]/3600d/1000d,prices[2]/3600d/1000d,

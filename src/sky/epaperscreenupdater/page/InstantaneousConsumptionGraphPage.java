@@ -3,11 +3,10 @@ package sky.epaperscreenupdater.page;
 import java.awt.Graphics2D;
 import java.awt.geom.Path2D;
 import java.util.List;
-import sky.epaperscreenupdater.Main;
 import sky.epaperscreenupdater.RefreshType;
 import sky.program.Duration;
 
-public class InstantaneousConsumptionGraphPage extends AbstractNetatmoPage
+public class InstantaneousConsumptionGraphPage extends AbstractSinglePage
 {
     private long lastConsumptionTime;
     private int dashCounter;
@@ -32,10 +31,9 @@ public class InstantaneousConsumptionGraphPage extends AbstractNetatmoPage
     @Override
     protected boolean canUpdate()
     {
-        List<InstantaneousConsumption> list=Main.loadInstantaneousConsumptions(1);
-        if(list.isEmpty())
+        InstantaneousConsumption instantaneousConsumption=ElectricityUtils.getLastInstantaneousConsumption();
+        if(instantaneousConsumption==null)
             return false;
-        InstantaneousConsumption instantaneousConsumption=list.get(list.size()-1);
         long consumptionTime=instantaneousConsumption.getTime();
         if(consumptionTime!=lastConsumptionTime)
         {
@@ -52,7 +50,7 @@ public class InstantaneousConsumptionGraphPage extends AbstractNetatmoPage
 
     protected void populateImage(Graphics2D g2d) throws VetoException,Exception
     {
-        List<InstantaneousConsumption> list=Main.loadInstantaneousConsumptions(296);
+        List<InstantaneousConsumption> list=ElectricityUtils.getLastInstantaneousConsumptions(296);
         if(list.isEmpty())
             throw new VetoException();
         int maxPower=list.stream()

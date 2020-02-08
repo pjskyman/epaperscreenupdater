@@ -15,24 +15,23 @@ import java.util.List;
 import sky.epaperscreenupdater.Logger;
 import sky.program.Duration;
 
-public abstract class AbstractWeatherForecastPage extends AbstractSinglePage
+public class WeatherForecastUtils
 {
     private static long lastWeatherForecastVerificationTime=0L;
     private static List<Daily> lastDailies=null;
     private static List<Hourly> lastHourlies=null;
 
-    protected AbstractWeatherForecastPage(Page parentPage)
+    private WeatherForecastUtils()
     {
-        super(parentPage);
     }
 
-    protected static List<Daily> getLastDailies()
+    public static List<Daily> getLastDailies()
     {
         updateWeatherForecastData();
         return lastDailies;
     }
 
-    protected static List<Hourly> getLastHourlies()
+    public static List<Hourly> getLastHourlies()
     {
         updateWeatherForecastData();
         return lastHourlies;

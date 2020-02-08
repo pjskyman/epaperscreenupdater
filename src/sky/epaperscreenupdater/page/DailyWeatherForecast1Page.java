@@ -16,7 +16,7 @@ import java.util.Locale;
 import sky.epaperscreenupdater.RefreshType;
 import sky.program.Duration;
 
-public class DailyWeatherForecast1Page extends AbstractWeatherForecastPage
+public class DailyWeatherForecast1Page extends AbstractSinglePage
 {
     public DailyWeatherForecast1Page(Page parentPage)
     {
@@ -40,7 +40,7 @@ public class DailyWeatherForecast1Page extends AbstractWeatherForecastPage
 
     protected void populateImage(Graphics2D g2d) throws VetoException,Exception
     {
-        List<Daily> dailies=getLastDailies();
+        List<Daily> dailies=WeatherForecastUtils.getLastDailies();
         for(int x=51;x<296;x+=35)
             g2d.drawLine(x,0,x,127);
         for(int y=20;y<128;y+=12)

@@ -1,36 +1,26 @@
 package sky.epaperscreenupdater.page;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.google.gson.JsonSyntaxException;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.RoundRectangle2D;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import javax.net.ssl.HttpsURLConnection;
 import org.apache.commons.math3.fitting.PolynomialCurveFitter;
 import org.apache.commons.math3.fitting.WeightedObservedPoint;
-import sky.epaperscreenupdater.Main;
 import sky.epaperscreenupdater.RefreshType;
 import sky.netatmo.Measure;
 import sky.netatmo.MeasurementType;
 import sky.program.Duration;
 
-public class InstantaneousConsumptionPage extends AbstractNetatmoPage
+public class InstantaneousConsumptionPage extends AbstractSinglePage
 {
     private long lastConsumptionTime;
-    private static final long MEASURE_DELAY=1_200_000L;
 
     public InstantaneousConsumptionPage(Page parentPage)
     {
@@ -51,10 +41,9 @@ public class InstantaneousConsumptionPage extends AbstractNetatmoPage
     @Override
     protected boolean canUpdate()
     {
-        List<InstantaneousConsumption> list=Main.loadInstantaneousConsumptions(1);
-        if(list.isEmpty())
+        InstantaneousConsumption instantaneousConsumption=ElectricityUtils.getLastInstantaneousConsumption();
+        if(instantaneousConsumption==null)
             return false;
-        InstantaneousConsumption instantaneousConsumption=list.get(list.size()-1);
         long consumptionTime=instantaneousConsumption.getTime();
         if(consumptionTime!=lastConsumptionTime)
         {
@@ -71,10 +60,9 @@ public class InstantaneousConsumptionPage extends AbstractNetatmoPage
 
     protected void populateImage(Graphics2D g2d) throws VetoException,Exception
     {
-        List<InstantaneousConsumption> list=Main.loadInstantaneousConsumptions(1);
-        if(list.isEmpty())
+        InstantaneousConsumption instantaneousConsumption=ElectricityUtils.getLastInstantaneousConsumption();
+        if(instantaneousConsumption==null)
             throw new VetoException();
-        InstantaneousConsumption instantaneousConsumption=list.get(0);
 
         g2d.fill(new RoundRectangle2D.Double(0d,0d,81.1d,30.1d,9d,9d));
         g2d.fill(new RoundRectangle2D.Double(83d,0d,11.1d,30.1d,9d,9d));
@@ -96,10 +84,10 @@ public class InstantaneousConsumptionPage extends AbstractNetatmoPage
         Font consumerNameFont3=baseFont.deriveFont(15f).deriveFont(AffineTransform.getScaleInstance(.6d,1d));
         Font verticalConsumptionFont=baseFont.deriveFont(15f).deriveFont(AffineTransform.getQuadrantRotateInstance(3));
 
-        Map<String,Measure[]> lastMeasures=getLastMeasures();
-        Measure[] array=lastMeasures.get(_0200000010ba_TEMPERATURE);
-        Measure temperature=estimate(array);
-        array=HomeWeatherVariationPage.filterTimedWindowMeasures(lastMeasures.get(_70ee50000dea_PRESSURE),2);
+        Map<String,Measure[]> lastMeasures=NetatmoUtils.getLastMeasures();
+        Measure[] array=lastMeasures.get(NetatmoUtils._0200000010ba_TEMPERATURE);
+        Measure temperature=NetatmoUtils.estimate(array);
+        array=NetatmoUtils.filterTimedWindowMeasures(lastMeasures.get(NetatmoUtils._70ee50000dea_PRESSURE),2);
         Measure pressure=array!=null&&array.length>=1?array[array.length-1]:null;
         PressureTendancy pressureTendancy=PressureTendancy.UNKNOWN;
         if(array!=null&&array.length>=3)
@@ -122,8 +110,8 @@ public class InstantaneousConsumptionPage extends AbstractNetatmoPage
                 else
                     pressureTendancy=PressureTendancy.NEGATIVE;
         }
-        array=lastMeasures.get(_70ee50000dea_CARBON_DIOXYDE);
-        Measure carbonDioxyde=estimate(array);
+        array=lastMeasures.get(NetatmoUtils._70ee50000dea_CARBON_DIOXYDE);
+        Measure carbonDioxyde=NetatmoUtils.estimate(array);
         if(pressureTendancy==PressureTendancy.CONSTANT)
         {
             g2d.drawLine(85,12,85,19);
@@ -231,7 +219,7 @@ public class InstantaneousConsumptionPage extends AbstractNetatmoPage
                 if((x+y)%2==0||instantaneousConsumption.getPricingPeriod().isRedDay())
                     g2d.drawRect(x,y,0,0);
 //        Logger.LOGGER.info("Current pricing period: "+instantaneousConsumption.getPricingPeriod().name());
-        String tomorrow=TomorrowManager.getTomorrow();
+        String tomorrow=TomorrowUtils.getTomorrow();
         if(tomorrow.contains("BLEU"))
         {
             g2d.drawLine(4,109,4,109);
@@ -308,7 +296,7 @@ public class InstantaneousConsumptionPage extends AbstractNetatmoPage
         for(int i=0;i<powers.length;i++)
         {
             int sliceStartAbscissa=i*20+97;
-            int powerBarHeight=calculatePowerBarHeight(powers[i]);
+            int powerBarHeight=ElectricityUtils.calculatePowerBarHeight(powers[i]);
             rectangle=new Rectangle(sliceStartAbscissa+2,128-13-powerBarHeight,16,powerBarHeight);
             g2d.setColor(Color.BLACK);
             g2d.draw(rectangle);
@@ -353,70 +341,6 @@ public class InstantaneousConsumptionPage extends AbstractNetatmoPage
     protected String getDebugImageFileName()
     {
         return "powers.png";
-    }
-
-    private static int calculatePowerBarHeight(int power)
-    {
-        if(power==0)
-            return 0;
-        double ordinate1=13.105178503466455d
-                +.8935371553157391d*(double)power
-                +.0011767571668344792d*Math.pow((double)power,2d)
-                -1.2087136238229091e-4d*Math.pow((double)power,3d)
-                +1.1938931060353606e-6d*Math.pow((double)power,4d)
-                -5.366042379604714e-9d*Math.pow((double)power,5d)
-                +1.2375520523981775e-11d*Math.pow((double)power,6d)
-                -1.5252113325589502e-14d*Math.pow((double)power,7d)
-                +1.0111118973594798e-17d*Math.pow((double)power,8d)
-                -3.379100166542495e-21d*Math.pow((double)power,9d)
-                +4.117422344411683e-25d*Math.pow((double)power,10d)
-                +2.951303006401026e-29d*Math.pow((double)power,11d)
-                -4.740442092946457e-33d*Math.pow((double)power,12d)
-                -8.818731061778005e-37d*Math.pow((double)power,13d)
-                -3.5639045982917994e-41d*Math.pow((double)power,14d)
-                +1.8920748927329792e-44d*Math.pow((double)power,15d);
-        double ordinate2=23.462972022832d+11.798263558634d*Math.log((double)power);
-        if(power<180)
-            return (int)Math.max(13d,ordinate1)-13+1;
-        else
-            if(power>200)
-                return (int)Math.min(128d,ordinate2)-13+1;
-            else
-            {
-                double factor=((double)power-180d)/20d;
-                return (int)((1d-factor)*ordinate1+factor*ordinate2)-13+1;
-            }
-    }
-
-    public static JsonObject getJsonResponse(String url) throws IOException,JsonSyntaxException
-    {
-        URL urlObject=new URL(url);
-        HttpsURLConnection httpsConnection=null;
-        try
-        {
-            httpsConnection=(HttpsURLConnection)urlObject.openConnection();
-            httpsConnection.setConnectTimeout(5000);
-            httpsConnection.setReadTimeout(5000);
-            httpsConnection.setRequestMethod("GET");
-            StringBuilder response=new StringBuilder();
-            String inputLine;
-            try(BufferedReader bufferedReader=new BufferedReader(new InputStreamReader(httpsConnection.getInputStream())))
-            {
-                while((inputLine=bufferedReader.readLine())!=null)
-                    response.append(inputLine);
-            }
-            return new JsonParser().parse(response.toString()).getAsJsonObject();
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-            return new JsonObject();
-        }
-        finally
-        {
-            if(httpsConnection!=null)
-                httpsConnection.disconnect();
-        }
     }
 
     public static void main2(String[] args)
@@ -481,39 +405,6 @@ public class InstantaneousConsumptionPage extends AbstractNetatmoPage
             for(int index2=0;index2<result.length;index2++)
                 value+=result[index2]*Math.pow(time,(double)index2);
             System.out.println((long)time+" minutes plus tard, valeur estimée : "+DECIMAL_0_FORMAT.format(value)+" ("+value+")");
-        }
-    }
-
-    private static Measure estimate(Measure[] measures)
-    {
-        if(measures==null||measures.length<1)
-            return null;
-        try
-        {
-            long now=System.currentTimeMillis();
-            Measure[] filteredMeasures=Arrays.stream(measures)
-                    .filter(measure->measures[measures.length-1].getDate().getTime()-measure.getDate().getTime()<MEASURE_DELAY)
-                    .toArray(Measure[]::new);
-            List<WeightedObservedPoint> points=new ArrayList<>(filteredMeasures.length);
-            for(int index=0;index<filteredMeasures.length;index++)
-                points.add(new WeightedObservedPoint(index==filteredMeasures.length-1?1_000d:1d,(double)filteredMeasures[index].getDate().getTime(),filteredMeasures[index].getValue()));
-            while(points.size()>4)
-                points.remove(0);
-            List<WeightedObservedPoint> correctedPoints=new ArrayList<>(points.size());
-            points.forEach(point->correctedPoints.add(new WeightedObservedPoint(point.getWeight(),(point.getX()-points.get(0).getX())/60_000d,point.getY())));
-            int degree=Math.min(1,correctedPoints.size()-2);
-            double[] result=PolynomialCurveFitter.create(degree)
-                    .withMaxIterations(1_000)
-                    .fit(correctedPoints);
-            double time=((double)now-points.get(0).getX())/60_000d;
-            double value=0d;
-            for(int index=0;index<result.length;index++)
-                value+=result[index]*Math.pow(time,(double)index);
-            return new StandAloneMeasure(new Date(now),measures[measures.length-1].getMeasurementType(),value);
-        }
-        catch(Exception e)
-        {
-            return measures[measures.length-1];
         }
     }
 }

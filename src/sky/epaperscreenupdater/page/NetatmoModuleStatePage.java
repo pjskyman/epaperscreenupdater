@@ -9,7 +9,7 @@ import sky.epaperscreenupdater.RefreshType;
 import sky.netatmo.Measure;
 import sky.program.Duration;
 
-public class NetatmoModuleStatePage extends AbstractNetatmoPage
+public class NetatmoModuleStatePage extends AbstractSinglePage
 {
     public NetatmoModuleStatePage(Page parentPage)
     {
@@ -33,21 +33,21 @@ public class NetatmoModuleStatePage extends AbstractNetatmoPage
 
     protected void populateImage(Graphics2D g2d) throws VetoException,Exception
     {
-        Map<String,Measure[]> lastMeasures=getLastMeasures();
-        Measure _70ee50000deaWifi=HomeWeatherPage.getLastMeasure(lastMeasures,_70ee50000dea_WIFI);
-        Measure _70ee50000deaFirmware=HomeWeatherPage.getLastMeasure(lastMeasures,_70ee50000dea_FIRMWARE);
-        Measure _030000000216Battery=HomeWeatherPage.getLastMeasure(lastMeasures,_030000000216_BATTERY);
-        Measure _030000000216Radio=HomeWeatherPage.getLastMeasure(lastMeasures,_030000000216_RADIO);
-        Measure _03000000076eBattery=HomeWeatherPage.getLastMeasure(lastMeasures,_03000000076e_BATTERY);
-        Measure _03000000076eRadio=HomeWeatherPage.getLastMeasure(lastMeasures,_03000000076e_RADIO);
-        Measure _03000003fe8eBattery=HomeWeatherPage.getLastMeasure(lastMeasures,_03000003fe8e_BATTERY);
-        Measure _03000003fe8eRadio=HomeWeatherPage.getLastMeasure(lastMeasures,_03000003fe8e_RADIO);
-        Measure _0200000010baBattery=HomeWeatherPage.getLastMeasure(lastMeasures,_0200000010ba_BATTERY);
-        Measure _0200000010baRadio=HomeWeatherPage.getLastMeasure(lastMeasures,_0200000010ba_RADIO);
-        Measure _05000004152cBattery=HomeWeatherPage.getLastMeasure(lastMeasures,_05000004152c_BATTERY);
-        Measure _05000004152cRadio=HomeWeatherPage.getLastMeasure(lastMeasures,_05000004152c_RADIO);
-        Measure _06000000729aBattery=HomeWeatherPage.getLastMeasure(lastMeasures,_06000000729a_BATTERY);
-        Measure _06000000729aRadio=HomeWeatherPage.getLastMeasure(lastMeasures,_06000000729a_RADIO);
+        Map<String,Measure[]> lastMeasures=NetatmoUtils.getLastMeasures();
+        Measure _70ee50000deaWifi=NetatmoUtils.getLastMeasure(lastMeasures,NetatmoUtils._70ee50000dea_WIFI);
+        Measure _70ee50000deaFirmware=NetatmoUtils.getLastMeasure(lastMeasures,NetatmoUtils._70ee50000dea_FIRMWARE);
+        Measure _030000000216Battery=NetatmoUtils.getLastMeasure(lastMeasures,NetatmoUtils._030000000216_BATTERY);
+        Measure _030000000216Radio=NetatmoUtils.getLastMeasure(lastMeasures,NetatmoUtils._030000000216_RADIO);
+        Measure _03000000076eBattery=NetatmoUtils.getLastMeasure(lastMeasures,NetatmoUtils._03000000076e_BATTERY);
+        Measure _03000000076eRadio=NetatmoUtils.getLastMeasure(lastMeasures,NetatmoUtils._03000000076e_RADIO);
+        Measure _03000003fe8eBattery=NetatmoUtils.getLastMeasure(lastMeasures,NetatmoUtils._03000003fe8e_BATTERY);
+        Measure _03000003fe8eRadio=NetatmoUtils.getLastMeasure(lastMeasures,NetatmoUtils._03000003fe8e_RADIO);
+        Measure _0200000010baBattery=NetatmoUtils.getLastMeasure(lastMeasures,NetatmoUtils._0200000010ba_BATTERY);
+        Measure _0200000010baRadio=NetatmoUtils.getLastMeasure(lastMeasures,NetatmoUtils._0200000010ba_RADIO);
+        Measure _05000004152cBattery=NetatmoUtils.getLastMeasure(lastMeasures,NetatmoUtils._05000004152c_BATTERY);
+        Measure _05000004152cRadio=NetatmoUtils.getLastMeasure(lastMeasures,NetatmoUtils._05000004152c_RADIO);
+        Measure _06000000729aBattery=NetatmoUtils.getLastMeasure(lastMeasures,NetatmoUtils._06000000729a_BATTERY);
+        Measure _06000000729aRadio=NetatmoUtils.getLastMeasure(lastMeasures,NetatmoUtils._06000000729a_RADIO);
         Font percentageFont=FREDOKA_ONE_FONT.deriveFont(15f).deriveFont(AffineTransform.getScaleInstance(.65d,1d));
         Font nameFont=FREDOKA_ONE_FONT.deriveFont(18f).deriveFont(AffineTransform.getScaleInstance(.8d,1d));
         Font infoFont=FREDOKA_ONE_FONT.deriveFont(12f).deriveFont(AffineTransform.getScaleInstance(1.9d,1d));

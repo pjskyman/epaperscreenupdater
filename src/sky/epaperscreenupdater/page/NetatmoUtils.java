@@ -6,11 +6,15 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import org.apache.commons.math3.fitting.PolynomialCurveFitter;
+import org.apache.commons.math3.fitting.WeightedObservedPoint;
 import sky.epaperscreenupdater.Logger;
 import sky.netatmo.Device;
 import sky.netatmo.Measure;
@@ -21,7 +25,7 @@ import sky.netatmo.NetatmoException;
 import sky.netatmo.Token;
 import sky.program.Duration;
 
-public abstract class AbstractNetatmoPage extends AbstractSinglePage
+public class NetatmoUtils
 {
     private static Token token=null;
     private static long lastNetatmoVerificationTime=0L;
@@ -63,54 +67,59 @@ public abstract class AbstractNetatmoPage extends AbstractSinglePage
     private static Measure[] _06000000729aMaxGustAngle=null;
     private static Measure[] _06000000729aBattery=null;
     private static Measure[] _06000000729aRadio=null;
-    protected static final String _70ee50000dea_TEMPERATURE="70ee50000deaTemperature";
-    protected static final String _70ee50000dea_HUMIDITY="70ee50000deaHumidity";
-    protected static final String _70ee50000dea_PRESSURE="70ee50000deaPressure";
-    protected static final String _70ee50000dea_CARBON_DIOXYDE="70ee50000deaCarbonDioxyde";
-    protected static final String _70ee50000dea_NOISE="70ee50000deaNoise";
-    protected static final String _70ee50000dea_WIFI="70ee50000deaWifi";
-    protected static final String _70ee50000dea_FIRMWARE="70ee50000deaFirmware";
-    protected static final String _030000000216_TEMPERATURE="030000000216Temperature";
-    protected static final String _030000000216_HUMIDITY="030000000216Humidity";
-    protected static final String _030000000216_CARBON_DIOXYDE="030000000216CarbonDioxyde";
-    protected static final String _030000000216_BATTERY="030000000216Battery";
-    protected static final String _030000000216_RADIO="030000000216Radio";
-    protected static final String _03000000076e_TEMPERATURE="03000000076eTemperature";
-    protected static final String _03000000076e_HUMIDITY="03000000076eHumidity";
-    protected static final String _03000000076e_CARBON_DIOXYDE="03000000076eCarbonDioxyde";
-    protected static final String _03000000076e_BATTERY="03000000076eBattery";
-    protected static final String _03000000076e_RADIO="03000000076eRadio";
-    protected static final String _03000003fe8e_TEMPERATURE="03000003fe8eTemperature";
-    protected static final String _03000003fe8e_HUMIDITY="03000003fe8eHumidity";
-    protected static final String _03000003fe8e_CARBON_DIOXYDE="03000003fe8eCarbonDioxyde";
-    protected static final String _03000003fe8e_BATTERY="03000003fe8eBattery";
-    protected static final String _03000003fe8e_RADIO="03000003fe8eRadio";
-    protected static final String _0200000010ba_TEMPERATURE="0200000010baTemperature";
-    protected static final String _0200000010ba_HUMIDITY="0200000010baHumidity";
-    protected static final String _0200000010ba_BATTERY="0200000010baBattery";
-    protected static final String _0200000010ba_RADIO="0200000010baRadio";
-    protected static final String _05000004152c_RAIN="05000004152cRain";
-    protected static final String _05000004152c_TOTAL_RAIN="05000004152cTotalRain";
-    protected static final String _05000004152c_BATTERY="05000004152cBattery";
-    protected static final String _05000004152c_RADIO="05000004152cRadio";
-    protected static final String _06000000729a_WIND_STRENGTH="06000000729aWindStrength";
-    protected static final String _06000000729a_WIND_ANGLE="06000000729aWindAngle";
-    protected static final String _06000000729a_GUST_STRENGTH="06000000729aGustStrength";
-    protected static final String _06000000729a_GUST_ANGLE="06000000729aGustAngle";
-    protected static final String _06000000729a_MAX_GUST_STRENGTH="06000000729aMaxGustStrength";
-    protected static final String _06000000729a_MAX_GUST_ANGLE="06000000729aMaxGustAngle";
-    protected static final String _06000000729a_BATTERY="06000000729aBattery";
-    protected static final String _06000000729a_RADIO="06000000729aRadio";
-    private static final Comparator<Measure> MEASURE_COMPARATOR=(o1,o2)->Long.compare(o1.getDate().getTime(),o2.getDate().getTime());
-    protected static final MeasureDatabase DATABASE=new MeasureDatabase();
-    protected static final boolean NETATMO_ENABLED=true;
+    public static final String _70ee50000dea_TEMPERATURE="70ee50000deaTemperature";
+    public static final String _70ee50000dea_HUMIDITY="70ee50000deaHumidity";
+    public static final String _70ee50000dea_PRESSURE="70ee50000deaPressure";
+    public static final String _70ee50000dea_CARBON_DIOXYDE="70ee50000deaCarbonDioxyde";
+    public static final String _70ee50000dea_NOISE="70ee50000deaNoise";
+    public static final String _70ee50000dea_WIFI="70ee50000deaWifi";
+    public static final String _70ee50000dea_FIRMWARE="70ee50000deaFirmware";
+    public static final String _030000000216_TEMPERATURE="030000000216Temperature";
+    public static final String _030000000216_HUMIDITY="030000000216Humidity";
+    public static final String _030000000216_CARBON_DIOXYDE="030000000216CarbonDioxyde";
+    public static final String _030000000216_BATTERY="030000000216Battery";
+    public static final String _030000000216_RADIO="030000000216Radio";
+    public static final String _03000000076e_TEMPERATURE="03000000076eTemperature";
+    public static final String _03000000076e_HUMIDITY="03000000076eHumidity";
+    public static final String _03000000076e_CARBON_DIOXYDE="03000000076eCarbonDioxyde";
+    public static final String _03000000076e_BATTERY="03000000076eBattery";
+    public static final String _03000000076e_RADIO="03000000076eRadio";
+    public static final String _03000003fe8e_TEMPERATURE="03000003fe8eTemperature";
+    public static final String _03000003fe8e_HUMIDITY="03000003fe8eHumidity";
+    public static final String _03000003fe8e_CARBON_DIOXYDE="03000003fe8eCarbonDioxyde";
+    public static final String _03000003fe8e_BATTERY="03000003fe8eBattery";
+    public static final String _03000003fe8e_RADIO="03000003fe8eRadio";
+    public static final String _0200000010ba_TEMPERATURE="0200000010baTemperature";
+    public static final String _0200000010ba_HUMIDITY="0200000010baHumidity";
+    public static final String _0200000010ba_BATTERY="0200000010baBattery";
+    public static final String _0200000010ba_RADIO="0200000010baRadio";
+    public static final String _05000004152c_RAIN="05000004152cRain";
+    public static final String _05000004152c_TOTAL_RAIN="05000004152cTotalRain";
+    public static final String _05000004152c_BATTERY="05000004152cBattery";
+    public static final String _05000004152c_RADIO="05000004152cRadio";
+    public static final String _06000000729a_WIND_STRENGTH="06000000729aWindStrength";
+    public static final String _06000000729a_WIND_ANGLE="06000000729aWindAngle";
+    public static final String _06000000729a_GUST_STRENGTH="06000000729aGustStrength";
+    public static final String _06000000729a_GUST_ANGLE="06000000729aGustAngle";
+    public static final String _06000000729a_MAX_GUST_STRENGTH="06000000729aMaxGustStrength";
+    public static final String _06000000729a_MAX_GUST_ANGLE="06000000729aMaxGustAngle";
+    public static final String _06000000729a_BATTERY="06000000729aBattery";
+    public static final String _06000000729a_RADIO="06000000729aRadio";
+    private static final Comparator<Measure> CHRONOLOGICAL_SORTER=(o1,o2)->Long.compare(o1.getDate().getTime(),o2.getDate().getTime());
+    private static final MeasureDatabase DATABASE=new MeasureDatabase();
+    private static final long MEASURE_DELAY=1_200_000L;
+    private static final boolean NETATMO_ENABLED=true;
 
-    protected AbstractNetatmoPage(Page parentPage)
+    private NetatmoUtils()
     {
-        super(parentPage);
     }
 
-    protected static synchronized Map<String,Measure[]> getLastMeasures()
+    public static MeasureDatabase getMeasureDatabase()
+    {
+        return DATABASE;
+    }
+
+    public static synchronized Map<String,Measure[]> getLastMeasures()
     {
         long now=System.currentTimeMillis();
         if(NETATMO_ENABLED)
@@ -198,47 +207,47 @@ public abstract class AbstractNetatmoPage extends AbstractSinglePage
                         Measure[] _06000000729aMeasures=_06000000729a.getMeasures(MeasurementScale.MAX,new Date(now-Duration.of(3).hour()),new Date(now+Duration.of(5).minute()),MeasurementType.WIND_STRENGTH,MeasurementType.WIND_ANGLE,MeasurementType.GUST_STRENGTH,MeasurementType.GUST_ANGLE);
                         Measure[] _03000003fe8eMeasures=_03000003fe8e.getMeasures(MeasurementScale.MAX,new Date(now-Duration.of(3).hour()),new Date(now+Duration.of(5).minute()),MeasurementType.TEMPERATURE,MeasurementType.HUMIDITY,MeasurementType.CO2);
                         Measure[] _05000004152cMeasures=_05000004152c.getMeasures(MeasurementScale.MAX,new Date(now-Duration.of(3).hour()),new Date(now+Duration.of(5).minute()),MeasurementType.RAIN);
-                        last70ee50000deaTemperatures=compileMeasures(_70ee50000deaMeasures,MeasurementType.TEMPERATURE);
+                        last70ee50000deaTemperatures=filterMeasures(_70ee50000deaMeasures,MeasurementType.TEMPERATURE);
                         DATABASE.addMeasures(_70ee50000dea_TEMPERATURE,last70ee50000deaTemperatures);
-                        last70ee50000deaHumidities=compileMeasures(_70ee50000deaMeasures,MeasurementType.HUMIDITY);
+                        last70ee50000deaHumidities=filterMeasures(_70ee50000deaMeasures,MeasurementType.HUMIDITY);
                         DATABASE.addMeasures(_70ee50000dea_HUMIDITY,last70ee50000deaHumidities);
-                        last70ee50000deaPressures=compileMeasures(_70ee50000deaPressureMeasures,MeasurementType.PRESSURE);
+                        last70ee50000deaPressures=filterMeasures(_70ee50000deaPressureMeasures,MeasurementType.PRESSURE);
                         DATABASE.addMeasures(_70ee50000dea_PRESSURE,last70ee50000deaPressures);
-                        last70ee50000deaCarbonDioxydes=compileMeasures(_70ee50000deaMeasures,MeasurementType.CO2);
+                        last70ee50000deaCarbonDioxydes=filterMeasures(_70ee50000deaMeasures,MeasurementType.CO2);
                         DATABASE.addMeasures(_70ee50000dea_CARBON_DIOXYDE,last70ee50000deaCarbonDioxydes);
-                        last70ee50000deaNoises=compileMeasures(_70ee50000deaMeasures,MeasurementType.NOISE);
+                        last70ee50000deaNoises=filterMeasures(_70ee50000deaMeasures,MeasurementType.NOISE);
                         DATABASE.addMeasures(_70ee50000dea_NOISE,last70ee50000deaNoises);
-                        last030000000216Temperatures=compileMeasures(_030000000216Measures,MeasurementType.TEMPERATURE);
+                        last030000000216Temperatures=filterMeasures(_030000000216Measures,MeasurementType.TEMPERATURE);
                         DATABASE.addMeasures(_030000000216_TEMPERATURE,last030000000216Temperatures);
-                        last030000000216Humidities=compileMeasures(_030000000216Measures,MeasurementType.HUMIDITY);
+                        last030000000216Humidities=filterMeasures(_030000000216Measures,MeasurementType.HUMIDITY);
                         DATABASE.addMeasures(_030000000216_HUMIDITY,last030000000216Humidities);
-                        last030000000216CarbonDioxydes=compileMeasures(_030000000216Measures,MeasurementType.CO2);
+                        last030000000216CarbonDioxydes=filterMeasures(_030000000216Measures,MeasurementType.CO2);
                         DATABASE.addMeasures(_030000000216_CARBON_DIOXYDE,last030000000216CarbonDioxydes);
-                        last03000000076eTemperatures=compileMeasures(_03000000076eMeasures,MeasurementType.TEMPERATURE);
+                        last03000000076eTemperatures=filterMeasures(_03000000076eMeasures,MeasurementType.TEMPERATURE);
                         DATABASE.addMeasures(_03000000076e_TEMPERATURE,last03000000076eTemperatures);
-                        last03000000076eHumidities=compileMeasures(_03000000076eMeasures,MeasurementType.HUMIDITY);
+                        last03000000076eHumidities=filterMeasures(_03000000076eMeasures,MeasurementType.HUMIDITY);
                         DATABASE.addMeasures(_03000000076e_HUMIDITY,last03000000076eHumidities);
-                        last03000000076eCarbonDioxydes=compileMeasures(_03000000076eMeasures,MeasurementType.CO2);
+                        last03000000076eCarbonDioxydes=filterMeasures(_03000000076eMeasures,MeasurementType.CO2);
                         DATABASE.addMeasures(_03000000076e_CARBON_DIOXYDE,last03000000076eCarbonDioxydes);
-                        last03000003fe8eTemperatures=compileMeasures(_03000003fe8eMeasures,MeasurementType.TEMPERATURE);
+                        last03000003fe8eTemperatures=filterMeasures(_03000003fe8eMeasures,MeasurementType.TEMPERATURE);
                         DATABASE.addMeasures(_03000003fe8e_TEMPERATURE,last03000003fe8eTemperatures);
-                        last03000003fe8eHumidities=compileMeasures(_03000003fe8eMeasures,MeasurementType.HUMIDITY);
+                        last03000003fe8eHumidities=filterMeasures(_03000003fe8eMeasures,MeasurementType.HUMIDITY);
                         DATABASE.addMeasures(_03000003fe8e_HUMIDITY,last03000003fe8eHumidities);
-                        last03000003fe8eCarbonDioxydes=compileMeasures(_03000003fe8eMeasures,MeasurementType.CO2);
+                        last03000003fe8eCarbonDioxydes=filterMeasures(_03000003fe8eMeasures,MeasurementType.CO2);
                         DATABASE.addMeasures(_03000003fe8e_CARBON_DIOXYDE,last03000003fe8eCarbonDioxydes);
-                        last0200000010baTemperatures=compileMeasures(_0200000010baMeasures,MeasurementType.TEMPERATURE);
+                        last0200000010baTemperatures=filterMeasures(_0200000010baMeasures,MeasurementType.TEMPERATURE);
                         DATABASE.addMeasures(_0200000010ba_TEMPERATURE,last0200000010baTemperatures);
-                        last0200000010baHumidities=compileMeasures(_0200000010baMeasures,MeasurementType.HUMIDITY);
+                        last0200000010baHumidities=filterMeasures(_0200000010baMeasures,MeasurementType.HUMIDITY);
                         DATABASE.addMeasures(_0200000010ba_HUMIDITY,last0200000010baHumidities);
-                        last05000004152cRains=compileMeasures(_05000004152cMeasures,MeasurementType.RAIN);
+                        last05000004152cRains=filterMeasures(_05000004152cMeasures,MeasurementType.RAIN);
                         DATABASE.addMeasures(_05000004152c_RAIN,last05000004152cRains);
-                        last06000000729aWindStrengths=compileMeasures(_06000000729aMeasures,MeasurementType.WIND_STRENGTH);
+                        last06000000729aWindStrengths=filterMeasures(_06000000729aMeasures,MeasurementType.WIND_STRENGTH);
                         DATABASE.addMeasures(_06000000729a_WIND_STRENGTH,last06000000729aWindStrengths);
-                        last06000000729aWindAngles=compileMeasures(_06000000729aMeasures,MeasurementType.WIND_ANGLE);
+                        last06000000729aWindAngles=filterMeasures(_06000000729aMeasures,MeasurementType.WIND_ANGLE);
                         DATABASE.addMeasures(_06000000729a_WIND_ANGLE,last06000000729aWindAngles);
-                        last06000000729aGustStrengths=compileMeasures(_06000000729aMeasures,MeasurementType.GUST_STRENGTH);
+                        last06000000729aGustStrengths=filterMeasures(_06000000729aMeasures,MeasurementType.GUST_STRENGTH);
                         DATABASE.addMeasures(_06000000729a_GUST_STRENGTH,last06000000729aGustStrengths);
-                        last06000000729aGustAngles=compileMeasures(_06000000729aMeasures,MeasurementType.GUST_ANGLE);
+                        last06000000729aGustAngles=filterMeasures(_06000000729aMeasures,MeasurementType.GUST_ANGLE);
                         DATABASE.addMeasures(_06000000729a_GUST_ANGLE,last06000000729aGustAngles);
                         DATABASE.clean();
                         ok=true;
@@ -645,11 +654,67 @@ public abstract class AbstractNetatmoPage extends AbstractSinglePage
         return lastMeasures;
     }
 
-    private static Measure[] compileMeasures(Measure[] rawMeasures,MeasurementType measurementType)
+    public static Measure getLastMeasure(Map<String,Measure[]> lastMeasures,String measureKind)
     {
-        return Arrays.stream(rawMeasures)
+        Measure[] array=lastMeasures.get(measureKind);
+        return array!=null&&array.length>=1?array[array.length-1]:null;
+    }
+
+    public static Measure[] filterMeasures(Measure[] measures,MeasurementType measurementType)
+    {
+        return Arrays.stream(measures)
                 .filter(t->t.getMeasurementType()==measurementType)
-                .sorted(MEASURE_COMPARATOR)
+                .sorted(CHRONOLOGICAL_SORTER)
                 .toArray(Measure[]::new);
+    }
+
+    public static Measure[] filterTimedWindowMeasures(Measure[] measures,int hour)
+    {
+        if(measures==null)
+            return null;
+        return Arrays.stream(measures)
+                .filter(measure->measures[measures.length-1].getDate().getTime()-measure.getDate().getTime()<Duration.of(hour).hour())
+                .toArray(Measure[]::new);
+    }
+
+    public static double getHourlyVariation(Measure[] lastMeasures)
+    {
+        if(lastMeasures!=null&&lastMeasures.length>=2)
+            return (lastMeasures[lastMeasures.length-1].getValue()-lastMeasures[0].getValue())/((double)(lastMeasures[lastMeasures.length-1].getDate().getTime()-lastMeasures[0].getDate().getTime())/3_600_000d);
+        else
+            return Double.NaN;
+    }
+
+    public static Measure estimate(Measure[] measures)
+    {
+        if(measures==null||measures.length<1)
+            return null;
+        try
+        {
+            long now=System.currentTimeMillis();
+            Measure[] filteredMeasures=Arrays.stream(measures)
+                    .filter(measure->measures[measures.length-1].getDate().getTime()-measure.getDate().getTime()<MEASURE_DELAY)
+                    .toArray(Measure[]::new);
+            List<WeightedObservedPoint> points=new ArrayList<>(filteredMeasures.length);
+            for(int index=0;index<filteredMeasures.length;index++)
+                points.add(new WeightedObservedPoint(index==filteredMeasures.length-1?1_000d:1d,(double)filteredMeasures[index].getDate().getTime(),filteredMeasures[index].getValue()));
+            while(points.size()>4)
+                points.remove(0);
+            List<WeightedObservedPoint> correctedPoints=new ArrayList<>(points.size());
+            points.forEach(point->correctedPoints.add(new WeightedObservedPoint(point.getWeight(),(point.getX()-points.get(0).getX())/60_000d,point.getY())));
+            int degree=Math.min(1,correctedPoints.size()-2);
+            double[] result=PolynomialCurveFitter.create(degree)
+                    .withMaxIterations(1_000)
+                    .fit(correctedPoints);
+            double time=((double)now-points.get(0).getX())/60_000d;
+            double value=0d;
+            for(int index=0;index<result.length;index++)
+                value+=result[index]*Math.pow(time,(double)index);
+            return new StandAloneMeasure(new Date(now),measures[measures.length-1].getMeasurementType(),value);
+        }
+        catch(Exception e)
+        {
+            return measures[measures.length-1];
+        }
     }
 }

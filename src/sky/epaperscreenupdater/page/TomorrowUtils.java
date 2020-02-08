@@ -7,12 +7,12 @@ import java.util.Locale;
 import sky.epaperscreenupdater.Logger;
 import sky.program.Duration;
 
-public class TomorrowManager
+public class TomorrowUtils
 {
     private static long lastTomorrowVerificationTime=0L;
     private static String tomorrow="ND";
 
-    private TomorrowManager()
+    private TomorrowUtils()
     {
     }
 
@@ -34,7 +34,7 @@ public class TomorrowManager
                 String month=""+(calendar.get(Calendar.MONTH)+1);
                 if(month.length()==1)
                     month="0"+month;
-                JsonObject tomorrowObject=InstantaneousConsumptionPage.getJsonResponse("https://particulier.edf.fr/bin/edf_rc/servlets/ejptemponew?Date_a_remonter="+calendar.get(Calendar.YEAR)+"-"+month+"-"+day+"&TypeAlerte=TEMPO");
+                JsonObject tomorrowObject=JsonUtils.getJsonResponse("https://particulier.edf.fr/bin/edf_rc/servlets/ejptemponew?Date_a_remonter="+calendar.get(Calendar.YEAR)+"-"+month+"-"+day+"&TypeAlerte=TEMPO");
                 String oldTomorrow=tomorrow;
                 if(tomorrowObject!=null)
                 {

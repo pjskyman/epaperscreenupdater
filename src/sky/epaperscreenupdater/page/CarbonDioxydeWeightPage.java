@@ -7,7 +7,7 @@ import sky.epaperscreenupdater.RefreshType;
 import sky.netatmo.Measure;
 import sky.program.Duration;
 
-public class CarbonDioxydeWeightPage extends AbstractNetatmoPage
+public class CarbonDioxydeWeightPage extends AbstractSinglePage
 {
     public CarbonDioxydeWeightPage(Page parentPage)
     {
@@ -31,11 +31,11 @@ public class CarbonDioxydeWeightPage extends AbstractNetatmoPage
 
     protected void populateImage(Graphics2D g2d) throws VetoException,Exception
     {
-        Map<String,Measure[]> lastMeasures=getLastMeasures();
-        Measure last70ee50000deaCarbonDioxyde=HomeWeatherPage.getLastMeasure(lastMeasures,_70ee50000dea_CARBON_DIOXYDE);//salon
-        Measure last030000000216CarbonDioxyde=HomeWeatherPage.getLastMeasure(lastMeasures,_030000000216_CARBON_DIOXYDE);//filles
-        Measure last03000000076eCarbonDioxyde=HomeWeatherPage.getLastMeasure(lastMeasures,_03000000076e_CARBON_DIOXYDE);//garage
-        Measure last03000003fe8eCarbonDioxyde=HomeWeatherPage.getLastMeasure(lastMeasures,_03000003fe8e_CARBON_DIOXYDE);//pj
+        Map<String,Measure[]> lastMeasures=NetatmoUtils.getLastMeasures();
+        Measure last70ee50000deaCarbonDioxyde=NetatmoUtils.getLastMeasure(lastMeasures,NetatmoUtils._70ee50000dea_CARBON_DIOXYDE);//salon
+        Measure last030000000216CarbonDioxyde=NetatmoUtils.getLastMeasure(lastMeasures,NetatmoUtils._030000000216_CARBON_DIOXYDE);//filles
+        Measure last03000000076eCarbonDioxyde=NetatmoUtils.getLastMeasure(lastMeasures,NetatmoUtils._03000000076e_CARBON_DIOXYDE);//garage
+        Measure last03000003fe8eCarbonDioxyde=NetatmoUtils.getLastMeasure(lastMeasures,NetatmoUtils._03000003fe8e_CARBON_DIOXYDE);//pj
         double totalCarbonDioxydeWeight1=0d;
         if(last70ee50000deaCarbonDioxyde!=null)
             totalCarbonDioxydeWeight1+=1.87d*(66d-11.7d)*2.5d*last70ee50000deaCarbonDioxyde.getValue()/1e6d;//salon

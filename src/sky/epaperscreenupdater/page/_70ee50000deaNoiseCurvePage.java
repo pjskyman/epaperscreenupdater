@@ -21,7 +21,7 @@ public class _70ee50000deaNoiseCurvePage extends AbstractNetatmoCurvePage
 
     protected String getMeasureKind()
     {
-        return _70ee50000dea_NOISE;
+        return NetatmoUtils._70ee50000dea_NOISE;
     }
 
     protected String getOrdinateLabelText()

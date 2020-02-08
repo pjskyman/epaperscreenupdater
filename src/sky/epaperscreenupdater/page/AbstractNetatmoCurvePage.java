@@ -3,13 +3,10 @@ package sky.epaperscreenupdater.page;
 import java.awt.BasicStroke;
 import java.awt.Font;
 import java.awt.Graphics2D;
-import java.awt.font.FontRenderContext;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 import java.text.DateFormat;
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +16,7 @@ import sky.epaperscreenupdater.RefreshType;
 import sky.netatmo.Measure;
 import sky.program.Duration;
 
-public abstract class AbstractNetatmoCurvePage extends AbstractNetatmoPage
+public abstract class AbstractNetatmoCurvePage extends AbstractSinglePage
 {
     protected static final double[] TICK_OFFSETS=
     {
@@ -112,7 +109,7 @@ public abstract class AbstractNetatmoCurvePage extends AbstractNetatmoPage
 
     protected void populateImage(Graphics2D g2d) throws VetoException,Exception
     {
-        Map<String,Measure[]> measureMap=getLastMeasures();
+        Map<String,Measure[]> measureMap=NetatmoUtils.getLastMeasures();
         Font baseFont=FREDOKA_ONE_FONT.deriveFont(11f);
         g2d.setFont(baseFont);
         Font verticalBaseFont=baseFont.deriveFont(AffineTransform.getQuadrantRotateInstance(-1));
@@ -122,10 +119,10 @@ public abstract class AbstractNetatmoCurvePage extends AbstractNetatmoPage
     protected void drawChart(Map<String,Measure[]> measureMap,Font baseFont,Font verticalBaseFont,Graphics2D g2d)
     {
         Measure[] rawMeasures=measureMap.get(getMeasureKind());
-        Measure[] measures=HomeWeatherVariationPage.filterTimedWindowMeasures(rawMeasures,3);
+        Measure[] measures=NetatmoUtils.filterTimedWindowMeasures(rawMeasures,3);
         if(measures!=null)
         {
-            Measure[] yesterdayMeasures=DATABASE.getMeasures(getMeasureKind(),
+            Measure[] yesterdayMeasures=NetatmoUtils.getMeasureDatabase().getMeasures(getMeasureKind(),
                                                               measures[0].getDate().getTime()-Duration.of(1).day(),
                                                               measures[measures.length-1].getDate().getTime()-Duration.of(1).day()
             );
@@ -431,40 +428,6 @@ public abstract class AbstractNetatmoCurvePage extends AbstractNetatmoPage
         b[n]=b[n]/diag[n];
         for(i=n-1;i>=1;i--)
             b[i]=(b[i]-sup[i]*b[i+1])/diag[i];
-    }
-
-    protected static class PreparedTick
-    {
-        private final double value;
-        private final String name;
-        private final Rectangle2D nameDimensions;
-        private static final DecimalFormat DECIMAL_FORMAT=new DecimalFormat("0.########E00");
-
-        protected PreparedTick(double value,Font font,FontRenderContext fontRenderContext)
-        {
-            value=Double.parseDouble(DECIMAL_FORMAT.format(value).replace(",","."));
-            this.value=value;
-            if(value==(double)(int)value)
-                name=""+(int)value;
-            else
-                name=""+value;
-            this.nameDimensions=font.getStringBounds(name,fontRenderContext);
-        }
-
-        protected double getValue()
-        {
-            return value;
-        }
-
-        protected String getName()
-        {
-            return name;
-        }
-
-        protected Rectangle2D getNameDimensions()
-        {
-            return nameDimensions;
-        }
     }
 
     public static void main(String[] args)

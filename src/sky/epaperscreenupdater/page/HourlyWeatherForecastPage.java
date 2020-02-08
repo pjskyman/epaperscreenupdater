@@ -15,7 +15,7 @@ import java.util.Locale;
 import sky.epaperscreenupdater.RefreshType;
 import sky.program.Duration;
 
-public class HourlyWeatherForecastPage extends AbstractWeatherForecastPage
+public class HourlyWeatherForecastPage extends AbstractSinglePage
 {
     private final int rank;
     private final long minimalRefreshDelay;
@@ -44,7 +44,7 @@ public class HourlyWeatherForecastPage extends AbstractWeatherForecastPage
 
     protected void populateImage(Graphics2D g2d) throws VetoException,Exception
     {
-        List<Hourly> hourlies=getLastHourlies();
+        List<Hourly> hourlies=WeatherForecastUtils.getLastHourlies();
         for(int x=51;x<296;x+=35)
             g2d.drawLine(x,0,x,127);
         for(int y=20;y<128;y+=12)

@@ -21,7 +21,7 @@ public class _03000003fe8eHumidityCurvePage extends AbstractNetatmoCurvePage
 
     protected String getMeasureKind()
     {
-        return _03000003fe8e_HUMIDITY;
+        return NetatmoUtils._03000003fe8e_HUMIDITY;
     }
 
     protected String getOrdinateLabelText()

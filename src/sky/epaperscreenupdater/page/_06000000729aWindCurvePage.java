@@ -4,12 +4,9 @@ import java.awt.BasicStroke;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.geom.Path2D;
-import java.awt.geom.Point2D;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.AbstractList;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import sky.netatmo.Measure;
@@ -36,7 +33,7 @@ public class _06000000729aWindCurvePage extends AbstractNetatmoCurvePage
 
     protected String getMeasureKind()
     {
-        return _06000000729a_WIND_STRENGTH;
+        return NetatmoUtils._06000000729a_WIND_STRENGTH;
     }
 
     protected String getOrdinateLabelText()
@@ -97,14 +94,14 @@ public class _06000000729aWindCurvePage extends AbstractNetatmoCurvePage
     protected void drawChart(Map<String,Measure[]> measureMap,Font baseFont,Font verticalBaseFont,Graphics2D g2d)
     {
         //cette redéfinition est spécifique pour dessiner les 2 courbes du vent ainsi que les flèches de direction en haut du graphique
-        Measure[] rawMeasures1=measureMap.get(_06000000729a_WIND_STRENGTH);
-        Measure[] rawAngleMeasures1=measureMap.get(_06000000729a_WIND_ANGLE);
-        Measure[] rawMeasures2=measureMap.get(_06000000729a_GUST_STRENGTH);
-        Measure[] rawAngleMeasures2=measureMap.get(_06000000729a_GUST_ANGLE);
-        Measure[] measures1=HomeWeatherVariationPage.filterTimedWindowMeasures(rawMeasures1,3);
-        Measure[] angleMeasures1=HomeWeatherVariationPage.filterTimedWindowMeasures(rawAngleMeasures1,3);
-        Measure[] measures2=HomeWeatherVariationPage.filterTimedWindowMeasures(rawMeasures2,3);
-        Measure[] angleMeasures2=HomeWeatherVariationPage.filterTimedWindowMeasures(rawAngleMeasures2,3);
+        Measure[] rawMeasures1=measureMap.get(NetatmoUtils._06000000729a_WIND_STRENGTH);
+        Measure[] rawAngleMeasures1=measureMap.get(NetatmoUtils._06000000729a_WIND_ANGLE);
+        Measure[] rawMeasures2=measureMap.get(NetatmoUtils._06000000729a_GUST_STRENGTH);
+        Measure[] rawAngleMeasures2=measureMap.get(NetatmoUtils._06000000729a_GUST_ANGLE);
+        Measure[] measures1=NetatmoUtils.filterTimedWindowMeasures(rawMeasures1,3);
+        Measure[] angleMeasures1=NetatmoUtils.filterTimedWindowMeasures(rawAngleMeasures1,3);
+        Measure[] measures2=NetatmoUtils.filterTimedWindowMeasures(rawMeasures2,3);
+        Measure[] angleMeasures2=NetatmoUtils.filterTimedWindowMeasures(rawAngleMeasures2,3);
         if(measures1!=null&&measures2!=null&&angleMeasures1!=null&&angleMeasures2!=null)
         {
             String ordinateLabelText=getOrdinateLabelText();
@@ -236,106 +233,5 @@ public class _06000000729aWindCurvePage extends AbstractNetatmoCurvePage
     public static void main(String[] args)
     {
         new _06000000729aWindCurvePage(null).potentiallyUpdate();
-    }
-
-    private static class Wind
-    {
-        private final Date time;
-        private final double wind;
-        private final double windAngle;
-        private final double gust;
-        private final double gustAngle;
-        private final double x;
-        private final double windY;
-        private final double gustY;
-
-        private Wind(Date time,double wind,double windAngle,double gust,double gustAngle,double x,double windY,double gustY)
-        {
-            this.time=time;
-            this.wind=wind;
-            this.windAngle=windAngle;
-            this.gust=gust;
-            this.gustAngle=gustAngle;
-            this.x=x;
-            this.windY=windY;
-            this.gustY=gustY;
-        }
-
-        private Date getTime()
-        {
-            return time;
-        }
-
-        private double getWind()
-        {
-            return wind;
-        }
-
-        private double getWindAngle()
-        {
-            return windAngle;
-        }
-
-        private double getGust()
-        {
-            return gust;
-        }
-
-        private double getGustAngle()
-        {
-            return gustAngle;
-        }
-
-        private double getX()
-        {
-            return x;
-        }
-
-        private double getWindY()
-        {
-            return windY;
-        }
-
-        private double getGustY()
-        {
-            return gustY;
-        }
-    }
-
-    public static class SpecialWindList extends AbstractList<Point2D>
-    {
-        private final Wind[] winds;
-        private final boolean gust;
-
-        private SpecialWindList(Wind[] winds,boolean gust)
-        {
-            this.winds=winds;
-            this.gust=gust;
-        }
-
-        public Point2D get(int index)
-        {
-            return new Point2D()
-            {
-                public double getX()
-                {
-                    return winds[index].getX();
-                }
-
-                public double getY()
-                {
-                    return gust?winds[index].getGustY():winds[index].getWindY();
-                }
-
-                public void setLocation(double x,double y)
-                {
-                }
-            };
-        }
-
-        public int size()
-        {
-            return winds.length;
-        }
     }
 }

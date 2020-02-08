@@ -3,23 +3,15 @@ package sky.epaperscreenupdater.page;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import sky.epaperscreenupdater.Logger;
 import sky.epaperscreenupdater.RefreshType;
 import sky.netatmo.Measure;
 import sky.netatmo.MeasurementType;
 import sky.program.Duration;
 
-public class HomeWeatherPage extends AbstractNetatmoPage
+public class HomeWeatherPage extends AbstractSinglePage
 {
     public HomeWeatherPage(Page parentPage)
     {
@@ -43,29 +35,29 @@ public class HomeWeatherPage extends AbstractNetatmoPage
 
     protected void populateImage(Graphics2D g2d) throws VetoException,Exception
     {
-        Map<String,Measure[]> lastMeasures=getLastMeasures();
-        Measure last70ee50000deaTemperature=getLastMeasure(lastMeasures,_70ee50000dea_TEMPERATURE);
-        Measure last70ee50000deaHumidity=getLastMeasure(lastMeasures,_70ee50000dea_HUMIDITY);
-        Measure last70ee50000deaPressure=getLastMeasure(lastMeasures,_70ee50000dea_PRESSURE);
-        Measure last70ee50000deaCarbonDioxyde=getLastMeasure(lastMeasures,_70ee50000dea_CARBON_DIOXYDE);
-        Measure last70ee50000deaNoise=getLastMeasure(lastMeasures,_70ee50000dea_NOISE);
-        Measure last030000000216Temperature=getLastMeasure(lastMeasures,_030000000216_TEMPERATURE);
-        Measure last030000000216Humidity=getLastMeasure(lastMeasures,_030000000216_HUMIDITY);
-        Measure last030000000216CarbonDioxyde=getLastMeasure(lastMeasures,_030000000216_CARBON_DIOXYDE);
-        Measure last03000000076eTemperature=getLastMeasure(lastMeasures,_03000000076e_TEMPERATURE);
-        Measure last03000000076eHumidity=getLastMeasure(lastMeasures,_03000000076e_HUMIDITY);
-        Measure last03000000076eCarbonDioxyde=getLastMeasure(lastMeasures,_03000000076e_CARBON_DIOXYDE);
-        Measure last03000003fe8eTemperature=getLastMeasure(lastMeasures,_03000003fe8e_TEMPERATURE);
-        Measure last03000003fe8eHumidity=getLastMeasure(lastMeasures,_03000003fe8e_HUMIDITY);
-        Measure last03000003fe8eCarbonDioxyde=getLastMeasure(lastMeasures,_03000003fe8e_CARBON_DIOXYDE);
-        Measure last0200000010baTemperature=getLastMeasure(lastMeasures,_0200000010ba_TEMPERATURE);
-        Measure last0200000010baHumidity=getLastMeasure(lastMeasures,_0200000010ba_HUMIDITY);
-        Measure last05000004152cRain=getLastMeasure(lastMeasures,_05000004152c_RAIN);
-        Measure last06000000729aWindStrength=getLastMeasure(lastMeasures,_06000000729a_WIND_STRENGTH);
-        Measure last06000000729aWindAngle=getLastMeasure(lastMeasures,_06000000729a_WIND_ANGLE);
-        Measure last06000000729aGustStrength=getLastMeasure(lastMeasures,_06000000729a_GUST_STRENGTH);
-        Measure last06000000729aGustAngle=getLastMeasure(lastMeasures,_06000000729a_GUST_ANGLE);
-        List<Temperature> temperatures=loadTemperatures(1);
+        Map<String,Measure[]> lastMeasures=NetatmoUtils.getLastMeasures();
+        Measure last70ee50000deaTemperature=NetatmoUtils.getLastMeasure(lastMeasures,NetatmoUtils._70ee50000dea_TEMPERATURE);
+        Measure last70ee50000deaHumidity=NetatmoUtils.getLastMeasure(lastMeasures,NetatmoUtils._70ee50000dea_HUMIDITY);
+        Measure last70ee50000deaPressure=NetatmoUtils.getLastMeasure(lastMeasures,NetatmoUtils._70ee50000dea_PRESSURE);
+        Measure last70ee50000deaCarbonDioxyde=NetatmoUtils.getLastMeasure(lastMeasures,NetatmoUtils._70ee50000dea_CARBON_DIOXYDE);
+        Measure last70ee50000deaNoise=NetatmoUtils.getLastMeasure(lastMeasures,NetatmoUtils._70ee50000dea_NOISE);
+        Measure last030000000216Temperature=NetatmoUtils.getLastMeasure(lastMeasures,NetatmoUtils._030000000216_TEMPERATURE);
+        Measure last030000000216Humidity=NetatmoUtils.getLastMeasure(lastMeasures,NetatmoUtils._030000000216_HUMIDITY);
+        Measure last030000000216CarbonDioxyde=NetatmoUtils.getLastMeasure(lastMeasures,NetatmoUtils._030000000216_CARBON_DIOXYDE);
+        Measure last03000000076eTemperature=NetatmoUtils.getLastMeasure(lastMeasures,NetatmoUtils._03000000076e_TEMPERATURE);
+        Measure last03000000076eHumidity=NetatmoUtils.getLastMeasure(lastMeasures,NetatmoUtils._03000000076e_HUMIDITY);
+        Measure last03000000076eCarbonDioxyde=NetatmoUtils.getLastMeasure(lastMeasures,NetatmoUtils._03000000076e_CARBON_DIOXYDE);
+        Measure last03000003fe8eTemperature=NetatmoUtils.getLastMeasure(lastMeasures,NetatmoUtils._03000003fe8e_TEMPERATURE);
+        Measure last03000003fe8eHumidity=NetatmoUtils.getLastMeasure(lastMeasures,NetatmoUtils._03000003fe8e_HUMIDITY);
+        Measure last03000003fe8eCarbonDioxyde=NetatmoUtils.getLastMeasure(lastMeasures,NetatmoUtils._03000003fe8e_CARBON_DIOXYDE);
+        Measure last0200000010baTemperature=NetatmoUtils.getLastMeasure(lastMeasures,NetatmoUtils._0200000010ba_TEMPERATURE);
+        Measure last0200000010baHumidity=NetatmoUtils.getLastMeasure(lastMeasures,NetatmoUtils._0200000010ba_HUMIDITY);
+        Measure last05000004152cRain=NetatmoUtils.getLastMeasure(lastMeasures,NetatmoUtils._05000004152c_RAIN);
+        Measure last06000000729aWindStrength=NetatmoUtils.getLastMeasure(lastMeasures,NetatmoUtils._06000000729a_WIND_STRENGTH);
+        Measure last06000000729aWindAngle=NetatmoUtils.getLastMeasure(lastMeasures,NetatmoUtils._06000000729a_WIND_ANGLE);
+        Measure last06000000729aGustStrength=NetatmoUtils.getLastMeasure(lastMeasures,NetatmoUtils._06000000729a_GUST_STRENGTH);
+        Measure last06000000729aGustAngle=NetatmoUtils.getLastMeasure(lastMeasures,NetatmoUtils._06000000729a_GUST_ANGLE);
+        List<Temperature> temperatures=WeatherUtils.loadTemperatures(1);
         Measure lastToiletsTemperature=temperatures.isEmpty()?null:new StandAloneMeasure(new Date(temperatures.get(0).getTime()),MeasurementType.TEMPERATURE,temperatures.get(0).getTemperature());
         g2d.drawLine(64,68,62,68);
         g2d.drawLine(62,68,62,80);
@@ -252,12 +244,12 @@ public class HomeWeatherPage extends AbstractNetatmoPage
         g2d.drawString("Pluie",180-_05000004152cString1Width/2,45);
 
         String _06000000729aString1="~"+(last06000000729aWindStrength!=null?""+(int)last06000000729aWindStrength.getValue():"?")+" km/h ";
-        _06000000729aString1+=last06000000729aWindAngle!=null?convertWindAngle(last06000000729aWindAngle.getValue()):"?";
+        _06000000729aString1+=last06000000729aWindAngle!=null?WeatherUtils.convertWindAngle(last06000000729aWindAngle.getValue()):"?";
         int _06000000729aString1Width=(int)Math.ceil(measureFont.getStringBounds(_06000000729aString1,g2d.getFontRenderContext()).getWidth());
         g2d.drawString(_06000000729aString1,254f-(float)_06000000729aString1Width/2f,16f);
 
         String _06000000729aString2="ˆ"+(last06000000729aGustStrength!=null?""+(int)last06000000729aGustStrength.getValue():"?")+" km/h ";
-        _06000000729aString2+=last06000000729aGustAngle!=null?convertWindAngle(last06000000729aGustAngle.getValue()):"?";
+        _06000000729aString2+=last06000000729aGustAngle!=null?WeatherUtils.convertWindAngle(last06000000729aGustAngle.getValue()):"?";
         int _06000000729aString2Width=(int)Math.ceil(measureFont.getStringBounds(_06000000729aString2,g2d.getFontRenderContext()).getWidth());
         g2d.drawString(_06000000729aString2,254f-(float)_06000000729aString2Width/2f,30f);
 
@@ -273,130 +265,6 @@ public class HomeWeatherPage extends AbstractNetatmoPage
     protected String getDebugImageFileName()
     {
         return "meteo.png";
-    }
-
-    protected static Measure getLastMeasure(Map<String,Measure[]> lastMeasures,String type)
-    {
-        Measure[] array=lastMeasures.get(type);
-        return array!=null&&array.length>=1?array[array.length-1]:null;
-    }
-
-    public static String convertWindAngle(int angle)
-    {
-        return convertWindAngle((double)angle);
-    }
-
-    public static String convertWindAngle(double angle)
-    {
-        if(angle<11.25d)
-            return "N";
-        else
-            if(angle<33.75d)
-                return "NNE";
-            else
-                if(angle<56.25d)
-                    return "NE";
-                else
-                    if(angle<78.75d)
-                        return "ENE";
-                    else
-                        if(angle<101.25d)
-                            return "E";
-                        else
-                            if(angle<123.75d)
-                                return "ESE";
-                            else
-                                if(angle<146.25d)
-                                    return "SE";
-                                else
-                                    if(angle<168.75d)
-                                        return "SSE";
-                                    else
-                                        if(angle<191.25d)
-                                            return "S";
-                                        else
-                                            if(angle<213.75d)
-                                                return "SSO";
-                                            else
-                                                if(angle<236.25d)
-                                                    return "SO";
-                                                else
-                                                    if(angle<258.75d)
-                                                        return "OSO";
-                                                    else
-                                                        if(angle<281.25d)
-                                                            return "O";
-                                                        else
-                                                            if(angle<303.75d)
-                                                                return "ONO";
-                                                            else
-                                                                if(angle<326.25d)
-                                                                    return "NO";
-                                                                else
-                                                                    if(angle<348.75d)
-                                                                        return "NNO";
-                                                                    else
-                                                                        return "N";
-    }
-
-    private static List<Temperature> loadTemperatures(int number)
-    {
-        try
-        {
-            try(Connection connection=getConnection2())
-            {
-//                long startTime=System.currentTimeMillis();
-                List<Temperature> temperatures=new ArrayList<>();
-                try(Statement statement=connection.createStatement(ResultSet.TYPE_FORWARD_ONLY,ResultSet.CONCUR_READ_ONLY))
-                {
-                    try(ResultSet resultSet=statement.executeQuery("SELECT * FROM temperature ORDER BY time DESC LIMIT "+number+";"))
-                    {
-                        while(resultSet.next())
-                        {
-                            long time=resultSet.getLong("time");
-                            double temperature=resultSet.getDouble("temperature");
-                            double setPoint=resultSet.getDouble("setPoint");
-                            double ratio=resultSet.getDouble("ratio");
-                            boolean heaterOn=resultSet.getInt("heaterOn")==1;
-                            temperatures.add(new Temperature(time,temperature,setPoint,ratio,heaterOn));
-                        }
-                    }
-                }
-                Collections.reverse(temperatures);
-//                Logger.LOGGER.info(temperatures.size()+" rows fetched in "+(System.currentTimeMillis()-startTime)+" ms");
-                return temperatures;
-            }
-        }
-        catch(NotAvailableDatabaseException|SQLException e)
-        {
-            Logger.LOGGER.error(e.toString());
-            e.printStackTrace();
-            return new ArrayList<>(0);
-        }
-    }
-
-    private static Connection getConnection2() throws NotAvailableDatabaseException
-    {
-        Connection connection=null;
-        try
-        {
-            connection=DriverManager.getConnection("jdbc:mariadb://192.168.0.71:3306/toilettes?user=root&password=loop27c");
-//            Logger.LOGGER.info("Connection to SQLite has been established.");
-        }
-        catch(SQLException e)
-        {
-            try
-            {
-                if(connection!=null)
-                    connection.close();
-            }
-            catch(SQLException ex)
-            {
-            }
-            Logger.LOGGER.error(e.toString());
-            e.printStackTrace();
-        }
-        return connection;
     }
 
     public static void main(String[] args)

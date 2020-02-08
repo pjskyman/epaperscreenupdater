@@ -15,14 +15,24 @@ public final class Database
     {
     }
 
-    public static Connection getConnection() throws NotAvailableDatabaseException
+    public static Connection getEcocompteurConnection() throws NotAvailableDatabaseException
+    {
+        return getConnectionImpl("database.ini");
+    }
+
+    public static Connection getToilettesConnection() throws NotAvailableDatabaseException
+    {
+        return getConnectionImpl("database2.ini");
+    }
+
+    private static Connection getConnectionImpl(String iniFileName) throws NotAvailableDatabaseException
     {
         String serverAddress="";
         String serverPort="";
         String databaseName="";
         String user="";
         String password="";
-        try(BufferedReader reader=new BufferedReader(new FileReader(new File("database.ini"))))
+        try(BufferedReader reader=new BufferedReader(new FileReader(new File(iniFileName))))
         {
             serverAddress=reader.readLine();
             serverPort=reader.readLine();

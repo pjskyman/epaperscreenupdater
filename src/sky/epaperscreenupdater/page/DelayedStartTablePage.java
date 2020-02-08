@@ -8,7 +8,6 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.NoSuchElementException;
-import sky.epaperscreenupdater.Main;
 import sky.epaperscreenupdater.RefreshType;
 import sky.program.Duration;
 
@@ -63,10 +62,9 @@ public class DelayedStartTablePage extends AbstractSinglePage
         if(nowHour<2||nowHour==2&&nowMinute==0||nowHour>=16)
         {
             String today="ND";
-            List<InstantaneousConsumption> list=Main.loadInstantaneousConsumptions(1);
-            if(!list.isEmpty())
+            InstantaneousConsumption instantaneousConsumption=ElectricityUtils.getLastInstantaneousConsumption();
+            if(instantaneousConsumption!=null)
             {
-                InstantaneousConsumption instantaneousConsumption=list.get(0);
                 if(instantaneousConsumption.getPricingPeriod().isBlueDay())
                     today="BLEU";
                 else
@@ -77,7 +75,7 @@ public class DelayedStartTablePage extends AbstractSinglePage
                             today="ROUGE";
             }
 //                    today="BLANC";
-            String tomorrow=TomorrowManager.getTomorrow();
+            String tomorrow=TomorrowUtils.getTomorrow();
 //                    String tomorrow="BLEU";
             List<PricingPeriodZone> pricingPeriodZones=new ArrayList<>();
             if(today.contains("BLEU"))

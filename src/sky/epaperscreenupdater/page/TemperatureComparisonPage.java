@@ -32,7 +32,7 @@ public class TemperatureComparisonPage extends AbstractNetatmoCurvePage
 
     protected String getMeasureKind()
     {
-        return _0200000010ba_TEMPERATURE;
+        return NetatmoUtils._0200000010ba_TEMPERATURE;
     }
 
     protected String getOrdinateLabelText()
@@ -57,16 +57,16 @@ public class TemperatureComparisonPage extends AbstractNetatmoCurvePage
         //cette redéfinition est spécifique pour dessiner toutes les courbes de température
         String[] measureKinds=new String[]
         {
-            _70ee50000dea_TEMPERATURE,
-            _03000003fe8e_TEMPERATURE,
-            _0200000010ba_TEMPERATURE
+            NetatmoUtils._70ee50000dea_TEMPERATURE,
+            NetatmoUtils._03000003fe8e_TEMPERATURE,
+            NetatmoUtils._0200000010ba_TEMPERATURE
         };
         Measure[][] rawMeasures=new Measure[measureKinds.length][];
         for(int i=0;i<measureKinds.length;i++)
             rawMeasures[i]=measureMap.get(measureKinds[i]);
         Measure[][] measures=new Measure[measureKinds.length][];
         for(int i=0;i<measureKinds.length;i++)
-            measures[i]=HomeWeatherVariationPage.filterTimedWindowMeasures(rawMeasures[i],3);
+            measures[i]=NetatmoUtils.filterTimedWindowMeasures(rawMeasures[i],3);
         if(Arrays.stream(measures).allMatch(array->array!=null))
         {
             String ordinateLabelText=getOrdinateLabelText();

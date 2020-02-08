@@ -71,7 +71,7 @@ public class TempoCalendarPage extends AbstractSinglePage
                 g2d.drawLine(273,45,273,54);//barre supplémentaire de l'année bissextile
                 remainingBlueDayCount+=1;
             }
-            JsonObject historyObject=InstantaneousConsumptionPage.getJsonResponse("https://particulier.edf.fr/services/rest/referentiel/historicTEMPOStore?dateBegin="+yearBegin+"&dateEnd="+(yearBegin+1));
+            JsonObject historyObject=JsonUtils.getJsonResponse("https://particulier.edf.fr/services/rest/referentiel/historicTEMPOStore?dateBegin="+yearBegin+"&dateEnd="+(yearBegin+1));
             if(historyObject!=null)
             {
                 JsonArray history=historyObject.getAsJsonArray("dates");

@@ -2,13 +2,7 @@ package sky.epaperscreenupdater.page;
 
 import java.awt.Font;
 import java.awt.Graphics2D;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.List;
-import sky.epaperscreenupdater.Logger;
 import sky.epaperscreenupdater.RefreshType;
 import sky.program.Duration;
 
@@ -39,7 +33,7 @@ public class WasherSupervisionPage extends AbstractSinglePage
         Font baseFont=FREDOKA_ONE_FONT.deriveFont(18f);
         g2d.setFont(baseFont);
         long baseTime=System.currentTimeMillis();
-        List<WasherInstantaneousConsumption> consumptions=loadWasherInstantaneousConsumptions(baseTime-Duration.of(1).day(),baseTime+Duration.of(10).second());
+        List<WasherInstantaneousConsumption> consumptions=ElectricityUtils.loadWasherInstantaneousConsumptions(baseTime-Duration.of(1).day(),baseTime+Duration.of(10).second());
         //WasherInstantaneousConsumption lastNullConsumption=null;
         WasherInstantaneousConsumption lastLowConsumption=null;
         WasherInstantaneousConsumption lastWorkingConsumption=null;
@@ -101,38 +95,5 @@ public class WasherSupervisionPage extends AbstractSinglePage
     public static void main(String[] args)
     {
         new WasherSupervisionPage(null).potentiallyUpdate();
-    }
-
-    public static List<WasherInstantaneousConsumption> loadWasherInstantaneousConsumptions(long startTimeRequested,long stopTimeRequested)
-    {
-        try
-        {
-            try(Connection connection=Database.getConnection())
-            {
-                long startTime=System.currentTimeMillis();
-                List<WasherInstantaneousConsumption> washerInstantaneousConsumptions=new ArrayList<>();
-                try(Statement statement=connection.createStatement(ResultSet.TYPE_FORWARD_ONLY,ResultSet.CONCUR_READ_ONLY))
-                {
-                    try(ResultSet resultSet=statement.executeQuery("SELECT time,pricingPeriod,consumer7Consumption as consumption FROM instantaneous_consumption WHERE time>="+startTimeRequested+" AND time<"+stopTimeRequested+" ORDER BY time ASC;"))
-                    {
-                        while(resultSet.next())
-                        {
-                            long time=resultSet.getLong("time");
-                            PricingPeriod pricingPeriod=PricingPeriod.getPricingPeriodForCode(resultSet.getInt("pricingPeriod"));
-                            int consumption=resultSet.getInt("consumption");
-                            washerInstantaneousConsumptions.add(new WasherInstantaneousConsumption(time,pricingPeriod,consumption));
-                        }
-                    }
-                }
-//                Logger.LOGGER.info(washerInstantaneousConsumptions.size()+" rows fetched in "+(System.currentTimeMillis()-startTime)+" ms");
-                return washerInstantaneousConsumptions;
-            }
-        }
-        catch(NotAvailableDatabaseException|SQLException e)
-        {
-            Logger.LOGGER.error("Unable to parse the request response ("+e.toString()+")");
-            e.printStackTrace();
-            return new ArrayList<>(0);
-        }
     }
 }

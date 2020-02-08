@@ -284,7 +284,7 @@ public class IridiumFlareForecastPage extends AbstractSinglePage
 
             g2d.setFont(compactFont);
 
-            string=HomeWeatherPage.convertWindAngle(iridiumFlare.getAzimuth());
+            string=WeatherUtils.convertWindAngle(iridiumFlare.getAzimuth());
             stringWidth=(int)Math.ceil(compactFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth())+12;
             g2d.drawString(string,baseX+18-stringWidth/2,67);
             g2d.setStroke(largeStroke);
