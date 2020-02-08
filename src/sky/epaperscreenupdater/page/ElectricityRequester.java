@@ -21,7 +21,7 @@ import sky.epaperscreenupdater.Logger;
 import sky.epaperscreenupdater.Main;
 import sky.program.Duration;
 
-public class EnergyConsumptionProvider
+public class ElectricityRequester
 {
     private static final Random RANDOM=new Random();
 
