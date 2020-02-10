@@ -9,7 +9,6 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 import sky.epaperscreenupdater.Logger;
-import sky.epaperscreenupdater.RefreshType;
 import sky.program.Duration;
 
 public class TempoCalendarPage extends AbstractSinglePage
@@ -22,11 +21,6 @@ public class TempoCalendarPage extends AbstractSinglePage
     public String getName()
     {
         return "Calendrier Tempo";
-    }
-
-    protected RefreshType getRefreshType()
-    {
-        return RefreshType.PARTIAL_REFRESH;
     }
 
     protected long getMinimalRefreshDelay()

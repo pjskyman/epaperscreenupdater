@@ -3,8 +3,8 @@ package sky.epaperscreenupdater.page;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import sky.epaperscreenupdater.BufferedScreen;
 import sky.epaperscreenupdater.RotationDirection;
+import sky.epaperscreenupdater.Screen;
 
 /**
  * Page affichable sur l'écran e-paper. Cette page peut être une page autonome
@@ -63,15 +63,15 @@ public interface Page
     public Page potentiallyUpdate();
 
     /**
-     * Retourne un objet {@link BufferedScreen} représentant le contenu de
+     * Retourne un objet {@link Screen} représentant le contenu de
      * cette page. Le contenu de la page doit être généré à l'avance (et
      * régulièrement) par la méthode
      * {@link #potentiallyUpdate() potentiallyUpdate()} ; cette
      * méthode ne fait alors rien de spécial à part retourner l'instance
-     * interne de {@link BufferedScreen} mise en cache.
+     * interne de {@link Screen} mise en cache.
      * @see #potentiallyUpdate() potentiallyUpdate()
      */
-    public BufferedScreen getScreen();
+    public Screen getScreen();
 
     /**
      * Indique à cette page qu'un clic a été effectué.

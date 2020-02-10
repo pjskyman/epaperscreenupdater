@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import sky.epaperscreenupdater.Logger;
-import sky.epaperscreenupdater.RefreshType;
 import sky.netatmo.Measure;
 import sky.program.Duration;
 
@@ -100,11 +99,6 @@ public abstract class AbstractNetatmoCurvePage extends AbstractSinglePage
     protected AbstractNetatmoCurvePage(Page parentPage)
     {
         super(parentPage);
-    }
-
-    protected RefreshType getRefreshType()
-    {
-        return RefreshType.PARTIAL_REFRESH;
     }
 
     protected void populateImage(Graphics2D g2d) throws VetoException,Exception

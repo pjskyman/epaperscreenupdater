@@ -12,7 +12,6 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
-import sky.epaperscreenupdater.RefreshType;
 import sky.program.Duration;
 
 public class HourlyWeatherForecastPage extends AbstractSinglePage
@@ -30,11 +29,6 @@ public class HourlyWeatherForecastPage extends AbstractSinglePage
     public String getName()
     {
         return "Prévisions météo H/H"+(rank>1?" +"+((rank-1)*7)+"h":"");
-    }
-
-    protected RefreshType getRefreshType()
-    {
-        return RefreshType.PARTIAL_REFRESH;
     }
 
     protected long getMinimalRefreshDelay()

@@ -8,7 +8,6 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.NoSuchElementException;
-import sky.epaperscreenupdater.RefreshType;
 import sky.program.Duration;
 
 public class DelayedStartTablePage extends AbstractSinglePage
@@ -21,11 +20,6 @@ public class DelayedStartTablePage extends AbstractSinglePage
     public String getName()
     {
         return "Abaque différés LV/LL";
-    }
-
-    protected RefreshType getRefreshType()
-    {
-        return RefreshType.PARTIAL_REFRESH;
     }
 
     protected long getMinimalRefreshDelay()

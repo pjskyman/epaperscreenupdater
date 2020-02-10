@@ -3,7 +3,6 @@ package sky.epaperscreenupdater.page;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.util.Map;
-import sky.epaperscreenupdater.RefreshType;
 import sky.netatmo.Measure;
 import sky.program.Duration;
 
@@ -17,11 +16,6 @@ public class CarbonDioxydeWeightPage extends AbstractSinglePage
     public String getName()
     {
         return "Poids de CO2";
-    }
-
-    protected RefreshType getRefreshType()
-    {
-        return RefreshType.PARTIAL_REFRESH;
     }
 
     protected long getMinimalRefreshDelay()

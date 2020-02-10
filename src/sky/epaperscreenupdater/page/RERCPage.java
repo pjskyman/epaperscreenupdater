@@ -17,7 +17,6 @@ import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 import sky.epaperscreenupdater.Logger;
-import sky.epaperscreenupdater.RefreshType;
 import sky.program.Duration;
 
 public class RERCPage extends AbstractSinglePage
@@ -30,11 +29,6 @@ public class RERCPage extends AbstractSinglePage
     public String getName()
     {
         return "RER C";
-    }
-
-    protected RefreshType getRefreshType()
-    {
-        return RefreshType.PARTIAL_REFRESH;
     }
 
     protected long getMinimalRefreshDelay()

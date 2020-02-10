@@ -9,7 +9,6 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import javax.imageio.ImageIO;
 import sky.epaperscreenupdater.Logger;
-import sky.epaperscreenupdater.RefreshType;
 import sky.program.Duration;
 
 public class AboutPage extends AbstractSinglePage
@@ -22,11 +21,6 @@ public class AboutPage extends AbstractSinglePage
     public String getName()
     {
         return "À propos";
-    }
-
-    protected RefreshType getRefreshType()
-    {
-        return RefreshType.PARTIAL_REFRESH;
     }
 
     protected long getMinimalRefreshDelay()

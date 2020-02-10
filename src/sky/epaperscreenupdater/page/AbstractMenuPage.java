@@ -2,11 +2,10 @@ package sky.epaperscreenupdater.page;
 
 import java.util.ArrayList;
 import java.util.List;
-import sky.epaperscreenupdater.BufferedScreen;
 import sky.epaperscreenupdater.IncrustGenerator;
 import sky.epaperscreenupdater.Logger;
-import sky.epaperscreenupdater.RefreshType;
 import sky.epaperscreenupdater.RotationDirection;
+import sky.epaperscreenupdater.Screen;
 
 /**
  * Squelette de menu. Un menu est avant tout une page, mais contient une
@@ -24,7 +23,7 @@ public abstract class AbstractMenuPage extends AbstractPage
      * Rang de la sous-page actuelle.
      * <li>Vaut -1 pour indiquer qu'on est pas encore rentré dans le menu.
      * <li>Vaut un rang valide de sous-page pour indiquer qu'on affiche une
-     * sous-page réelle.
+     * sous-page réelle [1-n].
      */
     protected int currentPageRank;
     /**
@@ -32,14 +31,15 @@ public abstract class AbstractMenuPage extends AbstractPage
      * <li>Vaut -1 pour indiquer qu'on ne sélectionne rien.
      * <li>Vaut 0 pour indiquer qu'on désire sortir du menu.
      * <li>Vaut un rang valide de sous-page pour indiquer qu'on a réellement
-     * sélectionné une sous-page.
+     * sélectionné une sous-page [1-n].
      */
     protected int currentlySelectedPageRank;
     private int cachedCurrentPageRank;
     private int cachedCurrentlySelectedPageRank;
-    private BufferedScreen cachedPageScreen;
-    private BufferedScreen cachedSelectionIncrustScreen;
-    private static final BufferedScreen BLANK_PIXELS=new BufferedScreen(RefreshType.PARTIAL_REFRESH).initializeBlank();
+    private Screen cachedPageScreen;
+    private Screen cachedSelectionIncrustScreen;
+    private static final Screen BLANK_SCREEN=new Screen().initializeBlank();
+    private static final Screen TRANSPARENT_SCREEN=new Screen().initializeTransparent();
 
     protected AbstractMenuPage(Page parentPage)
     {
@@ -49,7 +49,7 @@ public abstract class AbstractMenuPage extends AbstractPage
         currentlySelectedPageRank=-1;
         cachedCurrentPageRank=-2;
         cachedCurrentlySelectedPageRank=-2;
-        cachedPageScreen=new BufferedScreen(RefreshType.PARTIAL_REFRESH);
+        cachedPageScreen=new Screen();
         cachedSelectionIncrustScreen=new IncrustGenerator(null).generateEmptyIncrust();
     }
 
@@ -74,15 +74,10 @@ public abstract class AbstractMenuPage extends AbstractPage
         return subpages.size();
     }
 
-    protected RefreshType getRefreshType()
-    {
-        return RefreshType.PARTIAL_REFRESH;
-    }
-
     public synchronized Page potentiallyUpdate()
     {
         subpages.forEach(Page::potentiallyUpdate);//avant tout le reste, comme ça on pourra récupérer leurs nouveaux pixels le cas échéant
-        BufferedScreen tempPageScreen=currentPageRank==-1?BLANK_PIXELS:subpages.get(currentPageRank-1).getScreen();
+        Screen tempPageScreen=currentPageRank==-1?BLANK_SCREEN:subpages.get(currentPageRank-1).getScreen();
         if(currentPageRank!=cachedCurrentPageRank||currentlySelectedPageRank!=cachedCurrentlySelectedPageRank||tempPageScreen!=cachedPageScreen)
         {
             Logger.LOGGER.info("Menu \""+getName()+"\" needs to be updated");

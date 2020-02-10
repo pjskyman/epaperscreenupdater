@@ -5,13 +5,12 @@ import java.awt.FontFormatException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import sky.epaperscreenupdater.BufferedScreen;
 import sky.epaperscreenupdater.Logger;
-import sky.epaperscreenupdater.RefreshType;
+import sky.epaperscreenupdater.Screen;
 
 public abstract class AbstractPage implements Page
 {
-    protected final BufferedScreen screen;
+    protected final Screen screen;
     protected final Page parentPage;
     public static final Font FREDOKA_ONE_FONT;
 
@@ -33,18 +32,16 @@ public abstract class AbstractPage implements Page
 
     protected AbstractPage(Page parentPage)
     {
-        screen=new BufferedScreen(getRefreshType());
+        screen=new Screen();
         this.parentPage=parentPage;
     }
-
-    protected abstract RefreshType getRefreshType();
 
     public Page getParentPage()
     {
         return parentPage;
     }
 
-    public BufferedScreen getScreen()
+    public Screen getScreen()
     {
         return screen;
     }

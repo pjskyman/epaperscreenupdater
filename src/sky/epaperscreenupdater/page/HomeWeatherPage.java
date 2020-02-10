@@ -6,7 +6,6 @@ import java.awt.geom.AffineTransform;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import sky.epaperscreenupdater.RefreshType;
 import sky.netatmo.Measure;
 import sky.netatmo.MeasurementType;
 import sky.program.Duration;
@@ -21,11 +20,6 @@ public class HomeWeatherPage extends AbstractSinglePage
     public String getName()
     {
         return "Données météo (actuelles)";
-    }
-
-    protected RefreshType getRefreshType()
-    {
-        return RefreshType.PARTIAL_REFRESH;
     }
 
     protected long getMinimalRefreshDelay()

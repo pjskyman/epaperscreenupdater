@@ -3,7 +3,6 @@ package sky.epaperscreenupdater.page;
 import java.awt.Graphics2D;
 import java.awt.geom.Path2D;
 import java.util.List;
-import sky.epaperscreenupdater.RefreshType;
 import sky.program.Duration;
 
 public class InstantaneousConsumptionGraphPage extends AbstractSinglePage
@@ -21,11 +20,6 @@ public class InstantaneousConsumptionGraphPage extends AbstractSinglePage
     public String getName()
     {
         return "Graph. puiss. instan.";
-    }
-
-    protected RefreshType getRefreshType()
-    {
-        return RefreshType.PARTIAL_REFRESH;
     }
 
     @Override

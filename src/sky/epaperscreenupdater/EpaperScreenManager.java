@@ -135,7 +135,7 @@ public class EpaperScreenManager
             for(int j=0;j<epaperScreenSize.getBigHeight();j++)
                 for(int i=0;i<epaperScreenSize.getLittleWidth();i++)
                 {
-                    if(pixels.isIOk(i)&&pixels.getPixel(i,j).getValue()==1)
+                    if(pixels.isIOk(i)&&pixels.getPixelState(i,j).getValue()==1)
                         b|=0x80>>(i%8);
                     if(i%8==7)
                     {

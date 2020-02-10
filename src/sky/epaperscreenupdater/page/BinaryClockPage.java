@@ -3,7 +3,6 @@ package sky.epaperscreenupdater.page;
 import java.awt.Graphics2D;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import sky.epaperscreenupdater.RefreshType;
 import sky.program.Duration;
 
 public class BinaryClockPage extends AbstractSinglePage
@@ -16,11 +15,6 @@ public class BinaryClockPage extends AbstractSinglePage
     public String getName()
     {
         return "Horloge binaire";
-    }
-
-    protected RefreshType getRefreshType()
-    {
-        return RefreshType.PARTIAL_REFRESH_IN_FAST_MODE;
     }
 
     protected long getMinimalRefreshDelay()

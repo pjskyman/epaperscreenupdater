@@ -60,7 +60,7 @@ public abstract class AbstractSinglePage extends AbstractPage
                     {
                         ImageIO.write(sourceImage,"png",outputStream);
                     }
-                screen.writeImage(sourceImage);
+                screen.setImage(sourceImage);
                 Logger.LOGGER.info("Page \""+getName()+"\" updated successfully");
             }
             catch(VetoException e)

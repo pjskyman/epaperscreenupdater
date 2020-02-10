@@ -1,6 +1,6 @@
 package sky.epaperscreenupdater;
 
-public enum Pixel
+public enum PixelState
 {
     BLACK
     {

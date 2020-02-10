@@ -5,15 +5,15 @@ import java.awt.image.WritableRaster;
 
 public class Pixels
 {
-    private final Pixel[][] pixels;
+    private final PixelState[][] pixelStates;
     private final RefreshType refreshType;
 
     public Pixels(RefreshType refreshType)
     {
-        pixels=new Pixel[EpaperScreenManager.getEpaperScreenSize().getLittleWidth()][EpaperScreenManager.getEpaperScreenSize().getBigHeight()];
+        pixelStates=new PixelState[EpaperScreenManager.getEpaperScreenSize().getLittleWidth()][EpaperScreenManager.getEpaperScreenSize().getBigHeight()];
         for(int j=0;j<EpaperScreenManager.getEpaperScreenSize().getLittleWidth();j++)
             for(int i=0;i<EpaperScreenManager.getEpaperScreenSize().getBigHeight();i++)
-                pixels[j][i]=Pixel.WHITE;
+                pixelStates[j][i]=PixelState.WHITE;
         this.refreshType=refreshType;
     }
 
@@ -23,7 +23,7 @@ public class Pixels
         WritableRaster sourceRaster=image.getRaster();
         for(int x=0;x<image.getWidth();x++)
             for(int y=0;y<image.getHeight();y++)
-                pixels[EpaperScreenManager.getEpaperScreenSize().getLittleWidth()-1-y][x]=(sourcePixel=sourceRaster.getPixel(x,y,sourcePixel))[1]==128?Pixel.TRANSPARENT:sourcePixel[1]>0?Pixel.WHITE:Pixel.BLACK;
+                pixelStates[EpaperScreenManager.getEpaperScreenSize().getLittleWidth()-1-y][x]=(sourcePixel=sourceRaster.getPixel(x,y,sourcePixel))[1]==128?PixelState.TRANSPARENT:sourcePixel[1]>0?PixelState.WHITE:PixelState.BLACK;
         return this;
     }
 
@@ -32,16 +32,16 @@ public class Pixels
         Pixels newPixels=new Pixels(refreshType.combine(image.refreshType));
         for(int j=0;j<EpaperScreenManager.getEpaperScreenSize().getLittleWidth();j++)
             for(int i=0;i<EpaperScreenManager.getEpaperScreenSize().getBigHeight();i++)
-                if(image.pixels[j][i]!=Pixel.TRANSPARENT)
-                    newPixels.pixels[j][i]=image.pixels[j][i];
+                if(image.pixelStates[j][i]!=PixelState.TRANSPARENT)
+                    newPixels.pixelStates[j][i]=image.pixelStates[j][i];
                 else
-                    newPixels.pixels[j][i]=pixels[j][i];
+                    newPixels.pixelStates[j][i]=pixelStates[j][i];
         return newPixels;
     }
 
-    public Pixel getPixel(int i,int j)
+    public PixelState getPixelState(int i,int j)
     {
-        return pixels[i][j];
+        return pixelStates[i][j];
     }
 
     public RefreshType getRefreshType()
@@ -51,6 +51,6 @@ public class Pixels
 
     public boolean isIOk(int i)
     {
-        return i<pixels.length;
+        return i<pixelStates.length;
     }
 }

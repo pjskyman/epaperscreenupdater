@@ -16,22 +16,22 @@ public class IncrustGenerator
         this.page=page;
     }
 
-    public BufferedScreen generateStandardIncrust()
+    public Screen generateStandardIncrust()
     {
         return generateIncrust(false,false);
     }
 
-    public BufferedScreen generateEmptyIncrust()
+    public Screen generateEmptyIncrust()
     {
         return generateIncrust(true,false);
     }
 
-    public BufferedScreen generateOutMessageIncrust()
+    public Screen generateOutMessageIncrust()
     {
         return generateIncrust(false,true);
     }
 
-    private BufferedScreen generateIncrust(boolean empty,boolean outMessage)
+    private Screen generateIncrust(boolean empty,boolean outMessage)
     {
         try
         {
@@ -77,13 +77,13 @@ public class IncrustGenerator
 //            {
 //                ImageIO.write(sourceImage,"png",outputStream);
 //            }
-            return new BufferedScreen(empty?RefreshType.PARTIAL_REFRESH:RefreshType.PARTIAL_REFRESH_IN_FAST_MODE).writeImage(sourceImage);
+            return new Screen(empty?RefreshType.PARTIAL_REFRESH:RefreshType.PARTIAL_REFRESH_IN_FAST_MODE).setImage(sourceImage);
         }
         catch(Exception e)
         {
             Logger.LOGGER.error("Unknown error");
             e.printStackTrace();
-            return new BufferedScreen(RefreshType.PARTIAL_REFRESH_IN_FAST_MODE);
+            return new Screen(RefreshType.PARTIAL_REFRESH_IN_FAST_MODE);
         }
     }
 }

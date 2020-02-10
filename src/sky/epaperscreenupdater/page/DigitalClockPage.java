@@ -4,7 +4,6 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import sky.epaperscreenupdater.RefreshType;
 import sky.program.Duration;
 
 public class DigitalClockPage extends AbstractSinglePage
@@ -17,11 +16,6 @@ public class DigitalClockPage extends AbstractSinglePage
     public String getName()
     {
         return "Horloge numérique";
-    }
-
-    protected RefreshType getRefreshType()
-    {
-        return RefreshType.PARTIAL_REFRESH_IN_FAST_MODE;
     }
 
     protected long getMinimalRefreshDelay()

@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map.Entry;
 import java.util.Properties;
-import sky.epaperscreenupdater.RefreshType;
 import sky.program.Duration;
 
 public class AnniversaryPage extends AbstractSinglePage
@@ -28,11 +27,6 @@ public class AnniversaryPage extends AbstractSinglePage
     public String getName()
     {
         return "Anniversaires";
-    }
-
-    protected RefreshType getRefreshType()
-    {
-        return RefreshType.PARTIAL_REFRESH;
     }
 
     protected long getMinimalRefreshDelay()

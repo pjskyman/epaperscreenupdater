@@ -8,7 +8,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.imageio.ImageIO;
 import net.glxn.qrgen.javase.QRCode;
-import sky.epaperscreenupdater.RefreshType;
 import sky.program.Duration;
 
 public class QRCodeClockPage extends AbstractSinglePage
@@ -21,11 +20,6 @@ public class QRCodeClockPage extends AbstractSinglePage
     public String getName()
     {
         return "Horloge QR code";
-    }
-
-    protected RefreshType getRefreshType()
-    {
-        return RefreshType.PARTIAL_REFRESH_IN_FAST_MODE;
     }
 
     protected long getMinimalRefreshDelay()

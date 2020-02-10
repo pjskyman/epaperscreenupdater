@@ -4,7 +4,6 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import sky.epaperscreenupdater.RefreshType;
 import sky.program.Duration;
 
 public class TodayPricePage extends AbstractSinglePage
@@ -17,11 +16,6 @@ public class TodayPricePage extends AbstractSinglePage
     public String getName()
     {
         return "Prix d'aujourd'hui";
-    }
-
-    protected RefreshType getRefreshType()
-    {
-        return RefreshType.PARTIAL_REFRESH;
     }
 
     protected long getMinimalRefreshDelay()

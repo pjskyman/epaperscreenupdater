@@ -13,7 +13,6 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
-import sky.epaperscreenupdater.RefreshType;
 import sky.program.Duration;
 
 public class DailyWeatherForecast1Page extends AbstractSinglePage
@@ -26,11 +25,6 @@ public class DailyWeatherForecast1Page extends AbstractSinglePage
     public String getName()
     {
         return "Prévisions météo 1/2";
-    }
-
-    protected RefreshType getRefreshType()
-    {
-        return RefreshType.PARTIAL_REFRESH;
     }
 
     protected long getMinimalRefreshDelay()

@@ -3,7 +3,6 @@ package sky.epaperscreenupdater.page;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.util.List;
-import sky.epaperscreenupdater.RefreshType;
 import sky.program.Duration;
 
 public class WasherSupervisionPage extends AbstractSinglePage
@@ -16,11 +15,6 @@ public class WasherSupervisionPage extends AbstractSinglePage
     public String getName()
     {
         return "Surveillance LV/LL";
-    }
-
-    protected RefreshType getRefreshType()
-    {
-        return RefreshType.PARTIAL_REFRESH;
     }
 
     protected long getMinimalRefreshDelay()

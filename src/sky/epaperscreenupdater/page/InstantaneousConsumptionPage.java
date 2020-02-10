@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.Map;
 import org.apache.commons.math3.fitting.PolynomialCurveFitter;
 import org.apache.commons.math3.fitting.WeightedObservedPoint;
-import sky.epaperscreenupdater.RefreshType;
 import sky.netatmo.Measure;
 import sky.netatmo.MeasurementType;
 import sky.program.Duration;
@@ -31,11 +30,6 @@ public class InstantaneousConsumptionPage extends AbstractSinglePage
     public String getName()
     {
         return "Puissances instantanées";
-    }
-
-    protected RefreshType getRefreshType()
-    {
-        return RefreshType.PARTIAL_REFRESH;
     }
 
     @Override

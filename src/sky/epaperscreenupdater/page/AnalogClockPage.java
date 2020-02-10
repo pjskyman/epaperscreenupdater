@@ -5,7 +5,6 @@ import java.awt.Graphics2D;
 import java.awt.geom.Line2D;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import sky.epaperscreenupdater.RefreshType;
 import sky.program.Duration;
 
 public class AnalogClockPage extends AbstractSinglePage
@@ -18,11 +17,6 @@ public class AnalogClockPage extends AbstractSinglePage
     public String getName()
     {
         return "Horloge analogique";
-    }
-
-    protected RefreshType getRefreshType()
-    {
-        return RefreshType.PARTIAL_REFRESH_IN_FAST_MODE;
     }
 
     protected long getMinimalRefreshDelay()

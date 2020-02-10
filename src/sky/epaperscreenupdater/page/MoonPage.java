@@ -25,7 +25,6 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import javax.imageio.ImageIO;
 import sky.epaperscreenupdater.Logger;
-import sky.epaperscreenupdater.RefreshType;
 import sky.program.Duration;
 
 public class MoonPage extends AbstractSinglePage
@@ -38,11 +37,6 @@ public class MoonPage extends AbstractSinglePage
     public String getName()
     {
         return "Lune actuelle";
-    }
-
-    protected RefreshType getRefreshType()
-    {
-        return RefreshType.PARTIAL_REFRESH;
     }
 
     protected long getMinimalRefreshDelay()

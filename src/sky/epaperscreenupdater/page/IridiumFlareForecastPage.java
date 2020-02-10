@@ -26,7 +26,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import sky.epaperscreenupdater.RefreshType;
 import sky.program.Duration;
 
 public class IridiumFlareForecastPage extends AbstractSinglePage
@@ -41,11 +40,6 @@ public class IridiumFlareForecastPage extends AbstractSinglePage
     public String getName()
     {
         return "Flash Iridium";
-    }
-
-    protected RefreshType getRefreshType()
-    {
-        return RefreshType.PARTIAL_REFRESH;
     }
 
     protected long getMinimalRefreshDelay()
