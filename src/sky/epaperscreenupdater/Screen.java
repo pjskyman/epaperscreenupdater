@@ -22,6 +22,7 @@ public class Screen
         synchronized(lockObject)
         {
             workingPixelMatrix.initializeBlank();
+            validatedPixelMatrix=null;
             validatedPixelMatrix=workingPixelMatrix;
             modificationCounter++;
             workingPixelMatrix=new PixelMatrix();
@@ -34,6 +35,7 @@ public class Screen
         synchronized(lockObject)
         {
             workingPixelMatrix.initializeTransparent();
+            validatedPixelMatrix=null;
             validatedPixelMatrix=workingPixelMatrix;
             modificationCounter++;
             workingPixelMatrix=new PixelMatrix();
@@ -46,6 +48,7 @@ public class Screen
         synchronized(lockObject)
         {
             workingPixelMatrix.setImage(image);
+            validatedPixelMatrix=null;
             validatedPixelMatrix=workingPixelMatrix;
             modificationCounter++;
             workingPixelMatrix=new PixelMatrix();
