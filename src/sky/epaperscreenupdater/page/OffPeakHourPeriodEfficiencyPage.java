@@ -2,6 +2,7 @@ package sky.epaperscreenupdater.page;
 
 import java.awt.Font;
 import java.awt.Graphics2D;
+import java.text.ParseException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import sky.program.Duration;
@@ -86,45 +87,57 @@ public class OffPeakHourPeriodEfficiencyPage extends AbstractSinglePage
         g2d.drawLine(yesterdayProrataAbscissa,71,yesterdayProrataAbscissa,72);
 
         OffPeakHourPeriodEfficiency todayOffPeakHourPeriodEfficiency=ElectricityUtils.calculateOffPeakHourPeriodEfficiency(todayDay,todayMonth,todayYear);
-        String todayString="\u2013 Aujourd'hui (";
-        PricingPeriod todayPricingPeriod=todayOffPeakHourPeriodEfficiency.getPricingPeriod();
-        todayString+=(todayPricingPeriod.isBlueDay()?"bleu":todayPricingPeriod.isWhiteDay()?"blanc":"rouge");
-        todayString+=") : ";
-        double todaySavedMoney;
-        if(todayPricingPeriod.isBlueDay())
-            todaySavedMoney=todayOffPeakHourPeriodEfficiency.getOffPeakConsumption()*(PricingPeriod.BLUE_DAY_PEAK_HOUR.getPrice()-PricingPeriod.BLUE_DAY_OFF_PEAK_HOUR.getPrice());
-        else
-            if(todayPricingPeriod.isWhiteDay())
-                todaySavedMoney=todayOffPeakHourPeriodEfficiency.getOffPeakConsumption()*(PricingPeriod.WHITE_DAY_PEAK_HOUR.getPrice()-PricingPeriod.WHITE_DAY_OFF_PEAK_HOUR.getPrice());
+        double efficiency;
+        try
+        {
+            efficiency=DECIMAL_0_FORMAT.parse(DECIMAL_0_FORMAT.format(todayOffPeakHourPeriodEfficiency.getConsumptionEfficiency())).doubleValue();
+        }
+        catch(ParseException e)
+        {
+            efficiency=0d;
+        }
+        if(efficiency>0d)
+        {
+            String todayString="\u2013 Aujourd'hui (";
+            PricingPeriod todayPricingPeriod=todayOffPeakHourPeriodEfficiency.getPricingPeriod();
+            todayString+=(todayPricingPeriod.isBlueDay()?"bleu":todayPricingPeriod.isWhiteDay()?"blanc":"rouge");
+            todayString+=") : ";
+            double todaySavedMoney;
+            if(todayPricingPeriod.isBlueDay())
+                todaySavedMoney=todayOffPeakHourPeriodEfficiency.getOffPeakConsumption()*(PricingPeriod.BLUE_DAY_PEAK_HOUR.getPrice()-PricingPeriod.BLUE_DAY_OFF_PEAK_HOUR.getPrice());
             else
-                todaySavedMoney=todayOffPeakHourPeriodEfficiency.getOffPeakConsumption()*(PricingPeriod.RED_DAY_PEAK_HOUR.getPrice()-PricingPeriod.RED_DAY_OFF_PEAK_HOUR.getPrice());
-        todayString+=DECIMAL_00_FORMAT.format(todaySavedMoney)+" € écon.";
-        g2d.drawString(todayString,1,89);
+                if(todayPricingPeriod.isWhiteDay())
+                    todaySavedMoney=todayOffPeakHourPeriodEfficiency.getOffPeakConsumption()*(PricingPeriod.WHITE_DAY_PEAK_HOUR.getPrice()-PricingPeriod.WHITE_DAY_OFF_PEAK_HOUR.getPrice());
+                else
+                    todaySavedMoney=todayOffPeakHourPeriodEfficiency.getOffPeakConsumption()*(PricingPeriod.RED_DAY_PEAK_HOUR.getPrice()-PricingPeriod.RED_DAY_OFF_PEAK_HOUR.getPrice());
+            todayString+=DECIMAL_00_FORMAT.format(todaySavedMoney)+" € écon.";
+            g2d.drawString(todayString,1,89);
 
-        g2d.drawString("kWh",1,107);
-        g2d.drawRect(45,94,195,12);
-        g2d.drawString(DECIMAL_0_FORMAT.format(todayOffPeakHourPeriodEfficiency.getConsumptionEfficiency())+" %",245,107);
-        for(int i=46;i<46+(int)(todayOffPeakHourPeriodEfficiency.getConsumptionEfficiency()*194d/100d);i++)
-            g2d.drawLine(i,94,i,94+12);
-        g2d.drawLine(thirtyThreePercentAbscissa,93,thirtyThreePercentAbscissa,92);
-        g2d.drawLine(thirtyThreePercentAbscissa,107,thirtyThreePercentAbscissa,108);
+            g2d.drawString("kWh",1,107);
+            g2d.drawRect(45,94,195,12);
+            g2d.drawString(DECIMAL_0_FORMAT.format(todayOffPeakHourPeriodEfficiency.getConsumptionEfficiency())+" %",245,107);
+            for(int i=46;i<46+(int)(todayOffPeakHourPeriodEfficiency.getConsumptionEfficiency()*194d/100d);i++)
+                g2d.drawLine(i,94,i,94+12);
+            g2d.drawLine(thirtyThreePercentAbscissa,93,thirtyThreePercentAbscissa,92);
+            g2d.drawLine(thirtyThreePercentAbscissa,107,thirtyThreePercentAbscissa,108);
 
-        g2d.drawString("€",1,125);
-        g2d.drawRect(45,112,195,12);
-        g2d.drawString(DECIMAL_0_FORMAT.format(todayOffPeakHourPeriodEfficiency.getPriceEfficiency())+" %",245,125);
-        for(int i=46;i<46+(int)(todayOffPeakHourPeriodEfficiency.getPriceEfficiency()*194d/100d);i++)
-            g2d.drawLine(i,112,i,112+12);
-        double todayProrata;
-        if(todayPricingPeriod.isBlueDay())
-            todayProrata=(1d/3d*PricingPeriod.BLUE_DAY_OFF_PEAK_HOUR.getPrice())/(2d/3d*PricingPeriod.BLUE_DAY_PEAK_HOUR.getPrice()+1d/3d*PricingPeriod.BLUE_DAY_OFF_PEAK_HOUR.getPrice());
-        else
-            if(todayPricingPeriod.isWhiteDay())
-                todayProrata=(1d/3d*PricingPeriod.WHITE_DAY_OFF_PEAK_HOUR.getPrice())/(2d/3d*PricingPeriod.WHITE_DAY_PEAK_HOUR.getPrice()+1d/3d*PricingPeriod.WHITE_DAY_OFF_PEAK_HOUR.getPrice());
+            g2d.drawString("€",1,125);
+            g2d.drawRect(45,112,195,12);
+            g2d.drawString(DECIMAL_0_FORMAT.format(todayOffPeakHourPeriodEfficiency.getPriceEfficiency())+" %",245,125);
+            for(int i=46;i<46+(int)(todayOffPeakHourPeriodEfficiency.getPriceEfficiency()*194d/100d);i++)
+                g2d.drawLine(i,112,i,112+12);
+            double todayProrata;
+            if(todayPricingPeriod.isBlueDay())
+                todayProrata=(1d/3d*PricingPeriod.BLUE_DAY_OFF_PEAK_HOUR.getPrice())/(2d/3d*PricingPeriod.BLUE_DAY_PEAK_HOUR.getPrice()+1d/3d*PricingPeriod.BLUE_DAY_OFF_PEAK_HOUR.getPrice());
             else
-                todayProrata=(1d/3d*PricingPeriod.RED_DAY_OFF_PEAK_HOUR.getPrice())/(2d/3d*PricingPeriod.RED_DAY_PEAK_HOUR.getPrice()+1d/3d*PricingPeriod.RED_DAY_OFF_PEAK_HOUR.getPrice());
-        int todayProrataAbscissa=46+(int)(194d*todayProrata);
-        g2d.drawLine(todayProrataAbscissa,111,todayProrataAbscissa,110);
-        g2d.drawLine(todayProrataAbscissa,125,todayProrataAbscissa,126);
+                if(todayPricingPeriod.isWhiteDay())
+                    todayProrata=(1d/3d*PricingPeriod.WHITE_DAY_OFF_PEAK_HOUR.getPrice())/(2d/3d*PricingPeriod.WHITE_DAY_PEAK_HOUR.getPrice()+1d/3d*PricingPeriod.WHITE_DAY_OFF_PEAK_HOUR.getPrice());
+                else
+                    todayProrata=(1d/3d*PricingPeriod.RED_DAY_OFF_PEAK_HOUR.getPrice())/(2d/3d*PricingPeriod.RED_DAY_PEAK_HOUR.getPrice()+1d/3d*PricingPeriod.RED_DAY_OFF_PEAK_HOUR.getPrice());
+            int todayProrataAbscissa=46+(int)(194d*todayProrata);
+            g2d.drawLine(todayProrataAbscissa,111,todayProrataAbscissa,110);
+            g2d.drawLine(todayProrataAbscissa,125,todayProrataAbscissa,126);
+        }
     }
 
     protected String getDebugImageFileName()
