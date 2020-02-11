@@ -9,7 +9,7 @@ public class PixelMatrix
 
     public PixelMatrix()
     {
-        data=new byte[EpaperScreenManager.getEpaperScreenSize().getLittleWidth()*EpaperScreenManager.getEpaperScreenSize().getBigHeight()/4];
+        data=new byte[EpaperScreenManager.LITTLE_WIDTH*EpaperScreenManager.BIG_HEIGHT/4];
     }
 
     public void initializeBlank()
@@ -30,12 +30,10 @@ public class PixelMatrix
         int address;
         int offset;
         byte b;
-        for(int x=0;x<EpaperScreenManager.getEpaperScreenSize().getBigHeight();x++)
-            for(int y=0;y<EpaperScreenManager.getEpaperScreenSize().getLittleWidth();y++)
+        for(int y=0;y<EpaperScreenManager.LITTLE_WIDTH;y++)
+            for(int x=0;x<EpaperScreenManager.BIG_HEIGHT;x++)
             {
-                j=EpaperScreenManager.getEpaperScreenSize().getLittleWidth()-1-y;
-                i=x;
-                index=j*EpaperScreenManager.getEpaperScreenSize().getLittleWidth()+i;
+                index=y*EpaperScreenManager.BIG_HEIGHT+x;
                 address=index/4;
                 offset=index%4;
                 if(offset==0)
@@ -54,6 +52,8 @@ public class PixelMatrix
 
     public void setImage(BufferedImage image)
     {
+        if(image.getWidth()!=EpaperScreenManager.BIG_HEIGHT||image.getHeight()!=EpaperScreenManager.LITTLE_WIDTH)
+            throw new IllegalArgumentException("Image has wrong dimensions");
         WritableRaster sourceRaster=image.getRaster();
         int i;
         int j;
@@ -64,14 +64,12 @@ public class PixelMatrix
         int address;
         int offset;
         byte b;
-        for(int x=0;x<image.getWidth();x++)
-            for(int y=0;y<image.getHeight();y++)
+        for(int y=0;y<EpaperScreenManager.LITTLE_WIDTH;y++)
+            for(int x=0;x<EpaperScreenManager.BIG_HEIGHT;x++)
             {
-                j=EpaperScreenManager.getEpaperScreenSize().getLittleWidth()-1-y;
-                i=x;
                 value=sourceRaster.getPixel(x,y,sourcePixel)[1];//1=canal vert
                 pixelState=value==128?PixelState.TRANSPARENT:value>0?PixelState.WHITE:PixelState.BLACK;
-                index=j*EpaperScreenManager.getEpaperScreenSize().getLittleWidth()+i;
+                index=y*EpaperScreenManager.BIG_HEIGHT+x;
                 address=index/4;
                 offset=index%4;
                 if(offset==0)
@@ -138,14 +136,43 @@ public class PixelMatrix
         return newPixelMatrix;
     }
 
-    public boolean isIOk(int i)
+    public boolean arePixelsEqual(PixelMatrix anotherPixelMatrix,int x,int y)
     {
-        return i<EpaperScreenManager.getEpaperScreenSize().getLittleWidth();
+        int index=y*EpaperScreenManager.BIG_HEIGHT+x;
+        int address=index/4;
+        int offset=index%4;
+        byte b1=data[address];
+        byte b2=anotherPixelMatrix.data[address];
+        int value1;
+        int value2;
+        if(offset==0)
+        {
+            value1=b1&(byte)3;
+            value2=b2&(byte)3;
+        }
+        else
+            if(offset==1)
+            {
+                value1=(b1&(byte)12)>>2;
+                value2=(b2&(byte)12)>>2;
+            }
+            else
+                if(offset==3)
+                {
+                    value1=(b1&(byte)48)>>4;
+                    value2=(b2&(byte)48)>>4;
+                }
+                else
+                {
+                    value1=(b1&(byte)192)>>6;
+                    value2=(b2&(byte)192)>>6;
+                }
+        return value1==value2;
     }
 
-    public PixelState getPixelState(int i,int j)
+    public PixelState getPixelState(int x,int y)
     {
-        int index=i*EpaperScreenManager.getEpaperScreenSize().getLittleWidth()+j;
+        int index=y*EpaperScreenManager.BIG_HEIGHT+x;
         int address=index/4;
         int offset=index%4;
         byte b=data[address];
