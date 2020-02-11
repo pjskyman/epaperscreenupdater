@@ -4,14 +4,16 @@ import java.awt.image.BufferedImage;
 
 public class Screen
 {
-    private PixelMatrix validatedPixelMatrix;
     private PixelMatrix workingPixelMatrix;
+    private PixelMatrix validatedPixelMatrix;
+    private int modificationCounter;
     private final Object lockObject;
 
     public Screen()
     {
         workingPixelMatrix=new PixelMatrix();
         validatedPixelMatrix=null;
+        modificationCounter=0;
         lockObject=new Object();
     }
 
@@ -21,6 +23,7 @@ public class Screen
         {
             workingPixelMatrix.initializeBlank();
             validatedPixelMatrix=workingPixelMatrix;
+            modificationCounter++;
             workingPixelMatrix=new PixelMatrix();
         }
         return this;
@@ -32,6 +35,7 @@ public class Screen
         {
             workingPixelMatrix.initializeTransparent();
             validatedPixelMatrix=workingPixelMatrix;
+            modificationCounter++;
             workingPixelMatrix=new PixelMatrix();
         }
         return this;
@@ -43,6 +47,7 @@ public class Screen
         {
             workingPixelMatrix.setImage(image);
             validatedPixelMatrix=workingPixelMatrix;
+            modificationCounter++;
             workingPixelMatrix=new PixelMatrix();
         }
         return this;
@@ -54,5 +59,10 @@ public class Screen
         {
             return validatedPixelMatrix;
         }
+    }
+
+    public int getModificationCounter()
+    {
+        return modificationCounter;
     }
 }
