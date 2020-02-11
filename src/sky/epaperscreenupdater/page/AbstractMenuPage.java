@@ -78,7 +78,7 @@ public abstract class AbstractMenuPage extends AbstractPage
     {
         subpages.forEach(Page::potentiallyUpdate);//avant tout le reste, comme ça on pourra récupérer leurs nouveaux pixels le cas échéant
         Screen tempPageScreen=currentPageRank==-1?BLANK_SCREEN:subpages.get(currentPageRank-1).getScreen();
-        if(currentPageRank!=cachedCurrentPageRank||currentlySelectedPageRank!=cachedCurrentlySelectedPageRank||tempPageScreen!=cachedPageScreen)
+        if(currentPageRank!=cachedCurrentPageRank||currentlySelectedPageRank!=cachedCurrentlySelectedPageRank||tempPageScreen!=cachedPageScreen||tempPageScreen.getModificationCounter()!=cachedPageScreen.getModificationCounter())
         {
             Logger.LOGGER.info("Menu \""+getName()+"\" needs to be updated");
             try
