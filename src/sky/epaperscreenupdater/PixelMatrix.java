@@ -52,6 +52,8 @@ public class PixelMatrix
     {
         if(image.getWidth()!=EpaperScreenManager.BIG_HEIGHT||image.getHeight()!=EpaperScreenManager.LITTLE_WIDTH)
             throw new IllegalArgumentException("Image has wrong dimensions");
+        for(int i=0;i<data.length;i++)
+            data[i]=(byte)0;
         WritableRaster sourceRaster=image.getRaster();
         int[] sourcePixel=new int[4];
         int value;
