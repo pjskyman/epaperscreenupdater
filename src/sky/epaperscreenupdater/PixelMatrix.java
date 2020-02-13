@@ -155,7 +155,7 @@ public class PixelMatrix
                 value2=(b2&(byte)12)>>2;
             }
             else
-                if(offset==3)
+                if(offset==2)
                 {
                     value1=(b1&(byte)48)>>4;
                     value2=(b2&(byte)48)>>4;
