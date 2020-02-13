@@ -133,6 +133,7 @@ public class EpaperScreenManager
 
     public static synchronized void display(Screen screen,RefreshType refreshType)
     {
+        long now=System.currentTimeMillis();
         PixelMatrix currentPixelMatrix=screen.getPixelMatrix();
         int iMin;
         int iMax;
@@ -186,8 +187,9 @@ public class EpaperScreenManager
                 y=LITTLE_WIDTH-1-i;
                 pixelStates[j-jMin][i-iMin]=currentPixelMatrix.getPixelState(x,y);
             }
-        displayImpl(pixelStates,iMin,iMax,refreshType);
+        displayImpl(pixelStates,iMin,jMin,refreshType);
         lastPixelMatrix=currentPixelMatrix;
+        Logger.LOGGER.debug(refreshType.name()+" Ok iMin="+iMin+" iMax="+iMax+" jMin="+jMin+" jMax="+jMax+" time="+(System.currentTimeMillis()-now)+" ms");
     }
 
     private static void displayImpl(PixelState[][] pixelStates,int i,int j,RefreshType refreshType)
