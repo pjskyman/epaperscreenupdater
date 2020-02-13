@@ -181,7 +181,7 @@ public class PixelMatrix
             if(offset==1)
                 value=(b&(byte)12)>>2;
             else
-                if(offset==3)
+                if(offset==2)
                     value=(b&(byte)48)>>4;
                 else
                     value=(b&(byte)192)>>6;
