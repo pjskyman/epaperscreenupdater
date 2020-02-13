@@ -21,11 +21,6 @@ public class IncrustGenerator
         return generateIncrust(false,false);
     }
 
-    public Screen generateEmptyIncrust()
-    {
-        return generateIncrust(true,false);
-    }
-
     public Screen generateOutMessageIncrust()
     {
         return generateIncrust(false,true);
@@ -35,8 +30,8 @@ public class IncrustGenerator
     {
         try
         {
-            BufferedImage sourceImage=new BufferedImage(296,128,BufferedImage.TYPE_INT_ARGB_PRE);
-            Graphics2D g2d=sourceImage.createGraphics();
+            BufferedImage image=new BufferedImage(296,128,BufferedImage.TYPE_INT_ARGB_PRE);
+            Graphics2D g2d=image.createGraphics();
             g2d.setColor(Color.GRAY);
             g2d.fillRect(0,0,296,128);
             if(!empty)
@@ -51,9 +46,9 @@ public class IncrustGenerator
                     string1="Sortir de";//on suppose que outMessage n'est à true qu'en cas de menu
                 else
                 {
-                    string1=page.pageCount()==-1?"Page":"Menu";
+                    string1=page.getPageCount()==-1?"Page":"Menu";
                     if(parentPage!=null)
-                        string1="["+parentPage.rankOf(page)+"] "+string1;
+                        string1="["+parentPage.getRankOf(page)+"] "+string1;
                 }
                 int string1Width=(int)Math.ceil(baseFont.getStringBounds(string1,g2d.getFontRenderContext()).getWidth());
                 int string1Height=(int)Math.ceil(baseFont.getStringBounds(string1,g2d.getFontRenderContext()).getHeight());
@@ -77,13 +72,13 @@ public class IncrustGenerator
 //            {
 //                ImageIO.write(sourceImage,"png",outputStream);
 //            }
-            return new Screen(empty?RefreshType.PARTIAL_REFRESH:RefreshType.PARTIAL_REFRESH_IN_FAST_MODE).setImage(sourceImage);
+            return new Screen().setImage(image);
         }
         catch(Exception e)
         {
             Logger.LOGGER.error("Unknown error");
             e.printStackTrace();
-            return new Screen(RefreshType.PARTIAL_REFRESH_IN_FAST_MODE);
+            return new Screen();
         }
     }
 }

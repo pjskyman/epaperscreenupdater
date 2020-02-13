@@ -1,5 +1,6 @@
 package sky.epaperscreenupdater;
 
+import java.util.concurrent.atomic.AtomicInteger;
 import sky.epaperscreenupdater.page.MainMenuPage;
 import sky.program.Duration;
 
@@ -15,9 +16,10 @@ public final class Main
         try
         {
             MainMenuPage mainMenuPage=new MainMenuPage();
-            Pixels currentPixels=mainMenuPage.potentiallyUpdate().getPixels();
+            Screen currentScreen=mainMenuPage.potentiallyUpdate().getScreen();
+            AtomicInteger currentModificationCount=new AtomicInteger(currentScreen.getModificationCount());
             long lastCompleteRefresh=System.currentTimeMillis();
-            EpaperScreenManager.displayPage(currentPixels,RefreshType.TOTAL_REFRESH);
+            EpaperScreenManager.display(currentScreen,RefreshType.TOTAL_REFRESH);
             Logger.LOGGER.info("Display content successfully updated from page \""+mainMenuPage.getActivePageName()+"\" ("+RefreshType.TOTAL_REFRESH.toString()+")");
             RotaryEncoderManager.addRotationListener(mainMenuPage::rotated);
             RotaryEncoderManager.addSwitchListener(()->mainMenuPage.clicked(false));
@@ -41,7 +43,7 @@ public final class Main
                                 Logger.LOGGER.error("Unmanaged error during refresh ("+t.toString()+")");
                                 t.printStackTrace();
                             }
-                            Thread.sleep(Duration.of(107).millisecond());
+                            Thread.sleep(Duration.of(207).millisecond());
                         }
                     }
                     catch(InterruptedException e)
@@ -54,21 +56,23 @@ public final class Main
                 while(true)
                 {
 //                    Logger.LOGGER.info("Getting new pixels from page \""+mainMenuPage.getActivePageName()+"\"");
-                    Pixels newPixels=mainMenuPage.getPixels();
+                    Screen newScreen=mainMenuPage.getScreen();
+                    int newModificationCount=newScreen.getModificationCount();
 //                    Logger.LOGGER.info("New pixels successfully got from page \""+mainMenuPage.getActivePageName()+"\"");
-                    if(newPixels!=currentPixels)
+                    if(newScreen!=currentScreen||newModificationCount!=currentModificationCount.get())
                     {
                         long now=System.currentTimeMillis();
-                        RefreshType realRefreshType=newPixels.getRefreshType();
+                        RefreshType realRefreshType=RefreshType.PARTIAL_REFRESH;
                         if(now-lastCompleteRefresh>Duration.of(10).minute())
                         {
                             realRefreshType=realRefreshType.combine(RefreshType.TOTAL_REFRESH);
                             lastCompleteRefresh=now;
                         }
                         Logger.LOGGER.info("Updating display content from page \""+mainMenuPage.getActivePageName()+"\" ("+realRefreshType.toString()+")");
-                        EpaperScreenManager.displayPage(newPixels,realRefreshType);
+                        EpaperScreenManager.display(newScreen,realRefreshType);
                         Logger.LOGGER.info("Display content successfully updated from page \""+mainMenuPage.getActivePageName()+"\" ("+realRefreshType.toString()+")");
-                        currentPixels=newPixels;
+                        currentScreen=newScreen;
+                        currentModificationCount.set(newModificationCount);
                     }
                     Thread.sleep(Duration.of(48).millisecond());
                 }

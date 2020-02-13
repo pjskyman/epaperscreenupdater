@@ -26,12 +26,12 @@ public abstract class AbstractSinglePage extends AbstractPage
         return getName();
     }
 
-    public int rankOf(Page subpage)
+    public int getRankOf(Page subpage)
     {
         return -1;
     }
 
-    public int pageCount()
+    public int getPageCount()
     {
         return -1;
     }
@@ -48,8 +48,8 @@ public abstract class AbstractSinglePage extends AbstractPage
             Graphics2D g2d=null;
             try
             {
-                BufferedImage sourceImage=new BufferedImage(296,128,BufferedImage.TYPE_INT_ARGB_PRE);
-                g2d=sourceImage.createGraphics();
+                BufferedImage image=new BufferedImage(296,128,BufferedImage.TYPE_INT_ARGB_PRE);
+                g2d=image.createGraphics();
                 g2d.setColor(Color.WHITE);
                 g2d.fillRect(0,0,296,128);
                 g2d.setColor(Color.BLACK);
@@ -58,9 +58,9 @@ public abstract class AbstractSinglePage extends AbstractPage
                 if(DEBUG_IMAGE_ENABLED)
                     try(OutputStream outputStream=new FileOutputStream(new File(getDebugImageFileName())))
                     {
-                        ImageIO.write(sourceImage,"png",outputStream);
+                        ImageIO.write(image,"png",outputStream);
                     }
-                screen.setImage(sourceImage);
+                screen.setImage(image);
                 Logger.LOGGER.info("Page \""+getName()+"\" updated successfully");
             }
             catch(VetoException e)

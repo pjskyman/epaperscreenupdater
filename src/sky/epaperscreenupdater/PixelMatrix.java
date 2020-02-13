@@ -86,9 +86,8 @@ public class PixelMatrix
             }
     }
 
-    public PixelMatrix createMergedPixelMatrix(PixelMatrix pixelMatrix)
+    public void setContentWithIncrust(PixelMatrix content,PixelMatrix incrust)
     {
-        PixelMatrix newPixelMatrix=new PixelMatrix();
         byte b1;
         byte b2;
         int i11;
@@ -105,8 +104,8 @@ public class PixelMatrix
         int i34;
         for(int address=0;address<data.length;address++)
         {
-            b1=pixelMatrix.data[address];
-            b2=data[address];
+            b1=content.data[address];
+            b2=incrust.data[address];
             i11=b1&(byte)3;
             i21=b2&(byte)3;
             i12=(b1&(byte)12)>>2;
@@ -115,25 +114,24 @@ public class PixelMatrix
             i23=(b2&(byte)48)>>4;
             i14=(b1&(byte)192)>>6;
             i24=(b2&(byte)192)>>6;
-            if(i11<2)
-                i31=i11;
-            else
+            if(i21<2)
                 i31=i21;
-            if(i12<2)
-                i32=i12;
             else
+                i31=i11;
+            if(i22<2)
                 i32=i22;
-            if(i13<2)
-                i33=i13;
             else
+                i32=i12;
+            if(i23<2)
                 i33=i23;
-            if(i14<2)
-                i34=i14;
             else
+                i33=i13;
+            if(i24<2)
                 i34=i24;
-            newPixelMatrix.data[address]=(byte)(i34<<6|i33<<4|i32<<2|i31);
+            else
+                i34=i14;
+            data[address]=(byte)(i34<<6|i33<<4|i32<<2|i31);
         }
-        return newPixelMatrix;
     }
 
     public boolean arePixelsEqual(PixelMatrix anotherPixelMatrix,int x,int y)

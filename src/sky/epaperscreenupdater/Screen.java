@@ -6,25 +6,25 @@ public class Screen
 {
     private PixelMatrix workingPixelMatrix;
     private PixelMatrix validatedPixelMatrix;
-    private int modificationCounter;
+    private int modificationCount;
     private final Object lockObject;
 
     public Screen()
     {
         workingPixelMatrix=new PixelMatrix();
         validatedPixelMatrix=null;
-        modificationCounter=0;
+        modificationCount=0;
         lockObject=new Object();
     }
 
     public Screen initializeBlank()
     {
+        if(modificationCount!=0)
+            throw new IllegalStateException("Can't initialize a live screen");
         synchronized(lockObject)
         {
             workingPixelMatrix.initializeBlank();
-            validatedPixelMatrix=null;
             validatedPixelMatrix=workingPixelMatrix;
-            modificationCounter++;
             workingPixelMatrix=new PixelMatrix();
         }
         return this;
@@ -32,25 +32,51 @@ public class Screen
 
     public Screen initializeTransparent()
     {
+        if(modificationCount!=0)
+            throw new IllegalStateException("Can't initialize a live screen");
         synchronized(lockObject)
         {
             workingPixelMatrix.initializeTransparent();
-            validatedPixelMatrix=null;
             validatedPixelMatrix=workingPixelMatrix;
-            modificationCounter++;
             workingPixelMatrix=new PixelMatrix();
         }
         return this;
     }
 
-    public synchronized Screen setImage(BufferedImage image)
+    public Screen setImage(BufferedImage image)
     {
         synchronized(lockObject)
         {
             workingPixelMatrix.setImage(image);
             validatedPixelMatrix=null;
             validatedPixelMatrix=workingPixelMatrix;
-            modificationCounter++;
+            modificationCount++;
+            workingPixelMatrix=new PixelMatrix();
+        }
+        return this;
+    }
+
+    public Screen setContentWithIncrust(Screen content,Screen incrust)
+    {
+        synchronized(lockObject)
+        {
+            workingPixelMatrix.setContentWithIncrust(content.getPixelMatrix(),incrust.getPixelMatrix());
+            validatedPixelMatrix=null;
+            validatedPixelMatrix=workingPixelMatrix;
+            modificationCount++;
+            workingPixelMatrix=new PixelMatrix();
+        }
+        return this;
+    }
+
+    public Screen setTransparent()
+    {
+        synchronized(lockObject)
+        {
+            workingPixelMatrix.initializeTransparent();
+            validatedPixelMatrix=null;
+            validatedPixelMatrix=workingPixelMatrix;
+            modificationCount++;
             workingPixelMatrix=new PixelMatrix();
         }
         return this;
@@ -64,8 +90,11 @@ public class Screen
         }
     }
 
-    public int getModificationCounter()
+    public int getModificationCount()
     {
-        return modificationCounter;
+        synchronized(lockObject)
+        {
+            return modificationCount;
+        }
     }
 }

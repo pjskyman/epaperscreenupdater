@@ -45,13 +45,13 @@ public interface Page
      * {@code -1} pour indiquer que la page spécifiée n'est pas une sous-page de
      * cette page.
      */
-    public int rankOf(Page subpage);
+    public int getRankOf(Page subpage);
 
     /**
      * Retourne le nombre de sous-pages que cette page gère, ou {@code -1} si
      * cette page est une page simple sans sous-pages.
      */
-    public int pageCount();
+    public int getPageCount();
 
     /**
      * Lance la procédure de remise à jour potentielle de cette page et de ses
