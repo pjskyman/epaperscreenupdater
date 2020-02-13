@@ -24,8 +24,6 @@ public class PixelMatrix
 
     private void initialize(PixelState pixelState)
     {
-        int i;
-        int j;
         int index;
         int address;
         int offset;
@@ -55,8 +53,6 @@ public class PixelMatrix
         if(image.getWidth()!=EpaperScreenManager.BIG_HEIGHT||image.getHeight()!=EpaperScreenManager.LITTLE_WIDTH)
             throw new IllegalArgumentException("Image has wrong dimensions");
         WritableRaster sourceRaster=image.getRaster();
-        int i;
-        int j;
         int[] sourcePixel=new int[4];
         int value;
         PixelState pixelState;
