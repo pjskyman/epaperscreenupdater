@@ -14,7 +14,8 @@ import sky.program.Duration;
 
 public class EpaperScreenManager
 {
-    private static PixelMatrix lastPixelMatrix=null;
+    private static PixelMatrix[] pixelMatrices=new PixelMatrix[2];
+    private static int pixelMatrixIndex=0;
     private static final SpiDevice DEVICE;
     private static final GpioPinDigitalOutput RESET;
     private static final GpioPinDigitalOutput DC;
@@ -139,13 +140,12 @@ public class EpaperScreenManager
         int iMax;
         int jMin;
         int jMax;
-        if(lastPixelMatrix==null)
+        if(pixelMatrices[pixelMatrixIndex]==null)
         {
             iMin=0;
             iMax=LITTLE_WIDTH;
             jMin=0;
             jMax=BIG_HEIGHT;
-            refreshType=RefreshType.TOTAL_REFRESH;//précaution
         }
         else
         {
@@ -160,7 +160,7 @@ public class EpaperScreenManager
                 {
                     x=j;
                     y=LITTLE_WIDTH-1-i;
-                    if(!currentPixelMatrix.arePixelsEqual(lastPixelMatrix,x,y))
+                    if(!currentPixelMatrix.arePixelsEqual(pixelMatrices[pixelMatrixIndex],x,y))
                     {
                         if(i<iMin)
                             iMin=i;
@@ -188,8 +188,10 @@ public class EpaperScreenManager
                 pixelStates[j-jMin][i-iMin]=currentPixelMatrix.getPixelState(x,y);
             }
         displayImpl(pixelStates,iMin,jMin,refreshType);
-        lastPixelMatrix=currentPixelMatrix;
-        Logger.LOGGER.debug(refreshType.name()+" Ok iMin="+iMin+" iMax="+iMax+" jMin="+jMin+" jMax="+jMax+" time="+(System.currentTimeMillis()-now)+" ms");
+        pixelMatrices[pixelMatrixIndex]=currentPixelMatrix;
+        int tempPixelMatrixIndex=pixelMatrixIndex;
+        pixelMatrixIndex=++pixelMatrixIndex%pixelMatrices.length;
+        Logger.LOGGER.debug(refreshType.name()+" Ok iMin="+iMin+" iMax="+iMax+" jMin="+jMin+" jMax="+jMax+" cache="+tempPixelMatrixIndex+" time="+(System.currentTimeMillis()-now)+" ms");
     }
 
     private static void displayImpl(PixelState[][] pixelStates,int i,int j,RefreshType refreshType)
