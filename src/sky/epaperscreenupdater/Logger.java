@@ -18,7 +18,6 @@ import sky.program.Duration;
 
 public final class Logger
 {
-    public static final boolean LOGGER_ACTIVE=true;
     public static final org.apache.log4j.Logger LOGGER;
 
     static
