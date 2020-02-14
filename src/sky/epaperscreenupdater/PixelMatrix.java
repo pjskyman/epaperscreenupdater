@@ -104,14 +104,14 @@ public class PixelMatrix
         {
             b1=content.data[address];
             b2=incrust.data[address];
-            i11=b1&(byte)3;
-            i21=b2&(byte)3;
-            i12=(b1&(byte)12)>>2;
-            i22=(b2&(byte)12)>>2;
-            i13=(b1&(byte)48)>>4;
-            i23=(b2&(byte)48)>>4;
-            i14=(b1&(byte)192)>>6;
-            i24=(b2&(byte)192)>>6;
+            i11=b1&(byte)0x03;
+            i21=b2&(byte)0x03;
+            i12=(b1&(byte)0x0C)>>2;
+            i22=(b2&(byte)0x0C)>>2;
+            i13=(b1&(byte)0x30)>>4;
+            i23=(b2&(byte)0x30)>>4;
+            i14=Byte.toUnsignedInt(b1)>>6;
+            i24=Byte.toUnsignedInt(b2)>>6;
             if(i21<2)
                 i31=i21;
             else
@@ -143,25 +143,25 @@ public class PixelMatrix
         int value2;
         if(offset==0)
         {
-            value1=b1&(byte)3;
-            value2=b2&(byte)3;
+            value1=b1&(byte)0x03;
+            value2=b2&(byte)0x03;
         }
         else
             if(offset==1)
             {
-                value1=(b1&(byte)12)>>2;
-                value2=(b2&(byte)12)>>2;
+                value1=(b1&(byte)0x0C)>>2;
+                value2=(b2&(byte)0x0C)>>2;
             }
             else
                 if(offset==2)
                 {
-                    value1=(b1&(byte)48)>>4;
-                    value2=(b2&(byte)48)>>4;
+                    value1=(b1&(byte)0x30)>>4;
+                    value2=(b2&(byte)0x30)>>4;
                 }
                 else
                 {
-                    value1=(b1&(byte)192)>>6;
-                    value2=(b2&(byte)192)>>6;
+                    value1=Byte.toUnsignedInt(b1)>>6;
+                    value2=Byte.toUnsignedInt(b2)>>6;
                 }
         return value1==value2;
     }
@@ -174,15 +174,15 @@ public class PixelMatrix
         byte b=data[address];
         int value;
         if(offset==0)
-            value=b&(byte)3;
+            value=b&(byte)0x03;
         else
             if(offset==1)
-                value=(b&(byte)12)>>2;
+                value=(b&(byte)0x0C)>>2;
             else
                 if(offset==2)
-                    value=(b&(byte)48)>>4;
+                    value=(b&(byte)0x30)>>4;
                 else
-                    value=(b&(byte)192)>>6;
+                    value=Byte.toUnsignedInt(b)>>6;
         return value==0?PixelState.BLACK:value==1?PixelState.WHITE:PixelState.TRANSPARENT;
     }
 }
