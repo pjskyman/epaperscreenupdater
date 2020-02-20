@@ -55,9 +55,9 @@ public class TempoCalendarPage extends AbstractSinglePage
             GregorianCalendar calendar=new GregorianCalendar(Locale.FRANCE);
             calendar.setTimeInMillis(System.currentTimeMillis());
             int yearBegin=calendar.get(Calendar.MONTH)>Calendar.SEPTEMBER||
-                          calendar.get(Calendar.MONDAY)==Calendar.SEPTEMBER&&calendar.get(Calendar.DAY_OF_MONTH)>1||
-                          calendar.get(Calendar.MONDAY)==Calendar.SEPTEMBER&&calendar.get(Calendar.DAY_OF_MONTH)==1&&calendar.get(Calendar.HOUR_OF_DAY)>6||
-                          calendar.get(Calendar.MONDAY)==Calendar.SEPTEMBER&&calendar.get(Calendar.DAY_OF_MONTH)==1&&calendar.get(Calendar.HOUR_OF_DAY)==6&&calendar.get(Calendar.MINUTE)>2?
+                          calendar.get(Calendar.MONTH)==Calendar.SEPTEMBER&&calendar.get(Calendar.DAY_OF_MONTH)>1||
+                          calendar.get(Calendar.MONTH)==Calendar.SEPTEMBER&&calendar.get(Calendar.DAY_OF_MONTH)==1&&calendar.get(Calendar.HOUR_OF_DAY)>6||
+                          calendar.get(Calendar.MONTH)==Calendar.SEPTEMBER&&calendar.get(Calendar.DAY_OF_MONTH)==1&&calendar.get(Calendar.HOUR_OF_DAY)==6&&calendar.get(Calendar.MINUTE)>2?
                           calendar.get(Calendar.YEAR):
                           (calendar.get(Calendar.YEAR)-1);
             if(calendar.isLeapYear(yearBegin+1))
