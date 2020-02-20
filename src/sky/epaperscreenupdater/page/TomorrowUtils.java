@@ -25,8 +25,7 @@ public class TomorrowUtils
                 GregorianCalendar calendar=new GregorianCalendar(Locale.FRANCE);
                 calendar.setTimeInMillis(now);
                 int hour=calendar.get(Calendar.HOUR_OF_DAY);
-                int minute=calendar.get(Calendar.MINUTE);
-                if(hour>=7||hour==6&&minute>=2)//on est en journée, après la bascule de jour du matin à 6h02 et avant minuit
+                if(hour>=6)//on est en journée, après la bascule de jour du matin à 6h00 et avant minuit
                     calendar.setTimeInMillis(now+Duration.of(1).day());//pour avoir demain
                 String day=""+calendar.get(Calendar.DAY_OF_MONTH);
                 if(day.length()==1)
