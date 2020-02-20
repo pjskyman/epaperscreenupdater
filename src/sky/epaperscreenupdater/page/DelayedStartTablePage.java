@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.NoSuchElementException;
 import sky.program.Duration;
 
 public class DelayedStartTablePage extends AbstractSinglePage
@@ -96,7 +95,7 @@ public class DelayedStartTablePage extends AbstractSinglePage
                 g2d.drawLine(214,0,214,128);
                 g2d.drawString("Temps rest.",219,18);
 
-                double[] infos=getInfos1(WasherProfiles.getLV50(),pricingPeriodZones,1,12,nowHour,nowMinute);
+                double[] infos=getInfos(WasherProfiles.getLV50(),pricingPeriodZones,1,12,nowHour,nowMinute);
 
                 if(infos[2]!=-1d)
                 {
@@ -113,7 +112,7 @@ public class DelayedStartTablePage extends AbstractSinglePage
                     g2d.drawString(string,(296+214)/2-stringWidth/2,40);
                 }
 
-                infos=getInfos1(WasherProfiles.getLV4565(),pricingPeriodZones,1,12,nowHour,nowMinute);
+                infos=getInfos(WasherProfiles.getLV4565(),pricingPeriodZones,1,12,nowHour,nowMinute);
 
                 if(infos[2]!=-1d)
                 {
@@ -130,7 +129,7 @@ public class DelayedStartTablePage extends AbstractSinglePage
                     g2d.drawString(string,(296+214)/2-stringWidth/2,61);
                 }
 
-                infos=getInfos1(WasherProfiles.getLV70(),pricingPeriodZones,1,12,nowHour,nowMinute);
+                infos=getInfos(WasherProfiles.getLV70(),pricingPeriodZones,1,12,nowHour,nowMinute);
 
                 if(infos[2]!=-1d)
                 {
@@ -147,7 +146,7 @@ public class DelayedStartTablePage extends AbstractSinglePage
                     g2d.drawString(string,(296+214)/2-stringWidth/2,82);
                 }
 
-                infos=getInfos1(WasherProfiles.getLL40(),pricingPeriodZones,3,9,nowHour,nowMinute);
+                infos=getInfos(WasherProfiles.getLL40(),pricingPeriodZones,3,9,nowHour,nowMinute);
 
                 if(infos[2]!=-1d)
                 {
@@ -164,7 +163,7 @@ public class DelayedStartTablePage extends AbstractSinglePage
                     g2d.drawString(string,(296+214)/2-stringWidth/2,104);
                 }
 
-                infos=getInfos1(WasherProfiles.getLL60(),pricingPeriodZones,3,9,nowHour,nowMinute);
+                infos=getInfos(WasherProfiles.getLL60(),pricingPeriodZones,3,9,nowHour,nowMinute);
 
                 if(infos[2]!=-1d)
                 {
@@ -189,7 +188,7 @@ public class DelayedStartTablePage extends AbstractSinglePage
         return "delayed_start2.png";
     }
 
-    private static double[] getInfos1(List<WasherGenericConsumption> washerGenericConsumptions,List<PricingPeriodZone> pricingPeriodZones,int delayOffset,int maxDelayHour,int nowHour,int nowMinute)
+    private static double[] getInfos(List<WasherGenericConsumption> washerGenericConsumptions,List<PricingPeriodZone> pricingPeriodZones,int delayOffset,int maxDelayHour,int nowHour,int nowMinute)
     {
         List<EstimatedPrice> estimatedPrices=new ArrayList<>();
         ConsumptionProfileCalculator consumptionProfileCalculator=new ConsumptionProfileCalculator(washerGenericConsumptions);
@@ -223,80 +222,6 @@ public class DelayedStartTablePage extends AbstractSinglePage
             }
         }
         return new double[]{(double)delayHour,bestPrice,(double)remainingTime};
-    }
-
-    private static double[] getInfos2(List<WasherGenericConsumption> washerGenericConsumptions,List<PricingPeriodZone> pricingPeriodZones,int delayOffset,int maxDelayHour,int nowHour,int nowMinute)
-    {
-        List<EstimatedPrice> estimatedPrices=new ArrayList<>();
-        ConsumptionProfileCalculator consumptionProfileCalculator=new ConsumptionProfileCalculator(washerGenericConsumptions);
-        for(int hour=0;hour<=8;hour++)
-            for(int minute=0;minute<=59;minute++)
-                estimatedPrices.add(new EstimatedPrice(hour,minute,consumptionProfileCalculator.getTotalPricing(hour,minute,pricingPeriodZones)));
-        int bestDelayHour=-1;
-        double bestPrice=1e3d;
-        for(int delayHour=0;delayHour<=maxDelayHour;delayHour+=delayOffset)
-        {
-            int delayedHour=(nowHour+delayHour)%24;
-            if(delayedHour>=16)
-                continue;
-            if(delayedHour==9)
-                break;
-            int delayedMinute=nowMinute;
-            EstimatedPrice selectedEstimatedPrice=null;
-            try
-            {
-                selectedEstimatedPrice=estimatedPrices.stream()
-                        .filter(estimatedPrice->estimatedPrice.getStartHour()==delayedHour&&
-                                                estimatedPrice.getStartMinute()==delayedMinute)
-                        .findFirst()
-                        .get();
-            }
-            catch(NoSuchElementException e)
-            {
-                continue;
-            }
-            if(bestDelayHour==-1||selectedEstimatedPrice.getPrice()<bestPrice)
-            {
-                bestDelayHour=delayHour;
-                bestPrice=selectedEstimatedPrice.getPrice();
-            }
-        }
-        double[] result=new double[]{(double)bestDelayHour,bestPrice,0d,0d,-1d};
-        EstimatedPrice bestEstimatedPrice=null;
-        try
-        {
-            bestEstimatedPrice=estimatedPrices.stream()
-                    .min((ep1,ep2)->Double.compare(ep1.getPrice(),ep2.getPrice()))
-                    .get();
-        }
-        catch(NoSuchElementException e)
-        {
-        }
-        if(bestEstimatedPrice!=null)
-        {
-            int delayHour;
-            int remainingTime=0;
-            for(delayHour=0;delayHour<=maxDelayHour;delayHour+=delayOffset)
-            {
-                int delayedHour=(nowHour+delayHour)%24;
-                if(delayedHour>=16)
-                    continue;
-                if(delayedHour==9)
-                    break;
-                int delayedMinute=nowMinute;
-                if(delayedHour>bestEstimatedPrice.getStartHour()||delayedHour==bestEstimatedPrice.getStartHour()&&delayedMinute>bestEstimatedPrice.getStartMinute())
-                {
-                    delayHour-=delayOffset;
-                    delayedHour-=delayOffset;
-                    remainingTime=bestEstimatedPrice.getStartHour()*60+bestEstimatedPrice.getStartMinute()-(delayedHour*60+delayedMinute);
-                    break;
-                }
-            }
-            result[2]=(double)remainingTime;
-            result[3]=(double)delayHour;
-            result[4]=bestEstimatedPrice.getPrice();
-        }
-        return result;
     }
 
     private static String formatTime(int time)
