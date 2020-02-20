@@ -221,14 +221,12 @@ public class ElectricityUtils
             startCalendar.set(Calendar.MONTH,month1-1);
             startCalendar.set(Calendar.DAY_OF_MONTH,day1);
             startCalendar.set(Calendar.HOUR_OF_DAY,6);
-            startCalendar.set(Calendar.MINUTE,2);
             GregorianCalendar endCalendar=new GregorianCalendar();
             endCalendar.clear();
             endCalendar.set(Calendar.YEAR,year2);
             endCalendar.set(Calendar.MONTH,month2-1);
             endCalendar.set(Calendar.DAY_OF_MONTH,day2);
             endCalendar.set(Calendar.HOUR_OF_DAY,6);
-            endCalendar.set(Calendar.MINUTE,2);
             endCalendar.setTimeInMillis(endCalendar.getTimeInMillis()+Duration.of(1).day());
             int endYear=endCalendar.get(Calendar.YEAR);
             int endMonth=endCalendar.get(Calendar.MONTH);
@@ -238,7 +236,6 @@ public class ElectricityUtils
             endCalendar.set(Calendar.MONTH,endMonth);
             endCalendar.set(Calendar.DAY_OF_MONTH,endDay);
             endCalendar.set(Calendar.HOUR_OF_DAY,6);
-            endCalendar.set(Calendar.MINUTE,2);
             try(Connection connection=Database.getEcocompteurConnection())
             {
 //                long startTime=System.currentTimeMillis();
@@ -482,6 +479,7 @@ public class ElectricityUtils
         }
     }
 
+    @Deprecated
     public static void main2(String[] args)
     {
         long startTime=System.currentTimeMillis();
