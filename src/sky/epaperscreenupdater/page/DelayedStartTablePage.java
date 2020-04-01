@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.NoSuchElementException;
 import sky.program.Duration;
 
 public class DelayedStartTablePage extends AbstractSinglePage
@@ -68,266 +67,119 @@ public class DelayedStartTablePage extends AbstractSinglePage
                         if(instantaneousConsumption.getPricingPeriod().isRedDay())
                             today="ROUGE";
             }
-//                    today="BLANC";
+//            today="BLANC";
             String tomorrow=TomorrowUtils.getTomorrow();
-//                    String tomorrow="BLEU";
+//            String tomorrow="BLEU";
             List<PricingPeriodZone> pricingPeriodZones=new ArrayList<>();
             if(today.contains("BLEU"))
-                pricingPeriodZones.add(new PricingPeriodZone(0,0,6,2,PricingPeriod.BLUE_DAY_OFF_PEAK_HOUR));
+                pricingPeriodZones.add(new PricingPeriodZone(0,0,6,0,PricingPeriod.BLUE_DAY_OFF_PEAK_HOUR));
             else
                 if(today.contains("BLANC"))
-                    pricingPeriodZones.add(new PricingPeriodZone(0,0,6,2,PricingPeriod.WHITE_DAY_OFF_PEAK_HOUR));
+                    pricingPeriodZones.add(new PricingPeriodZone(0,0,6,0,PricingPeriod.WHITE_DAY_OFF_PEAK_HOUR));
                 else
                     if(today.contains("ROUGE"))
-                        pricingPeriodZones.add(new PricingPeriodZone(0,0,6,2,PricingPeriod.RED_DAY_OFF_PEAK_HOUR));
+                        pricingPeriodZones.add(new PricingPeriodZone(0,0,6,0,PricingPeriod.RED_DAY_OFF_PEAK_HOUR));
             if(tomorrow.contains("BLEU"))
-            {
-                pricingPeriodZones.add(new PricingPeriodZone(6,2,7,32,PricingPeriod.BLUE_DAY_OFF_PEAK_HOUR));
-                pricingPeriodZones.add(new PricingPeriodZone(7,32,20,0,PricingPeriod.BLUE_DAY_PEAK_HOUR));
-            }
+                pricingPeriodZones.add(new PricingPeriodZone(6,0,20,0,PricingPeriod.BLUE_DAY_PEAK_HOUR));
             else
                 if(tomorrow.contains("BLANC"))
-                {
-                    pricingPeriodZones.add(new PricingPeriodZone(6,2,7,32,PricingPeriod.WHITE_DAY_OFF_PEAK_HOUR));
-                    pricingPeriodZones.add(new PricingPeriodZone(7,32,20,0,PricingPeriod.WHITE_DAY_PEAK_HOUR));
-                }
+                    pricingPeriodZones.add(new PricingPeriodZone(6,0,20,0,PricingPeriod.WHITE_DAY_PEAK_HOUR));
                 else
                     if(tomorrow.contains("RED"))
-                        pricingPeriodZones.add(new PricingPeriodZone(6,2,20,0,PricingPeriod.RED_DAY_PEAK_HOUR));
+                        pricingPeriodZones.add(new PricingPeriodZone(6,0,20,0,PricingPeriod.RED_DAY_PEAK_HOUR));
             if(!today.contains("ND")&&!tomorrow.contains("ND"))
-                if(today.contains("ROUGE")&&tomorrow.contains("BLEU")||
-                   today.contains("ROUGE")&&tomorrow.contains("BLANC")||
-                   today.contains("BLANC")&&tomorrow.contains("BLEU"))//besoin d'analyse fine
+            {
+                g2d.drawString("Différé",90,18);
+                g2d.drawLine(145,0,145,128);
+                g2d.drawString("Coût",165,18);
+                g2d.drawLine(214,0,214,128);
+                g2d.drawString("Temps rest.",219,18);
+
+                double[] infos=getInfos(WasherProfiles.getLV50(),pricingPeriodZones,1,12,nowHour,nowMinute);
+
+                if(infos[2]!=-1d)
                 {
-                    g2d.drawString("Diff.",78,18);
-                    g2d.drawLine(106,0,106,128);
-                    g2d.drawString("Coût",114,18);
-                    g2d.drawLine(152,0,152,128);
-                    g2d.drawLine(153,0,153,128);
-                    g2d.drawString("Tps.att.",157,18);
-                    g2d.drawLine(214,0,214,128);
-                    g2d.drawString("~Diff.",215,18);
-                    g2d.drawLine(251,0,251,128);
-                    g2d.drawString("~Coût",254,18);
+                    String string=(int)infos[0]+" h";
+                    int stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
+                    g2d.drawString(string,(145+77)/2-stringWidth/2,40);
 
-                    double[] infos=getInfos2(WasherProfiles.getLV50(),pricingPeriodZones,1,12,nowHour,nowMinute);
+                    string=DECIMAL_000_FORMAT.format(infos[1])+" €";
+                    stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
+                    g2d.drawString(string,(214+145)/2-stringWidth/2,40);
 
-                    if(infos[4]!=-1)
-                    {
-                        String string=(int)infos[0]+" h";
-                        int stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
-                        g2d.drawString(string,(106+77)/2-stringWidth/2,40);
-
-                        string=DECIMAL_000_FORMAT.format(infos[1])+" €";
-                        stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
-                        g2d.drawString(string,(152+106)/2-stringWidth/2,40);
-
-                        string=formatTime((int)infos[2]);
-                        stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
-                        g2d.drawString(string,(214+153)/2-stringWidth/2+1,40);
-
-                        string=(int)infos[3]+" h";
-                        stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
-                        g2d.drawString(string,(251+214)/2-stringWidth/2,40);
-
-                        string=DECIMAL_000_FORMAT.format(infos[4])+" €";
-                        stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
-                        g2d.drawString(string,(296+251)/2-stringWidth/2+1,40);
-                    }
-
-                    infos=getInfos2(WasherProfiles.getLV4565(),pricingPeriodZones,1,12,nowHour,nowMinute);
-
-                    if(infos[4]!=-1)
-                    {
-                        String string=(int)infos[0]+" h";
-                        int stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
-                        g2d.drawString(string,(106+77)/2-stringWidth/2,61);
-
-                        string=DECIMAL_000_FORMAT.format(infos[1])+" €";
-                        stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
-                        g2d.drawString(string,(152+106)/2-stringWidth/2,61);
-
-                        string=formatTime((int)infos[2]);
-                        stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
-                        g2d.drawString(string,(214+153)/2-stringWidth/2+1,61);
-
-                        string=(int)infos[3]+" h";
-                        stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
-                        g2d.drawString(string,(251+214)/2-stringWidth/2,61);
-
-                        string=DECIMAL_000_FORMAT.format(infos[4])+" €";
-                        stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
-                        g2d.drawString(string,(296+251)/2-stringWidth/2+1,61);
-                    }
-
-                    infos=getInfos2(WasherProfiles.getLV70(),pricingPeriodZones,1,12,nowHour,nowMinute);
-
-                    if(infos[4]!=-1)
-                    {
-                        String string=(int)infos[0]+" h";
-                        int stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
-                        g2d.drawString(string,(106+77)/2-stringWidth/2,82);
-
-                        string=DECIMAL_000_FORMAT.format(infos[1])+" €";
-                        stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
-                        g2d.drawString(string,(152+106)/2-stringWidth/2,82);
-
-                        string=formatTime((int)infos[2]);
-                        stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
-                        g2d.drawString(string,(214+153)/2-stringWidth/2+1,82);
-
-                        string=(int)infos[3]+" h";
-                        stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
-                        g2d.drawString(string,(251+214)/2-stringWidth/2,82);
-
-                        string=DECIMAL_000_FORMAT.format(infos[4])+" €";
-                        stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
-                        g2d.drawString(string,(296+251)/2-stringWidth/2+1,82);
-                    }
-
-                    infos=getInfos2(WasherProfiles.getLL40(),pricingPeriodZones,3,9,nowHour,nowMinute);
-
-                    if(infos[4]!=-1)
-                    {
-                        String string=(int)infos[0]+" h";
-                        int stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
-                        g2d.drawString(string,(106+77)/2-stringWidth/2,104);
-
-                        string=DECIMAL_000_FORMAT.format(infos[1])+" €";
-                        stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
-                        g2d.drawString(string,(152+106)/2-stringWidth/2,104);
-
-                        string=formatTime((int)infos[2]);
-                        stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
-                        g2d.drawString(string,(214+153)/2-stringWidth/2+1,104);
-
-                        string=(int)infos[3]+" h";
-                        stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
-                        g2d.drawString(string,(251+214)/2-stringWidth/2,104);
-
-                        string=DECIMAL_000_FORMAT.format(infos[4])+" €";
-                        stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
-                        g2d.drawString(string,(296+251)/2-stringWidth/2+1,104);
-                    }
-
-                    infos=getInfos2(WasherProfiles.getLL60(),pricingPeriodZones,3,9,nowHour,nowMinute);
-
-                    if(infos[4]!=-1)
-                    {
-                        String string=(int)infos[0]+" h";
-                        int stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
-                        g2d.drawString(string,(106+77)/2-stringWidth/2,125);
-
-                        string=DECIMAL_000_FORMAT.format(infos[1])+" €";
-                        stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
-                        g2d.drawString(string,(152+106)/2-stringWidth/2,125);
-
-                        string=formatTime((int)infos[2]);
-                        stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
-                        g2d.drawString(string,(214+153)/2-stringWidth/2+1,125);
-
-                        string=(int)infos[3]+" h";
-                        stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
-                        g2d.drawString(string,(251+214)/2-stringWidth/2,125);
-
-                        string=DECIMAL_000_FORMAT.format(infos[4])+" €";
-                        stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
-                        g2d.drawString(string,(296+251)/2-stringWidth/2+1,125);
-                    }
+                    string=formatTime((int)infos[2]);
+                    stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
+                    g2d.drawString(string,(296+214)/2-stringWidth/2,40);
                 }
-                else//simple montée en tarif
+
+                infos=getInfos(WasherProfiles.getLV4565(),pricingPeriodZones,1,12,nowHour,nowMinute);
+
+                if(infos[2]!=-1d)
                 {
-                    g2d.drawString("Différé",90,18);
-                    g2d.drawLine(145,0,145,128);
-                    g2d.drawString("Coût",165,18);
-                    g2d.drawLine(214,0,214,128);
-                    g2d.drawString("Temps rest.",219,18);
+                    String string=(int)infos[0]+" h";
+                    int stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
+                    g2d.drawString(string,(145+77)/2-stringWidth/2,61);
 
-                    double[] infos=getInfos1(WasherProfiles.getLV50(),pricingPeriodZones,1,12,nowHour,nowMinute);
+                    string=DECIMAL_000_FORMAT.format(infos[1])+" €";
+                    stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
+                    g2d.drawString(string,(214+145)/2-stringWidth/2,61);
 
-                    if(infos[2]!=-1d)
-                    {
-                        String string=(int)infos[0]+" h";
-                        int stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
-                        g2d.drawString(string,(145+77)/2-stringWidth/2,40);
-
-                        string=DECIMAL_000_FORMAT.format(infos[1])+" €";
-                        stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
-                        g2d.drawString(string,(214+145)/2-stringWidth/2,40);
-
-                        string=formatTime((int)infos[2]);
-                        stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
-                        g2d.drawString(string,(296+214)/2-stringWidth/2,40);
-                    }
-
-                    infos=getInfos1(WasherProfiles.getLV4565(),pricingPeriodZones,1,12,nowHour,nowMinute);
-
-                    if(infos[2]!=-1d)
-                    {
-                        String string=(int)infos[0]+" h";
-                        int stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
-                        g2d.drawString(string,(145+77)/2-stringWidth/2,61);
-
-                        string=DECIMAL_000_FORMAT.format(infos[1])+" €";
-                        stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
-                        g2d.drawString(string,(214+145)/2-stringWidth/2,61);
-
-                        string=formatTime((int)infos[2]);
-                        stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
-                        g2d.drawString(string,(296+214)/2-stringWidth/2,61);
-                    }
-
-                    infos=getInfos1(WasherProfiles.getLV70(),pricingPeriodZones,1,12,nowHour,nowMinute);
-
-                    if(infos[2]!=-1d)
-                    {
-                        String string=(int)infos[0]+" h";
-                        int stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
-                        g2d.drawString(string,(145+77)/2-stringWidth/2,82);
-
-                        string=DECIMAL_000_FORMAT.format(infos[1])+" €";
-                        stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
-                        g2d.drawString(string,(214+145)/2-stringWidth/2,82);
-
-                        string=formatTime((int)infos[2]);
-                        stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
-                        g2d.drawString(string,(296+214)/2-stringWidth/2,82);
-                    }
-
-                    infos=getInfos1(WasherProfiles.getLL40(),pricingPeriodZones,3,9,nowHour,nowMinute);
-
-                    if(infos[2]!=-1d)
-                    {
-                        String string=(int)infos[0]+" h";
-                        int stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
-                        g2d.drawString(string,(145+77)/2-stringWidth/2,104);
-
-                        string=DECIMAL_000_FORMAT.format(infos[1])+" €";
-                        stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
-                        g2d.drawString(string,(214+145)/2-stringWidth/2,104);
-
-                        string=formatTime((int)infos[2]);
-                        stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
-                        g2d.drawString(string,(296+214)/2-stringWidth/2,104);
-                    }
-
-                    infos=getInfos1(WasherProfiles.getLL60(),pricingPeriodZones,3,9,nowHour,nowMinute);
-
-                    if(infos[2]!=-1d)
-                    {
-                        String string=(int)infos[0]+" h";
-                        int stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
-                        g2d.drawString(string,(145+77)/2-stringWidth/2,125);
-
-                        string=DECIMAL_000_FORMAT.format(infos[1])+" €";
-                        stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
-                        g2d.drawString(string,(214+145)/2-stringWidth/2,125);
-
-                        string=formatTime((int)infos[2]);
-                        stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
-                        g2d.drawString(string,(296+214)/2-stringWidth/2,125);
-                    }
+                    string=formatTime((int)infos[2]);
+                    stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
+                    g2d.drawString(string,(296+214)/2-stringWidth/2,61);
                 }
+
+                infos=getInfos(WasherProfiles.getLV70(),pricingPeriodZones,1,12,nowHour,nowMinute);
+
+                if(infos[2]!=-1d)
+                {
+                    String string=(int)infos[0]+" h";
+                    int stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
+                    g2d.drawString(string,(145+77)/2-stringWidth/2,82);
+
+                    string=DECIMAL_000_FORMAT.format(infos[1])+" €";
+                    stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
+                    g2d.drawString(string,(214+145)/2-stringWidth/2,82);
+
+                    string=formatTime((int)infos[2]);
+                    stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
+                    g2d.drawString(string,(296+214)/2-stringWidth/2,82);
+                }
+
+                infos=getInfos(WasherProfiles.getLL40(),pricingPeriodZones,3,9,nowHour,nowMinute);
+
+                if(infos[2]!=-1d)
+                {
+                    String string=(int)infos[0]+" h";
+                    int stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
+                    g2d.drawString(string,(145+77)/2-stringWidth/2,104);
+
+                    string=DECIMAL_000_FORMAT.format(infos[1])+" €";
+                    stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
+                    g2d.drawString(string,(214+145)/2-stringWidth/2,104);
+
+                    string=formatTime((int)infos[2]);
+                    stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
+                    g2d.drawString(string,(296+214)/2-stringWidth/2,104);
+                }
+
+                infos=getInfos(WasherProfiles.getLL60(),pricingPeriodZones,3,9,nowHour,nowMinute);
+
+                if(infos[2]!=-1d)
+                {
+                    String string=(int)infos[0]+" h";
+                    int stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
+                    g2d.drawString(string,(145+77)/2-stringWidth/2,125);
+
+                    string=DECIMAL_000_FORMAT.format(infos[1])+" €";
+                    stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
+                    g2d.drawString(string,(214+145)/2-stringWidth/2,125);
+
+                    string=formatTime((int)infos[2]);
+                    stringWidth=(int)Math.ceil(baseFont.getStringBounds(string,g2d.getFontRenderContext()).getWidth());
+                    g2d.drawString(string,(296+214)/2-stringWidth/2,125);
+                }
+            }
         }
     }
 
@@ -336,7 +188,7 @@ public class DelayedStartTablePage extends AbstractSinglePage
         return "delayed_start2.png";
     }
 
-    private static double[] getInfos1(List<WasherGenericConsumption> washerGenericConsumptions,List<PricingPeriodZone> pricingPeriodZones,int delayOffset,int maxDelayHour,int nowHour,int nowMinute)
+    private static double[] getInfos(List<WasherGenericConsumption> washerGenericConsumptions,List<PricingPeriodZone> pricingPeriodZones,int delayOffset,int maxDelayHour,int nowHour,int nowMinute)
     {
         List<EstimatedPrice> estimatedPrices=new ArrayList<>();
         ConsumptionProfileCalculator consumptionProfileCalculator=new ConsumptionProfileCalculator(washerGenericConsumptions);
@@ -370,80 +222,6 @@ public class DelayedStartTablePage extends AbstractSinglePage
             }
         }
         return new double[]{(double)delayHour,bestPrice,(double)remainingTime};
-    }
-
-    private static double[] getInfos2(List<WasherGenericConsumption> washerGenericConsumptions,List<PricingPeriodZone> pricingPeriodZones,int delayOffset,int maxDelayHour,int nowHour,int nowMinute)
-    {
-        List<EstimatedPrice> estimatedPrices=new ArrayList<>();
-        ConsumptionProfileCalculator consumptionProfileCalculator=new ConsumptionProfileCalculator(washerGenericConsumptions);
-        for(int hour=0;hour<=8;hour++)
-            for(int minute=0;minute<=59;minute++)
-                estimatedPrices.add(new EstimatedPrice(hour,minute,consumptionProfileCalculator.getTotalPricing(hour,minute,pricingPeriodZones)));
-        int bestDelayHour=-1;
-        double bestPrice=1e3d;
-        for(int delayHour=0;delayHour<=maxDelayHour;delayHour+=delayOffset)
-        {
-            int delayedHour=(nowHour+delayHour)%24;
-            if(delayedHour>=16)
-                continue;
-            if(delayedHour==9)
-                break;
-            int delayedMinute=nowMinute;
-            EstimatedPrice selectedEstimatedPrice=null;
-            try
-            {
-                selectedEstimatedPrice=estimatedPrices.stream()
-                        .filter(estimatedPrice->estimatedPrice.getStartHour()==delayedHour&&
-                                                estimatedPrice.getStartMinute()==delayedMinute)
-                        .findFirst()
-                        .get();
-            }
-            catch(NoSuchElementException e)
-            {
-                continue;
-            }
-            if(bestDelayHour==-1||selectedEstimatedPrice.getPrice()<bestPrice)
-            {
-                bestDelayHour=delayHour;
-                bestPrice=selectedEstimatedPrice.getPrice();
-            }
-        }
-        double[] result=new double[]{(double)bestDelayHour,bestPrice,0d,0d,-1d};
-        EstimatedPrice bestEstimatedPrice=null;
-        try
-        {
-            bestEstimatedPrice=estimatedPrices.stream()
-                    .min((ep1,ep2)->Double.compare(ep1.getPrice(),ep2.getPrice()))
-                    .get();
-        }
-        catch(NoSuchElementException e)
-        {
-        }
-        if(bestEstimatedPrice!=null)
-        {
-            int delayHour;
-            int remainingTime=0;
-            for(delayHour=0;delayHour<=maxDelayHour;delayHour+=delayOffset)
-            {
-                int delayedHour=(nowHour+delayHour)%24;
-                if(delayedHour>=16)
-                    continue;
-                if(delayedHour==9)
-                    break;
-                int delayedMinute=nowMinute;
-                if(delayedHour>bestEstimatedPrice.getStartHour()||delayedHour==bestEstimatedPrice.getStartHour()&&delayedMinute>bestEstimatedPrice.getStartMinute())
-                {
-                    delayHour-=delayOffset;
-                    delayedHour-=delayOffset;
-                    remainingTime=bestEstimatedPrice.getStartHour()*60+bestEstimatedPrice.getStartMinute()-(delayedHour*60+delayedMinute);
-                    break;
-                }
-            }
-            result[2]=(double)remainingTime;
-            result[3]=(double)delayHour;
-            result[4]=bestEstimatedPrice.getPrice();
-        }
-        return result;
     }
 
     private static String formatTime(int time)

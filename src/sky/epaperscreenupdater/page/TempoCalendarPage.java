@@ -55,9 +55,8 @@ public class TempoCalendarPage extends AbstractSinglePage
             GregorianCalendar calendar=new GregorianCalendar(Locale.FRANCE);
             calendar.setTimeInMillis(System.currentTimeMillis());
             int yearBegin=calendar.get(Calendar.MONTH)>Calendar.SEPTEMBER||
-                          calendar.get(Calendar.MONDAY)==Calendar.SEPTEMBER&&calendar.get(Calendar.DAY_OF_MONTH)>1||
-                          calendar.get(Calendar.MONDAY)==Calendar.SEPTEMBER&&calendar.get(Calendar.DAY_OF_MONTH)==1&&calendar.get(Calendar.HOUR_OF_DAY)>6||
-                          calendar.get(Calendar.MONDAY)==Calendar.SEPTEMBER&&calendar.get(Calendar.DAY_OF_MONTH)==1&&calendar.get(Calendar.HOUR_OF_DAY)==6&&calendar.get(Calendar.MINUTE)>2?
+                          calendar.get(Calendar.MONTH)==Calendar.SEPTEMBER&&calendar.get(Calendar.DAY_OF_MONTH)>1||
+                          calendar.get(Calendar.MONTH)==Calendar.SEPTEMBER&&calendar.get(Calendar.DAY_OF_MONTH)==1&&calendar.get(Calendar.HOUR_OF_DAY)>6?
                           calendar.get(Calendar.YEAR):
                           (calendar.get(Calendar.YEAR)-1);
             if(calendar.isLeapYear(yearBegin+1))
@@ -128,10 +127,8 @@ public class TempoCalendarPage extends AbstractSinglePage
                     calendar.setTimeInMillis(System.currentTimeMillis());
                     int currentDay=calendar.get(Calendar.DAY_OF_MONTH);
                     int currentHour=calendar.get(Calendar.HOUR_OF_DAY);
-                    int currentMinute=calendar.get(Calendar.MINUTE);
                     if(currentDay!=lastDateDay||
-                       currentDay==lastDateDay&&currentHour<6||
-                       currentDay==lastDateDay&&currentHour==6&&currentMinute<=2)
+                       currentDay==lastDateDay&&currentHour<6)
                         if(lastDateColor!=null&&lastDateColor.contains("BLEU"))
                         {
                             elapsedBlueDayCount--;
