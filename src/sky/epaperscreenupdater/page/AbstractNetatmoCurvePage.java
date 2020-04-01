@@ -116,17 +116,27 @@ public abstract class AbstractNetatmoCurvePage extends AbstractSinglePage
         Measure[] measures=NetatmoUtils.filterTimedWindowMeasures(rawMeasures,3);
         if(measures!=null)
         {
+            Measure[] augmentedMeasures;
+            Measure nowMeasure=NetatmoUtils.estimate(measures);
+            if(nowMeasure!=null)
+            {
+                augmentedMeasures=new Measure[measures.length+1];
+                System.arraycopy(measures,0,augmentedMeasures,0,measures.length);
+                augmentedMeasures[augmentedMeasures.length-1]=nowMeasure;
+            }
+            else
+                augmentedMeasures=measures;
             Measure[] yesterdayMeasures=NetatmoUtils.getMeasureDatabase().getMeasures(getMeasureKind(),
-                                                              measures[0].getDate().getTime()-Duration.of(1).day(),
-                                                              measures[measures.length-1].getDate().getTime()-Duration.of(1).day()
+                                                              augmentedMeasures[0].getDate().getTime()-Duration.of(1).day(),
+                                                              augmentedMeasures[augmentedMeasures.length-1].getDate().getTime()-Duration.of(1).day()
             );
             String ordinateLabelText=getOrdinateLabelText();
             int ordinateLabelTextWidth=(int)Math.ceil(baseFont.getStringBounds(ordinateLabelText,g2d.getFontRenderContext()).getWidth());
             int ordinateLabelTextHeight=(int)Math.ceil(baseFont.getStringBounds(ordinateLabelText,g2d.getFontRenderContext()).getHeight());
             g2d.setFont(verticalBaseFont);
             g2d.drawString(ordinateLabelText,ordinateLabelTextHeight-5,(128-ordinateLabelTextHeight+3)/2+ordinateLabelTextWidth/2);
-            XRange xRange=computeXRange(measures);
-            YRange todayYRange=computeYRange(measures);
+            XRange xRange=computeXRange(augmentedMeasures);
+            YRange todayYRange=computeYRange(augmentedMeasures);
             YRange yesterdayYRange=computeYRange(yesterdayMeasures);
             YRange yRange=yesterdayMeasures.length>0?new YRange(todayYRange,yesterdayYRange):todayYRange;
             double choosenTickOffset=0d;
@@ -148,8 +158,8 @@ public abstract class AbstractNetatmoCurvePage extends AbstractSinglePage
             for(PreparedTick preparedOrdinateTick:preparedOrdinateTicks)
                 if((int)Math.ceil(preparedOrdinateTick.getNameDimensions().getWidth())>maxOrdinateWidth)
                     maxOrdinateWidth=(int)Math.ceil(preparedOrdinateTick.getNameDimensions().getWidth());
-            List<Point2D> measurePoints=new ArrayList<>(measures.length);
-            for(Measure measure:measures)
+            List<Point2D> measurePoints=new ArrayList<>(augmentedMeasures.length);
+            for(Measure measure:augmentedMeasures)
             {
                 long time=measure.getDate().getTime();
                 int xLeft=ordinateLabelTextHeight+maxOrdinateWidth;
@@ -174,12 +184,12 @@ public abstract class AbstractNetatmoCurvePage extends AbstractSinglePage
                 g2d.drawString(preparedOrdinateTick.getName(),ordinateLabelTextHeight+maxOrdinateWidth-(int)Math.ceil(preparedOrdinateTick.getNameDimensions().getWidth())-2,(int)y+(int)Math.ceil(preparedOrdinateTick.getNameDimensions().getHeight()/2d)-3);
                 g2d.drawLine(ordinateLabelTextHeight+maxOrdinateWidth-1,(int)y,296,(int)y);
             }
-            for(int i=measures.length-1;i>=0;i-=6)
+            for(int i=augmentedMeasures.length-1;i>=0;i-=6)
             {
                 double x=measurePoints.get(i).getX();
-                String timeString=SimpleDateFormat.getTimeInstance(DateFormat.SHORT).format(measures[i].getDate());
+                String timeString=SimpleDateFormat.getTimeInstance(DateFormat.SHORT).format(augmentedMeasures[i].getDate());
                 int timeStringWidth=(int)Math.ceil(baseFont.getStringBounds(timeString,g2d.getFontRenderContext()).getWidth());
-                g2d.drawString(timeString,(int)x-(i==measures.length-1?timeStringWidth-10:timeStringWidth/2),128);
+                g2d.drawString(timeString,(int)x-(i==augmentedMeasures.length-1?timeStringWidth-10:timeStringWidth/2),128);
                 g2d.drawLine((int)x,128-ordinateLabelTextHeight+5,(int)x,0);
             }
             g2d.setStroke(new BasicStroke());
@@ -197,7 +207,7 @@ public abstract class AbstractNetatmoCurvePage extends AbstractSinglePage
                 double y=(double)(yBottom-yTop)*(1d-(value-yRange.getMin())/yRange.getAmplitude())+(double)yTop;
                 yesterdayMeasurePoints.add(new Point2D.Double(x,y));
             }
-            drawData(g2d,yesterdayMeasurePoints,ordinateLabelTextHeight,CurveLineType.SPLINE,CurveStrokeType.DOTTED_LINE,CurvePointShape.NOTHING);
+            drawData(g2d,yesterdayMeasurePoints,ordinateLabelTextHeight,CurveLineType.SPLINE,CurveStrokeType.DOTTED_LINE,CurvePointShape.TRIANGLE);
         }
     }
 
@@ -345,7 +355,8 @@ public abstract class AbstractNetatmoCurvePage extends AbstractSinglePage
                                 t2=h[i]-t1;
                                 y=((-a[i-1]/6d*(t2+h[i])*t1+d[i-1])*t2+(-a[i]/6d*(t1+h[i])*t2+d[i])*t1)/h[i];
                                 t=x[i-1]+t1;
-                                path.lineTo((int)t,(int)y);
+                                if(Double.isFinite(y)&&y>=0d&&y<=128d)
+                                    path.lineTo((int)t,(int)y);
                                 count++;
                                 oldt=t;
                                 oldy=y;

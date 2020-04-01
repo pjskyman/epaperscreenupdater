@@ -69,15 +69,28 @@ public class TemperatureComparisonPage extends AbstractNetatmoCurvePage
             measures[i]=NetatmoUtils.filterTimedWindowMeasures(rawMeasures[i],3);
         if(Arrays.stream(measures).allMatch(array->array!=null))
         {
+            Measure[][] augmentedMeasures=new Measure[measureKinds.length][];
+            for(int i=0;i<measureKinds.length;i++)
+            {
+                Measure nowMeasure=NetatmoUtils.estimate(measures[i]);
+                if(nowMeasure!=null)
+                {
+                    augmentedMeasures[i]=new Measure[measures[i].length+1];
+                    System.arraycopy(measures[i],0,augmentedMeasures[i],0,measures[i].length);
+                    augmentedMeasures[i][augmentedMeasures[i].length-1]=nowMeasure;
+                }
+                else
+                    augmentedMeasures[i]=measures[i];
+            }
             String ordinateLabelText=getOrdinateLabelText();
             int ordinateLabelTextWidth=(int)Math.ceil(baseFont.getStringBounds(ordinateLabelText,g2d.getFontRenderContext()).getWidth());
             int ordinateLabelTextHeight=(int)Math.ceil(baseFont.getStringBounds(ordinateLabelText,g2d.getFontRenderContext()).getHeight());
             g2d.setFont(verticalBaseFont);
             g2d.drawString(ordinateLabelText,ordinateLabelTextHeight-5,(128-ordinateLabelTextHeight+3)/2+ordinateLabelTextWidth/2);
-            XRange xRange=computeXRange(measures[0]);
-            YRange yRange=computeYRange(measures[0]);
+            XRange xRange=computeXRange(augmentedMeasures[0]);
+            YRange yRange=computeYRange(augmentedMeasures[0]);
             for(int i=1;i<measureKinds.length;i++)
-                yRange=new YRange(yRange,computeYRange(measures[i]));
+                yRange=new YRange(yRange,computeYRange(augmentedMeasures[i]));
             double choosenTickOffset=0d;
             for(int index=0;index<TICK_OFFSETS.length;index++)
             {
@@ -100,8 +113,8 @@ public class TemperatureComparisonPage extends AbstractNetatmoCurvePage
             List<Point2D>[] measurePoints=(List<Point2D>[])new List[measureKinds.length];
             for(int i=0;i<measureKinds.length;i++)
             {
-                measurePoints[i]=new ArrayList<>(measures[i].length);
-                for(Measure measure:measures[i])
+                measurePoints[i]=new ArrayList<>(augmentedMeasures[i].length);
+                for(Measure measure:augmentedMeasures[i])
                 {
                     long time=measure.getDate().getTime();
                     int xLeft=ordinateLabelTextHeight+maxOrdinateWidth;
@@ -127,12 +140,12 @@ public class TemperatureComparisonPage extends AbstractNetatmoCurvePage
                 g2d.drawString(preparedOrdinateTick.getName(),ordinateLabelTextHeight+maxOrdinateWidth-(int)Math.ceil(preparedOrdinateTick.getNameDimensions().getWidth())-2,(int)y+(int)Math.ceil(preparedOrdinateTick.getNameDimensions().getHeight()/2d)-3);
                 g2d.drawLine(ordinateLabelTextHeight+maxOrdinateWidth-1,(int)y,296,(int)y);
             }
-            for(int i=measures[0].length-1;i>=0;i-=6)
+            for(int i=augmentedMeasures[0].length-1;i>=0;i-=6)
             {
                 double x=measurePoints[0].get(i).getX();
-                String timeString=SimpleDateFormat.getTimeInstance(DateFormat.SHORT).format(measures[0][i].getDate());
+                String timeString=SimpleDateFormat.getTimeInstance(DateFormat.SHORT).format(augmentedMeasures[0][i].getDate());
                 int timeStringWidth=(int)Math.ceil(baseFont.getStringBounds(timeString,g2d.getFontRenderContext()).getWidth());
-                g2d.drawString(timeString,(int)x-(i==measures[0].length-1?timeStringWidth-10:timeStringWidth/2),128);
+                g2d.drawString(timeString,(int)x-(i==augmentedMeasures[0].length-1?timeStringWidth-10:timeStringWidth/2),128);
                 g2d.drawLine((int)x,128-ordinateLabelTextHeight+5,(int)x,0);
             }
             g2d.setStroke(new BasicStroke());

@@ -702,7 +702,7 @@ public class NetatmoUtils
                 points.remove(0);
             List<WeightedObservedPoint> correctedPoints=new ArrayList<>(points.size());
             points.forEach(point->correctedPoints.add(new WeightedObservedPoint(point.getWeight(),(point.getX()-points.get(0).getX())/60_000d,point.getY())));
-            int degree=Math.min(1,correctedPoints.size()-2);
+            int degree=Math.min(1,correctedPoints.size()-1);
             double[] result=PolynomialCurveFitter.create(degree)
                     .withMaxIterations(1_000)
                     .fit(correctedPoints);
@@ -714,7 +714,7 @@ public class NetatmoUtils
         }
         catch(Exception e)
         {
-            return measures[measures.length-1];
+            return new StandAloneMeasure(new Date(),measures[measures.length-1].getMeasurementType(),measures[measures.length-1].getValue());
         }
     }
 }
