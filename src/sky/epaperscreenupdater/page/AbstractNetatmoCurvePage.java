@@ -200,7 +200,7 @@ public abstract class AbstractNetatmoCurvePage extends AbstractSinglePage
             g2d.setStroke(new BasicStroke());
             drawData(g2d,measurePoints,ordinateLabelTextHeight,CurveLineType.SPLINE,CurveStrokeType.CONTINUOUS_LINE,CurvePointShape.CIRCLE);
             if(nowMeasure!=null)
-                drawData(g2d,Arrays.asList(measurePoints.get(measurePoints.size()-1),nowMeasurePoint),ordinateLabelTextHeight,CurveLineType.SPLINE,CurveStrokeType.DASHED_LINE,CurvePointShape.NOTHING);
+                drawData(g2d,Arrays.asList(measurePoints.get(measurePoints.size()-1),nowMeasurePoint),ordinateLabelTextHeight,CurveLineType.SPLINE,CurveStrokeType.CONTINUOUS_LINE,CurvePointShape.NOTHING);
             List<Point2D> yesterdayMeasurePoints=new ArrayList<>(yesterdayMeasures.length);
             for(Measure yesterdayMeasure:yesterdayMeasures)
             {

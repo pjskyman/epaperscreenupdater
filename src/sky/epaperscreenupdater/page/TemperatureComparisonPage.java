@@ -160,7 +160,7 @@ public class TemperatureComparisonPage extends AbstractNetatmoCurvePage
             {
                 drawData(g2d,measurePoints[i],ordinateLabelTextHeight,CurveLineType.SPLINE,i<measureKinds.length-1?CurveStrokeType.CONTINUOUS_LINE:CurveStrokeType.DASHED_LINE,i<measureKinds.length-1?CurvePointShape.values()[i%3]:CurvePointShape.NOTHING);
                 if(nowMeasures[i]!=null)
-                    drawData(g2d,Arrays.asList(measurePoints[i].get(measurePoints[i].size()-1),nowMeasurePoints[i]),ordinateLabelTextHeight,CurveLineType.SPLINE,CurveStrokeType.DASHED_LINE,CurvePointShape.NOTHING);
+                    drawData(g2d,Arrays.asList(measurePoints[i].get(measurePoints[i].size()-1),nowMeasurePoints[i]),ordinateLabelTextHeight,CurveLineType.SPLINE,i<measureKinds.length-1?CurveStrokeType.CONTINUOUS_LINE:CurveStrokeType.DASHED_LINE,CurvePointShape.NOTHING);
             }
         }
     }

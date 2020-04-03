@@ -167,8 +167,8 @@ public class _06000000729aWindCurvePage extends AbstractNetatmoCurvePage
             drawData(g2d,new SpecialWindList(winds,true),ordinateLabelTextHeight,CurveLineType.SPLINE,CurveStrokeType.CONTINUOUS_LINE,CurvePointShape.TRIANGLE);
             if(nowWind!=null)
             {
-                drawData(g2d,new SpecialWindList(new Wind[]{winds[winds.length-1],nowWind},false),ordinateLabelTextHeight,CurveLineType.SPLINE,CurveStrokeType.DASHED_LINE,CurvePointShape.NOTHING);
-                drawData(g2d,new SpecialWindList(new Wind[]{winds[winds.length-1],nowWind},true),ordinateLabelTextHeight,CurveLineType.SPLINE,CurveStrokeType.DASHED_LINE,CurvePointShape.NOTHING);
+                drawData(g2d,new SpecialWindList(new Wind[]{winds[winds.length-1],nowWind},false),ordinateLabelTextHeight,CurveLineType.SPLINE,CurveStrokeType.CONTINUOUS_LINE,CurvePointShape.NOTHING);
+                drawData(g2d,new SpecialWindList(new Wind[]{winds[winds.length-1],nowWind},true),ordinateLabelTextHeight,CurveLineType.SPLINE,CurveStrokeType.CONTINUOUS_LINE,CurvePointShape.NOTHING);
             }
             for(int i=winds.length-1;i>=0;i-=4)//on ne tient pas compte de l'estimation nowWind dans ce dessin car rien n'est sûr
             {
