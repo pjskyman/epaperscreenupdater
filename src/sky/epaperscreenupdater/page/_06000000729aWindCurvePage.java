@@ -52,45 +52,6 @@ public class _06000000729aWindCurvePage extends AbstractNetatmoCurvePage
     }
 
     @Override
-    protected YRange computeYRange(Measure[] measures)
-    {
-        //cette redéfinition est spécifique pour rajouter davantage de marge en haut des courbes pour accueillir les flèches de direction du vent
-        double yMin=1e10d;
-        double yMax=-1e10d;
-        for(Measure measure:measures)
-        {
-            if(measure.getValue()<yMin)
-                yMin=measure.getValue();
-            if(measure.getValue()>yMax)
-                yMax=measure.getValue();
-        }
-        double yAmplitude=yMax-yMin;
-        if(yAmplitude<0d)
-        {
-            yMin=0d;
-            yMax=1d;
-            yAmplitude=1d;
-        }
-        else
-            if(yAmplitude<getMinimalYRange())
-            {
-                double offset=(getMinimalYRange()-yAmplitude)/2d;
-                yMin-=offset;
-                yMax+=offset;
-                yAmplitude=yMax-yMin;
-            }
-        if(yMin<getMinimalY())
-        {
-            double offset=getMinimalY()-yMin;
-            yMin+=offset;
-            yMax+=offset;
-        }
-        yMin-=yAmplitude/15d;
-        yMax+=yAmplitude/2.5d;//cette redéfinition de computeYRange rajoute davantage de marge en haut des courbes pour accueillir les flèches de direction du vent
-        return new YRange(yMin,yMax);
-    }
-
-    @Override
     protected void drawChart(Map<String,Measure[]> measureMap,Font baseFont,Font verticalBaseFont,Graphics2D g2d)
     {
         //cette redéfinition est spécifique pour dessiner les 2 courbes du vent ainsi que les flèches de direction en haut du graphique
@@ -104,54 +65,18 @@ public class _06000000729aWindCurvePage extends AbstractNetatmoCurvePage
         Measure[] gustAngleMeasures=NetatmoUtils.filterTimedWindowMeasures(rawGustAngleMeasures,3);
         if(measures!=null&&gustMeasures!=null&&angleMeasures!=null&&gustAngleMeasures!=null)
         {
-            Measure[] augmentedMeasures;
             Measure nowMeasure=NetatmoUtils.estimate(measures);
-            if(nowMeasure!=null)
-            {
-                augmentedMeasures=new Measure[measures.length+1];
-                System.arraycopy(measures,0,augmentedMeasures,0,measures.length);
-                augmentedMeasures[augmentedMeasures.length-1]=nowMeasure;
-            }
-            else
-                augmentedMeasures=measures;
-            Measure[] augmentedAngleMeasures;
             Measure nowAngleMeasure=NetatmoUtils.estimate(angleMeasures);
-            if(nowAngleMeasure!=null)
-            {
-                augmentedAngleMeasures=new Measure[angleMeasures.length+1];
-                System.arraycopy(angleMeasures,0,augmentedAngleMeasures,0,angleMeasures.length);
-                augmentedAngleMeasures[augmentedAngleMeasures.length-1]=nowAngleMeasure;
-            }
-            else
-                augmentedAngleMeasures=angleMeasures;
-            Measure[] augmentedGustMeasures;
             Measure nowGustMeasure=NetatmoUtils.estimate(gustMeasures);
-            if(nowGustMeasure!=null)
-            {
-                augmentedGustMeasures=new Measure[gustMeasures.length+1];
-                System.arraycopy(gustMeasures,0,augmentedGustMeasures,0,gustMeasures.length);
-                augmentedGustMeasures[augmentedGustMeasures.length-1]=nowGustMeasure;
-            }
-            else
-                augmentedGustMeasures=gustMeasures;
-            Measure[] augmentedGustAngleMeasures;
             Measure nowGustAngleMeasure=NetatmoUtils.estimate(gustAngleMeasures);
-            if(nowGustAngleMeasure!=null)
-            {
-                augmentedGustAngleMeasures=new Measure[gustAngleMeasures.length+1];
-                System.arraycopy(gustAngleMeasures,0,augmentedGustAngleMeasures,0,gustAngleMeasures.length);
-                augmentedGustAngleMeasures[augmentedGustAngleMeasures.length-1]=nowGustAngleMeasure;
-            }
-            else
-                augmentedGustAngleMeasures=gustAngleMeasures;
             String ordinateLabelText=getOrdinateLabelText();
             int ordinateLabelTextWidth=(int)Math.ceil(baseFont.getStringBounds(ordinateLabelText,g2d.getFontRenderContext()).getWidth());
             int ordinateLabelTextHeight=(int)Math.ceil(baseFont.getStringBounds(ordinateLabelText,g2d.getFontRenderContext()).getHeight());
             g2d.setFont(verticalBaseFont);
             g2d.drawString(ordinateLabelText,ordinateLabelTextHeight-5,(128-ordinateLabelTextHeight+3)/2+ordinateLabelTextWidth/2);
-            XRange xRange=computeXRange(augmentedMeasures);
-            YRange yRange1=computeYRange(augmentedMeasures);
-            YRange yRange2=computeYRange(augmentedGustMeasures);
+            XRange xRange=computeXRange(measures,nowMeasure);
+            YRange yRange1=computeYRange(measures,nowMeasure);
+            YRange yRange2=computeYRange(gustMeasures,nowGustMeasure);
             YRange yRange=new YRange(yRange1,yRange2);
             double choosenTickOffset=0d;
             for(int index=0;index<TICK_OFFSETS.length;index++)
@@ -172,24 +97,46 @@ public class _06000000729aWindCurvePage extends AbstractNetatmoCurvePage
             for(PreparedTick preparedOrdinateTick:preparedOrdinateTicks)
                 if((int)Math.ceil(preparedOrdinateTick.getNameDimensions().getWidth())>maxOrdinateWidth)
                     maxOrdinateWidth=(int)Math.ceil(preparedOrdinateTick.getNameDimensions().getWidth());
-            Wind[] winds=new Wind[augmentedMeasures.length];
+            Wind[] winds=new Wind[measures.length];
             for(int i=0;i<winds.length;i++)
             {
-                long time=augmentedMeasures[i].getDate().getTime();
+                long time=measures[i].getDate().getTime();
                 int xLeft=ordinateLabelTextHeight+maxOrdinateWidth;
                 int xRight=295-10;
                 double x=(double)(xRight-xLeft)*(1d-(double)(xRange.getMax()-time)/(double)xRange.getAmplitude())+(double)xLeft;
-                double value=calculateRealValue(augmentedMeasures[i].getValue());
+                double value=calculateRealValue(measures[i].getValue());
                 int yTop=0;
                 int yBottom=128-ordinateLabelTextHeight+3;
                 double y1=(double)(yBottom-yTop)*(1d-(value-yRange.getMin())/yRange.getAmplitude())+(double)yTop;
-                value=calculateRealValue(augmentedGustMeasures[i].getValue());
+                value=calculateRealValue(gustMeasures[i].getValue());
                 double y2=(double)(yBottom-yTop)*(1d-(value-yRange.getMin())/yRange.getAmplitude())+(double)yTop;
-                winds[i]=new Wind(augmentedMeasures[i].getDate(),
-                        calculateRealValue(augmentedMeasures[i].getValue()),
-                        augmentedAngleMeasures[i].getValue(),
-                        calculateRealValue(augmentedGustMeasures[i].getValue()),
-                        augmentedGustAngleMeasures[i].getValue(),
+                winds[i]=new Wind(measures[i].getDate(),
+                        calculateRealValue(measures[i].getValue()),
+                        angleMeasures[i].getValue(),
+                        calculateRealValue(gustMeasures[i].getValue()),
+                        gustAngleMeasures[i].getValue(),
+                        x,
+                        y1,
+                        y2);
+            }
+            Wind nowWind=null;
+            if(nowMeasure!=null&&nowGustMeasure!=null&&nowAngleMeasure!=null&&nowGustAngleMeasure!=null)
+            {
+                long time=nowMeasure.getDate().getTime();
+                int xLeft=ordinateLabelTextHeight+maxOrdinateWidth;
+                int xRight=295-10;
+                double x=(double)(xRight-xLeft)*(1d-(double)(xRange.getMax()-time)/(double)xRange.getAmplitude())+(double)xLeft;
+                double value=calculateRealValue(nowMeasure.getValue());
+                int yTop=0;
+                int yBottom=128-ordinateLabelTextHeight+3;
+                double y1=(double)(yBottom-yTop)*(1d-(value-yRange.getMin())/yRange.getAmplitude())+(double)yTop;
+                value=calculateRealValue(nowGustMeasure.getValue());
+                double y2=(double)(yBottom-yTop)*(1d-(value-yRange.getMin())/yRange.getAmplitude())+(double)yTop;
+                nowWind=new Wind(nowMeasure.getDate(),
+                        calculateRealValue(nowMeasure.getValue()),
+                        nowAngleMeasure.getValue(),
+                        calculateRealValue(nowGustMeasure.getValue()),
+                        nowGustAngleMeasure.getValue(),
                         x,
                         y1,
                         y2);
@@ -207,18 +154,23 @@ public class _06000000729aWindCurvePage extends AbstractNetatmoCurvePage
                 g2d.drawString(preparedOrdinateTick.getName(),ordinateLabelTextHeight+maxOrdinateWidth-(int)Math.ceil(preparedOrdinateTick.getNameDimensions().getWidth())-2,(int)y+(int)Math.ceil(preparedOrdinateTick.getNameDimensions().getHeight()/2d)-3);
                 g2d.drawLine(ordinateLabelTextHeight+maxOrdinateWidth-1,(int)y,296,(int)y);
             }
-            for(int i=winds.length-1;i>=0;i-=6)
+            for(int i=winds.length-(nowWind!=null?0:1);i>=0;i-=6)
             {
-                double x=winds[i].getX();
-                String timeString=SimpleDateFormat.getTimeInstance(DateFormat.SHORT).format(winds[i].getTime());
+                double x=(i==winds.length?nowWind:winds[i]).getX();
+                String timeString=SimpleDateFormat.getTimeInstance(DateFormat.SHORT).format((i==winds.length?nowWind:winds[i]).getTime());
                 int timeStringWidth=(int)Math.ceil(baseFont.getStringBounds(timeString,g2d.getFontRenderContext()).getWidth());
-                g2d.drawString(timeString,(int)x-(i==winds.length-1?timeStringWidth-10:timeStringWidth/2),128);
+                g2d.drawString(timeString,(int)x-(i==winds.length-(nowWind!=null?0:1)?timeStringWidth-10:timeStringWidth/2),128);
                 g2d.drawLine((int)x,128-ordinateLabelTextHeight+5,(int)x,0);
             }
             g2d.setStroke(new BasicStroke());
             drawData(g2d,new SpecialWindList(winds,false),ordinateLabelTextHeight,CurveLineType.SPLINE,CurveStrokeType.CONTINUOUS_LINE,CurvePointShape.CIRCLE);
-            drawData(g2d,new SpecialWindList(winds,true),ordinateLabelTextHeight,CurveLineType.SPLINE,CurveStrokeType.CONTINUOUS_LINE,CurvePointShape.CIRCLE);
-            for(int i=winds.length-1;i>=0;i-=4)
+            drawData(g2d,new SpecialWindList(winds,true),ordinateLabelTextHeight,CurveLineType.SPLINE,CurveStrokeType.CONTINUOUS_LINE,CurvePointShape.TRIANGLE);
+            if(nowWind!=null)
+            {
+                drawData(g2d,new SpecialWindList(new Wind[]{winds[winds.length-1],nowWind},false),ordinateLabelTextHeight,CurveLineType.SPLINE,CurveStrokeType.DASHED_LINE,CurvePointShape.NOTHING);
+                drawData(g2d,new SpecialWindList(new Wind[]{winds[winds.length-1],nowWind},true),ordinateLabelTextHeight,CurveLineType.SPLINE,CurveStrokeType.DASHED_LINE,CurvePointShape.NOTHING);
+            }
+            for(int i=winds.length-1;i>=0;i-=4)//on ne tient pas compte de l'estimation nowWind dans ce dessin car rien n'est sûr
             {
                 int j=Math.max(0,i-3);
                 Wind[] selectedWinds=new Wind[i-j+1];
@@ -263,6 +215,52 @@ public class _06000000729aWindCurvePage extends AbstractNetatmoCurvePage
     private double calculateRealValue(double value)
     {
         return (double)Integer.parseInt(INTEGER_FORMAT.format(value/LOW_HEIGHT_RATIO))*LOW_HEIGHT_RATIO;
+    }
+
+    @Override
+    protected YRange computeYRange(Measure[] measures,Measure nowMeasure)
+    {
+        //cette redéfinition est spécifique pour rajouter davantage de marge en haut des courbes pour accueillir les flèches de direction du vent
+        double yMin=1e10d;
+        double yMax=-1e10d;
+        for(Measure measure:measures)
+        {
+            if(measure.getValue()<yMin)
+                yMin=measure.getValue();
+            if(measure.getValue()>yMax)
+                yMax=measure.getValue();
+        }
+        if(nowMeasure!=null)
+        {
+            if(nowMeasure.getValue()<yMin)
+                yMin=nowMeasure.getValue();
+            if(nowMeasure.getValue()>yMax)
+                yMax=nowMeasure.getValue();
+        }
+        double yAmplitude=yMax-yMin;
+        if(yAmplitude<0d)
+        {
+            yMin=0d;
+            yMax=1d;
+            yAmplitude=1d;
+        }
+        else
+            if(yAmplitude<getMinimalYRange())
+            {
+                double offset=(getMinimalYRange()-yAmplitude)/2d;
+                yMin-=offset;
+                yMax+=offset;
+                yAmplitude=yMax-yMin;
+            }
+        if(yMin<getMinimalY())
+        {
+            double offset=getMinimalY()-yMin;
+            yMin+=offset;
+            yMax+=offset;
+        }
+        yMin-=yAmplitude/15d;
+        yMax+=yAmplitude/2.5d;//cette redéfinition de computeYRange rajoute davantage de marge en haut des courbes pour accueillir les flèches de direction du vent
+        return new YRange(yMin,yMax);
     }
 
     protected String getDebugImageFileName()

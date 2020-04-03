@@ -34,7 +34,7 @@ public class _05000004152cRainCurvePage extends AbstractNetatmoCurvePage
     }
 
     @Override
-    protected YRange computeYRange(Measure[] measures)
+    protected YRange computeYRange(Measure[] measures,Measure nowMeasure)
     {
         //cette redéfinition est spécifique pour les barres de pluviométrie qui n'ont rien à voir avec des courbes classiques
         double yMin=0d;
@@ -42,6 +42,9 @@ public class _05000004152cRainCurvePage extends AbstractNetatmoCurvePage
         for(Measure measure:measures)
             if(measure.getValue()>yMax)
                 yMax=measure.getValue();
+        if(nowMeasure!=null)
+            if(nowMeasure.getValue()>yMax)
+                yMax=nowMeasure.getValue();
         double yAmplitude=yMax-yMin;
         if(yAmplitude<=0d)
         {
