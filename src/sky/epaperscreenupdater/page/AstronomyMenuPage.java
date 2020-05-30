@@ -6,7 +6,7 @@ public class AstronomyMenuPage extends AbstractMenuPage
     {
         super(parentPage);
         subpages.add(new MoonPage(this).potentiallyUpdate());
-        subpages.add(new IridiumFlareForecastPage(this).potentiallyUpdate());
+//        subpages.add(new IridiumFlareForecastPage(this).potentiallyUpdate());
     }
 
     public String getName()
