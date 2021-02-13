@@ -5,8 +5,8 @@ import java.awt.FontFormatException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import sky.epaperscreenupdater.Logger;
 import sky.epaperscreenupdater.Screen;
+import sky.housecommon.Logger;
 
 public abstract class AbstractPage implements Page
 {

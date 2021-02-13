@@ -7,7 +7,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import sky.epaperscreenupdater.Logger;
+import sky.housecommon.Logger;
 import sky.housecommon.NotAvailableDatabaseException;
 import sky.housecommon.Temperature;
 

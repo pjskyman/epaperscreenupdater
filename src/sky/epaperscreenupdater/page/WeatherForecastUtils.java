@@ -12,7 +12,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import sky.epaperscreenupdater.Logger;
+import sky.housecommon.Logger;
 import sky.program.Duration;
 
 public class WeatherForecastUtils

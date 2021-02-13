@@ -6,9 +6,9 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
-import sky.epaperscreenupdater.Logger;
 import sky.epaperscreenupdater.RotationDirection;
 import sky.epaperscreenupdater.Screen;
+import sky.housecommon.Logger;
 
 /**
  * Squelette de menu. Un menu est avant tout une page, mais contient une

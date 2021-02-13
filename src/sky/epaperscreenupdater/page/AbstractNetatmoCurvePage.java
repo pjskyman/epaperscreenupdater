@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import sky.epaperscreenupdater.Logger;
+import sky.housecommon.Logger;
 import sky.netatmo.Measure;
 import sky.program.Duration;
 

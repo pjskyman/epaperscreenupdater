@@ -16,7 +16,7 @@ import java.util.List;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
-import sky.epaperscreenupdater.Logger;
+import sky.housecommon.Logger;
 import sky.program.Duration;
 
 public class RERCPage extends AbstractSinglePage

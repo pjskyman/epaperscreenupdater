@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 import org.apache.commons.math3.fitting.PolynomialCurveFitter;
 import org.apache.commons.math3.fitting.WeightedObservedPoint;
-import sky.epaperscreenupdater.Logger;
+import sky.housecommon.Logger;
 import sky.netatmo.Device;
 import sky.netatmo.Measure;
 import sky.netatmo.MeasurementScale;

@@ -3,6 +3,7 @@ package sky.epaperscreenupdater;
 import java.util.concurrent.atomic.AtomicInteger;
 import sky.epaperscreenupdater.page.AnniversaryPage;
 import sky.epaperscreenupdater.page.MainMenuPage;
+import sky.housecommon.Logger;
 import sky.program.Duration;
 
 public final class Main

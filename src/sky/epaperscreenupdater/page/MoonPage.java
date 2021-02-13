@@ -24,7 +24,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 import javax.imageio.ImageIO;
-import sky.epaperscreenupdater.Logger;
+import sky.housecommon.Logger;
 import sky.program.Duration;
 
 public class MoonPage extends AbstractSinglePage

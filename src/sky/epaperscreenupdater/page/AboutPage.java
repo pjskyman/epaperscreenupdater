@@ -13,7 +13,7 @@ import java.io.InputStream;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import javax.imageio.ImageIO;
-import sky.epaperscreenupdater.Logger;
+import sky.housecommon.Logger;
 import sky.program.Duration;
 
 public class AboutPage extends AbstractSinglePage
