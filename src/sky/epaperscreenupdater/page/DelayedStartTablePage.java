@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
+import sky.housecommon.ElectricityUtils;
 import sky.housecommon.InstantaneousConsumption;
 import sky.housecommon.PricingPeriod;
 import sky.program.Duration;

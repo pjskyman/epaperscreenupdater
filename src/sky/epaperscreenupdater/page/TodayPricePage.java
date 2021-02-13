@@ -4,6 +4,7 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import sky.housecommon.ElectricityUtils;
 import sky.housecommon.EnergyConsumption;
 import sky.program.Duration;
 

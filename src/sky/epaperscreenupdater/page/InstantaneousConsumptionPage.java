@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import org.apache.commons.math3.fitting.PolynomialCurveFitter;
 import org.apache.commons.math3.fitting.WeightedObservedPoint;
+import sky.housecommon.ElectricityUtils;
 import sky.housecommon.InstantaneousConsumption;
 import sky.netatmo.Measure;
 import sky.netatmo.MeasurementType;

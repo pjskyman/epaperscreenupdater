@@ -3,6 +3,7 @@ package sky.epaperscreenupdater.page;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.util.List;
+import sky.housecommon.ElectricityUtils;
 import sky.housecommon.WasherInstantaneousConsumption;
 import sky.program.Duration;
 
