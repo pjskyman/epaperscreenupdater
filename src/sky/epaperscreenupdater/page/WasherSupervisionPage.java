@@ -3,7 +3,7 @@ package sky.epaperscreenupdater.page;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.util.List;
-import sky.housecommon.ElectricityUtils;
+import sky.housecommon.Database;
 import sky.housecommon.WasherInstantaneousConsumption;
 import sky.program.Duration;
 
@@ -29,7 +29,7 @@ public class WasherSupervisionPage extends AbstractSinglePage
         Font baseFont=FREDOKA_ONE_FONT.deriveFont(18f);
         g2d.setFont(baseFont);
         long baseTime=System.currentTimeMillis();
-        List<WasherInstantaneousConsumption> consumptions=ElectricityUtils.loadWasherInstantaneousConsumptions(baseTime-Duration.of(1).day(),baseTime+Duration.of(10).second());
+        List<WasherInstantaneousConsumption> consumptions=Database.getWasherInstantaneousConsumptions(baseTime-Duration.of(1).day(),baseTime+Duration.of(10).second());
         //WasherInstantaneousConsumption lastNullConsumption=null;
         WasherInstantaneousConsumption lastLowConsumption=null;
         WasherInstantaneousConsumption lastWorkingConsumption=null;
