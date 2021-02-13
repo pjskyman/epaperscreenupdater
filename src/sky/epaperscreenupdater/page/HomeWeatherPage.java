@@ -6,7 +6,7 @@ import java.awt.geom.AffineTransform;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import sky.housecommon.Requestor;
+import sky.housecommon.Database;
 import sky.housecommon.Temperature;
 import sky.netatmo.Measure;
 import sky.netatmo.MeasurementType;
@@ -53,7 +53,7 @@ public class HomeWeatherPage extends AbstractSinglePage
         Measure last06000000729aWindAngle=NetatmoUtils.getLastMeasure(lastMeasures,NetatmoUtils._06000000729a_WIND_ANGLE);
         Measure last06000000729aGustStrength=NetatmoUtils.getLastMeasure(lastMeasures,NetatmoUtils._06000000729a_GUST_STRENGTH);
         Measure last06000000729aGustAngle=NetatmoUtils.getLastMeasure(lastMeasures,NetatmoUtils._06000000729a_GUST_ANGLE);
-        List<Temperature> temperatures=Requestor.getLastTemperatures(1);
+        List<Temperature> temperatures=Database.getLastTemperatures(1);
         Measure lastToiletsTemperature=temperatures.isEmpty()?null:new StandAloneMeasure(new Date(temperatures.get(0).getTime()),MeasurementType.TEMPERATURE,temperatures.get(0).getTemperature());
         g2d.drawLine(64,68,62,68);
         g2d.drawLine(62,68,62,80);
