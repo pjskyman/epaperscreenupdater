@@ -1,17 +1,5 @@
 package sky.epaperscreenupdater.page;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import sky.housecommon.Database;
-import sky.housecommon.Logger;
-import sky.housecommon.NotAvailableDatabaseException;
-import sky.housecommon.Temperature;
-
 public class WeatherUtils
 {
     private WeatherUtils()
@@ -74,41 +62,5 @@ public class WeatherUtils
                                                                         return "NNO";
                                                                     else
                                                                         return "N";
-    }
-
-    public static List<Temperature> loadTemperatures(int number)
-    {
-        try
-        {
-            try(Connection connection=Database.getToilettesConnection())
-            {
-//                long startTime=System.currentTimeMillis();
-                List<Temperature> temperatures=new ArrayList<>();
-                try(Statement statement=connection.createStatement(ResultSet.TYPE_FORWARD_ONLY,ResultSet.CONCUR_READ_ONLY))
-                {
-                    try(ResultSet resultSet=statement.executeQuery("SELECT * FROM temperature ORDER BY time DESC LIMIT "+number+";"))
-                    {
-                        while(resultSet.next())
-                        {
-                            long time=resultSet.getLong("time");
-                            double temperature=resultSet.getDouble("temperature");
-                            double setPoint=resultSet.getDouble("setPoint");
-                            double ratio=resultSet.getDouble("ratio");
-                            boolean heaterOn=resultSet.getInt("heaterOn")==1;
-                            temperatures.add(new Temperature(time,temperature,setPoint,ratio,heaterOn));
-                        }
-                    }
-                }
-                Collections.reverse(temperatures);
-//                Logger.LOGGER.info(temperatures.size()+" rows fetched in "+(System.currentTimeMillis()-startTime)+" ms");
-                return temperatures;
-            }
-        }
-        catch(NotAvailableDatabaseException|SQLException e)
-        {
-            Logger.LOGGER.error(e.toString());
-            e.printStackTrace();
-            return new ArrayList<>(0);
-        }
     }
 }
