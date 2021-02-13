@@ -69,15 +69,18 @@ public class TemperatureComparisonPage extends AbstractNetatmoCurvePage
             measures[i]=NetatmoUtils.filterTimedWindowMeasures(rawMeasures[i],3);
         if(Arrays.stream(measures).allMatch(array->array!=null))
         {
+            Measure[] nowMeasures=new Measure[measureKinds.length];
+            for(int i=0;i<measureKinds.length;i++)
+                nowMeasures[i]=NetatmoUtils.estimate(measures[i]);
             String ordinateLabelText=getOrdinateLabelText();
             int ordinateLabelTextWidth=(int)Math.ceil(baseFont.getStringBounds(ordinateLabelText,g2d.getFontRenderContext()).getWidth());
             int ordinateLabelTextHeight=(int)Math.ceil(baseFont.getStringBounds(ordinateLabelText,g2d.getFontRenderContext()).getHeight());
             g2d.setFont(verticalBaseFont);
             g2d.drawString(ordinateLabelText,ordinateLabelTextHeight-5,(128-ordinateLabelTextHeight+3)/2+ordinateLabelTextWidth/2);
-            XRange xRange=computeXRange(measures[0]);
-            YRange yRange=computeYRange(measures[0]);
+            XRange xRange=computeXRange(measures[0],nowMeasures[0]);
+            YRange yRange=computeYRange(measures[0],nowMeasures[0]);
             for(int i=1;i<measureKinds.length;i++)
-                yRange=new YRange(yRange,computeYRange(measures[i]));
+                yRange=new YRange(yRange,computeYRange(measures[i],nowMeasures[i]));
             double choosenTickOffset=0d;
             for(int index=0;index<TICK_OFFSETS.length;index++)
             {
@@ -114,6 +117,23 @@ public class TemperatureComparisonPage extends AbstractNetatmoCurvePage
                     measurePoints[i].add(new Point2D.Double(x,y));
                 }
             }
+            Point2D[] nowMeasurePoints=new Point2D[measureKinds.length];
+            for(int i=0;i<measureKinds.length;i++)
+            {
+                nowMeasurePoints[i]=null;
+                if(nowMeasures[i]!=null)
+                {
+                    long time=nowMeasures[i].getDate().getTime();
+                    int xLeft=ordinateLabelTextHeight+maxOrdinateWidth;
+                    int xRight=295-10;
+                    double x=(double)(xRight-xLeft)*(1d-(double)(xRange.getMax()-time)/(double)xRange.getAmplitude())+(double)xLeft;
+                    double value=nowMeasures[i].getValue();
+                    int yTop=0;
+                    int yBottom=128-ordinateLabelTextHeight+3;
+                    double y=(double)(yBottom-yTop)*(1d-(value-yRange.getMin())/yRange.getAmplitude())+(double)yTop;
+                    nowMeasurePoints[i]=new Point2D.Double(x,y);
+                }
+            }
             g2d.drawLine(ordinateLabelTextHeight+maxOrdinateWidth,0,ordinateLabelTextHeight+maxOrdinateWidth,128-ordinateLabelTextHeight+3);
             g2d.drawLine(ordinateLabelTextHeight+maxOrdinateWidth,128-ordinateLabelTextHeight+3,295,128-ordinateLabelTextHeight+3);
             g2d.setFont(baseFont);
@@ -127,17 +147,21 @@ public class TemperatureComparisonPage extends AbstractNetatmoCurvePage
                 g2d.drawString(preparedOrdinateTick.getName(),ordinateLabelTextHeight+maxOrdinateWidth-(int)Math.ceil(preparedOrdinateTick.getNameDimensions().getWidth())-2,(int)y+(int)Math.ceil(preparedOrdinateTick.getNameDimensions().getHeight()/2d)-3);
                 g2d.drawLine(ordinateLabelTextHeight+maxOrdinateWidth-1,(int)y,296,(int)y);
             }
-            for(int i=measures[0].length-1;i>=0;i-=6)
+            for(int i=measures[0].length-(nowMeasures[0]!=null?0:1);i>=0;i-=6)
             {
-                double x=measurePoints[0].get(i).getX();
-                String timeString=SimpleDateFormat.getTimeInstance(DateFormat.SHORT).format(measures[0][i].getDate());
+                double x=(i==measures[0].length?nowMeasurePoints[0]:measurePoints[0].get(i)).getX();
+                String timeString=SimpleDateFormat.getTimeInstance(DateFormat.SHORT).format((i==measures[0].length?nowMeasures[0]:measures[0][i]).getDate());
                 int timeStringWidth=(int)Math.ceil(baseFont.getStringBounds(timeString,g2d.getFontRenderContext()).getWidth());
-                g2d.drawString(timeString,(int)x-(i==measures[0].length-1?timeStringWidth-10:timeStringWidth/2),128);
+                g2d.drawString(timeString,(int)x-(i==measures[0].length-(nowMeasures[0]!=null?0:1)?timeStringWidth-10:timeStringWidth/2),128);
                 g2d.drawLine((int)x,128-ordinateLabelTextHeight+5,(int)x,0);
             }
             g2d.setStroke(new BasicStroke());
             for(int i=0;i<measureKinds.length;i++)
+            {
                 drawData(g2d,measurePoints[i],ordinateLabelTextHeight,CurveLineType.SPLINE,i<measureKinds.length-1?CurveStrokeType.CONTINUOUS_LINE:CurveStrokeType.DASHED_LINE,i<measureKinds.length-1?CurvePointShape.values()[i%3]:CurvePointShape.NOTHING);
+                if(nowMeasures[i]!=null)
+                    drawData(g2d,Arrays.asList(measurePoints[i].get(measurePoints[i].size()-1),nowMeasurePoints[i]),ordinateLabelTextHeight,CurveLineType.SPLINE,i<measureKinds.length-1?CurveStrokeType.CONTINUOUS_LINE:CurveStrokeType.DASHED_LINE,CurvePointShape.NOTHING);
+            }
         }
     }
 

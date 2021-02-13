@@ -1,6 +1,7 @@
 package sky.epaperscreenupdater;
 
 import java.util.concurrent.atomic.AtomicInteger;
+import sky.epaperscreenupdater.page.AnniversaryPage;
 import sky.epaperscreenupdater.page.MainMenuPage;
 import sky.program.Duration;
 
@@ -23,6 +24,43 @@ public final class Main
             Logger.LOGGER.info("Display content successfully updated from page \""+mainMenuPage.getActivePageName()+"\" ("+RefreshType.TOTAL_REFRESH.toString()+")");
             RotaryEncoderManager.addRotationListener(mainMenuPage::rotated);
             RotaryEncoderManager.addSwitchListener(()->mainMenuPage.clicked(false));
+            RotaryEncoderManager.addRotationListener(rotationDirection->
+            {
+                try
+                {
+                    if(rotationDirection==RotationDirection.CLOCKWISE)
+                    {
+                        LedManager.setGreenLedOn();
+                        Thread.sleep(200L);
+                        LedManager.setGreenLedOff();
+                    }
+                    else
+                    {
+                        LedManager.setGreenLedOn();
+                        Thread.sleep(50L);
+                        LedManager.setGreenLedOff();
+                        Thread.sleep(50L);
+                        LedManager.setGreenLedOn();
+                        Thread.sleep(50L);
+                        LedManager.setGreenLedOff();
+                    }
+                }
+                catch(InterruptedException e)
+                {
+                }
+            });
+            RotaryEncoderManager.addSwitchListener(()->
+            {
+                try
+                {
+                    LedManager.setRedLedOn();
+                    Thread.sleep(500L);
+                    LedManager.setRedLedOff();
+                }
+                catch(InterruptedException e)
+                {
+                }
+            });
             Logger.LOGGER.info(Main.class.getSimpleName()+" is now ready!");
             new Thread("pageUpdater")
             {
@@ -44,6 +82,52 @@ public final class Main
                                 t.printStackTrace();
                             }
                             Thread.sleep(Duration.of(207).millisecond());
+                        }
+                    }
+                    catch(InterruptedException e)
+                    {
+                    }
+                }
+            }.start();
+            new Thread("anniversaryNotifier")
+            {
+                @Override
+                public void run()
+                {
+                    try
+                    {
+                        Thread.sleep(Duration.of(30).second());
+                        while(true)
+                        {
+                            boolean anniversaryToday=false;
+                            try
+                            {
+                                anniversaryToday=AnniversaryPage.isAnniversaryToday(AnniversaryPage.getAnniversaries());
+                            }
+                            catch(Throwable t)
+                            {
+                                Logger.LOGGER.error("Unmanaged error during anniversary notifying ("+t.toString()+")");
+                                t.printStackTrace();
+                            }
+                            if(anniversaryToday)
+                            {
+                                LedManager.setGreenLedOn();
+                                Thread.sleep(200L);
+                                LedManager.setGreenLedOff();
+                                Thread.sleep(50L);
+                                LedManager.setRedLedOn();
+                                Thread.sleep(200L);
+                                LedManager.setRedLedOff();
+                                Thread.sleep(50L);
+                                LedManager.setGreenLedOn();
+                                Thread.sleep(200L);
+                                LedManager.setGreenLedOff();
+                                Thread.sleep(50L);
+                                LedManager.setRedLedOn();
+                                Thread.sleep(200L);
+                                LedManager.setRedLedOff();
+                            }
+                            Thread.sleep(Duration.of(15).second());
                         }
                     }
                     catch(InterruptedException e)
