@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import sky.epaperscreenupdater.Logger;
+import sky.housecommon.NotAvailableDatabaseException;
 
 public class WeatherUtils
 {

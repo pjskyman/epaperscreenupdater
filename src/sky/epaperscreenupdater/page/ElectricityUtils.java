@@ -15,6 +15,7 @@ import java.util.function.Consumer;
 import sky.ecocompteur.EnergyConsumption;
 import sky.epaperscreenupdater.Logger;
 import sky.housecommon.InstantaneousConsumption;
+import sky.housecommon.NotAvailableDatabaseException;
 import sky.housecommon.OffPeakHourPeriodEfficiency;
 import sky.housecommon.PricingPeriod;
 import sky.housecommon.WasherInstantaneousConsumption;
