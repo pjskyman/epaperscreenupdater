@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
+import sky.housecommon.Database;
 import sky.housecommon.EnergyConsumption;
 import sky.housecommon.InstantaneousConsumption;
 import sky.housecommon.Logger;
