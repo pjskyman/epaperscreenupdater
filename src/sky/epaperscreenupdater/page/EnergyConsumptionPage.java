@@ -4,6 +4,7 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import sky.ecocompteur.EnergyConsumption;
 import sky.program.Duration;
 
 public class EnergyConsumptionPage extends AbstractSinglePage
