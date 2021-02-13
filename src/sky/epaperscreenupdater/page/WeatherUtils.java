@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.List;
 import sky.epaperscreenupdater.Logger;
 import sky.housecommon.NotAvailableDatabaseException;
+import sky.housecommon.Temperature;
 
 public class WeatherUtils
 {

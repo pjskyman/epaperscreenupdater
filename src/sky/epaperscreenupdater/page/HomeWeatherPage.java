@@ -6,6 +6,7 @@ import java.awt.geom.AffineTransform;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import sky.housecommon.Temperature;
 import sky.netatmo.Measure;
 import sky.netatmo.MeasurementType;
 import sky.program.Duration;
