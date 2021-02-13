@@ -14,6 +14,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import sky.epaperscreenupdater.Logger;
 import sky.housecommon.InstantaneousConsumption;
+import sky.housecommon.OffPeakHourPeriodEfficiency;
 import sky.housecommon.PricingPeriod;
 import sky.housecommon.WasherInstantaneousConsumption;
 import sky.program.Duration;

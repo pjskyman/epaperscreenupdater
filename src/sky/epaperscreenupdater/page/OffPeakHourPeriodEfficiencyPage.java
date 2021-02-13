@@ -5,6 +5,7 @@ import java.awt.Graphics2D;
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import sky.housecommon.OffPeakHourPeriodEfficiency;
 import sky.housecommon.PricingPeriod;
 import sky.program.Duration;
 
