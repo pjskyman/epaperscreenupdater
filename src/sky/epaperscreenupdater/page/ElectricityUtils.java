@@ -15,6 +15,7 @@ import java.util.function.Consumer;
 import sky.epaperscreenupdater.Logger;
 import sky.housecommon.InstantaneousConsumption;
 import sky.housecommon.PricingPeriod;
+import sky.housecommon.WasherInstantaneousConsumption;
 import sky.program.Duration;
 
 public class ElectricityUtils

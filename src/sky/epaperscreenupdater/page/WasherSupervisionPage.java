@@ -3,6 +3,7 @@ package sky.epaperscreenupdater.page;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.util.List;
+import sky.housecommon.WasherInstantaneousConsumption;
 import sky.program.Duration;
 
 public class WasherSupervisionPage extends AbstractSinglePage
