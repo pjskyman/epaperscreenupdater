@@ -1,5 +1,7 @@
 package sky.epaperscreenupdater.page;
 
+import sky.housecommon.InstantaneousConsumption;
+
 public class WasherGenericConsumption
 {
     private final long time;
