@@ -6,15 +6,15 @@ import sky.epaperscreenupdater.page.MainMenuPage;
 import sky.housecommon.Logger;
 import sky.program.Duration;
 
-public final class Main
+public final class EpaperScreenUpdater
 {
-    private Main()
+    private EpaperScreenUpdater()
     {
     }
 
     public static void main(String[] args)
     {
-        Logger.LOGGER.info("Starting "+Main.class.getSimpleName()+"...");
+        Logger.LOGGER.info("Starting "+EpaperScreenUpdater.class.getSimpleName()+"...");
         try
         {
             MainMenuPage mainMenuPage=new MainMenuPage();
@@ -62,7 +62,7 @@ public final class Main
                 {
                 }
             });
-            Logger.LOGGER.info(Main.class.getSimpleName()+" is now ready!");
+            Logger.LOGGER.info(EpaperScreenUpdater.class.getSimpleName()+" is now ready!");
             new Thread("pageUpdater")
             {
                 @Override
