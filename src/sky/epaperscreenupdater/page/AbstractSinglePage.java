@@ -7,8 +7,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import javax.imageio.ImageIO;
-import sky.epaperscreenupdater.Logger;
 import sky.epaperscreenupdater.RotationDirection;
+import sky.housecommon.Logger;
 
 public abstract class AbstractSinglePage extends AbstractPage
 {

@@ -5,6 +5,7 @@ import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.util.Date;
 import java.util.Map;
+import sky.housecommon.Database;
 import sky.netatmo.Measure;
 import sky.netatmo.MeasurementType;
 import sky.program.Duration;
@@ -80,7 +81,7 @@ public class HomeWeatherVariationPage extends AbstractSinglePage
         else
             _06000000729aMaxGustAngle=Double.NaN;
         long now=System.currentTimeMillis();
-        Measure[] lastToiletsTemperature=WeatherUtils.loadTemperatures(730).stream()//730 car 720 théoriques + 10 par sécurité
+        Measure[] lastToiletsTemperature=Database.getLastTemperatures(730).stream()//730 car 720 théoriques + 10 par sécurité
                 .filter(temperature->now-temperature.getTime()<Duration.of(1).hour())
                 .map(temperature->new StandAloneMeasure(new Date(temperature.getTime()),MeasurementType.TEMPERATURE,temperature.getTemperature()))
                 .toArray(Measure[]::new);

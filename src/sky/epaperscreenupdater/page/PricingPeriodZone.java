@@ -1,5 +1,7 @@
 package sky.epaperscreenupdater.page;
 
+import sky.housecommon.PricingPeriod;
+
 public class PricingPeriodZone
 {
     private final int startHour;

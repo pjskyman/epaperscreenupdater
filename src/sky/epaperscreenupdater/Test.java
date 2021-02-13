@@ -6,6 +6,7 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.Random;
 import sky.epaperscreenupdater.page.AbstractPage;
+import sky.housecommon.Logger;
 
 public class Test
 {

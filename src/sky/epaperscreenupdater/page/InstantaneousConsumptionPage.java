@@ -13,6 +13,9 @@ import java.util.List;
 import java.util.Map;
 import org.apache.commons.math3.fitting.PolynomialCurveFitter;
 import org.apache.commons.math3.fitting.WeightedObservedPoint;
+import sky.housecommon.Database;
+import sky.housecommon.ElectricityUtils;
+import sky.housecommon.InstantaneousConsumption;
 import sky.netatmo.Measure;
 import sky.netatmo.MeasurementType;
 import sky.program.Duration;
@@ -35,7 +38,7 @@ public class InstantaneousConsumptionPage extends AbstractSinglePage
     @Override
     protected boolean canUpdate()
     {
-        InstantaneousConsumption instantaneousConsumption=ElectricityUtils.getLastInstantaneousConsumption();
+        InstantaneousConsumption instantaneousConsumption=Database.getLastInstantaneousConsumption();
         if(instantaneousConsumption==null)
             return false;
         long consumptionTime=instantaneousConsumption.getTime();
@@ -54,7 +57,7 @@ public class InstantaneousConsumptionPage extends AbstractSinglePage
 
     protected void populateImage(Graphics2D g2d) throws VetoException,Exception
     {
-        InstantaneousConsumption instantaneousConsumption=ElectricityUtils.getLastInstantaneousConsumption();
+        InstantaneousConsumption instantaneousConsumption=Database.getLastInstantaneousConsumption();
         if(instantaneousConsumption==null)
             throw new VetoException();
 

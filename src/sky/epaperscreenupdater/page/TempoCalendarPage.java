@@ -8,7 +8,7 @@ import java.awt.geom.AffineTransform;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Locale;
-import sky.epaperscreenupdater.Logger;
+import sky.housecommon.Logger;
 import sky.program.Duration;
 
 public class TempoCalendarPage extends AbstractSinglePage

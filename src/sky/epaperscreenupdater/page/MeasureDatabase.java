@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
-import sky.epaperscreenupdater.Logger;
+import sky.housecommon.Logger;
 import sky.netatmo.Measure;
 import sky.program.Duration;
 

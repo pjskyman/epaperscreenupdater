@@ -7,6 +7,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
+import sky.housecommon.Database;
+import sky.housecommon.InstantaneousConsumption;
+import sky.housecommon.PricingPeriod;
 import sky.program.Duration;
 
 public class DelayedStartTablePage extends AbstractSinglePage
@@ -55,7 +58,7 @@ public class DelayedStartTablePage extends AbstractSinglePage
         if(nowHour<2||nowHour==2&&nowMinute==0||nowHour>=16)
         {
             String today="ND";
-            InstantaneousConsumption instantaneousConsumption=ElectricityUtils.getLastInstantaneousConsumption();
+            InstantaneousConsumption instantaneousConsumption=Database.getLastInstantaneousConsumption();
             if(instantaneousConsumption!=null)
             {
                 if(instantaneousConsumption.getPricingPeriod().isBlueDay())
