@@ -3,6 +3,7 @@ package sky.epaperscreenupdater.page;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import sky.housecommon.PricingPeriod;
 
 public class ConsumptionProfileCalculator
 {

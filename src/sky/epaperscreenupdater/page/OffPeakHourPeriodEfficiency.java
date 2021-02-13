@@ -1,5 +1,7 @@
 package sky.epaperscreenupdater.page;
 
+import sky.housecommon.PricingPeriod;
+
 public class OffPeakHourPeriodEfficiency
 {
     private final double consumptionEfficiency;
