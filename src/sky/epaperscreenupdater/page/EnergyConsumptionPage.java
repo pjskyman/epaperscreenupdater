@@ -40,8 +40,8 @@ public class EnergyConsumptionPage extends AbstractSinglePage
         int yesterdayYear=calendar.get(Calendar.YEAR);
         int yesterdayMonth=calendar.get(Calendar.MONTH)+1;
         int yesterdayDay=calendar.get(Calendar.DAY_OF_MONTH);
-        EnergyConsumption todayEnergyConsumption=ElectricityUtils.calculateEnergyConsumption(todayDay,todayMonth,todayYear);
-        EnergyConsumption yesterdayEnergyConsumption=ElectricityUtils.calculateEnergyConsumption(yesterdayDay,yesterdayMonth,yesterdayYear);
+        EnergyConsumption todayEnergyConsumption=ElectricityUtils.calculateEnergyConsumptionFor(todayDay,todayMonth,todayYear);
+        EnergyConsumption yesterdayEnergyConsumption=ElectricityUtils.calculateEnergyConsumptionFor(yesterdayDay,yesterdayMonth,yesterdayYear);
         for(int i=0;i<10;i++)
             g2d.drawLine(0,i*11+10,295,i*11+10);
         g2d.drawLine(0,9*11+10+1,295,9*11+10+1);

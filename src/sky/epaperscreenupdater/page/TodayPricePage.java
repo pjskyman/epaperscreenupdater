@@ -37,7 +37,7 @@ public class TodayPricePage extends AbstractSinglePage
         int todayYear=calendar.get(Calendar.YEAR);
         int todayMonth=calendar.get(Calendar.MONTH)+1;
         int todayDay=calendar.get(Calendar.DAY_OF_MONTH);
-        EnergyConsumption todayEnergyConsumption=ElectricityUtils.calculateEnergyConsumption(todayDay,todayMonth,todayYear);
+        EnergyConsumption todayEnergyConsumption=ElectricityUtils.calculateEnergyConsumptionFor(todayDay,todayMonth,todayYear);
         String todayPriceString=DECIMAL_00_FORMAT.format(todayEnergyConsumption.getTotalOfPrices())+" €";
         int todayPriceStringWidth=(int)Math.ceil(baseFont.getStringBounds(todayPriceString,g2d.getFontRenderContext()).getWidth());
         int todayPriceStringHeight=(int)Math.ceil(baseFont.getStringBounds(todayPriceString,g2d.getFontRenderContext()).getHeight());

@@ -46,7 +46,7 @@ public class InstantaneousConsumptionGraphPage extends AbstractSinglePage
 
     protected void populateImage(Graphics2D g2d) throws VetoException,Exception
     {
-        List<InstantaneousConsumption> list=Database.getLastInstantaneousConsumptions(296);
+        List<InstantaneousConsumption> list=Database.getLastInstantaneousConsumptionsWhile(Duration.of(24).minutePlus(40).second());
         if(list.isEmpty())
             throw new VetoException();
         int maxPower=list.stream()

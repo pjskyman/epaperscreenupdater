@@ -46,7 +46,7 @@ public class OffPeakHourPeriodEfficiencyPage extends AbstractSinglePage
 
         g2d.drawString("Efficacité des heures creuses",1,17);
 
-        OffPeakHourPeriodEfficiency yesterdayOffPeakHourPeriodEfficiency=ElectricityUtils.calculateOffPeakHourPeriodEfficiency(yesterdayDay,yesterdayMonth,yesterdayYear);
+        OffPeakHourPeriodEfficiency yesterdayOffPeakHourPeriodEfficiency=ElectricityUtils.calculateOffPeakHourPeriodEfficiencyFor(yesterdayDay,yesterdayMonth,yesterdayYear);
         String yesterdayString="\u2013 Hier (";
         PricingPeriod yesterdayPricingPeriod=yesterdayOffPeakHourPeriodEfficiency.getPricingPeriod();
         yesterdayString+=(yesterdayPricingPeriod.isBlueDay()?"bleu":yesterdayPricingPeriod.isWhiteDay()?"blanc":"rouge");
@@ -88,7 +88,7 @@ public class OffPeakHourPeriodEfficiencyPage extends AbstractSinglePage
         g2d.drawLine(yesterdayProrataAbscissa,57,yesterdayProrataAbscissa,56);
         g2d.drawLine(yesterdayProrataAbscissa,71,yesterdayProrataAbscissa,72);
 
-        OffPeakHourPeriodEfficiency todayOffPeakHourPeriodEfficiency=ElectricityUtils.calculateOffPeakHourPeriodEfficiency(todayDay,todayMonth,todayYear);
+        OffPeakHourPeriodEfficiency todayOffPeakHourPeriodEfficiency=ElectricityUtils.calculateOffPeakHourPeriodEfficiencyFor(todayDay,todayMonth,todayYear);
         double efficiency;
         try
         {

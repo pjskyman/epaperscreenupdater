@@ -81,8 +81,8 @@ public class HomeWeatherVariationPage extends AbstractSinglePage
         else
             _06000000729aMaxGustAngle=Double.NaN;
         long now=System.currentTimeMillis();
-        Measure[] lastToiletsTemperature=Database.getLastTemperatures(730).stream()//730 car 720 théoriques + 10 par sécurité
-                .filter(temperature->now-temperature.getTime()<Duration.of(1).hour())
+        Measure[] lastToiletsTemperature=Database.getLastTemperaturesWhile(Duration.of(1).hourPlus(50).second()).stream()
+                .filter(temperature->now-temperature.getTime()<Duration.of(1).hour())//un peu redondant désormais, non ?
                 .map(temperature->new StandAloneMeasure(new Date(temperature.getTime()),MeasurementType.TEMPERATURE,temperature.getTemperature()))
                 .toArray(Measure[]::new);
         double toiletsTemperatureVariation=NetatmoUtils.getHourlyVariation(lastToiletsTemperature);
