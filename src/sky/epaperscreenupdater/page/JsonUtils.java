@@ -7,9 +7,13 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.security.SecureRandom;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLSession;
-import sun.security.ssl.SSLSocketFactoryImpl;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 
 public class JsonUtils
 {
@@ -23,10 +27,13 @@ public class JsonUtils
         HttpsURLConnection httpsConnection=null;
         try
         {
+            SSLContext sslContext=SSLContext.getInstance("SSL");
+            sslContext.init(null,new TrustManager[]{new TrustAnyTrustManager()},new SecureRandom());
             httpsConnection=(HttpsURLConnection)urlObject.openConnection();
             httpsConnection.setConnectTimeout(5000);
             httpsConnection.setReadTimeout(5000);
             httpsConnection.setRequestMethod("GET");
+            httpsConnection.setSSLSocketFactory(sslContext.getSocketFactory());
             StringBuilder response=new StringBuilder();
             String inputLine;
             try(BufferedReader bufferedReader=new BufferedReader(new InputStreamReader(httpsConnection.getInputStream())))
@@ -48,36 +55,19 @@ public class JsonUtils
         }
     }
 
-    public static JsonObject getLaxJsonResponse(String url) throws IOException,JsonSyntaxException
+    private static class TrustAnyTrustManager implements X509TrustManager
     {
-        URL urlObject=new URL(url);
-        HttpsURLConnection httpsConnection=null;
-        try
+        public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException
         {
-            httpsConnection=(HttpsURLConnection)urlObject.openConnection();
-            httpsConnection.setConnectTimeout(5000);
-            httpsConnection.setReadTimeout(5000);
-            httpsConnection.setRequestMethod("GET");
-            httpsConnection.setSSLSocketFactory(new SSLSocketFactoryImpl());
-            httpsConnection.setHostnameVerifier((String string,SSLSession ssls)->true);
-            StringBuilder response=new StringBuilder();
-            String inputLine;
-            try(BufferedReader bufferedReader=new BufferedReader(new InputStreamReader(httpsConnection.getInputStream())))
-            {
-                while((inputLine=bufferedReader.readLine())!=null)
-                    response.append(inputLine);
-            }
-            return new JsonParser().parse(response.toString()).getAsJsonObject();
         }
-        catch(Exception e)
+
+        public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException
         {
-            e.printStackTrace();
-            return new JsonObject();
         }
-        finally
+
+        public X509Certificate[] getAcceptedIssuers()
         {
-            if(httpsConnection!=null)
-                httpsConnection.disconnect();
+            return new X509Certificate[]{};
         }
     }
 }
