@@ -8,6 +8,7 @@ import java.io.FileOutputStream;
 import java.io.OutputStream;
 import javax.imageio.ImageIO;
 import sky.epaperscreenupdater.RotationDirection;
+import sky.epaperscreenupdater.WorkManager;
 import sky.housecommon.Logger;
 
 public abstract class AbstractSinglePage extends AbstractPage
@@ -44,6 +45,7 @@ public abstract class AbstractSinglePage extends AbstractPage
         if(now-lastRefreshTime>=getMinimalRefreshDelay())
         {
             Logger.LOGGER.info("Page \""+getName()+"\" needs to be updated");
+            WorkManager.notifyPageWorking(this);
             lastRefreshTime=now;
             Graphics2D g2d=null;
             try
@@ -73,6 +75,10 @@ public abstract class AbstractSinglePage extends AbstractPage
             {
                 Logger.LOGGER.error("Unknown error when updating page \""+getName()+"\"");
                 e.printStackTrace();
+            }
+            finally
+            {
+                WorkManager.notifyPageWorkEnded(this);
             }
         }
         return this;
