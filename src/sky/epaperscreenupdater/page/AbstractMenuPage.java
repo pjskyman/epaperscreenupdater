@@ -6,6 +6,9 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import sky.epaperscreenupdater.RotationDirection;
 import sky.epaperscreenupdater.Screen;
 import sky.housecommon.Logger;
@@ -59,10 +62,16 @@ public abstract class AbstractMenuPage extends AbstractPage
      * Dernier contenu de l'incrustation pris en compte pour l'affichage.
      */
     private final Screen cachedSelectionIncrustScreen;
+    private final ExecutorService executorService;
     /**
      * Contenu vierge initialisé à blanc.
      */
     private static final Screen BLANK_SCREEN=new Screen().initializeBlank();
+
+    static
+    {
+        Logger.LOGGER.info(Runtime.getRuntime().availableProcessors()+" available processors");
+    }
 
     protected AbstractMenuPage(Page parentPage)
     {
@@ -75,6 +84,7 @@ public abstract class AbstractMenuPage extends AbstractPage
         cachedPageScreen=BLANK_SCREEN;
         cachedPageScreenModificationCount=-1;
         cachedSelectionIncrustScreen=new Screen().initializeTransparent();
+        executorService=Executors.newWorkStealingPool(Runtime.getRuntime().availableProcessors());
     }
 
     public String getActivePageName()
@@ -100,8 +110,17 @@ public abstract class AbstractMenuPage extends AbstractPage
 
     public synchronized Page potentiallyUpdate()
     {
-        //TODO la ligne suivante pourrait-elle se faire en stream parallèle ?
-        subpages.forEach(Page::potentiallyUpdate);//avant tout le reste, comme ça on pourra récupérer leurs nouveaux pixels le cas échéant
+        List<Future<?>> futures=new ArrayList<>(subpages.size());
+        subpages.forEach(page->futures.add(executorService.submit(()->page.potentiallyUpdate())));//avant tout le reste, comme ça on pourra récupérer leurs nouveaux pixels le cas échéant
+        try
+        {
+            while(!futures.stream()
+                    .allMatch(Future::isDone))
+                Thread.sleep(10L);
+        }
+        catch(InterruptedException e)
+        {
+        }
         Screen tempPageScreen=currentPageRank==-1?BLANK_SCREEN:subpages.get(currentPageRank-1).getScreen();
         int tempModificationCount=tempPageScreen.getModificationCount();
         if(currentPageRank!=cachedCurrentPageRank//si on a changé de sous-page
