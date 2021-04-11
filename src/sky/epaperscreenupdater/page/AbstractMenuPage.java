@@ -84,7 +84,7 @@ public abstract class AbstractMenuPage extends AbstractPage
         cachedPageScreen=BLANK_SCREEN;
         cachedPageScreenModificationCount=-1;
         cachedSelectionIncrustScreen=new Screen().initializeTransparent();
-        executorService=Executors.newWorkStealingPool(Runtime.getRuntime().availableProcessors());
+        executorService=Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
     }
 
     public String getActivePageName()
