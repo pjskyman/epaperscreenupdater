@@ -27,27 +27,33 @@ public class MainMenuPage extends AbstractMenuPage
     @Override
     public boolean clicked(boolean initial)
     {
-        if(currentlySelectedPageRank==-1)
+        synchronized(lockObject)
         {
-            if(subpages.get(currentPageRank-1).clicked(false))
-                currentlySelectedPageRank=currentPageRank;
-            return false;
-        }
-        else
-        {
-            currentPageRank=currentlySelectedPageRank;
-            currentlySelectedPageRank=-1;
-            subpages.get(currentPageRank-1).clicked(true);
-            return false;
+            if(currentlySelectedPageRank==-1)
+            {
+                if(subpages.get(currentPageRank-1).clicked(false))
+                    currentlySelectedPageRank=currentPageRank;
+                return false;
+            }
+            else
+            {
+                currentPageRank=currentlySelectedPageRank;
+                currentlySelectedPageRank=-1;
+                subpages.get(currentPageRank-1).clicked(true);
+                return false;
+            }
         }
     }
 
     @Override
     public boolean rotated(RotationDirection rotationDirection)
     {
-        if(subpages.get(currentPageRank-1).rotated(rotationDirection))
+        synchronized(lockObject)
+        {
+            if(subpages.get(currentPageRank-1).rotated(rotationDirection))
+                return true;
+            currentlySelectedPageRank=((currentlySelectedPageRank==-1?currentPageRank:currentlySelectedPageRank)-1+(rotationDirection==RotationDirection.CLOCKWISE?1:-1)+subpages.size())%subpages.size()+1;
             return true;
-        currentlySelectedPageRank=((currentlySelectedPageRank==-1?currentPageRank:currentlySelectedPageRank)-1+(rotationDirection==RotationDirection.CLOCKWISE?1:-1)+subpages.size())%subpages.size()+1;
-        return true;
+        }
     }
 }

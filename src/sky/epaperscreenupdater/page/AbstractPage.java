@@ -12,6 +12,7 @@ public abstract class AbstractPage implements Page
 {
     protected final Screen screen;
     protected final Page parentPage;
+    protected final Object lockObject;
     public static final Font FREDOKA_ONE_FONT;
 
     static
@@ -34,6 +35,7 @@ public abstract class AbstractPage implements Page
     {
         screen=new Screen();
         this.parentPage=parentPage;
+        lockObject=new Object();
     }
 
     public Page getParentPage()

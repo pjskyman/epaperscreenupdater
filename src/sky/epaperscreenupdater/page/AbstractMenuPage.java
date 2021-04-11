@@ -89,10 +89,13 @@ public abstract class AbstractMenuPage extends AbstractPage
 
     public String getActivePageName()
     {
-        if(currentPageRank==-1)
-            return getName();
-        else
-            return subpages.get(currentPageRank-1).getActivePageName();
+        synchronized(lockObject)
+        {
+            if(currentPageRank==-1)
+                return getName();
+            else
+                return subpages.get(currentPageRank-1).getActivePageName();
+        }
     }
 
     public int getRankOf(Page subpage)
@@ -108,53 +111,56 @@ public abstract class AbstractMenuPage extends AbstractPage
         return subpages.size();
     }
 
-    public synchronized Page potentiallyUpdate()
+    public Page potentiallyUpdate()
     {
-        List<Future<?>> futures=new ArrayList<>(subpages.size());
-        subpages.forEach(page->futures.add(executorService.submit(()->page.potentiallyUpdate())));//avant tout le reste, comme ça on pourra récupérer leurs nouveaux pixels le cas échéant
-        try
+        synchronized(lockObject)
         {
-            while(!futures.stream()
-                    .allMatch(Future::isDone))
-                Thread.sleep(10L);
-        }
-        catch(InterruptedException e)
-        {
-        }
-        Screen tempPageScreen=currentPageRank==-1?BLANK_SCREEN:subpages.get(currentPageRank-1).getScreen();
-        int tempModificationCount=tempPageScreen.getModificationCount();
-        if(currentPageRank!=cachedCurrentPageRank//si on a changé de sous-page
-           ||currentlySelectedPageRank!=cachedCurrentlySelectedPageRank//si on a changé de sélection de sous-page
-           ||tempPageScreen!=cachedPageScreen//si le contenu de la sous-page a changé (objet différent, mais compte-tenu du fonctionnement actuel des pages, c'est peu probable)
-           ||tempModificationCount!=cachedPageScreenModificationCount)//si le contenu de la sous-page a changé (compteur de modifications différent)
-        {
-            Logger.LOGGER.info("Menu \""+getName()+"\" needs to be updated");
+            List<Future<?>> futures=new ArrayList<>(subpages.size());
+            subpages.forEach(page->futures.add(executorService.submit(()->page.potentiallyUpdate())));//avant tout le reste, comme ça on pourra récupérer leurs nouveaux pixels le cas échéant
             try
             {
-                cachedCurrentPageRank=currentPageRank;
-                if(currentlySelectedPageRank!=cachedCurrentlySelectedPageRank)
-                {
-                    if(currentlySelectedPageRank==-1)
-                        cachedSelectionIncrustScreen.setTransparent();
-                    else
-                        if(currentlySelectedPageRank==0)
-                            cachedSelectionIncrustScreen.setImage(generateOutMessageIncrustImage());
-                        else//>0
-                            cachedSelectionIncrustScreen.setImage(generateSelectedPageIncrustImage(subpages.get(currentlySelectedPageRank-1)));
-                    cachedCurrentlySelectedPageRank=currentlySelectedPageRank;
-                }
-                cachedPageScreen=tempPageScreen;
-                cachedPageScreenModificationCount=tempModificationCount;
-                screen.setContentWithIncrust(cachedPageScreen,cachedSelectionIncrustScreen);
-                Logger.LOGGER.info("Menu \""+getName()+"\" updated successfully");
+                while(!futures.stream()
+                        .allMatch(Future::isDone))
+                    Thread.sleep(10L);
             }
-            catch(Exception e)
+            catch(InterruptedException e)
             {
-                Logger.LOGGER.error("Unknown error when updating menu \""+getName()+"\"");
-                e.printStackTrace();
             }
+            Screen tempPageScreen=currentPageRank==-1?BLANK_SCREEN:subpages.get(currentPageRank-1).getScreen();
+            int tempModificationCount=tempPageScreen.getModificationCount();
+            if(currentPageRank!=cachedCurrentPageRank//si on a changé de sous-page
+               ||currentlySelectedPageRank!=cachedCurrentlySelectedPageRank//si on a changé de sélection de sous-page
+               ||tempPageScreen!=cachedPageScreen//si le contenu de la sous-page a changé (objet différent, mais compte-tenu du fonctionnement actuel des pages, c'est peu probable)
+               ||tempModificationCount!=cachedPageScreenModificationCount)//si le contenu de la sous-page a changé (compteur de modifications différent)
+            {
+                Logger.LOGGER.info("Menu \""+getName()+"\" needs to be updated");
+                try
+                {
+                    cachedCurrentPageRank=currentPageRank;
+                    if(currentlySelectedPageRank!=cachedCurrentlySelectedPageRank)
+                    {
+                        if(currentlySelectedPageRank==-1)
+                            cachedSelectionIncrustScreen.setTransparent();
+                        else
+                            if(currentlySelectedPageRank==0)
+                                cachedSelectionIncrustScreen.setImage(generateOutMessageIncrustImage());
+                            else//>0
+                                cachedSelectionIncrustScreen.setImage(generateSelectedPageIncrustImage(subpages.get(currentlySelectedPageRank-1)));
+                        cachedCurrentlySelectedPageRank=currentlySelectedPageRank;
+                    }
+                    cachedPageScreen=tempPageScreen;
+                    cachedPageScreenModificationCount=tempModificationCount;
+                    screen.setContentWithIncrust(cachedPageScreen,cachedSelectionIncrustScreen);
+                    Logger.LOGGER.info("Menu \""+getName()+"\" updated successfully");
+                }
+                catch(Exception e)
+                {
+                    Logger.LOGGER.error("Unknown error when updating menu \""+getName()+"\"");
+                    e.printStackTrace();
+                }
+            }
+            return this;
         }
-        return this;
     }
 
     private BufferedImage generateOutMessageIncrustImage()
@@ -220,42 +226,48 @@ public abstract class AbstractMenuPage extends AbstractPage
 
     public boolean clicked(boolean initial)
     {
-        if(currentPageRank==-1)
+        synchronized(lockObject)
         {
-            currentPageRank=1;
-            currentlySelectedPageRank=subpages.get(0).getPageCount()==-1?-1:1;
-            return false;
-        }
-        else
-            if(currentlySelectedPageRank==-1)
+            if(currentPageRank==-1)
             {
-                if(subpages.get(currentPageRank-1).clicked(false))
-                    currentlySelectedPageRank=currentPageRank;
+                currentPageRank=1;
+                currentlySelectedPageRank=subpages.get(0).getPageCount()==-1?-1:1;
                 return false;
             }
             else
-                if(currentlySelectedPageRank==0)
+                if(currentlySelectedPageRank==-1)
                 {
-                    currentPageRank=-1;
-                    currentlySelectedPageRank=-1;
-                    return true;
-                }
-                else
-                {
-                    currentPageRank=currentlySelectedPageRank;
-                    currentlySelectedPageRank=-1;
-                    subpages.get(currentPageRank-1).clicked(true);
+                    if(subpages.get(currentPageRank-1).clicked(false))
+                        currentlySelectedPageRank=currentPageRank;
                     return false;
                 }
+                else
+                    if(currentlySelectedPageRank==0)
+                    {
+                        currentPageRank=-1;
+                        currentlySelectedPageRank=-1;
+                        return true;
+                    }
+                    else
+                    {
+                        currentPageRank=currentlySelectedPageRank;
+                        currentlySelectedPageRank=-1;
+                        subpages.get(currentPageRank-1).clicked(true);
+                        return false;
+                    }
+        }
     }
 
     public boolean rotated(RotationDirection rotationDirection)
     {
-        if(currentPageRank==-1)
-            return false;
-        if(currentPageRank!=-1&&subpages.get(currentPageRank-1).rotated(rotationDirection))
+        synchronized(lockObject)
+        {
+            if(currentPageRank==-1)
+                return false;
+            if(currentPageRank!=-1&&subpages.get(currentPageRank-1).rotated(rotationDirection))
+                return true;
+            currentlySelectedPageRank=((currentlySelectedPageRank==-1?currentPageRank:currentlySelectedPageRank)+(rotationDirection==RotationDirection.CLOCKWISE?1:-1)+subpages.size()+1)%(subpages.size()+1);
             return true;
-        currentlySelectedPageRank=((currentlySelectedPageRank==-1?currentPageRank:currentlySelectedPageRank)+(rotationDirection==RotationDirection.CLOCKWISE?1:-1)+subpages.size()+1)%(subpages.size()+1);
-        return true;
+        }
     }
 }

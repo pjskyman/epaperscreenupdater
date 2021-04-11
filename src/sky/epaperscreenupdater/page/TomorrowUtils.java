@@ -16,7 +16,7 @@ public class TomorrowUtils
     {
     }
 
-    public synchronized static String getTomorrow()
+    public static synchronized String getTomorrow()
     {
         long now=System.currentTimeMillis();
         if(now-lastTomorrowVerificationTime>Duration.of(9).minutePlus(3).second())

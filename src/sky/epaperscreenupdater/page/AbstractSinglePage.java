@@ -37,51 +37,54 @@ public abstract class AbstractSinglePage extends AbstractPage
         return -1;
     }
 
-    public synchronized Page potentiallyUpdate()
+    public Page potentiallyUpdate()
     {
-        if(!canUpdate())
-            return this;
-        long now=System.currentTimeMillis();
-        if(now-lastRefreshTime>=getMinimalRefreshDelay())
+        synchronized(lockObject)
         {
-            Logger.LOGGER.info("Page \""+getName()+"\" needs to be updated");
-            WorkManager.notifyPageWorking(this);
-            lastRefreshTime=now;
-            Graphics2D g2d=null;
-            try
+            if(!canUpdate())
+                return this;
+            long now=System.currentTimeMillis();
+            if(now-lastRefreshTime>=getMinimalRefreshDelay())
             {
-                BufferedImage image=new BufferedImage(296,128,BufferedImage.TYPE_INT_ARGB_PRE);
-                g2d=image.createGraphics();
-                g2d.setColor(Color.WHITE);
-                g2d.fillRect(0,0,296,128);
-                g2d.setColor(Color.BLACK);
-                populateImage(g2d);
-                g2d.dispose();
-                if(DEBUG_IMAGE_ENABLED)
-                    try(OutputStream outputStream=new FileOutputStream(new File(getDebugImageFileName())))
-                    {
-                        ImageIO.write(image,"png",outputStream);
-                    }
-                screen.setImage(image);
-                Logger.LOGGER.info("Page \""+getName()+"\" updated successfully");
-            }
-            catch(VetoException e)
-            {
-                if(g2d!=null)
+                Logger.LOGGER.info("Page \""+getName()+"\" needs to be updated");
+                WorkManager.notifyPageWorking(this);
+                lastRefreshTime=now;
+                Graphics2D g2d=null;
+                try
+                {
+                    BufferedImage image=new BufferedImage(296,128,BufferedImage.TYPE_INT_ARGB_PRE);
+                    g2d=image.createGraphics();
+                    g2d.setColor(Color.WHITE);
+                    g2d.fillRect(0,0,296,128);
+                    g2d.setColor(Color.BLACK);
+                    populateImage(g2d);
                     g2d.dispose();
-                Logger.LOGGER.info("Page \""+getName()+"\" update cancelled");
+                    if(DEBUG_IMAGE_ENABLED)
+                        try(OutputStream outputStream=new FileOutputStream(new File(getDebugImageFileName())))
+                        {
+                            ImageIO.write(image,"png",outputStream);
+                        }
+                    screen.setImage(image);
+                    Logger.LOGGER.info("Page \""+getName()+"\" updated successfully");
+                }
+                catch(VetoException e)
+                {
+                    if(g2d!=null)
+                        g2d.dispose();
+                    Logger.LOGGER.info("Page \""+getName()+"\" update cancelled");
+                }
+                catch(Exception e)
+                {
+                    Logger.LOGGER.error("Unknown error when updating page \""+getName()+"\"");
+                    e.printStackTrace();
+                }
+                finally
+                {
+                    WorkManager.notifyPageWorkEnded(this);
+                }
             }
-            catch(Exception e)
-            {
-                Logger.LOGGER.error("Unknown error when updating page \""+getName()+"\"");
-                e.printStackTrace();
-            }
-            finally
-            {
-                WorkManager.notifyPageWorkEnded(this);
-            }
+            return this;
         }
-        return this;
     }
 
     protected boolean canUpdate()
