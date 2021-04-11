@@ -20,6 +20,7 @@ public class WeatherForecastUtils
     private static long lastWeatherForecastVerificationTime=0L;
     private static List<Daily> lastDailies=null;
     private static List<Hourly> lastHourlies=null;
+    private static final Object LOCK_OBJECT=new Object();
 
     private WeatherForecastUtils()
     {
@@ -27,17 +28,23 @@ public class WeatherForecastUtils
 
     public static List<Daily> getLastDailies()
     {
-        updateWeatherForecastData();
-        return lastDailies;
+        synchronized(LOCK_OBJECT)
+        {
+            updateWeatherForecastData();
+            return lastDailies;
+        }
     }
 
     public static List<Hourly> getLastHourlies()
     {
-        updateWeatherForecastData();
-        return lastHourlies;
+        synchronized(LOCK_OBJECT)
+        {
+            updateWeatherForecastData();
+            return lastHourlies;
+        }
     }
 
-    private static synchronized void updateWeatherForecastData()
+    private static void updateWeatherForecastData()
     {
         long now=System.currentTimeMillis();
         if(now-lastWeatherForecastVerificationTime>Duration.of(10).minutePlus(5).secondPlus(300).millisecond())
