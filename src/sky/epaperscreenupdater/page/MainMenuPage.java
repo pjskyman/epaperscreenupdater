@@ -12,7 +12,8 @@ public class MainMenuPage extends AbstractMenuPage
         subpages.add(new ElectricityMenuPage(this).potentiallyUpdate());
 //        subpages.add(new ClockMenuPage(this).potentiallyUpdate());
         subpages.add(new RERCPage(this).potentiallyUpdate());
-        subpages.add(new AstronomyMenuPage(this).potentiallyUpdate());
+//        subpages.add(new AstronomyMenuPage(this).potentiallyUpdate());
+        subpages.add(new MoonPage(this).potentiallyUpdate());//il arrive là car le menu ci-dessus se retrouve avec un seul élément
         subpages.add(new AnniversaryPage(this).potentiallyUpdate());
         subpages.add(new AboutPage(this).potentiallyUpdate());
         currentPageRank=1;
