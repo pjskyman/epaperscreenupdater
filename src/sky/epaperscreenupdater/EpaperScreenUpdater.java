@@ -77,9 +77,9 @@ public final class EpaperScreenUpdater
             {
                 try
                 {
-                    LedManager.setRedLedOn();
+                    LedManager.setGreenLedOn();
                     Thread.sleep(500L);
-                    LedManager.setRedLedOff();
+                    LedManager.setGreenLedOff();
                 }
                 catch(InterruptedException e)
                 {
@@ -139,17 +139,17 @@ public final class EpaperScreenUpdater
                                 Thread.sleep(200L);
                                 LedManager.setGreenLedOff();
                                 Thread.sleep(50L);
-                                LedManager.setRedLedOn();
+                                LedManager.setGreenLedOn();
                                 Thread.sleep(200L);
-                                LedManager.setRedLedOff();
+                                LedManager.setGreenLedOff();
                                 Thread.sleep(50L);
                                 LedManager.setGreenLedOn();
                                 Thread.sleep(200L);
                                 LedManager.setGreenLedOff();
                                 Thread.sleep(50L);
-                                LedManager.setRedLedOn();
+                                LedManager.setGreenLedOn();
                                 Thread.sleep(200L);
-                                LedManager.setRedLedOff();
+                                LedManager.setGreenLedOff();
                             }
                             Thread.sleep(Duration.of(15).second());
                         }
