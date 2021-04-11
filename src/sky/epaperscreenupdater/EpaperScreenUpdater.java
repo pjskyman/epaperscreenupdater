@@ -17,6 +17,29 @@ public final class EpaperScreenUpdater
         Logger.LOGGER.info("Starting "+EpaperScreenUpdater.class.getSimpleName()+"...");
         try
         {
+            LedManager.setGreenLedOn();
+            LedManager.setRedLedOn();
+            Thread.sleep(1000L);
+            LedManager.setGreenLedOff();
+            LedManager.setRedLedOff();
+            Thread.sleep(200L);
+            LedManager.setGreenLedOn();
+            LedManager.setRedLedOn();
+            Thread.sleep(200L);
+            LedManager.setGreenLedOff();
+            LedManager.setRedLedOff();
+            Thread.sleep(200L);
+            LedManager.setGreenLedOn();
+            LedManager.setRedLedOn();
+            Thread.sleep(200L);
+            LedManager.setGreenLedOff();
+            LedManager.setRedLedOff();
+            Thread.sleep(200L);
+            LedManager.setGreenLedOn();
+            LedManager.setRedLedOn();
+            Thread.sleep(200L);
+            LedManager.setGreenLedOff();
+            LedManager.setRedLedOff();
             MainMenuPage mainMenuPage=new MainMenuPage();
             Screen currentScreen=mainMenuPage.potentiallyUpdate().getScreen();
             AtomicInteger currentModificationCount=new AtomicInteger(currentScreen.getModificationCount());
