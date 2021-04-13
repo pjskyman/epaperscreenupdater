@@ -68,86 +68,89 @@ public class TempoCalendarPage extends AbstractSinglePage
             if(historyObject!=null)
             {
                 JsonArray history=historyObject.getAsJsonArray("dates");
-                int lastDateDay=0;
-                String lastDateColor=null;
-                for(int i=0;i<history.size();i++)
+                if(history!=null)
                 {
-                    String date=history.get(i).getAsJsonObject().getAsJsonPrimitive("date").getAsString();
-                    int month=Integer.parseInt(date.substring(5,7));
-                    int day=Integer.parseInt(date.substring(8,10));
-                    int x=13+(day-1)*9;
-                    int y=1+((month-1+4)%12)*9;
-                    String color=history.get(i).getAsJsonObject().getAsJsonPrimitive("couleur").getAsString();
-                    lastDateDay=day;
-                    lastDateColor=color;
-                    if(color.contains("BLEU"))
+                    int lastDateDay=0;
+                    String lastDateColor=null;
+                    for(int i=0;i<history.size();i++)
                     {
-                        g2d.drawLine(x+3,y+3,x+4,y+3);
-                        g2d.drawLine(x+3,y+4,x+4,y+4);
-                        elapsedBlueDayCount++;
-                        remainingBlueDayCount--;
-                    }
-                    else
-                        if(color.contains("BLANC"))
+                        String date=history.get(i).getAsJsonObject().getAsJsonPrimitive("date").getAsString();
+                        int month=Integer.parseInt(date.substring(5,7));
+                        int day=Integer.parseInt(date.substring(8,10));
+                        int x=13+(day-1)*9;
+                        int y=1+((month-1+4)%12)*9;
+                        String color=history.get(i).getAsJsonObject().getAsJsonPrimitive("couleur").getAsString();
+                        lastDateDay=day;
+                        lastDateColor=color;
+                        if(color.contains("BLEU"))
                         {
-                            g2d.drawLine(x+3,y+2,x+4,y+2);
-                            g2d.drawLine(x+2,y+3,x+5,y+3);
-                            g2d.drawLine(x+2,y+4,x+5,y+4);
-                            g2d.drawLine(x+3,y+5,x+4,y+5);
-                            elapsedWhiteDayCount++;
-                            remainingWhiteDayCount--;
+                            g2d.drawLine(x+3,y+3,x+4,y+3);
+                            g2d.drawLine(x+3,y+4,x+4,y+4);
+                            elapsedBlueDayCount++;
+                            remainingBlueDayCount--;
                         }
                         else
-                            if(color.contains("ROUGE"))
+                            if(color.contains("BLANC"))
                             {
-                                g2d.drawLine(x+2,y+1,x+5,y+1);
-                                g2d.drawLine(x+1,y+2,x+6,y+2);
-                                g2d.drawLine(x+1,y+3,x+6,y+3);
-                                g2d.drawLine(x+1,y+4,x+6,y+4);
-                                g2d.drawLine(x+1,y+5,x+6,y+5);
-                                g2d.drawLine(x+2,y+6,x+5,y+6);
-                                elapsedRedDayCount++;
-                                remainingRedDayCount--;
-                            }
-                    int year=Integer.parseInt(date.substring(0,4));
-                    calendar.clear();
-                    calendar.set(year,month-1,day);
-                    if(calendar.get(Calendar.DAY_OF_WEEK)==Calendar.SATURDAY||calendar.get(Calendar.DAY_OF_WEEK)==Calendar.SUNDAY)
-                    {
-                        g2d.drawLine(x+0,y+0,x+7,y+0);
-                        g2d.drawLine(x+7,y+0,x+7,y+7);
-                        g2d.drawLine(x+7,y+7,x+0,y+7);
-                        g2d.drawLine(x+0,y+7,x+0,y+0);
-                    }
-                }
-                //correction si la couleur du lendemain a été comptée dans ce qu'il reste
-                if(lastDateDay!=0)//simple précaution peut-être inutile...
-                {
-                    calendar.clear();
-                    calendar.setTimeInMillis(System.currentTimeMillis());
-                    int currentDay=calendar.get(Calendar.DAY_OF_MONTH);
-                    int currentHour=calendar.get(Calendar.HOUR_OF_DAY);
-                    if(currentDay!=lastDateDay||
-                       currentDay==lastDateDay&&currentHour<6)
-                        if(lastDateColor!=null&&lastDateColor.contains("BLEU"))
-                        {
-                            elapsedBlueDayCount--;
-                            remainingBlueDayCount++;
-                        }
-                        else
-                            if(lastDateColor!=null&&lastDateColor.contains("BLANC"))
-                            {
-                                elapsedWhiteDayCount--;
-                                remainingWhiteDayCount++;
+                                g2d.drawLine(x+3,y+2,x+4,y+2);
+                                g2d.drawLine(x+2,y+3,x+5,y+3);
+                                g2d.drawLine(x+2,y+4,x+5,y+4);
+                                g2d.drawLine(x+3,y+5,x+4,y+5);
+                                elapsedWhiteDayCount++;
+                                remainingWhiteDayCount--;
                             }
                             else
-                                if(lastDateColor!=null&&lastDateColor.contains("ROUGE"))
+                                if(color.contains("ROUGE"))
                                 {
-                                    elapsedRedDayCount--;
-                                    remainingRedDayCount++;
+                                    g2d.drawLine(x+2,y+1,x+5,y+1);
+                                    g2d.drawLine(x+1,y+2,x+6,y+2);
+                                    g2d.drawLine(x+1,y+3,x+6,y+3);
+                                    g2d.drawLine(x+1,y+4,x+6,y+4);
+                                    g2d.drawLine(x+1,y+5,x+6,y+5);
+                                    g2d.drawLine(x+2,y+6,x+5,y+6);
+                                    elapsedRedDayCount++;
+                                    remainingRedDayCount--;
                                 }
+                        int year=Integer.parseInt(date.substring(0,4));
+                        calendar.clear();
+                        calendar.set(year,month-1,day);
+                        if(calendar.get(Calendar.DAY_OF_WEEK)==Calendar.SATURDAY||calendar.get(Calendar.DAY_OF_WEEK)==Calendar.SUNDAY)
+                        {
+                            g2d.drawLine(x+0,y+0,x+7,y+0);
+                            g2d.drawLine(x+7,y+0,x+7,y+7);
+                            g2d.drawLine(x+7,y+7,x+0,y+7);
+                            g2d.drawLine(x+0,y+7,x+0,y+0);
+                        }
+                    }
+                    //correction si la couleur du lendemain a été comptée dans ce qu'il reste
+                    if(lastDateDay!=0)//simple précaution peut-être inutile...
+                    {
+                        calendar.clear();
+                        calendar.setTimeInMillis(System.currentTimeMillis());
+                        int currentDay=calendar.get(Calendar.DAY_OF_MONTH);
+                        int currentHour=calendar.get(Calendar.HOUR_OF_DAY);
+                        if(currentDay!=lastDateDay||
+                           currentDay==lastDateDay&&currentHour<6)
+                            if(lastDateColor!=null&&lastDateColor.contains("BLEU"))
+                            {
+                                elapsedBlueDayCount--;
+                                remainingBlueDayCount++;
+                            }
+                            else
+                                if(lastDateColor!=null&&lastDateColor.contains("BLANC"))
+                                {
+                                    elapsedWhiteDayCount--;
+                                    remainingWhiteDayCount++;
+                                }
+                                else
+                                    if(lastDateColor!=null&&lastDateColor.contains("ROUGE"))
+                                    {
+                                        elapsedRedDayCount--;
+                                        remainingRedDayCount++;
+                                    }
+                    }
+                    Logger.LOGGER.info("Tempo history retrieved successfully");
                 }
-                Logger.LOGGER.info("Tempo history retrieved successfully");
             }
         }
         catch(Exception e)
