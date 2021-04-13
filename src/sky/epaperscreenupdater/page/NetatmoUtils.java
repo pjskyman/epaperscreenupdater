@@ -122,7 +122,7 @@ public class NetatmoUtils
         }
     }
 
-    public static Map<String,Measure[]> getLastMeasures()
+    public static Map<String,Measure[]> getLastMeasures()//TODO éviter de laisser se propager les timeouts pour que les pages ne soient pas vides ou indisponibles
     {
         synchronized(DATABASE)
         {
@@ -190,8 +190,22 @@ public class NetatmoUtils
                             Module _06000000729a=homeModules[3];
                             JsonObject _06000000729aObject=_06000000729a.getAttributes();
                             JsonObject _06000000729aDashboardDataObject=_06000000729aObject.get("dashboard_data").getAsJsonObject();
-                            _06000000729aMaxGustStrength=new Measure[]{new StandAloneMeasure(new Date(now),MeasurementType.GUST_STRENGTH,_06000000729aDashboardDataObject.get("max_wind_str").getAsDouble())};
-                            _06000000729aMaxGustAngle=new Measure[]{new StandAloneMeasure(new Date(now),MeasurementType.GUST_ANGLE,_06000000729aDashboardDataObject.get("max_wind_angle").getAsDouble())};
+                            try
+                            {
+                                _06000000729aMaxGustStrength=new Measure[]{new StandAloneMeasure(new Date(now),MeasurementType.GUST_STRENGTH,_06000000729aDashboardDataObject.get("max_wind_str").getAsDouble())};
+                            }
+                            catch(NullPointerException e)
+                            {
+                                _06000000729aMaxGustStrength=new Measure[]{new StandAloneMeasure(new Date(now),MeasurementType.GUST_STRENGTH,0d)};
+                            }
+                            try
+                            {
+                                _06000000729aMaxGustAngle=new Measure[]{new StandAloneMeasure(new Date(now),MeasurementType.GUST_ANGLE,_06000000729aDashboardDataObject.get("max_wind_angle").getAsDouble())};
+                            }
+                            catch(NullPointerException e)
+                            {
+                                _06000000729aMaxGustAngle=new Measure[]{new StandAloneMeasure(new Date(now),MeasurementType.GUST_ANGLE,0d)};
+                            }
                             _06000000729aBattery=new Measure[]{new StandAloneMeasure(new Date(now),null,_06000000729aObject.get("battery_vp").getAsDouble())};
                             _06000000729aRadio=new Measure[]{new StandAloneMeasure(new Date(now),null,_06000000729aObject.get("rf_status").getAsDouble())};
                             Module _03000003fe8e=homeModules[4];
@@ -201,7 +215,14 @@ public class NetatmoUtils
                             Module _05000004152c=homeModules[5];
                             JsonObject _05000004152cObject=_05000004152c.getAttributes();
                             JsonObject _05000004152cDashboardDataObject=_05000004152cObject.get("dashboard_data").getAsJsonObject();
-                            _05000004152cTotalRain=new Measure[]{new StandAloneMeasure(new Date(now),MeasurementType.RAIN,_05000004152cDashboardDataObject.get("sum_rain_24").getAsDouble())};
+                            try
+                            {
+                                _05000004152cTotalRain=new Measure[]{new StandAloneMeasure(new Date(now),MeasurementType.RAIN,_05000004152cDashboardDataObject.get("sum_rain_24").getAsDouble())};
+                            }
+                            catch(NullPointerException e)
+                            {
+                                _05000004152cTotalRain=new Measure[]{new StandAloneMeasure(new Date(now),MeasurementType.RAIN,0d)};
+                            }
                             _05000004152cBattery=new Measure[]{new StandAloneMeasure(new Date(now),null,_05000004152cObject.get("battery_vp").getAsDouble())};
                             _05000004152cRadio=new Measure[]{new StandAloneMeasure(new Date(now),null,_05000004152cObject.get("rf_status").getAsDouble())};
                             Measure[] _70ee50000deaMeasures=_70ee50000dea.getMeasures(MeasurementScale.MAX,new Date(now-Duration.of(3).hour()),new Date(now+Duration.of(5).minute()),MeasurementType.TEMPERATURE,MeasurementType.HUMIDITY,MeasurementType.CO2,MeasurementType.NOISE);
