@@ -122,7 +122,7 @@ public class NetatmoUtils
         }
     }
 
-    public static Map<String,Measure[]> getLastMeasures()//TODO éviter de laisser se propager les timeouts pour que les pages ne soient pas vides ou indisponibles
+    public static Map<String,Measure[]> getLastMeasures()
     {
         synchronized(DATABASE)
         {
@@ -296,46 +296,7 @@ public class NetatmoUtils
                         e.printStackTrace();
                     }
                     if(!ok)
-                    {
-                        last70ee50000deaTemperatures=null;
-                        last70ee50000deaHumidities=null;
-                        last70ee50000deaPressures=null;
-                        last70ee50000deaCarbonDioxydes=null;
-                        last70ee50000deaNoises=null;
-                        _70ee50000deaWifi=null;
-                        _70ee50000deaFirmware=null;
-                        last030000000216Temperatures=null;
-                        last030000000216Humidities=null;
-                        last030000000216CarbonDioxydes=null;
-                        _030000000216Battery=null;
-                        _030000000216Radio=null;
-                        last03000000076eTemperatures=null;
-                        last03000000076eHumidities=null;
-                        last03000000076eCarbonDioxydes=null;
-                        _03000000076eBattery=null;
-                        _03000000076eRadio=null;
-                        last03000003fe8eTemperatures=null;
-                        last03000003fe8eHumidities=null;
-                        last03000003fe8eCarbonDioxydes=null;
-                        _03000003fe8eBattery=null;
-                        _03000003fe8eRadio=null;
-                        last0200000010baTemperatures=null;
-                        last0200000010baHumidities=null;
-                        _0200000010baBattery=null;
-                        _0200000010baRadio=null;
-                        last05000004152cRains=null;
-                        _05000004152cTotalRain=null;
-                        _05000004152cBattery=null;
-                        _05000004152cRadio=null;
-                        last06000000729aWindStrengths=null;
-                        last06000000729aWindAngles=null;
-                        last06000000729aGustStrengths=null;
-                        last06000000729aGustAngles=null;
-                        _06000000729aMaxGustStrength=null;
-                        _06000000729aMaxGustAngle=null;
-                        _06000000729aBattery=null;
-                        _06000000729aRadio=null;
-                    }
+                        Logger.LOGGER.warn("Timeout or error when getting updating Netatmo data, data stay unchanged");
                 }
             }
             else
