@@ -153,7 +153,7 @@ public class TempoCalendarPage extends AbstractSinglePage
                 }
             }
             else
-                Logger.LOGGER.info("Timeout when retrieving tempo history");
+                Logger.LOGGER.warn("Timeout or error when retrieving tempo history");
         }
         catch(Exception e)
         {
