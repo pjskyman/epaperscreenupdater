@@ -152,6 +152,8 @@ public class TempoCalendarPage extends AbstractSinglePage
                     Logger.LOGGER.info("Tempo history retrieved successfully");
                 }
             }
+            else
+                Logger.LOGGER.info("Timeout when retrieving tempo history");
         }
         catch(Exception e)
         {
