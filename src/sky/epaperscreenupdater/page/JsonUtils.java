@@ -24,34 +24,34 @@ public class JsonUtils
     public static JsonObject getJsonResponse(String url) throws IOException,JsonSyntaxException
     {
         URL urlObject=new URL(url);
-        HttpsURLConnection httpsConnection=null;
+        HttpsURLConnection connection=null;
         try
         {
             SSLContext sslContext=SSLContext.getInstance("SSL");
             sslContext.init(null,new TrustManager[]{new TrustAnyTrustManager()},new SecureRandom());
-            httpsConnection=(HttpsURLConnection)urlObject.openConnection();
-            httpsConnection.setConnectTimeout(5000);
-            httpsConnection.setReadTimeout(5000);
-            httpsConnection.setRequestMethod("GET");
-            httpsConnection.setSSLSocketFactory(sslContext.getSocketFactory());
+            connection=(HttpsURLConnection)urlObject.openConnection();
+            connection.setConnectTimeout(5000);
+            connection.setReadTimeout(5000);
+            connection.setRequestMethod("GET");
+            connection.setSSLSocketFactory(sslContext.getSocketFactory());
             StringBuilder response=new StringBuilder();
             String inputLine;
-            try(BufferedReader bufferedReader=new BufferedReader(new InputStreamReader(httpsConnection.getInputStream())))
+            try(BufferedReader bufferedReader=new BufferedReader(new InputStreamReader(connection.getInputStream())))
             {
                 while((inputLine=bufferedReader.readLine())!=null)
                     response.append(inputLine);
             }
             return new JsonParser().parse(response.toString()).getAsJsonObject();
         }
-        catch(Exception e)
+        catch(Exception e)//y compris les SocketTimeoutException
         {
             e.printStackTrace();
             return new JsonObject();
         }
         finally
         {
-            if(httpsConnection!=null)
-                httpsConnection.disconnect();
+            if(connection!=null)
+                connection.disconnect();
         }
     }
 
