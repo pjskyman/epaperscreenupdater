@@ -47,9 +47,11 @@ public class TomorrowUtils
                             Logger.LOGGER.info("Tomorrow's color updated: "+oldTomorrow+" -> "+tomorrow);
                     }
                     else
-                        Logger.LOGGER.info("Timeout when verifying tomorrow's color, so no change, always "+oldTomorrow);
+                        Logger.LOGGER.info("Timeout or error when verifying tomorrow's color, so no change, always "+oldTomorrow);
                     lastTomorrowVerificationTime=now;
                 }
+                else
+                    Logger.LOGGER.info("Timeout or error when verifying tomorrow's color, so no change, always "+oldTomorrow);
             }
             catch(Exception e)
             {
