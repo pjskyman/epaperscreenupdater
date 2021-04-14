@@ -37,11 +37,17 @@ public class TomorrowUtils
                 String oldTomorrow=tomorrow;
                 if(tomorrowObject!=null)
                 {
-                    tomorrow=tomorrowObject.getAsJsonObject("JourJ").getAsJsonPrimitive("Tempo").getAsString();
-                    if(tomorrow.equals(oldTomorrow))
-                        Logger.LOGGER.info("Tomorrow's color verified, no change, always "+oldTomorrow);
+                    JsonObject jourJObject=tomorrowObject.getAsJsonObject("JourJ");
+                    if(jourJObject!=null)
+                    {
+                        tomorrow=jourJObject.getAsJsonPrimitive("Tempo").getAsString();
+                        if(tomorrow.equals(oldTomorrow))
+                            Logger.LOGGER.info("Tomorrow's color verified, no change, always "+oldTomorrow);
+                        else
+                            Logger.LOGGER.info("Tomorrow's color updated: "+oldTomorrow+" -> "+tomorrow);
+                    }
                     else
-                        Logger.LOGGER.info("Tomorrow's color updated: "+oldTomorrow+" -> "+tomorrow);
+                        Logger.LOGGER.info("Timeout when verifying tomorrow's color, so no change, always "+oldTomorrow);
                     lastTomorrowVerificationTime=now;
                 }
             }
